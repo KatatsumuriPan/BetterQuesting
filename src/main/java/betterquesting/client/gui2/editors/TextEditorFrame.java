@@ -12,6 +12,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
@@ -33,6 +35,14 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.AbstractDocument.DefaultDocumentEvent;
 import javax.swing.text.JTextComponent;
 import javax.swing.undo.UndoManager;
+
+import org.apache.commons.lang3.SystemUtils;
+
+import com.sun.jna.Native;
+import com.sun.jna.platform.win32.User32;
+import com.sun.jna.platform.win32.WinDef.HWND;
+import com.sun.jna.platform.win32.WinUser;
+import com.sun.jna.platform.win32.WinUser.FLASHWINFO;
 
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.IQuest;
@@ -61,6 +71,7 @@ public class TextEditorFrame extends JFrame {
             frame.toFront();
             frame.requestFocus();
             Toolkit.getDefaultToolkit().beep();
+            FlashWindowHelper.flash(frame);
         } else {
             TextEditorFrame frame = new TextEditorFrame(questID, quest);
             opened.put(questID, frame);
@@ -277,6 +288,28 @@ public class TextEditorFrame extends JFrame {
                 // Nothing to do.
             }
 
+        }
+
+    }
+
+    private static class FlashWindowHelper {
+
+        public static void flash(JFrame frame) {
+            if (SystemUtils.IS_OS_WINDOWS) {
+                FLASHWINFO flashInfo = new FLASHWINFO() {
+
+                    @Override
+                    protected List<String> getFieldOrder() { return Arrays.asList("cbSize", "hWnd", "dwFlags", "uCount", "dwTimeout"); }
+
+                };
+                flashInfo.cbSize = flashInfo.size();
+                flashInfo.hWnd = new HWND(Native.getComponentPointer(frame));
+                flashInfo.dwTimeout = 100;
+                flashInfo.uCount = 2;
+                flashInfo.dwFlags = WinUser.FLASHW_ALL | WinUser.FLASHW_TIMER;
+
+                User32.INSTANCE.FlashWindowEx(flashInfo);
+            }
         }
 
     }
