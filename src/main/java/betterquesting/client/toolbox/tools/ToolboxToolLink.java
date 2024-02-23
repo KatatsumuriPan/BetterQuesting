@@ -1,13 +1,5 @@
 package betterquesting.client.toolbox.tools;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.NonNullList;
-
 import betterquesting.api.client.toolbox.IToolboxTool;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.client.gui.controls.PanelButtonQuest;
@@ -17,9 +9,15 @@ import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.client.gui.themes.presets.PresetLine;
 import betterquesting.client.gui2.editors.designer.PanelToolController;
 import betterquesting.network.handlers.NetQuestEdit;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ToolboxToolLink implements IToolboxTool {
-
     private CanvasQuestLine gui;
     private final NonNullList<PanelButtonQuest> linking = NonNullList.create();
     private final GuiRectangle mouseRect = new GuiRectangle(0, 0, 0, 0);
@@ -58,13 +56,13 @@ public class ToolboxToolLink implements IToolboxTool {
         mouseRect.y = my;
 
         for (PanelButtonQuest btn : linking) {
-            PresetLine.QUEST_COMPLETE.getLine().drawLine(btn.rect, mouseRect, 2,
-                    PresetColor.QUEST_LINE_COMPLETE.getColor(), partialTick);
+            PresetLine.QUEST_COMPLETE.getLine().drawLine(btn.rect, mouseRect, 2, PresetColor.QUEST_LINE_COMPLETE.getColor(), partialTick);
         }
     }
 
     @Override
-    public void drawOverlay(int mx, int my, float partialTick) {}
+    public void drawOverlay(int mx, int my, float partialTick) {
+    }
 
     @Override
     public List<String> getTooltip(int mx, int my) {
@@ -109,8 +107,7 @@ public class ToolboxToolLink implements IToolboxTool {
                     boolean mod1 = false;
 
                     // Don't have to worry about the lines anymore. The panel is getting refereshed anyway
-                    if (!containsReq(q2, b1.getStoredValue().getID()) &&
-                            !containsReq(q1, b2.getStoredValue().getID())) {
+                    if (!containsReq(q2, b1.getStoredValue().getID()) && !containsReq(q1, b2.getStoredValue().getID())) {
                         mod2 = addReq(q2, b1.getStoredValue().getID()) || mod2;
                     } else {
                         mod2 = removeReq(q2, b1.getStoredValue().getID()) || mod2;
@@ -166,7 +163,8 @@ public class ToolboxToolLink implements IToolboxTool {
     }
 
     @Override
-    public void onSelection(NonNullList<PanelButtonQuest> buttons) {}
+    public void onSelection(NonNullList<PanelButtonQuest> buttons) {
+    }
 
     @Override
     public boolean useSelection() {

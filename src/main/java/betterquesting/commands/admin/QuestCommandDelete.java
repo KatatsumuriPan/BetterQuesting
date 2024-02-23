@@ -1,16 +1,5 @@
 package betterquesting.commands.admin;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.server.permission.DefaultPermissionLevel;
-
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.storage.DBEntry;
@@ -21,9 +10,18 @@ import betterquesting.network.handlers.NetQuestEdit;
 import betterquesting.network.handlers.NetQuestSync;
 import betterquesting.questing.QuestDatabase;
 import betterquesting.questing.QuestLineDatabase;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.server.permission.DefaultPermissionLevel;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class QuestCommandDelete extends QuestCommandBase {
-
     @Override
     public String getUsageSuffix() {
         return "[all|<quest_id>]";
@@ -55,8 +53,7 @@ public class QuestCommandDelete extends QuestCommandBase {
     }
 
     @Override
-    public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender,
-                           String[] args) throws CommandException {
+    public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, String[] args) throws CommandException {
         if (args[1].equalsIgnoreCase("all")) {
             QuestDatabase.INSTANCE.reset();
             QuestLineDatabase.INSTANCE.reset();
@@ -69,10 +66,9 @@ public class QuestCommandDelete extends QuestCommandBase {
             try {
                 int id = Integer.parseInt(args[1].trim());
                 IQuest quest = QuestDatabase.INSTANCE.getValue(id);
-                NetQuestEdit.deleteQuests(new int[] { id });
+                NetQuestEdit.deleteQuests(new int[]{id});
 
-                sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.delete.single",
-                        new TextComponentTranslation(quest.getProperty(NativeProps.NAME))));
+                sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.delete.single", new TextComponentTranslation(quest.getProperty(NativeProps.NAME))));
             } catch (Exception e) {
                 throw getException(command);
             }

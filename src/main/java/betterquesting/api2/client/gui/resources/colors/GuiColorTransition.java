@@ -1,12 +1,10 @@
 package betterquesting.api2.client.gui.resources.colors;
 
-import net.minecraft.client.renderer.GlStateManager;
-
 import betterquesting.api.utils.RenderUtils;
 import betterquesting.api2.client.gui.controls.IValueIO;
+import net.minecraft.client.renderer.GlStateManager;
 
 public class GuiColorTransition implements IGuiColor {
-
     private final IGuiColor cNorm;
     private final IGuiColor cLow;
 

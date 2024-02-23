@@ -1,8 +1,6 @@
 package betterquesting.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import betterquesting.api.placeholders.ItemPlaceholder;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -19,11 +17,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import betterquesting.api.placeholders.ItemPlaceholder;
+import java.util.ArrayList;
+import java.util.List;
 
 @Mod.EventBusSubscriber
 public class RegEventHandler {
-
     public static final List<Item> ALL_ITEMS = new ArrayList<>();
     public static final List<Block> ALL_BLOCKS = new ArrayList<>();
     public static final List<IRecipe> ALL_RECIPES = new ArrayList<>();
@@ -57,7 +55,7 @@ public class RegEventHandler {
     }
 
     public static void registerBlock(Block b, String name) {
-        ResourceLocation res = new ResourceLocation(ModReference.MODID, name);
+        ResourceLocation res = new ResourceLocation(ModReference.MODID,  name);
         ALL_BLOCKS.add(b.setRegistryName(res));
         ALL_ITEMS.add(new ItemBlock(b).setRegistryName(res));
     }
@@ -78,25 +76,16 @@ public class RegEventHandler {
     }
 
     public static void initRecipes() {
-        addShapelessRecipe("submit_station", "questing", new ItemStack(BetterQuesting.submitStation),
-                new ItemStack(Items.BOOK), new ItemStack(Blocks.GLASS), new ItemStack(Blocks.CHEST));
+        addShapelessRecipe("submit_station", "questing", new ItemStack(BetterQuesting.submitStation), new ItemStack(Items.BOOK), new ItemStack(Blocks.GLASS), new ItemStack(Blocks.CHEST));
 
-        addShapelessRecipe("life_full_0", "questing", new ItemStack(BetterQuesting.extraLife, 1, 0),
-                new ItemStack(BetterQuesting.extraLife, 1, 2), new ItemStack(BetterQuesting.extraLife, 1, 2),
-                new ItemStack(BetterQuesting.extraLife, 1, 2), new ItemStack(BetterQuesting.extraLife, 1, 2));
-        addShapelessRecipe("life_full_1", "questing", new ItemStack(BetterQuesting.extraLife, 1, 0),
-                new ItemStack(BetterQuesting.extraLife, 1, 2), new ItemStack(BetterQuesting.extraLife, 1, 2),
-                new ItemStack(BetterQuesting.extraLife, 1, 1));
-        addShapelessRecipe("life_full_2", "questing", new ItemStack(BetterQuesting.extraLife, 1, 0),
-                new ItemStack(BetterQuesting.extraLife, 1, 1), new ItemStack(BetterQuesting.extraLife, 1, 1));
+        addShapelessRecipe("life_full_0", "questing", new ItemStack(BetterQuesting.extraLife, 1, 0), new ItemStack(BetterQuesting.extraLife, 1, 2), new ItemStack(BetterQuesting.extraLife, 1, 2), new ItemStack(BetterQuesting.extraLife, 1, 2), new ItemStack(BetterQuesting.extraLife, 1, 2));
+        addShapelessRecipe("life_full_1", "questing", new ItemStack(BetterQuesting.extraLife, 1, 0), new ItemStack(BetterQuesting.extraLife, 1, 2), new ItemStack(BetterQuesting.extraLife, 1, 2), new ItemStack(BetterQuesting.extraLife, 1, 1));
+        addShapelessRecipe("life_full_2", "questing", new ItemStack(BetterQuesting.extraLife, 1, 0), new ItemStack(BetterQuesting.extraLife, 1, 1), new ItemStack(BetterQuesting.extraLife, 1, 1));
 
-        addShapelessRecipe("life_half_0", "questing", new ItemStack(BetterQuesting.extraLife, 2, 1),
-                new ItemStack(BetterQuesting.extraLife, 1, 0));
-        addShapelessRecipe("life_half_1", "questing", new ItemStack(BetterQuesting.extraLife, 1, 1),
-                new ItemStack(BetterQuesting.extraLife, 1, 2), new ItemStack(BetterQuesting.extraLife, 1, 2));
+        addShapelessRecipe("life_half_0", "questing", new ItemStack(BetterQuesting.extraLife, 2, 1), new ItemStack(BetterQuesting.extraLife, 1, 0));
+        addShapelessRecipe("life_half_1", "questing", new ItemStack(BetterQuesting.extraLife, 1, 1), new ItemStack(BetterQuesting.extraLife, 1, 2), new ItemStack(BetterQuesting.extraLife, 1, 2));
 
-        addShapelessRecipe("life_quarter_0", "questing", new ItemStack(BetterQuesting.extraLife, 2, 2),
-                new ItemStack(BetterQuesting.extraLife, 1, 1));
+        addShapelessRecipe("life_quarter_0", "questing", new ItemStack(BetterQuesting.extraLife, 2, 2), new ItemStack(BetterQuesting.extraLife, 1, 1));
 
         setupRecipes = true;
     }

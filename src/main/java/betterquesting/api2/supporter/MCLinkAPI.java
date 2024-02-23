@@ -1,5 +1,14 @@
 package betterquesting.api2.supporter;
 
+import betterquesting.api.utils.JsonHelper;
+import betterquesting.api2.supporter.mc_link.McLinkEndpoint;
+import betterquesting.core.BetterQuesting;
+import betterquesting.core.ModReference;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -10,19 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.UUID;
 
-import javax.annotation.Nonnull;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-import betterquesting.api.utils.JsonHelper;
-import betterquesting.api2.supporter.mc_link.McLinkEndpoint;
-import betterquesting.core.BetterQuesting;
-import betterquesting.core.ModReference;
-
 public class MCLinkAPI {
-
     private static final String MCL_TOKEN = "Yo1nkbXn7uVptLoL3GpkAaT7HsU8QFGJ";
 
     private static String userAgent = null;
@@ -86,7 +83,7 @@ public class MCLinkAPI {
             }
         } while (redirect != null && con.getResponseCode() / 100 == 3); // Continue following redirects
 
-        // TODO: Flag the JSON response as an error when necessary so it can be handled as such
+        //TODO: Flag the JSON response as an error when necessary so it can be handled as such
         InputStream is = con.getErrorStream();
         if (is == null) is = con.getInputStream();
 
@@ -98,7 +95,7 @@ public class MCLinkAPI {
 
     // This is setup to match what MC Link expects the user agent metadata to contain.
     private static void setupMetadata() {
-        // noinspection ConstantConditions
+        //noinspection ConstantConditions
         String modVersion = BetterQuesting.VERSION.equalsIgnoreCase("@VERSION@") ? "DEV" : BetterQuesting.VERSION;
         String mcVersion = "1.12.2";
         String branding = "Forge";
@@ -108,8 +105,7 @@ public class MCLinkAPI {
         sb.append(" (APIv").append(1).append("; ");
         sb.append("MCv").append(mcVersion.replaceAll("[;()\n\r]", "")).append("; ");
         sb.append(branding.replaceAll("[;()\n\r]", "")).append("; ");
-        String os = System.getProperty("os.name") + ' ' + System.getProperty("os.arch") + ' ' +
-                System.getProperty("os.version");
+        String os = System.getProperty("os.name") + ' ' + System.getProperty("os.arch") + ' ' + System.getProperty("os.version");
         sb.append(os.replaceAll("[;()\n\r]", ""));
         userAgent = sb.append(')').toString();
     }

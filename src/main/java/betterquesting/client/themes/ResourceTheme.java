@@ -1,17 +1,5 @@
 package betterquesting.client.themes;
 
-import java.util.HashMap;
-import java.util.Map.Entry;
-import java.util.function.Function;
-
-import javax.annotation.Nullable;
-
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.ResourceLocation;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import betterquesting.api2.client.gui.resources.lines.IGuiLine;
@@ -19,9 +7,17 @@ import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import betterquesting.api2.client.gui.themes.GuiKey;
 import betterquesting.api2.client.gui.themes.IGuiTheme;
 import betterquesting.core.BetterQuesting;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.ResourceLocation;
+
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.function.Function;
 
 public class ResourceTheme implements IGuiTheme {
-
     private final ResourceLocation ID;
     private final String dispName;
 

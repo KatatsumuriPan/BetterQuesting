@@ -1,20 +1,18 @@
 package betterquesting.api2.client.gui.panels.content;
 
-import java.util.List;
-
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
-
 import betterquesting.api.utils.RenderUtils;
 import betterquesting.api2.client.gui.controls.IValueIO;
 import betterquesting.api2.client.gui.controls.io.ValueFuncIO;
 import betterquesting.api2.client.gui.misc.GuiRectangle;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.IGuiPanel;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.MathHelper;
+
+import java.util.List;
 
 public class PanelEntityPreview implements IGuiPanel {
-
     private final IGuiRect transform;
     private boolean enabled = true;
 
@@ -62,7 +60,8 @@ public class PanelEntityPreview implements IGuiPanel {
     }
 
     @Override
-    public void initPanel() {}
+    public void initPanel() {
+    }
 
     @Override
     public void setEnabled(boolean state) {
@@ -95,9 +94,7 @@ public class PanelEntityPreview implements IGuiPanel {
         int sizeY = bounds.getHeight();
         float scale = Math.min((sizeY / 2F) / entity.height, (sizeX / 2F) / entity.width);
 
-        RenderUtils.RenderEntity(bounds.getX() + sizeX / 2,
-                bounds.getY() + sizeY / 2 + MathHelper.ceil(entity.height * scale / 2F), (int) scale,
-                yawDriver.readValue(), pitchDriver.readValue(), entity);
+        RenderUtils.RenderEntity(bounds.getX() + sizeX / 2, bounds.getY() + sizeY / 2 + MathHelper.ceil(entity.height * scale / 2F), (int) scale, yawDriver.readValue(), pitchDriver.readValue(), entity);
 
         RenderUtils.endScissor();
         GlStateManager.popMatrix();

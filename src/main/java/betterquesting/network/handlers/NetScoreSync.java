@@ -1,22 +1,19 @@
 package betterquesting.network.handlers;
 
-import java.util.Collections;
-
-import javax.annotation.Nullable;
-
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ResourceLocation;
-
 import betterquesting.ScoreboardBQ;
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.network.QuestingPacket;
 import betterquesting.core.BetterQuesting;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
+
+import javax.annotation.Nullable;
+import java.util.Collections;
 
 public class NetScoreSync {
-
     private static final ResourceLocation ID_NAME = new ResourceLocation("bq_standard:score_sync");
 
     public static void registerHandler() {
@@ -27,8 +24,7 @@ public class NetScoreSync {
 
     public static void sendScore(@Nullable EntityPlayerMP player) {
         NBTTagCompound payload = new NBTTagCompound();
-        payload.setTag("data", ScoreboardBQ.INSTANCE.writeToNBT(new NBTTagList(),
-                player == null ? null : Collections.singletonList(QuestingAPI.getQuestingUUID(player))));
+        payload.setTag("data", ScoreboardBQ.INSTANCE.writeToNBT(new NBTTagList(), player == null ? null : Collections.singletonList(QuestingAPI.getQuestingUUID(player))));
         payload.setBoolean("merge", player != null);
 
         if (player == null) {

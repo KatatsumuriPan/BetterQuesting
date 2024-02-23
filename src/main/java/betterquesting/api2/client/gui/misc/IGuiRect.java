@@ -1,7 +1,6 @@
 package betterquesting.api2.client.gui.misc;
 
 public interface IGuiRect extends Comparable<IGuiRect> {
-
     int getX();
 
     int getY();

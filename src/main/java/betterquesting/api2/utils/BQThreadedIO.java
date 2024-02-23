@@ -18,7 +18,9 @@ public class BQThreadedIO {
 
     public void init(int threads) {
         if (exService == null || exService.isShutdown()) {
-            exService = threads == 1 ? Executors.newSingleThreadExecutor() : Executors.newFixedThreadPool(threads);
+            exService = threads == 1
+                    ? Executors.newSingleThreadExecutor()
+                    : Executors.newFixedThreadPool(threads);
         }
     }
 

@@ -1,25 +1,5 @@
 package betterquesting.client.themes;
 
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.function.Function;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.resources.IResource;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.config.Configuration;
-
-import org.apache.logging.log4j.Level;
-
-import com.google.gson.*;
-
 import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.api2.client.gui.misc.GuiPadding;
@@ -43,13 +23,28 @@ import betterquesting.client.gui2.editors.nbt.GuiItemSelection;
 import betterquesting.client.gui2.editors.nbt.GuiNbtEditor;
 import betterquesting.core.BetterQuesting;
 import betterquesting.handlers.ConfigHandler;
+import com.google.gson.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.IResource;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.config.Configuration;
+import org.apache.logging.log4j.Level;
+
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.function.Function;
 
 public class ThemeRegistry implements IThemeRegistry {
-
     public static final ThemeRegistry INSTANCE = new ThemeRegistry();
 
-    private static final IGuiTexture NULL_TEXTURE = new SlicedTexture(PresetTexture.TX_NULL,
-            new GuiRectangle(0, 0, 32, 32), new GuiPadding(8, 8, 8, 8));
+    private static final IGuiTexture NULL_TEXTURE = new SlicedTexture(PresetTexture.TX_NULL, new GuiRectangle(0, 0, 32, 32), new GuiPadding(8, 8, 8, 8));
     private static final IGuiLine NULL_LINE = new SimpleLine();
     private static final IGuiColor NULL_COLOR = new GuiColorStatic(0xFF000000);
 
@@ -74,12 +69,13 @@ public class ThemeRegistry implements IThemeRegistry {
 
         setDefaultGui(PresetGUIs.HOME, arg -> new GuiHome(arg.parent));
 
-        setDefaultGui(PresetGUIs.EDIT_NBT, arg -> {
+        setDefaultGui(PresetGUIs.EDIT_NBT, arg ->
+        {
             if (arg.value instanceof NBTTagCompound) {
-                // noinspection unchecked
+                //noinspection unchecked
                 return new GuiNbtEditor(arg.parent, (NBTTagCompound) arg.value, arg.callback);
             } else if (arg.value instanceof NBTTagList) {
-                // noinspection unchecked
+                //noinspection unchecked
                 return new GuiNbtEditor(arg.parent, (NBTTagList) arg.value, arg.callback);
             } else {
                 return null;
@@ -90,8 +86,7 @@ public class ThemeRegistry implements IThemeRegistry {
         setDefaultGui(PresetGUIs.EDIT_FLUID, arg -> new GuiFluidSelection(arg.parent, arg.value, arg.callback));
         setDefaultGui(PresetGUIs.EDIT_ENTITY, arg -> new GuiEntitySelection(arg.parent, arg.value, arg.callback));
         setDefaultGui(PresetGUIs.EDIT_TEXT, arg -> new GuiTextEditor(arg.parent, arg.value, arg.callback));
-        setDefaultGui(PresetGUIs.FILE_EXPLORE, arg -> new GuiFileBrowser(arg.parent, arg.callback, arg.root, arg.filter)
-                .allowMultiSelect(arg.multiSelect));
+        setDefaultGui(PresetGUIs.FILE_EXPLORE, arg -> new GuiFileBrowser(arg.parent, arg.callback, arg.root, arg.filter).allowMultiSelect(arg.multiSelect));
     }
 
     @Override
@@ -99,7 +94,7 @@ public class ThemeRegistry implements IThemeRegistry {
         if (theme == null || theme.getID() == null) {
             throw new NullPointerException("Cannot register null theme");
         } else if (themes.containsKey(theme.getID())) {
-            // throw new IllegalArgumentException("Cannot register duplicate theme: " + theme.getID());
+            //throw new IllegalArgumentException("Cannot register duplicate theme: " + theme.getID());
         }
 
         themes.put(theme.getID(), theme);
@@ -205,8 +200,7 @@ public class ThemeRegistry implements IThemeRegistry {
             } // Not going to log errors everytime the file isn't found
 
             for (IResource iresource : list) {
-                try (InputStreamReader isr = new InputStreamReader(iresource.getInputStream(),
-                        StandardCharsets.UTF_8)) {
+                try (InputStreamReader isr = new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8)) {
                     JsonArray jAry = GSON.fromJson(isr, JsonArray.class);
                     isr.close();
 
@@ -214,22 +208,19 @@ public class ThemeRegistry implements IThemeRegistry {
                         JsonElement je = jAry.get(i);
 
                         if (!(je instanceof JsonObject)) {
-                            BetterQuesting.logger.log(Level.WARN,
-                                    "Invalid theme entry at index " + i + " in " + iresource.getResourceLocation());
+                            BetterQuesting.logger.log(Level.WARN, "Invalid theme entry at index " + i + " in " + iresource.getResourceLocation());
                             continue;
                         }
 
                         JsonObject jThm = je.getAsJsonObject();
 
                         if (jThm.has("themeType")) {
-                            BetterQuesting.logger.warn(
-                                    "Deprecated legacy theme entry " + i + " in " + iresource.getResourceLocation());
+                            BetterQuesting.logger.warn("Deprecated legacy theme entry " + i + " in " + iresource.getResourceLocation());
                             BetterQuesting.logger.warn("Please convert this to the new format");
                             continue;
                         }
 
-                        ResourceLocation parentID = !jThm.has("themeParent") ? null :
-                                new ResourceLocation(JsonHelper.GetString(jThm, "themeParent", "minecraft:null"));
+                        ResourceLocation parentID = !jThm.has("themeParent") ? null : new ResourceLocation(JsonHelper.GetString(jThm, "themeParent", "minecraft:null"));
                         String themeName = JsonHelper.GetString(jThm, "themeName", "Unnamed Theme");
                         String idRaw = JsonHelper.GetString(jThm, "themeID", themeName);
                         idRaw = idRaw.toLowerCase().trim().replaceAll(" ", "_");
@@ -244,8 +235,7 @@ public class ThemeRegistry implements IThemeRegistry {
                         try {
                             resTheme = new ResourceTheme(parentID, themeId, themeName);
                         } catch (Exception e) {
-                            BetterQuesting.logger.error(
-                                    "Failed to load theme entry " + i + " in " + iresource.getResourceLocation(), e);
+                            BetterQuesting.logger.error("Failed to load theme entry " + i + " in " + iresource.getResourceLocation(), e);
                             continue;
                         }
 
@@ -254,8 +244,7 @@ public class ThemeRegistry implements IThemeRegistry {
                         loadedThemes.add(resTheme.getID());
                     }
                 } catch (Exception e) {
-                    BetterQuesting.logger.error("Error reading bq_themes.json from " + iresource.getResourceLocation(),
-                            e);
+                    BetterQuesting.logger.error("Error reading bq_themes.json from " + iresource.getResourceLocation(), e);
                 }
             }
         }

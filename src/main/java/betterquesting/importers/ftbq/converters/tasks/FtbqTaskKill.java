@@ -1,15 +1,13 @@
 package betterquesting.importers.ftbq.converters.tasks;
 
-import net.minecraft.init.Items;
-import net.minecraft.nbt.NBTTagCompound;
-
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.importers.ftbq.FTBQQuestImporter;
 import betterquesting.questing.tasks.TaskHunt;
+import net.minecraft.init.Items;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class FtbqTaskKill {
-
     public ITask[] convertTask(NBTTagCompound tag) {
         TaskHunt task = new TaskHunt();
 
@@ -21,6 +19,6 @@ public class FtbqTaskKill {
 
         FTBQQuestImporter.provideQuestIcon(new BigItemStack(Items.DIAMOND_SWORD));
 
-        return new ITask[] { task };
+        return new ITask[]{task};
     }
 }

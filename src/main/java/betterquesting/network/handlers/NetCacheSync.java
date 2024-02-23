@@ -1,7 +1,12 @@
 package betterquesting.network.handlers;
 
-import javax.annotation.Nonnull;
-
+import betterquesting.api.network.QuestingPacket;
+import betterquesting.api2.cache.CapabilityProviderQuestCache;
+import betterquesting.api2.cache.QuestCache;
+import betterquesting.core.BetterQuesting;
+import betterquesting.core.ModReference;
+import betterquesting.network.PacketSender;
+import betterquesting.network.PacketTypeRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -10,16 +15,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import betterquesting.api.network.QuestingPacket;
-import betterquesting.api2.cache.CapabilityProviderQuestCache;
-import betterquesting.api2.cache.QuestCache;
-import betterquesting.core.BetterQuesting;
-import betterquesting.core.ModReference;
-import betterquesting.network.PacketSender;
-import betterquesting.network.PacketTypeRegistry;
+import javax.annotation.Nonnull;
 
 public class NetCacheSync {
-
     private static final ResourceLocation ID_NAME = new ResourceLocation(ModReference.MODID, "cache_sync");
 
     public static void registerHandler() {
@@ -39,8 +37,7 @@ public class NetCacheSync {
     @SideOnly(Side.CLIENT)
     private static void onClient(NBTTagCompound message) {
         EntityPlayer player = Minecraft.getMinecraft().player;
-        QuestCache qc = player != null ? player.getCapability(CapabilityProviderQuestCache.CAP_QUEST_CACHE, null) :
-                null;
+        QuestCache qc = player != null ? player.getCapability(CapabilityProviderQuestCache.CAP_QUEST_CACHE, null) : null;
         if (qc != null) qc.deserializeNBT(message.getCompoundTag("data"));
     }
 }

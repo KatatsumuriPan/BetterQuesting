@@ -1,14 +1,13 @@
 package betterquesting.advancement;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-public class AdvListenerManager {
+import java.util.ArrayList;
+import java.util.List;
 
+public class AdvListenerManager {
     public static final AdvListenerManager INSTANCE = new AdvListenerManager();
 
     private final List<BqsAdvListener<?>> listenerList = new ArrayList<>();

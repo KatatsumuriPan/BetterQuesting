@@ -6,7 +6,6 @@ import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.util.ResourceLocation;
 
 public class PropertyTypeInteger extends PropertyTypeBase<Integer> {
-
     public PropertyTypeInteger(ResourceLocation key, Integer def) {
         super(key, def);
     }

@@ -1,19 +1,16 @@
 package betterquesting.api2.registry;
 
+import betterquesting.core.BetterQuesting;
+import net.minecraft.util.ResourceLocation;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.function.Function;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import net.minecraft.util.ResourceLocation;
-
-import betterquesting.core.BetterQuesting;
-
 public class FunctionRegistry<T, E> {
-
     private final HashMap<ResourceLocation, Function<E, T>> factories = new HashMap<>();
     private final HashMap<ResourceLocation, E> def_args = new HashMap<>();
 

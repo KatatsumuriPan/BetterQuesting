@@ -1,10 +1,5 @@
 package betterquesting.api2.client.gui.panels.bars;
 
-import java.util.List;
-
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.math.MathHelper;
-
 import betterquesting.api.utils.RenderUtils;
 import betterquesting.api2.client.gui.controls.IValueIO;
 import betterquesting.api2.client.gui.misc.GuiRectangle;
@@ -13,9 +8,12 @@ import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.math.MathHelper;
+
+import java.util.List;
 
 public class PanelHBarFill implements IBarFill {
-
     private final IGuiRect transform;
     private boolean enabled = true;
 
@@ -58,7 +56,8 @@ public class PanelHBarFill implements IBarFill {
     }
 
     @Override
-    public void initPanel() {}
+    public void initPanel() {
+    }
 
     @Override
     public void setEnabled(boolean state) {
@@ -89,17 +88,13 @@ public class PanelHBarFill implements IBarFill {
         float f = MathHelper.clamp(fillDriver.readValue(), 0F, 1F);
 
         if (this.flipBar) {
-            RenderUtils
-                    .startScissor(new GuiRectangle(bounds.getX() + (int) (bounds.getWidth() - (bounds.getWidth() * f)),
-                            bounds.getY(), (int) (bounds.getWidth() * f), bounds.getHeight(), 0));
+            RenderUtils.startScissor(new GuiRectangle(bounds.getX() + (int) (bounds.getWidth() - (bounds.getWidth() * f)), bounds.getY(), (int) (bounds.getWidth() * f), bounds.getHeight(), 0));
         } else {
-            RenderUtils.startScissor(new GuiRectangle(bounds.getX(), bounds.getY(), (int) (bounds.getWidth() * f),
-                    bounds.getHeight(), 0));
+            RenderUtils.startScissor(new GuiRectangle(bounds.getX(), bounds.getY(), (int) (bounds.getWidth() * f), bounds.getHeight(), 0));
         }
 
         if (texFill != null) {
-            texFill.drawTexture(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), 0F, partialTick,
-                    color);
+            texFill.drawTexture(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), 0F, partialTick, color);
         }
 
         RenderUtils.endScissor();

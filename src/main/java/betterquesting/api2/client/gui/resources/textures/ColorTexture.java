@@ -1,17 +1,15 @@
 package betterquesting.api2.client.gui.resources.textures;
 
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
-
 import betterquesting.api.utils.RenderUtils;
 import betterquesting.api2.client.gui.misc.GuiPadding;
 import betterquesting.api2.client.gui.misc.GuiRectangle;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ResourceLocation;
 
 public class ColorTexture implements IGuiTexture {
-
     private final IGuiColor baseColor;
     private final GuiRectangle rect = new GuiRectangle(0, 0, 0, 0);
     private final GuiPadding pad;

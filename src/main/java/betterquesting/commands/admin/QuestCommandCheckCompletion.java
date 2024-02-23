@@ -1,11 +1,11 @@
 package betterquesting.commands.admin;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import javax.annotation.Nonnull;
-
+import betterquesting.api.properties.NativeProps;
+import betterquesting.api.questing.IQuest;
+import betterquesting.api2.storage.DBEntry;
+import betterquesting.commands.QuestCommandBase;
+import betterquesting.questing.QuestDatabase;
+import betterquesting.storage.NameCache;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -15,12 +15,10 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 
-import betterquesting.api.properties.NativeProps;
-import betterquesting.api.questing.IQuest;
-import betterquesting.api2.storage.DBEntry;
-import betterquesting.commands.QuestCommandBase;
-import betterquesting.questing.QuestDatabase;
-import betterquesting.storage.NameCache;
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class QuestCommandCheckCompletion extends QuestCommandBase {
 
@@ -54,8 +52,7 @@ public class QuestCommandCheckCompletion extends QuestCommandBase {
         ArrayList<String> list = new ArrayList<>();
 
         if (args.length == 2) {
-            return CommandBase.getListOfStringsMatchingLastWord(args,
-                    NameCache.INSTANCE.getAllNames().toArray(new String[0]));
+            return CommandBase.getListOfStringsMatchingLastWord(args, NameCache.INSTANCE.getAllNames().toArray(new String[0]));
         } else if (args.length == 3) {
             for (DBEntry<IQuest> i : QuestDatabase.INSTANCE.getEntries()) {
                 list.add(Integer.toString(i.getID()));
@@ -71,15 +68,13 @@ public class QuestCommandCheckCompletion extends QuestCommandBase {
     }
 
     @Override
-    public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender,
-                           @Nonnull String[] args) throws CommandException {
+    public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, @Nonnull String[] args) throws CommandException {
         UUID uuid;
 
         uuid = this.findPlayerID(server, sender, args[1]);
 
         if (uuid == null) {
-            sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.check.no_player_match")
-                    .setStyle(new Style().setColor(TextFormatting.RED)));
+            sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.check.no_player_match").setStyle(new Style().setColor(TextFormatting.RED)));
             throw this.getException(command);
         }
 
@@ -88,12 +83,10 @@ public class QuestCommandCheckCompletion extends QuestCommandBase {
         int id = Integer.parseInt(args[2].trim());
         IQuest quest = QuestDatabase.INSTANCE.getValue(id);
         if (quest == null) {
-            sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.check.no_id_match")
-                    .setStyle(new Style().setColor(TextFormatting.RED)));
+            sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.check.no_id_match").setStyle(new Style().setColor(TextFormatting.RED)));
             throw getException(command);
         }
-        sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.check." + quest.isComplete(uuid), pName,
-                new TextComponentTranslation(quest.getProperty(NativeProps.NAME))));
+        sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.check." + quest.isComplete(uuid), pName, new TextComponentTranslation(quest.getProperty(NativeProps.NAME))));
     }
 
     @Override

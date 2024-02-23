@@ -1,5 +1,6 @@
 package betterquesting.blocks;
 
+import betterquesting.core.BetterQuesting;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -12,10 +13,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import betterquesting.core.BetterQuesting;
-
 public class BlockSubmitStation extends BlockContainer {
-
     public BlockSubmitStation() {
         super(Material.WOOD);
         this.setHardness(1);
@@ -40,8 +38,7 @@ public class BlockSubmitStation extends BlockContainer {
      * Called upon block activation (right click on the block.)
      */
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
-                                    EnumFacing heldItem, float side, float hitX, float hitY) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing heldItem, float side, float hitX, float hitY) {
         if (!world.isRemote) {
             player.openGui(BetterQuesting.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
         }

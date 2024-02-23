@@ -1,14 +1,5 @@
 package betterquesting.commands.bqs;
 
-import java.util.*;
-import java.util.Map.Entry;
-
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.DisplayInfo;
-import net.minecraft.advancements.FrameType;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
-
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.enums.EnumQuestVisibility;
@@ -19,9 +10,16 @@ import betterquesting.api.utils.BigItemStack;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.storage.IDatabaseNBT;
 import betterquesting.questing.tasks.TaskAdvancement;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.DisplayInfo;
+import net.minecraft.advancements.FrameType;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.MinecraftServer;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 public class AdvancementDump {
-
     public static final AdvancementDump INSTANCE = new AdvancementDump();
 
     private HashMap<Advancement, DBEntry<IQuest>> idMap = new HashMap<>();
@@ -52,10 +50,8 @@ public class AdvancementDump {
             quest.setProperty(NativeProps.NAME, disp.getTitle().getFormattedText());
             quest.setProperty(NativeProps.DESC, disp.getDescription().getFormattedText());
             quest.setProperty(NativeProps.ICON, new BigItemStack(disp.getIcon()));
-            quest.setProperty(NativeProps.SILENT, true); // There's already toast notifications. Double stacking would
-                                                         // just be annoying
-            quest.setProperty(NativeProps.VISIBILITY, (disp.isHidden() || adv.getParent() == null) ?
-                    EnumQuestVisibility.COMPLETED : EnumQuestVisibility.UNLOCKED);
+            quest.setProperty(NativeProps.SILENT, true); // There's already toast notifications. Double stacking would just be annoying
+            quest.setProperty(NativeProps.VISIBILITY, (disp.isHidden() || adv.getParent() == null) ? EnumQuestVisibility.COMPLETED : EnumQuestVisibility.UNLOCKED);
             quest.setProperty(NativeProps.MAIN, disp.getFrame() == FrameType.GOAL);
 
             TaskAdvancement task = new TaskAdvancement();

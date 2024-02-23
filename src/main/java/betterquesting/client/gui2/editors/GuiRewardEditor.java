@@ -1,17 +1,5 @@
 package betterquesting.client.gui2.editors;
 
-import java.util.ArrayDeque;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.text.TextFormatting;
-
-import org.lwjgl.util.vector.Vector4f;
-
 import betterquesting.api.client.gui.misc.INeedsRefresh;
 import betterquesting.api.client.gui.misc.IVolatileScreen;
 import betterquesting.api.questing.IQuest;
@@ -43,9 +31,18 @@ import betterquesting.client.gui2.editors.nbt.GuiNbtEditor;
 import betterquesting.network.handlers.NetQuestEdit;
 import betterquesting.questing.QuestDatabase;
 import betterquesting.questing.rewards.RewardRegistry;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.text.TextFormatting;
+import org.lwjgl.util.vector.Vector4f;
+
+import java.util.ArrayDeque;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 
 public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener, IVolatileScreen, INeedsRefresh {
-
     private CanvasScrolling qrList;
 
     private IQuest quest;
@@ -82,22 +79,16 @@ public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener,
         PEventBroadcaster.INSTANCE.register(this, PEventButton.class);
 
         // Background panel
-        CanvasTextured cvBackground = new CanvasTextured(
-                new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0),
-                PresetTexture.PANEL_MAIN.getTexture());
+        CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0), PresetTexture.PANEL_MAIN.getTexture());
         this.addPanel(cvBackground);
 
-        PanelTextBox panTxt = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0),
-                QuestTranslation.translate("betterquesting.title.edit_rewards")).setAlignment(1);
+        PanelTextBox panTxt = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0), QuestTranslation.translate("betterquesting.title.edit_rewards")).setAlignment(1);
         panTxt.setColor(PresetColor.TEXT_HEADER.getColor());
         cvBackground.addPanel(panTxt);
 
-        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), 0,
-                QuestTranslation.translate("gui.back")));
+        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), 0, QuestTranslation.translate("gui.back")));
 
-        CanvasSearch<IFactoryData<IReward, NBTTagCompound>, IFactoryData<IReward, NBTTagCompound>> cvRegSearch = new CanvasSearch<IFactoryData<IReward, NBTTagCompound>, IFactoryData<IReward, NBTTagCompound>>(
-                (new GuiTransform(GuiAlign.HALF_RIGHT, new GuiPadding(8, 48, 24, 32), 0))) {
-
+        CanvasSearch<IFactoryData<IReward, NBTTagCompound>, IFactoryData<IReward, NBTTagCompound>> cvRegSearch = new CanvasSearch<IFactoryData<IReward, NBTTagCompound>, IFactoryData<IReward, NBTTagCompound>>((new GuiTransform(GuiAlign.HALF_RIGHT, new GuiPadding(8, 48, 24, 32), 0))) {
             @Override
             protected Iterator<IFactoryData<IReward, NBTTagCompound>> getIterator() {
                 List<IFactoryData<IReward, NBTTagCompound>> list = RewardRegistry.INSTANCE.getAll();
@@ -106,28 +97,23 @@ public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener,
             }
 
             @Override
-            protected void queryMatches(IFactoryData<IReward, NBTTagCompound> value, String query,
-                                        ArrayDeque<IFactoryData<IReward, NBTTagCompound>> results) {
+            protected void queryMatches(IFactoryData<IReward, NBTTagCompound> value, String query, ArrayDeque<IFactoryData<IReward, NBTTagCompound>> results) {
                 if (value.getRegistryName().toString().toLowerCase().contains(query.toLowerCase())) results.add(value);
             }
 
             @Override
             protected boolean addResult(IFactoryData<IReward, NBTTagCompound> entry, int index, int cachedWidth) {
-                this.addPanel(new PanelButtonStorage<>(new GuiRectangle(0, index * 16, cachedWidth, 16, 0), 1,
-                        entry.getRegistryName().toString(), entry));
+                this.addPanel(new PanelButtonStorage<>(new GuiRectangle(0, index * 16, cachedWidth, 16, 0), 1, entry.getRegistryName().toString(), entry));
                 return true;
             }
         };
         cvBackground.addPanel(cvRegSearch);
 
-        PanelVScrollBar scReg = new PanelVScrollBar(
-                new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(-24, 48, 16, 32), 0));
+        PanelVScrollBar scReg = new PanelVScrollBar(new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(-24, 48, 16, 32), 0));
         cvBackground.addPanel(scReg);
         cvRegSearch.setScrollDriverY(scReg);
 
-        PanelTextField<String> tfSearch = new PanelTextField<>(
-                new GuiTransform(new Vector4f(0.5F, 0F, 1F, 0F), new GuiPadding(8, 32, 16, -48), 0), "",
-                FieldFilterString.INSTANCE);
+        PanelTextField<String> tfSearch = new PanelTextField<>(new GuiTransform(new Vector4f(0.5F, 0F, 1F, 0F), new GuiPadding(8, 32, 16, -48), 0), "", FieldFilterString.INSTANCE);
         tfSearch.setCallback(cvRegSearch::setSearchFilter);
         tfSearch.setWatermark("Search...");
         cvBackground.addPanel(tfSearch);
@@ -135,8 +121,7 @@ public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener,
         qrList = new CanvasScrolling(new GuiTransform(GuiAlign.HALF_LEFT, new GuiPadding(16, 32, 16, 32), 0));
         cvBackground.addPanel(qrList);
 
-        PanelVScrollBar scRew = new PanelVScrollBar(
-                new GuiTransform(new Vector4f(0.5F, 0F, 0.5F, 1F), new GuiPadding(-16, 32, 8, 32), 0));
+        PanelVScrollBar scRew = new PanelVScrollBar(new GuiTransform(new Vector4f(0.5F, 0F, 0.5F, 1F), new GuiPadding(-16, 32, 8, 32), 0));
         cvBackground.addPanel(scRew);
         qrList.setScrollDriverY(scRew);
 
@@ -146,8 +131,7 @@ public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener,
         ls0.setParent(cvBackground.getTransform());
         IGuiRect le0 = new GuiTransform(GuiAlign.BOTTOM_CENTER, 0, -32, 0, 0, 0);
         le0.setParent(cvBackground.getTransform());
-        PanelLine paLine0 = new PanelLine(ls0, le0, PresetLine.GUI_DIVIDER.getLine(), 1,
-                PresetColor.GUI_DIVIDER.getColor(), 1);
+        PanelLine paLine0 = new PanelLine(ls0, le0, PresetLine.GUI_DIVIDER.getLine(), 1, PresetColor.GUI_DIVIDER.getColor(), 1);
         cvBackground.addPanel(paLine0);
 
         refreshRewards();
@@ -169,8 +153,7 @@ public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener,
             mc.displayGuiScreen(this.parent);
         } else if (btn.getButtonID() == 1 && btn instanceof PanelButtonStorage) // Add
         {
-            IFactoryData<IReward, NBTTagCompound> fact = ((PanelButtonStorage<IFactoryData<IReward, NBTTagCompound>>) btn)
-                    .getStoredValue();
+            IFactoryData<IReward, NBTTagCompound> fact = ((PanelButtonStorage<IFactoryData<IReward, NBTTagCompound>>) btn).getStoredValue();
             quest.getRewards().add(quest.getRewards().nextID(), fact.createNew());
 
             SendChanges();
@@ -205,10 +188,8 @@ public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener,
 
         for (int i = 0; i < dbRew.size(); i++) {
             IReward reward = dbRew.get(i).getValue();
-            qrList.addPanel(new PanelButtonStorage<>(new GuiRectangle(0, i * 16, w - 16, 16, 0), 3,
-                    QuestTranslation.translate(reward.getUnlocalisedName()), reward));
-            qrList.addPanel(new PanelButtonStorage<>(new GuiRectangle(w - 16, i * 16, 16, 16, 0), 2,
-                    "" + TextFormatting.RED + TextFormatting.BOLD + "x", reward));
+            qrList.addPanel(new PanelButtonStorage<>(new GuiRectangle(0, i * 16, w - 16, 16, 0), 3, QuestTranslation.translate(reward.getUnlocalisedName()), reward));
+            qrList.addPanel(new PanelButtonStorage<>(new GuiRectangle(w - 16, i * 16, 16, 16, 0), 2, "" + TextFormatting.RED + TextFormatting.BOLD + "x", reward));
         }
     }
 

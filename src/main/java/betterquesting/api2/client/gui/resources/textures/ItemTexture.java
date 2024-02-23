@@ -1,9 +1,5 @@
 package betterquesting.api2.client.gui.resources.textures;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
-
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.api.utils.RenderUtils;
 import betterquesting.api2.client.gui.misc.GuiRectangle;
@@ -11,10 +7,12 @@ import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ResourceLocation;
 
 // Wrapper to allow embedding items into panels as IGuiTextures
 public class ItemTexture implements IGuiTexture {
-
     private static final IGuiColor defColor = new GuiColorStatic(255, 255, 255, 255);
 
     private final BigItemStack stack;
@@ -72,8 +70,7 @@ public class ItemTexture implements IGuiTexture {
         GlStateManager.scale(sx, sy, 1F);
         color.applyGlColor();
 
-        RenderUtils.RenderItemStack(Minecraft.getMinecraft(), stack.getBaseStack(), 0, 0, zDepth,
-                (showCount && stack.stackSize > 1) ? ("" + stack.stackSize) : "", 0xFFFFFFFF);
+        RenderUtils.RenderItemStack(Minecraft.getMinecraft(), stack.getBaseStack(), 0, 0, zDepth, (showCount && stack.stackSize > 1) ? ("" + stack.stackSize) : "", 0xFFFFFFFF);
 
         GlStateManager.popMatrix();
     }

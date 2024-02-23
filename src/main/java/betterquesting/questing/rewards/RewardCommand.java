@@ -1,10 +1,15 @@
 package betterquesting.questing.rewards;
 
-import java.util.Arrays;
-import java.util.UUID;
-
-import javax.annotation.Nonnull;
-
+import betterquesting.AdminExecute;
+import betterquesting.api.api.QuestingAPI;
+import betterquesting.api.questing.IQuest;
+import betterquesting.api.questing.rewards.IReward;
+import betterquesting.api2.client.gui.misc.IGuiRect;
+import betterquesting.api2.client.gui.panels.IGuiPanel;
+import betterquesting.api2.storage.DBEntry;
+import betterquesting.client.gui2.rewards.PanelRewardCommand;
+import betterquesting.questing.rewards.factory.FactoryRewardCommand;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.command.FunctionObject;
 import net.minecraft.command.ICommandSender;
@@ -18,19 +23,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import betterquesting.AdminExecute;
-import betterquesting.api.api.QuestingAPI;
-import betterquesting.api.questing.IQuest;
-import betterquesting.api.questing.rewards.IReward;
-import betterquesting.api2.client.gui.misc.IGuiRect;
-import betterquesting.api2.client.gui.panels.IGuiPanel;
-import betterquesting.api2.storage.DBEntry;
-import betterquesting.client.gui2.rewards.PanelRewardCommand;
-import betterquesting.questing.rewards.factory.FactoryRewardCommand;
-import io.netty.buffer.ByteBuf;
+import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.UUID;
 
 public class RewardCommand implements IReward {
-
     public String command = "#Script Comment\nsay Running reward script...\nsay @s Claimed a reward";
     public String title = "bq_standard.reward.command";
     public String desc = "Run a command script";
@@ -60,8 +57,7 @@ public class RewardCommand implements IReward {
 
         UUID playerID = QuestingAPI.getQuestingUUID(player);
 
-        // NOTE: These replacements are only kept for legacy reasons.
-        // Entity selectors are much more suitable and more powerful
+        // NOTE: These replacements are only kept for legacy reasons. Entity selectors are much more suitable and more powerful
         String tmp = command.replaceAll("VAR_NAME", player.getName());
         String finCom = tmp.replaceAll("VAR_UUID", playerID.toString());
         String[] comAry = finCom.split("\n");
@@ -114,7 +110,6 @@ public class RewardCommand implements IReward {
     }
 
     public static class RewardCommandSender extends CommandBlockBaseLogic {
-
         private final Entity entity;
 
         private RewardCommandSender(@Nonnull Entity entity) {
@@ -145,7 +140,8 @@ public class RewardCommand implements IReward {
         }
 
         @Override
-        public void updateCommand() {}
+        public void updateCommand() {
+        }
 
         @Override
         public int getCommandBlockType() {
@@ -153,7 +149,8 @@ public class RewardCommand implements IReward {
         }
 
         @Override
-        public void fillInInfo(@Nonnull ByteBuf p_145757_1_) {}
+        public void fillInInfo(@Nonnull ByteBuf p_145757_1_) {
+        }
 
         @Nonnull
         @Override

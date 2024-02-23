@@ -1,15 +1,5 @@
 package betterquesting.api2.client.gui.panels.content;
 
-import java.util.List;
-import java.util.UUID;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
-
-import com.mojang.authlib.GameProfile;
-
 import betterquesting.api.utils.RenderUtils;
 import betterquesting.api2.client.gui.controls.IValueIO;
 import betterquesting.api2.client.gui.controls.io.ValueFuncIO;
@@ -17,9 +7,16 @@ import betterquesting.api2.client.gui.misc.GuiRectangle;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.IGuiPanel;
 import betterquesting.api2.utils.EntityPlayerPreview;
+import com.mojang.authlib.GameProfile;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ResourceLocation;
+
+import java.util.List;
+import java.util.UUID;
 
 public class PanelPlayerPortrait implements IGuiPanel {
-
     private final IGuiRect transform;
     private boolean enabled = true;
 
@@ -76,7 +73,8 @@ public class PanelPlayerPortrait implements IGuiPanel {
     }
 
     @Override
-    public void initPanel() {}
+    public void initPanel() {
+    }
 
     @Override
     public void setEnabled(boolean state) {
@@ -101,9 +99,7 @@ public class PanelPlayerPortrait implements IGuiPanel {
 
         GlStateManager.color(1F, 1F, 1F, 1F);
         int scale = Math.min(bounds.getWidth(), bounds.getHeight());
-        RenderUtils.RenderEntity(bounds.getX() + bounds.getWidth() / 2,
-                bounds.getY() + bounds.getHeight() / 2 + (int) (scale * 1.5F), zDepth, scale, yawDriver.readValue(),
-                pitchDriver.readValue(), player);
+        RenderUtils.RenderEntity(bounds.getX() + bounds.getWidth() / 2, bounds.getY() + bounds.getHeight() / 2 + (int) (scale * 1.5F), zDepth, scale, yawDriver.readValue(), pitchDriver.readValue(), player);
 
         RenderUtils.endScissor();
         GlStateManager.popMatrix();

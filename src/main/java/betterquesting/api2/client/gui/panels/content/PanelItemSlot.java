@@ -1,18 +1,5 @@
 package betterquesting.api2.client.gui.panels.content;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.util.ITooltipFlag.TooltipFlags;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.common.Optional.Method;
-import net.minecraftforge.oredict.OreDictionary;
-
-import org.lwjgl.input.Keyboard;
-
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.api2.client.gui.controls.PanelButtonStorage;
 import betterquesting.api2.client.gui.misc.GuiPadding;
@@ -28,9 +15,19 @@ import mezz.jei.Internal;
 import mezz.jei.api.recipe.IFocus.Mode;
 import mezz.jei.config.KeyBindings;
 import mezz.jei.gui.Focus;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.util.ITooltipFlag.TooltipFlags;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.common.Optional.Method;
+import net.minecraftforge.oredict.OreDictionary;
+import org.lwjgl.input.Keyboard;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PanelItemSlot extends PanelButtonStorage<BigItemStack> {
-
     private final boolean showCount;
     private final boolean oreDict;
 
@@ -49,9 +46,7 @@ public class PanelItemSlot extends PanelButtonStorage<BigItemStack> {
         this.showCount = showCount;
         this.oreDict = oreDict;
 
-        this.setTextures(PresetTexture.ITEM_FRAME.getTexture(), PresetTexture.ITEM_FRAME.getTexture(),
-                new LayeredTexture(PresetTexture.ITEM_FRAME.getTexture(),
-                        new ColorTexture(PresetColor.ITEM_HIGHLIGHT.getColor(), new GuiPadding(1, 1, 1, 1))));
+        this.setTextures(PresetTexture.ITEM_FRAME.getTexture(), PresetTexture.ITEM_FRAME.getTexture(), new LayeredTexture(PresetTexture.ITEM_FRAME.getTexture(), new ColorTexture(PresetColor.ITEM_HIGHLIGHT.getColor(), new GuiPadding(1, 1, 1, 1))));
         this.setStoredValue(value); // Need to run this again because of the instatiation order of showCount
     }
 
@@ -61,12 +56,8 @@ public class PanelItemSlot extends PanelButtonStorage<BigItemStack> {
 
         if (value != null) {
             Minecraft mc = Minecraft.getMinecraft();
-            this.setIcon(
-                    oreDict || value.getBaseStack().getItemDamage() == OreDictionary.WILDCARD_VALUE ?
-                            new OreDictTexture(1F, value, showCount, true) : new ItemTexture(value, showCount, true),
-                    1);
-            this.setTooltip(value.getBaseStack().getTooltip(mc.player,
-                    mc.gameSettings.advancedItemTooltips ? TooltipFlags.ADVANCED : TooltipFlags.NORMAL));
+            this.setIcon(oreDict || value.getBaseStack().getItemDamage() == OreDictionary.WILDCARD_VALUE ? new OreDictTexture(1F, value, showCount, true) : new ItemTexture(value, showCount, true), 1);
+            this.setTooltip(value.getBaseStack().getTooltip(mc.player, mc.gameSettings.advancedItemTooltips ? TooltipFlags.ADVANCED : TooltipFlags.NORMAL));
         } else {
             this.setIcon(null);
             this.setTooltip(null);
@@ -87,8 +78,7 @@ public class PanelItemSlot extends PanelButtonStorage<BigItemStack> {
             }
 
             Minecraft mc = Minecraft.getMinecraft();
-            return ttStack.getBaseStack().getTooltip(mc.player,
-                    mc.gameSettings.advancedItemTooltips ? TooltipFlags.ADVANCED : TooltipFlags.NORMAL);
+            return ttStack.getBaseStack().getTooltip(mc.player, mc.gameSettings.advancedItemTooltips ? TooltipFlags.ADVANCED : TooltipFlags.NORMAL);
         }
 
         return null;
@@ -147,8 +137,7 @@ public class PanelItemSlot extends PanelButtonStorage<BigItemStack> {
     @Override
     public void onRightButtonClick() {
         if (getCallback() != null) getCallback().setValue(getStoredValue());
-        else if (BetterQuesting.hasJEI && getStoredValue() != null)
-            lookupRecipe(getStoredValue().getBaseStack(), false);
+        else if (BetterQuesting.hasJEI && getStoredValue() != null) lookupRecipe(getStoredValue().getBaseStack(), false);
     }
 
     @Override

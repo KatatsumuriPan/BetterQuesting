@@ -1,7 +1,10 @@
 package betterquesting.commands.bqs;
 
-import java.io.File;
-
+import betterquesting.api.utils.JsonHelper;
+import betterquesting.api.utils.NBTConverter;
+import betterquesting.network.handlers.NetLootSync;
+import betterquesting.questing.rewards.loot.LootRegistry;
+import com.google.gson.JsonObject;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -11,15 +14,9 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 
-import com.google.gson.JsonObject;
-
-import betterquesting.api.utils.JsonHelper;
-import betterquesting.api.utils.NBTConverter;
-import betterquesting.network.handlers.NetLootSync;
-import betterquesting.questing.rewards.loot.LootRegistry;
+import java.io.File;
 
 public class BQS_Commands extends CommandBase {
-
     @Override
     public String getName() {
         return "bqs_loot";
@@ -45,8 +42,7 @@ public class BQS_Commands extends CommandBase {
             if (args[1].equalsIgnoreCase("save")) {
                 NBTTagCompound jsonQ = new NBTTagCompound();
                 LootRegistry.INSTANCE.writeToNBT(jsonQ, null);
-                JsonHelper.WriteToFile(new File(server.getFile("config/betterquesting/"), "DefaultLoot.json"),
-                        NBTConverter.NBTtoJSON_Compound(jsonQ, new JsonObject(), true));
+                JsonHelper.WriteToFile(new File(server.getFile("config/betterquesting/"), "DefaultLoot.json"), NBTConverter.NBTtoJSON_Compound(jsonQ, new JsonObject(), true));
                 sender.sendMessage(new TextComponentString("Loot database set as global default"));
             } else if (args[1].equalsIgnoreCase("load")) {
                 File f1 = new File("config/betterquesting/DefaultLoot.json");

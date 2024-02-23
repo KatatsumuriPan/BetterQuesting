@@ -1,10 +1,5 @@
 package betterquesting.api.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,12 +8,15 @@ import net.minecraft.util.StringUtils;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreIngredient;
 
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Purpose built container class for holding ItemStacks larger than 127. <br>
  * <b>For storage purposes only!
  */
 public class BigItemStack {
-
     private static final OreIngredient NO_ORE = new OreIngredient("");
     private final ItemStack baseStack;
     public int stackSize;
@@ -57,8 +55,7 @@ public class BigItemStack {
     }
 
     /**
-     * @return ItemStack this BigItemStack is based on. Changing the base stack size does NOT affect the BigItemStack's
-     *         size
+     * @return ItemStack this BigItemStack is based on. Changing the base stack size does NOT affect the BigItemStack's size
      */
     public ItemStack getBaseStack() {
         return baseStack;
@@ -106,8 +103,7 @@ public class BigItemStack {
     }
 
     /**
-     * Breaks down this big stack into smaller ItemStacks for Minecraft to use (Individual stack size is dependent on
-     * the item)
+     * Breaks down this big stack into smaller ItemStacks for Minecraft to use (Individual stack size is dependent on the item)
      */
     public List<ItemStack> getCombinedStacks() {
         List<ItemStack> list = new ArrayList<>();
@@ -135,8 +131,7 @@ public class BigItemStack {
     @Override
     public boolean equals(Object stack) {
         if (stack instanceof ItemStack) {
-            return baseStack.isItemEqual((ItemStack) stack) &&
-                    ItemStack.areItemStackTagsEqual(baseStack, (ItemStack) stack);
+            return baseStack.isItemEqual((ItemStack) stack) && ItemStack.areItemStackTagsEqual(baseStack, (ItemStack) stack);
         } else {
             return super.equals(stack);
         }

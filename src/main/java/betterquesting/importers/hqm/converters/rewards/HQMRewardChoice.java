@@ -1,15 +1,13 @@
 package betterquesting.importers.hqm.converters.rewards;
 
+import betterquesting.api.questing.rewards.IReward;
+import betterquesting.importers.hqm.HQMUtilities;
+import betterquesting.questing.rewards.RewardChoice;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import betterquesting.api.questing.rewards.IReward;
-import betterquesting.importers.hqm.HQMUtilities;
-import betterquesting.questing.rewards.RewardChoice;
-
 public class HQMRewardChoice {
-
     public IReward[] convertReward(JsonElement json) {
         if (!(json instanceof JsonArray)) return null;
 
@@ -19,6 +17,7 @@ public class HQMRewardChoice {
             reward.choices.add(HQMUtilities.HQMStackT1(je.getAsJsonObject()));
         }
 
-        return new IReward[] { reward };
+        return new IReward[]{reward};
     }
+
 }

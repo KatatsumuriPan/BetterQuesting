@@ -1,18 +1,16 @@
 package betterquesting.network;
 
-import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
-
 import betterquesting.api.network.IPacketSender;
 import betterquesting.api.network.QuestingPacket;
 import betterquesting.api2.utils.BQThreadedIO;
 import betterquesting.core.BetterQuesting;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+
+import java.util.List;
 
 public class PacketSender implements IPacketSender {
-
     public static final PacketSender INSTANCE = new PacketSender();
 
     @Override

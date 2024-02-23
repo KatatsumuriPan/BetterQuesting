@@ -1,18 +1,5 @@
 package betterquesting.network.handlers;
 
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Tuple;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.apache.logging.log4j.Level;
-
 import betterquesting.api.network.QuestingPacket;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.storage.DBEntry;
@@ -21,9 +8,18 @@ import betterquesting.core.ModReference;
 import betterquesting.network.PacketSender;
 import betterquesting.network.PacketTypeRegistry;
 import betterquesting.questing.QuestDatabase;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Tuple;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.logging.log4j.Level;
+
+import javax.annotation.Nonnull;
+import java.util.List;
 
 public class NetQuestAction {
-
     private static final ResourceLocation ID_NAME = new ResourceLocation(ModReference.MODID, "quest_action");
 
     public static void registerHandler() {
@@ -61,8 +57,7 @@ public class NetQuestAction {
                 break;
             }
             default: {
-                BetterQuesting.logger.log(Level.ERROR,
-                        "Invalid quest user action '" + action + "'. Full payload:\n" + message.getFirst().toString());
+                BetterQuesting.logger.log(Level.ERROR, "Invalid quest user action '" + action + "'. Full payload:\n" + message.getFirst().toString());
             }
         }
     }

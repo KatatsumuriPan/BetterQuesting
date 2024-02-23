@@ -1,5 +1,11 @@
 package betterquesting.importers.ftbq;
 
+import betterquesting.core.BetterQuesting;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTException;
+import net.minecraft.nbt.NBTTagCompound;
+
+import javax.annotation.Nullable;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,16 +15,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.annotation.Nullable;
-
-import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.nbt.NBTException;
-import net.minecraft.nbt.NBTTagCompound;
-
-import betterquesting.core.BetterQuesting;
 
 public class SNBTReader {
-
     private static final Pattern BYTE_ARRAY_MATCHER = Pattern.compile("\\[B;([\\s\\d,b]*)]", Pattern.CASE_INSENSITIVE);
     private static final Pattern LONG_ARRAY_MATCHER = Pattern.compile("\\[L;([\\s\\d,l]*)]", Pattern.CASE_INSENSITIVE);
 
@@ -28,8 +26,7 @@ public class SNBTReader {
             return null;
 
         String trimmedText;
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
@@ -102,4 +99,6 @@ public class SNBTReader {
         matcher.appendTail(sb);
         return sb.toString();
     }
+
+
 }

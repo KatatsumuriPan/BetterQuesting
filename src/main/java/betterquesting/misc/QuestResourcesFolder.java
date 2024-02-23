@@ -1,5 +1,17 @@
 package betterquesting.misc;
 
+import betterquesting.core.BetterQuesting;
+import betterquesting.core.ModReference;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureUtil;
+import net.minecraft.client.resources.IResourcePack;
+import net.minecraft.client.resources.ResourcePackFileNotFoundException;
+import net.minecraft.client.resources.data.IMetadataSection;
+import net.minecraft.client.resources.data.MetadataSerializer;
+import net.minecraft.util.ResourceLocation;
+import org.apache.logging.log4j.Level;
+
+import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,23 +21,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureUtil;
-import net.minecraft.client.resources.IResourcePack;
-import net.minecraft.client.resources.ResourcePackFileNotFoundException;
-import net.minecraft.client.resources.data.IMetadataSection;
-import net.minecraft.client.resources.data.MetadataSerializer;
-import net.minecraft.util.ResourceLocation;
-
-import org.apache.logging.log4j.Level;
-
-import betterquesting.core.BetterQuesting;
-import betterquesting.core.ModReference;
-
 public class QuestResourcesFolder implements IResourcePack {
-
     private static final ResourceLocation UNKNOWN_PACK_TEXTURE = new ResourceLocation("textures/misc/unknown_pack.png");
 
     private static final File rootFolder = new File("config/betterquesting/resources/");
@@ -85,8 +81,7 @@ public class QuestResourcesFolder implements IResourcePack {
         if (bufferedImage != null) return bufferedImage;
 
         try {
-            bufferedImage = TextureUtil.readBufferedImage(
-                    Minecraft.getMinecraft().getResourceManager().getResource(UNKNOWN_PACK_TEXTURE).getInputStream());
+            bufferedImage = TextureUtil.readBufferedImage(Minecraft.getMinecraft().getResourceManager().getResource(UNKNOWN_PACK_TEXTURE).getInputStream());
         } catch (IOException ioexception) {
             throw new Error("Couldn't bind resource pack icon", ioexception);
         }
@@ -101,7 +96,6 @@ public class QuestResourcesFolder implements IResourcePack {
     }
 
     private void logNameNotLowercase(String name, String file) {
-        BetterQuesting.logger.log(Level.WARN, "ResourcePack: ignored non-lowercase namespace: {} in {}",
-                new Object[] { name, file });
+        BetterQuesting.logger.log(Level.WARN, "ResourcePack: ignored non-lowercase namespace: {} in {}", new Object[]{name, file});
     }
 }

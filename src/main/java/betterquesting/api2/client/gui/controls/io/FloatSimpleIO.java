@@ -1,12 +1,10 @@
 package betterquesting.api2.client.gui.controls.io;
 
-import net.minecraft.util.math.MathHelper;
-
 import betterquesting.api.utils.RenderUtils;
 import betterquesting.api2.client.gui.controls.IValueIO;
+import net.minecraft.util.math.MathHelper;
 
 public class FloatSimpleIO implements IValueIO<Float> {
-
     private boolean lerp = false;
     private float lerpSpd = 0.02F;
 

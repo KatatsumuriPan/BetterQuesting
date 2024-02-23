@@ -1,24 +1,21 @@
 package betterquesting.questing.tasks;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import javax.annotation.Nullable;
-
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ResourceLocation;
-
 import betterquesting.api.placeholders.tasks.FactoryTaskPlaceholder;
 import betterquesting.api.placeholders.tasks.TaskPlaceholder;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.storage.IDatabaseNBT;
 import betterquesting.api2.storage.SimpleDatabase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
+
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class TaskStorage extends SimpleDatabase<ITask> implements IDatabaseNBT<ITask, NBTTagList, NBTTagList> {
-
     @Override
     public NBTTagList writeToNBT(NBTTagList json, @Nullable List<Integer> subset) {
         for (DBEntry<ITask> entry : getEntries()) {
@@ -102,9 +99,8 @@ public class TaskStorage extends SimpleDatabase<ITask> implements IDatabaseNBT<I
             } else if (task != null) {
                 if (task.getFactoryID().equals(loc)) {
                     task.readProgressFromNBT(jsonTask, merge);
-                } else if (FactoryTaskPlaceholder.INSTANCE.getRegistryName().equals(loc)) {
-                    // Restored placeholder progress
-
+                } else if (FactoryTaskPlaceholder.INSTANCE.getRegistryName().equals(loc)) // Restored placeholder progress
+                {
                     task.readProgressFromNBT(jsonTask.getCompoundTag("orig_prog"), merge);
                 }
             }

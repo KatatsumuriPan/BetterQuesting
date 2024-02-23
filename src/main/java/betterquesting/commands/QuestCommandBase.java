@@ -1,9 +1,7 @@
 package betterquesting.commands;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-
+import betterquesting.api.api.QuestingAPI;
+import betterquesting.storage.NameCache;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -13,11 +11,11 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 
-import betterquesting.api.api.QuestingAPI;
-import betterquesting.storage.NameCache;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 public abstract class QuestCommandBase {
-
     public abstract String getCommand();
 
     public String getUsageSuffix() {
@@ -35,8 +33,7 @@ public abstract class QuestCommandBase {
     public abstract String getPermissionDescription();
 
     private void registerPermission() {
-        PermissionAPI.registerNode(this.getPermissionNode(), this.getPermissionLevel(),
-                this.getPermissionDescription());
+        PermissionAPI.registerNode(this.getPermissionNode(), this.getPermissionLevel(), this.getPermissionDescription());
     }
 
     /**
@@ -51,8 +48,7 @@ public abstract class QuestCommandBase {
         return Collections.emptyList();
     }
 
-    public abstract void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender,
-                                    String[] args) throws CommandException;
+    public abstract void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, String[] args) throws CommandException;
 
     public final WrongUsageException getException(CommandBase command) {
         String message = command.getName() + " " + getCommand();
@@ -74,7 +70,8 @@ public abstract class QuestCommandBase {
 
         try {
             player = CommandBase.getEntity(server, sender, name, EntityPlayerMP.class);
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
         if (player == null) {
             if (name.startsWith("@")) {

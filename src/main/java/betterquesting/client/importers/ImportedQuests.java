@@ -1,23 +1,20 @@
 package betterquesting.client.importers;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-
-import javax.annotation.Nullable;
-
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.IQuestDatabase;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.storage.SimpleDatabase;
 import betterquesting.questing.QuestInstance;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 public class ImportedQuests extends SimpleDatabase<IQuest> implements IQuestDatabase {
-
     @Override
     public IQuest createNew(int id) {
         return this.add(id, new QuestInstance()).getValue();
@@ -74,5 +71,6 @@ public class ImportedQuests extends SimpleDatabase<IQuest> implements IQuestData
     }
 
     @Override
-    public void readProgressFromNBT(NBTTagList nbt, boolean merge) {}
+    public void readProgressFromNBT(NBTTagList nbt, boolean merge) {
+    }
 }

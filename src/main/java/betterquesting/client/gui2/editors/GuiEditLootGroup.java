@@ -1,14 +1,5 @@
 package betterquesting.client.gui2.editors;
 
-import java.text.DecimalFormat;
-import java.util.List;
-
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.nbt.NBTTagCompound;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.util.vector.Vector4f;
-
 import betterquesting.api.client.gui.misc.IVolatileScreen;
 import betterquesting.api2.client.gui.GuiScreenCanvas;
 import betterquesting.api2.client.gui.controls.PanelButton;
@@ -32,9 +23,15 @@ import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.network.handlers.NetLootImport;
 import betterquesting.questing.rewards.loot.LootGroup;
 import betterquesting.questing.rewards.loot.LootRegistry;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.nbt.NBTTagCompound;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Vector4f;
+
+import java.text.DecimalFormat;
+import java.util.List;
 
 public class GuiEditLootGroup extends GuiScreenCanvas implements IVolatileScreen {
-
     private LootGroup selGroup;
     private int selectedID = -1;
 
@@ -60,9 +57,7 @@ public class GuiEditLootGroup extends GuiScreenCanvas implements IVolatileScreen
         CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(), PresetTexture.PANEL_MAIN.getTexture());
         this.addPanel(cvBackground);
 
-        cvBackground.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(16, 16, 16, -32), 0),
-                QuestTranslation.translate("bq_standard.title.edit_loot_groups")).setAlignment(1)
-                        .setColor(PresetColor.TEXT_HEADER.getColor()));
+        cvBackground.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(16, 16, 16, -32), 0), QuestTranslation.translate("bq_standard.title.edit_loot_groups")).setAlignment(1).setColor(PresetColor.TEXT_HEADER.getColor()));
 
         // === LEFT SIDE ===
 
@@ -72,14 +67,11 @@ public class GuiEditLootGroup extends GuiScreenCanvas implements IVolatileScreen
         lootList = new CanvasScrolling(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 8, 24), 0));
         cvLeft.addPanel(lootList);
 
-        PanelVScrollBar scList = new PanelVScrollBar(
-                new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(-8, 0, 0, 24), 0));
+        PanelVScrollBar scList = new PanelVScrollBar(new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(-8, 0, 0, 24), 0));
         cvLeft.addPanel(scList);
         lootList.setScrollDriverY(scList);
 
-        cvLeft.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_EDGE, new GuiPadding(0, -16, 0, 0), 0), -1,
-                QuestTranslation.translate("betterquesting.btn.new")) {
-
+        cvLeft.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_EDGE, new GuiPadding(0, -16, 0, 0), 0), -1, QuestTranslation.translate("betterquesting.btn.new")) {
             @Override
             public void onButtonClick() {
                 LootRegistry.INSTANCE.add(LootRegistry.INSTANCE.nextID(), new LootGroup());
@@ -92,25 +84,22 @@ public class GuiEditLootGroup extends GuiScreenCanvas implements IVolatileScreen
         CanvasEmpty cvRight = new CanvasEmpty(new GuiTransform(GuiAlign.HALF_RIGHT, new GuiPadding(8, 32, 16, 24), 0));
         cvBackground.addPanel(cvRight);
 
-        cvRight.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 4, 0, -16), 0),
-                QuestTranslation.translate("betterquesting.gui.name")).setColor(PresetColor.TEXT_MAIN.getColor()));
+        cvRight.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 4, 0, -16), 0), QuestTranslation.translate("betterquesting.gui.name")).setColor(PresetColor.TEXT_MAIN.getColor()));
 
-        fieldName = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0),
-                selGroup != null ? selGroup.name : "", FieldFilterString.INSTANCE);
-        fieldName.setCallback(value -> {
+        fieldName = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0), selGroup != null ? selGroup.name : "", FieldFilterString.INSTANCE);
+        fieldName.setCallback(value ->
+        {
             if (selGroup == null) return;
             selGroup.name = fieldName.getValue();
             refreshGroups();
         });
         cvRight.addPanel(fieldName);
 
-        cvRight.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 36, 0, -48), 0),
-                QuestTranslation.translate("bq_standard.gui.weight")).setColor(PresetColor.TEXT_MAIN.getColor()));
+        cvRight.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 36, 0, -48), 0), QuestTranslation.translate("bq_standard.gui.weight")).setColor(PresetColor.TEXT_MAIN.getColor()));
 
-        fieldWeight = new PanelTextField<>(
-                new GuiTransform(new Vector4f(0F, 0F, 0.5F, 0F), new GuiPadding(0, 48, 0, -64), 0),
-                "" + (selGroup != null ? selGroup.weight : 1), FieldFilterNumber.INT);
-        fieldWeight.setCallback(value -> {
+        fieldWeight = new PanelTextField<>(new GuiTransform(new Vector4f(0F, 0F, 0.5F, 0F), new GuiPadding(0, 48, 0, -64), 0), "" + (selGroup != null ? selGroup.weight : 1), FieldFilterNumber.INT);
+        fieldWeight.setCallback(value ->
+        {
             if (selGroup == null) return;
             if (fieldWeight.getValue() <= 0) fieldWeight.setText("1");
             selGroup.weight = fieldWeight.getValue();
@@ -120,15 +109,11 @@ public class GuiEditLootGroup extends GuiScreenCanvas implements IVolatileScreen
         });
         cvRight.addPanel(fieldWeight);
 
-        textWeight = new PanelTextBox(
-                new GuiTransform(new Vector4f(0.5F, 0F, 1F, 0F), new GuiPadding(4, 52, 0, -64), 0), "/1 (100%)")
-                        .setColor(PresetColor.TEXT_MAIN.getColor());
+        textWeight = new PanelTextBox(new GuiTransform(new Vector4f(0.5F, 0F, 1F, 0F), new GuiPadding(4, 52, 0, -64), 0), "/1 (100%)").setColor(PresetColor.TEXT_MAIN.getColor());
         cvRight.addPanel(textWeight);
 
         final GuiScreen screenRef = this;
-        cvRight.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_EDGE, new GuiPadding(0, -16, 0, 0), 0), -1,
-                QuestTranslation.translate("bq_standard.btn.add_remove_drops")) {
-
+        cvRight.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_EDGE, new GuiPadding(0, -16, 0, 0), 0), -1, QuestTranslation.translate("bq_standard.btn.add_remove_drops")) {
             @Override
             public void onButtonClick() {
                 if (selGroup != null) {
@@ -140,9 +125,7 @@ public class GuiEditLootGroup extends GuiScreenCanvas implements IVolatileScreen
 
         // === MISC ===
 
-        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), -1,
-                QuestTranslation.translate("gui.done")) {
-
+        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), -1, QuestTranslation.translate("gui.done")) {
             @Override
             public void onButtonClick() {
                 SendChanges();
@@ -156,8 +139,7 @@ public class GuiEditLootGroup extends GuiScreenCanvas implements IVolatileScreen
         ls0.setParent(cvBackground.getTransform());
         IGuiRect le0 = new GuiTransform(GuiAlign.BOTTOM_CENTER, 0, -24, 0, 0, 0);
         le0.setParent(cvBackground.getTransform());
-        PanelLine paLine0 = new PanelLine(ls0, le0, PresetLine.GUI_DIVIDER.getLine(), 1,
-                PresetColor.GUI_DIVIDER.getColor(), 1);
+        PanelLine paLine0 = new PanelLine(ls0, le0, PresetLine.GUI_DIVIDER.getLine(), 1, PresetColor.GUI_DIVIDER.getColor(), 1);
         cvBackground.addPanel(paLine0);
 
         refreshGroups();
@@ -200,25 +182,25 @@ public class GuiEditLootGroup extends GuiScreenCanvas implements IVolatileScreen
         final List<DBEntry<LootGroup>> lgAry = LootRegistry.INSTANCE.getEntries();
 
         for (int i = 0; i < lgAry.size(); i++) {
-            lootList.addPanel(new PanelButtonStorage<>(new GuiRectangle(0, i * 16, 16, 16, 0), -1, "", lgAry.get(i))
-                    .setCallback(value -> {
-                        LootRegistry.INSTANCE.removeID(value.getID());
-                        refreshGroups();
-                        SendChanges();
-                    }).setIcon(PresetIcon.ICON_TRASH.getTexture()));
+            lootList.addPanel(new PanelButtonStorage<>(new GuiRectangle(0, i * 16, 16, 16, 0), -1, "", lgAry.get(i)).setCallback(value ->
+            {
+                LootRegistry.INSTANCE.removeID(value.getID());
+                refreshGroups();
+                SendChanges();
+            }).setIcon(PresetIcon.ICON_TRASH.getTexture()));
 
-            lootList.addPanel(new PanelButtonStorage<>(new GuiRectangle(16, i * 16, lWidth - 16, 16, 0), -1,
-                    lgAry.get(i).getValue().name, lgAry.get(i)).setCallback(value -> {
-                        if (selGroup != null) SendChanges();
-                        selectedID = value.getID();
-                        selGroup = value.getValue();
-                        fieldName.setText(selGroup.name);
-                        fieldWeight.setText("" + selGroup.weight);
+            lootList.addPanel(new PanelButtonStorage<>(new GuiRectangle(16, i * 16, lWidth - 16, 16, 0), -1, lgAry.get(i).getValue().name, lgAry.get(i)).setCallback(value ->
+            {
+                if (selGroup != null) SendChanges();
+                selectedID = value.getID();
+                selGroup = value.getValue();
+                fieldName.setText(selGroup.name);
+                fieldWeight.setText("" + selGroup.weight);
 
-                        int totalWeight = LootRegistry.INSTANCE.getTotalWeight();
-                        float chance = selGroup.weight / (float) totalWeight * 100F;
-                        textWeight.setText("/" + totalWeight + " (" + numFormat.format(chance) + "%)");
-                    }));
+                int totalWeight = LootRegistry.INSTANCE.getTotalWeight();
+                float chance = selGroup.weight / (float) totalWeight * 100F;
+                textWeight.setText("/" + totalWeight + " (" + numFormat.format(chance) + "%)");
+            }));
         }
     }
 

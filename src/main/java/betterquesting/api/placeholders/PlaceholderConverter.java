@@ -1,5 +1,6 @@
 package betterquesting.api.placeholders;
 
+import betterquesting.api.utils.BigItemStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.item.Item;
@@ -9,13 +10,10 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import betterquesting.api.utils.BigItemStack;
-
 /**
  * In charge of safely converting to or from placeholder objects
  */
 public class PlaceholderConverter {
-
     public static Entity convertEntity(Entity orig, World world, NBTTagCompound nbt) {
         Entity entity = orig;
 
@@ -31,8 +29,7 @@ public class PlaceholderConverter {
         return entity;
     }
 
-    public static BigItemStack convertItem(Item item, String name, int count, int damage, String oreDict,
-                                           NBTTagCompound nbt) {
+    public static BigItemStack convertItem(Item item, String name, int count, int damage, String oreDict, NBTTagCompound nbt) {
         if (item == null) {
             BigItemStack stack = new BigItemStack(ItemPlaceholder.placeholder, count, damage).setOreDict(oreDict);
             stack.SetTagCompound(new NBTTagCompound());
@@ -45,8 +42,7 @@ public class PlaceholderConverter {
                 Item restored = Item.getByNameOrId(nbt.getString("orig_id"));
 
                 if (restored != null) {
-                    BigItemStack stack = new BigItemStack(restored, count,
-                            nbt.hasKey("orig_meta") ? nbt.getInteger("orig_meta") : damage).setOreDict(oreDict);
+                    BigItemStack stack = new BigItemStack(restored, count, nbt.hasKey("orig_meta") ? nbt.getInteger("orig_meta") : damage).setOreDict(oreDict);
                     if (nbt.hasKey("orig_tag")) stack.SetTagCompound(nbt.getCompoundTag("orig_tag"));
 
                     return stack;

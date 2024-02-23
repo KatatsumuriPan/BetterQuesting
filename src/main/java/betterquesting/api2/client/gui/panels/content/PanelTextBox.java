@@ -1,24 +1,21 @@
 package betterquesting.api2.client.gui.panels.content;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.math.MathHelper;
-
 import betterquesting.api.utils.RenderUtils;
 import betterquesting.api2.client.gui.misc.GuiRectangle;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.IGuiPanel;
 import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.math.MathHelper;
+
+import javax.annotation.Nonnull;
+import java.util.Collections;
+import java.util.List;
 
 public class PanelTextBox implements IGuiPanel {
-
     private final GuiRectText transform;
     private final GuiRectangle refRect = new GuiRectangle(0, 0, 0, 0, 0);
     private boolean enabled = true;
@@ -121,8 +118,8 @@ public class PanelTextBox implements IGuiPanel {
 
         IGuiRect bounds = this.getTransform();
         FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
-        // FontRenderer fr = BqFontRenderer.FONT_UNICODE;
-        // FontRenderer fr = BqFontRenderer.FONT_STANDARD;
+        //FontRenderer fr = BqFontRenderer.FONT_UNICODE;
+        //FontRenderer fr = BqFontRenderer.FONT_STANDARD;
 
         double s = fontScale / relScale;
         int bw = (int) Math.ceil(bounds.getWidth() / s);
@@ -173,7 +170,6 @@ public class PanelTextBox implements IGuiPanel {
     }
 
     private static class GuiRectText implements IGuiRect {
-
         private final IGuiRect proxy;
         private final boolean useH;
         private int h;
@@ -234,7 +230,6 @@ public class PanelTextBox implements IGuiPanel {
     }
 
     private boolean isRectEqual(IGuiRect r1, IGuiRect r2) {
-        return r1.getX() == r2.getX() && r1.getY() == r2.getY() && r1.getWidth() == r2.getWidth() &&
-                r1.getHeight() == r2.getHeight();
+        return r1.getX() == r2.getX() && r1.getY() == r2.getY() && r1.getWidth() == r2.getWidth() && r1.getHeight() == r2.getHeight();
     }
 }

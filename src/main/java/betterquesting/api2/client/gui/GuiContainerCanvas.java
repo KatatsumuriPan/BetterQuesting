@@ -1,25 +1,5 @@
 package betterquesting.api2.client.gui;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import javax.annotation.Nonnull;
-
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.util.ITooltipFlag.TooltipFlags;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-
 import betterquesting.api.client.gui.misc.IVolatileScreen;
 import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api.utils.RenderUtils;
@@ -29,11 +9,26 @@ import betterquesting.api2.client.gui.popups.PopChoice;
 import betterquesting.api2.client.gui.themes.presets.PresetIcon;
 import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.client.BQ_Keybindings;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.util.ITooltipFlag.TooltipFlags;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
-// This will probably be rewritten at a later date once I reimplement Minecraft's inventory controls natively
-// into their own isolated canvas elements
+import javax.annotation.Nonnull;
+import java.io.IOException;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+// This will probably be rewritten at a later date once I reimplement Minecraft's inventory controls natively into their own isolated canvas elements
 public class GuiContainerCanvas extends GuiContainer implements IScene {
-
     private final List<IGuiPanel> guiPanels = new CopyOnWriteArrayList<>();
     private final GuiRectangle rootTransform = new GuiRectangle(0, 0, 0, 0, 0);
     private final GuiTransform transform = new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(16, 16, 16, 16), 0);
@@ -45,7 +40,7 @@ public class GuiContainerCanvas extends GuiContainer implements IScene {
     public final GuiScreen parent;
 
     private IGuiPanel popup = null;
-    // private IGuiPanel focused = null;
+    //private IGuiPanel focused = null;
 
     public GuiContainerCanvas(GuiScreen parent, Container container) {
         super(container);
@@ -166,7 +161,8 @@ public class GuiContainerCanvas extends GuiContainer implements IScene {
      */
     @Override
     @Deprecated
-    public void actionPerformed(GuiButton button) {}
+    public void actionPerformed(GuiButton button) {
+    }
 
     // Remembers the last mouse buttons states. Required to fire release events
     private boolean[] mBtnState = new boolean[3];
@@ -199,11 +195,7 @@ public class GuiContainerCanvas extends GuiContainer implements IScene {
     public void keyTyped(char c, int keyCode) {
         if (keyCode == 1) {
             if (this.isVolatile || this instanceof IVolatileScreen) {
-                openPopup(new PopChoice(
-                        QuestTranslation.translate("betterquesting.gui.closing_warning") + "\n\n" +
-                                QuestTranslation.translate("betterquesting.gui.closing_confirm"),
-                        PresetIcon.ICON_NOTICE.getTexture(), this::confirmClose, QuestTranslation.translate("gui.yes"),
-                        QuestTranslation.translate("gui.no")));
+                openPopup(new PopChoice(QuestTranslation.translate("betterquesting.gui.closing_warning") + "\n\n" + QuestTranslation.translate("betterquesting.gui.closing_confirm"), PresetIcon.ICON_NOTICE.getTexture(), this::confirmClose, QuestTranslation.translate("gui.yes"), QuestTranslation.translate("gui.no")));
             } else {
                 this.mc.displayGuiScreen(null);
                 if (this.mc.currentScreen == null) this.mc.setIngameFocus();
@@ -239,8 +231,8 @@ public class GuiContainerCanvas extends GuiContainer implements IScene {
 
         ListIterator<IGuiPanel> pnIter = guiPanels.listIterator(guiPanels.size());
 
-        // TODO: Allow click through even after used. Other panels need it to passively reset things
-        while (pnIter.hasPrevious()) {
+        while (pnIter.hasPrevious()) // TODO: Allow click through even after used. Other panels need it to passively reset things
+        {
             IGuiPanel entry = pnIter.previous();
 
             if (entry.isEnabled() && entry.onMouseClick(mx, my, click)) {
@@ -263,8 +255,8 @@ public class GuiContainerCanvas extends GuiContainer implements IScene {
 
         ListIterator<IGuiPanel> pnIter = guiPanels.listIterator(guiPanels.size());
 
-        // TODO: Allow click through even after used. Other panels need it to passively reset things
-        while (pnIter.hasPrevious()) {
+        while (pnIter.hasPrevious()) // TODO: Allow click through even after used. Other panels need it to passively reset things
+        {
             IGuiPanel entry = pnIter.previous();
 
             if (entry.isEnabled() && entry.onMouseRelease(mx, my, click)) {
@@ -276,7 +268,7 @@ public class GuiContainerCanvas extends GuiContainer implements IScene {
         return used;
     }
 
-    // @Override
+    //@Override
     public boolean onMouseScroll(int mx, int my, int scroll) {
         boolean used = false;
 
@@ -321,14 +313,9 @@ public class GuiContainerCanvas extends GuiContainer implements IScene {
             }
         }
 
-        if (!used && (BQ_Keybindings.openQuests.getKeyCode() == keycode ||
-                mc.gameSettings.keyBindInventory.getKeyCode() == keycode)) {
+        if (!used && (BQ_Keybindings.openQuests.getKeyCode() == keycode || mc.gameSettings.keyBindInventory.getKeyCode() == keycode)) {
             if (this.isVolatile || this instanceof IVolatileScreen) {
-                openPopup(new PopChoice(
-                        QuestTranslation.translate("betterquesting.gui.closing_warning") + "\n\n" +
-                                QuestTranslation.translate("betterquesting.gui.closing_confirm"),
-                        PresetIcon.ICON_NOTICE.getTexture(), this::confirmClose, QuestTranslation.translate("gui.yes"),
-                        QuestTranslation.translate("gui.no")));
+                openPopup(new PopChoice(QuestTranslation.translate("betterquesting.gui.closing_warning") + "\n\n" + QuestTranslation.translate("betterquesting.gui.closing_confirm"), PresetIcon.ICON_NOTICE.getTexture(), this::confirmClose, QuestTranslation.translate("gui.yes"), QuestTranslation.translate("gui.no")));
             } else {
                 this.mc.displayGuiScreen(null);
                 if (this.mc.currentScreen == null) this.mc.setIngameFocus();
@@ -359,8 +346,7 @@ public class GuiContainerCanvas extends GuiContainer implements IScene {
         if (tt == null) {
             for (Slot slot : this.inventorySlots.inventorySlots) {
                 if (slot.isEnabled() && slot.getHasStack() && isPointInRegion(slot.xPos, slot.yPos, 16, 16, mx, my)) {
-                    tt = slot.getStack().getTooltip(mc.player,
-                            mc.gameSettings.advancedItemTooltips ? TooltipFlags.ADVANCED : TooltipFlags.NORMAL);
+                    tt = slot.getStack().getTooltip(mc.player, mc.gameSettings.advancedItemTooltips ? TooltipFlags.ADVANCED : TooltipFlags.NORMAL);
                     return tt.size() <= 0 ? null : tt;
                 }
             }
@@ -408,8 +394,7 @@ public class GuiContainerCanvas extends GuiContainer implements IScene {
     @Override
     protected void renderToolTip(ItemStack stack, int x, int y) {
         FontRenderer font = stack.getItem().getFontRenderer(stack);
-        RenderUtils.drawHoveringText(stack, this.getItemToolTip(stack), x, y, width, height, -1,
-                (font == null ? fontRenderer : font));
+        RenderUtils.drawHoveringText(stack, this.getItemToolTip(stack), x, y, width, height, -1, (font == null ? fontRenderer : font));
     }
 
     @Override

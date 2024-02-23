@@ -1,23 +1,20 @@
 package betterquesting.api2.utils;
 
-import java.util.*;
-
-import javax.annotation.Nonnull;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.questing.party.IParty;
 import betterquesting.api2.cache.CapabilityProviderQuestCache;
 import betterquesting.api2.cache.QuestCache;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.questing.party.PartyManager;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+
+import javax.annotation.Nonnull;
+import java.util.*;
 
 public class ParticipantInfo {
-
     public final EntityPlayer PLAYER;
     public final UUID UUID;
 
@@ -48,7 +45,7 @@ public class ParticipantInfo {
         for (UUID mem : PARTY_INSTANCE.getValue().getMembers()) {
             allID.add(mem);
             EntityPlayer pMem = server.getPlayerList().getPlayerByUUID(mem);
-            // noinspection ConstantConditions
+            //noinspection ConstantConditions
             if (pMem != null) {
                 actPl.add(pMem);
                 actID.add(mem);
@@ -61,8 +58,8 @@ public class ParticipantInfo {
         this.ALL_UUIDS = Collections.unmodifiableList(allID);
     }
 
-    // Only marks quests dirty for the immediate participating player
-    public void markDirty(@Nonnull List<Integer> questIDs) {
+    public void markDirty(@Nonnull List<Integer> questIDs) // Only marks quests dirty for the immediate participating player
+    {
         QuestCache qc = PLAYER.getCapability(CapabilityProviderQuestCache.CAP_QUEST_CACHE, null);
         if (qc != null) questIDs.forEach(qc::markQuestDirty);
     }

@@ -1,15 +1,12 @@
 package betterquesting.api2.client.gui.resources.lines;
 
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.math.MathHelper;
-
-import org.lwjgl.opengl.GL11;
-
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.math.MathHelper;
+import org.lwjgl.opengl.GL11;
 
 public class LineTaxiCab implements IGuiLine {
-
     private final float bias;
     private final boolean isVertical;
     private final short stipMask;

@@ -1,19 +1,17 @@
 package betterquesting.api2.client.gui.panels.lists;
 
-import java.util.ArrayDeque;
-import java.util.Iterator;
-
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-
 import betterquesting.api2.client.gui.misc.GuiRectangle;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.content.PanelFluidSlot;
 import betterquesting.core.BetterQuesting;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
+import java.util.ArrayDeque;
+import java.util.Iterator;
 
 public class CanvasFluidDatabase extends CanvasSearch<FluidStack, Fluid> {
-
     private final int btnId;
 
     public CanvasFluidDatabase(IGuiRect rect, int buttonId) {
@@ -36,14 +34,11 @@ public class CanvasFluidDatabase extends CanvasSearch<FluidStack, Fluid> {
         try {
             FluidStack stack = new FluidStack(fluid, 1000);
 
-            if (fluid.getUnlocalizedName().toLowerCase().contains(query) ||
-                    fluid.getLocalizedName(stack).toLowerCase().contains(query) ||
-                    fluid.getName().toLowerCase().contains(query)) {
+            if (fluid.getUnlocalizedName().toLowerCase().contains(query) || fluid.getLocalizedName(stack).toLowerCase().contains(query) || fluid.getName().toLowerCase().contains(query)) {
                 results.add(stack);
             }
         } catch (Exception e) {
-            BetterQuesting.logger.error("An error occured while searching fluid \"" + fluid.getName() + "\" (" +
-                    fluid.getClass().getName() + ")", e);
+            BetterQuesting.logger.error("An error occured while searching fluid \"" + fluid.getName() + "\" (" + fluid.getClass().getName() + ")", e);
         }
     }
 

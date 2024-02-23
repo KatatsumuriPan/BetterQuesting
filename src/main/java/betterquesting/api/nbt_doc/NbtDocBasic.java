@@ -1,11 +1,9 @@
 package betterquesting.api.nbt_doc;
 
+import betterquesting.api.events.NbtDocEvent;
 import net.minecraftforge.common.MinecraftForge;
 
-import betterquesting.api.events.NbtDocEvent;
-
 public class NbtDocBasic implements INbtDoc {
-
     private final INbtDoc parent;
     private final String prefix;
 

@@ -1,15 +1,5 @@
 package betterquesting.client.gui2.editors.nbt;
 
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.util.vector.Vector4f;
-
 import betterquesting.api.client.gui.misc.IVolatileScreen;
 import betterquesting.api.misc.ICallback;
 import betterquesting.api.utils.BigItemStack;
@@ -41,9 +31,16 @@ import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.client.gui.themes.presets.PresetLine;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import betterquesting.api2.utils.QuestTranslation;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Vector4f;
 
 public class GuiFluidSelection extends GuiScreenCanvas implements IPEventListener, IVolatileScreen {
-
     private final ICallback<FluidStack> callback;
     private FluidStack itemStack;
 
@@ -67,16 +64,12 @@ public class GuiFluidSelection extends GuiScreenCanvas implements IPEventListene
         Keyboard.enableRepeatEvents(true);
 
         // Background panel
-        CanvasTextured cvBackground = new CanvasTextured(
-                new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0),
-                PresetTexture.PANEL_MAIN.getTexture());
+        CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0), PresetTexture.PANEL_MAIN.getTexture());
         this.addPanel(cvBackground);
 
-        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), 0,
-                QuestTranslation.translate("gui.done")));
+        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), 0, QuestTranslation.translate("gui.done")));
 
-        PanelTextBox txTitle = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0),
-                QuestTranslation.translate("betterquesting.title.select_fluid")).setAlignment(1);
+        PanelTextBox txTitle = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0), QuestTranslation.translate("betterquesting.title.select_fluid")).setAlignment(1);
         txTitle.setColor(PresetColor.TEXT_HEADER.getColor());
         cvBackground.addPanel(txTitle);
 
@@ -85,42 +78,34 @@ public class GuiFluidSelection extends GuiScreenCanvas implements IPEventListene
         CanvasEmpty cvRight = new CanvasEmpty(new GuiTransform(GuiAlign.HALF_RIGHT, new GuiPadding(8, 32, 16, 32), 0));
         cvBackground.addPanel(cvRight);
 
-        CanvasFluidDatabase cvDatabase = new CanvasFluidDatabase(
-                new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 16, 8, 0), 0), 1);
+        CanvasFluidDatabase cvDatabase = new CanvasFluidDatabase(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 16, 8, 0), 0), 1);
         cvRight.addPanel(cvDatabase);
 
-        PanelTextField<String> searchBox = new PanelTextField<>(
-                new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 8, -16), 0), "", FieldFilterString.INSTANCE);
+        PanelTextField<String> searchBox = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 8, -16), 0), "", FieldFilterString.INSTANCE);
         searchBox.setCallback(cvDatabase::setSearchFilter).setWatermark("Search...");
         cvRight.addPanel(searchBox);
 
-        PanelVScrollBar scEdit = new PanelVScrollBar(
-                new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(-8, 16, 0, 0), 0));
+        PanelVScrollBar scEdit = new PanelVScrollBar(new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(-8, 16, 0, 0), 0));
         cvDatabase.setScrollDriverY(scEdit);
         cvRight.addPanel(scEdit);
 
         // === TOP LEFT PANEL ===
 
-        CanvasEmpty cvTopLeft = new CanvasEmpty(
-                new GuiTransform(new Vector4f(0F, 0F, 0.5F, 0.4F), new GuiPadding(16, 32, 8, 8), 0));
+        CanvasEmpty cvTopLeft = new CanvasEmpty(new GuiTransform(new Vector4f(0F, 0F, 0.5F, 0.4F), new GuiPadding(16, 32, 8, 8), 0));
         cvBackground.addPanel(cvTopLeft);
 
-        PanelTextBox txSelection = new PanelTextBox(
-                new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 0, -16), 0),
-                QuestTranslation.translate("betterquesting.gui.selection"));
+        PanelTextBox txSelection = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 0, -16), 0), QuestTranslation.translate("betterquesting.gui.selection"));
         txSelection.setColor(PresetColor.TEXT_MAIN.getColor());
         cvTopLeft.addPanel(txSelection);
 
         itemPreview = new PanelFluidSlot(new GuiTransform(GuiAlign.TOP_LEFT, 0, 16, 36, 36, 0), 99, itemStack);
         cvTopLeft.addPanel(itemPreview);
 
-        PanelTextBox txMulti = new PanelTextBox(new GuiTransform(GuiAlign.TOP_LEFT, 36, 20, 16, 12, 0), "x")
-                .setAlignment(1);
+        PanelTextBox txMulti = new PanelTextBox(new GuiTransform(GuiAlign.TOP_LEFT, 36, 20, 16, 12, 0), "x").setAlignment(1);
         txMulti.setColor(PresetColor.TEXT_MAIN.getColor());
         cvTopLeft.addPanel(txMulti);
 
-        fieldSize = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(52, 16, 0, -32), 0),
-                itemStack == null ? "1" : ("" + itemStack.amount), FieldFilterNumber.INT);
+        fieldSize = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(52, 16, 0, -32), 0), itemStack == null ? "1" : ("" + itemStack.amount), FieldFilterNumber.INT);
         cvTopLeft.addPanel(fieldSize);
         fieldSize.setCallback(value -> {
             if (itemStack != null) itemStack.amount = value;
@@ -128,19 +113,16 @@ public class GuiFluidSelection extends GuiScreenCanvas implements IPEventListene
 
         // === BOTTOM LEFT PANEL ===
 
-        CanvasEmpty cvBottomLeft = new CanvasEmpty(
-                new GuiTransform(new Vector4f(0F, 0.4F, 0.5F, 1F), new GuiPadding(16, 8, 8, 32), 0));
+        CanvasEmpty cvBottomLeft = new CanvasEmpty(new GuiTransform(new Vector4f(0F, 0.4F, 0.5F, 1F), new GuiPadding(16, 8, 8, 32), 0));
         cvBackground.addPanel(cvBottomLeft);
 
-        PanelTextBox txInvo = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 0, -16), 0),
-                QuestTranslation.translate("container.inventory"));
+        PanelTextBox txInvo = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 0, -16), 0), QuestTranslation.translate("container.inventory"));
         txInvo.setColor(PresetColor.TEXT_MAIN.getColor());
         cvBottomLeft.addPanel(txInvo);
 
         IInventory inventory = mc.player.inventory;
 
-        float iScale = Math.min(cvBottomLeft.getTransform().getWidth() / 162F,
-                (cvBottomLeft.getTransform().getHeight() - 20) / 72F);
+        float iScale = Math.min(cvBottomLeft.getTransform().getWidth() / 162F, (cvBottomLeft.getTransform().getHeight() - 20) / 72F);
         int slotSize = (int) Math.floor(18 * iScale);
 
         for (int i = 0; i < 27; i++) // Main inventory
@@ -151,8 +133,7 @@ public class GuiFluidSelection extends GuiScreenCanvas implements IPEventListene
             ItemStack tmp = inventory.getStackInSlot(i + 9);
             BigItemStack invoStack = tmp.isEmpty() ? null : new BigItemStack(tmp);
 
-            cvBottomLeft.addPanel(new PanelItemSlot(new GuiTransform(GuiAlign.TOP_LEFT, x, y, slotSize, slotSize, 0), 2,
-                    invoStack, true));
+            cvBottomLeft.addPanel(new PanelItemSlot(new GuiTransform(GuiAlign.TOP_LEFT, x, y, slotSize, slotSize, 0), 2, invoStack, true));
 
         }
 
@@ -163,9 +144,7 @@ public class GuiFluidSelection extends GuiScreenCanvas implements IPEventListene
             ItemStack tmp = inventory.getStackInSlot(i);
             BigItemStack invoStack = tmp.isEmpty() ? null : new BigItemStack(tmp);
 
-            cvBottomLeft.addPanel(new PanelItemSlot(
-                    new GuiTransform(GuiAlign.TOP_LEFT, x, 20 + (3 * slotSize), slotSize, slotSize, 0), 2, invoStack,
-                    true));
+            cvBottomLeft.addPanel(new PanelItemSlot(new GuiTransform(GuiAlign.TOP_LEFT, x, 20 + (3 * slotSize), slotSize, slotSize, 0), 2, invoStack, true));
         }
 
         // === DIVIDERS ===
@@ -174,8 +153,7 @@ public class GuiFluidSelection extends GuiScreenCanvas implements IPEventListene
         ls0.setParent(cvBackground.getTransform());
         IGuiRect le0 = new GuiTransform(GuiAlign.BOTTOM_CENTER, 0, -32, 0, 0, 0);
         le0.setParent(cvBackground.getTransform());
-        PanelLine paLine0 = new PanelLine(ls0, le0, PresetLine.GUI_DIVIDER.getLine(), 1,
-                PresetColor.GUI_DIVIDER.getColor(), 1);
+        PanelLine paLine0 = new PanelLine(ls0, le0, PresetLine.GUI_DIVIDER.getLine(), 1, PresetColor.GUI_DIVIDER.getColor(), 1);
         cvBackground.addPanel(paLine0);
     }
 

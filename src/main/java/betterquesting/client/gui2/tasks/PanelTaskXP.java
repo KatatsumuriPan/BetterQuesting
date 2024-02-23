@@ -1,9 +1,5 @@
 package betterquesting.client.gui2.tasks;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.init.Items;
-import net.minecraft.util.text.TextFormatting;
-
 import betterquesting.XPHelper;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.utils.BigItemStack;
@@ -18,6 +14,9 @@ import betterquesting.api2.client.gui.panels.content.PanelTextBox;
 import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
 import betterquesting.api2.client.gui.resources.textures.ItemTexture;
 import betterquesting.questing.tasks.TaskXP;
+import net.minecraft.client.Minecraft;
+import net.minecraft.init.Items;
+import net.minecraft.util.text.TextFormatting;
 
 public class PanelTaskXP extends CanvasMinimum {
 
@@ -35,22 +34,19 @@ public class PanelTaskXP extends CanvasMinimum {
         super.initPanel();
         int width = initialRect.getWidth();
 
-        this.addPanel(new PanelGeneric(new GuiTransform(GuiAlign.TOP_LEFT, (width - 32) / 2, 0, 32, 32, 0),
-                new ItemTexture(new BigItemStack(Items.EXPERIENCE_BOTTLE))));
+        this.addPanel(new PanelGeneric(new GuiTransform(GuiAlign.TOP_LEFT, (width - 32) / 2, 0, 32, 32, 0), new ItemTexture(new BigItemStack(Items.EXPERIENCE_BOTTLE))));
 
         long xp = task.getUsersProgress(QuestingAPI.getQuestingUUID(Minecraft.getMinecraft().player));
         xp = !task.levels ? xp : XPHelper.getXPLevel(xp);
         final float xpPercent = (float) ((double) xp / (double) task.amount);
 
         int barWidth = Math.min(128, width);
-        PanelHBarFill fillBar = new PanelHBarFill(
-                new GuiTransform(GuiAlign.TOP_LEFT, (width - barWidth) / 2, 32, barWidth, 16, 0));
+        PanelHBarFill fillBar = new PanelHBarFill(new GuiTransform(GuiAlign.TOP_LEFT, (width - barWidth) / 2, 32, barWidth, 16, 0));
         fillBar.setFillColor(new GuiColorStatic(0xFF00FF00));
         fillBar.setFillDriver(new ValueFuncIO<>(() -> xpPercent));
         this.addPanel(fillBar);
 
-        this.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_LEFT, 0, 36, width, 16, -1),
-                TextFormatting.BOLD + "" + xp + "/" + task.amount + (task.levels ? "L" : "XP")).setAlignment(1));
+        this.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_LEFT, 0, 36, width, 16, -1), TextFormatting.BOLD + "" + xp + "/" + task.amount + (task.levels ? "L" : "XP")).setAlignment(1));
         recalculateSizes();
     }
 }

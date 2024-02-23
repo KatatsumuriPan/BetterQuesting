@@ -1,19 +1,16 @@
 package betterquesting.api2.client.gui.panels.bars;
 
-import java.util.List;
-
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.math.MathHelper;
-
-import org.lwjgl.input.Mouse;
-
 import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.math.MathHelper;
+import org.lwjgl.input.Mouse;
+
+import java.util.List;
 
 public class PanelHScrollBar implements IScrollBar {
-
     private final IGuiRect transform;
     private boolean enabled = true;
     private boolean active = true;
@@ -29,8 +26,7 @@ public class PanelHScrollBar implements IScrollBar {
 
     public PanelHScrollBar(IGuiRect rect) {
         this.transform = rect;
-        this.setBarTexture(PresetTexture.SCROLL_H_BG.getTexture(), PresetTexture.SCROLL_H_0.getTexture(),
-                PresetTexture.SCROLL_H_1.getTexture(), PresetTexture.SCROLL_H_2.getTexture());
+        this.setBarTexture(PresetTexture.SCROLL_H_BG.getTexture(), PresetTexture.SCROLL_H_0.getTexture(), PresetTexture.SCROLL_H_1.getTexture(), PresetTexture.SCROLL_H_2.getTexture());
     }
 
     @Override
@@ -41,8 +37,7 @@ public class PanelHScrollBar implements IScrollBar {
     }
 
     @Override
-    public PanelHScrollBar setBarTexture(IGuiTexture back, IGuiTexture handleDisabled, IGuiTexture handleIdle,
-                                         IGuiTexture handleHover) {
+    public PanelHScrollBar setBarTexture(IGuiTexture back, IGuiTexture handleDisabled, IGuiTexture handleIdle, IGuiTexture handleHover) {
         this.texBack = back;
         this.texHandleState[0] = handleDisabled;
         this.texHandleState[1] = handleIdle;
@@ -57,7 +52,8 @@ public class PanelHScrollBar implements IScrollBar {
     }
 
     @Override
-    public void initPanel() {}
+    public void initPanel() {
+    }
 
     @Override
     public void setEnabled(boolean state) {
@@ -107,8 +103,7 @@ public class PanelHScrollBar implements IScrollBar {
         IGuiTexture tex = texHandleState[state];
 
         if (tex != null) {
-            tex.drawTexture(bounds.getX() + sx + inset, bounds.getY() + inset, hSize, bounds.getHeight() - (inset * 2),
-                    0F, partialTick);
+            tex.drawTexture(bounds.getX() + sx + inset, bounds.getY() + inset, hSize, bounds.getHeight() - (inset * 2), 0F, partialTick);
         }
 
         GlStateManager.popMatrix();

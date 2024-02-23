@@ -1,26 +1,22 @@
 package betterquesting.api2.client.gui.panels.lists;
 
+import betterquesting.api2.client.gui.misc.ComparatorGuiDepth;
+import betterquesting.api2.client.gui.misc.GuiRectangle;
+import betterquesting.api2.client.gui.misc.IGuiRect;
+import betterquesting.api2.client.gui.panels.IGuiPanel;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import betterquesting.api2.client.gui.misc.ComparatorGuiDepth;
-import betterquesting.api2.client.gui.misc.GuiRectangle;
-import betterquesting.api2.client.gui.misc.IGuiRect;
-import betterquesting.api2.client.gui.panels.IGuiPanel;
-
 public class CanvasCullingManager {
+    private final List<IGuiPanel> dynamicPanels = new ArrayList<>(); // Panels not regioned (likely moving or important)
 
-    // Panels not regioned (likely moving or important)
-    private final List<IGuiPanel> dynamicPanels = new ArrayList<>();
+    private final Map<String, RegionInfo> panelRegions = new HashMap<>(); // Panels separated into regional blocks
 
-    // Panels separated into regional blocks
-    private final Map<String, RegionInfo> panelRegions = new HashMap<>();
-
-    // The last updated list of visible panels
-    private final List<IGuiPanel> cachedPanels = new CopyOnWriteArrayList<>();
+    private final List<IGuiPanel> cachedPanels = new CopyOnWriteArrayList<>(); // The last updated list of visible panels
 
     private final int gridSize;
 
@@ -58,10 +54,8 @@ public class CanvasCullingManager {
 
                     int minX = Math.min(cbl.rect.x, panel.getTransform().getX());
                     int minY = Math.min(cbl.rect.y, panel.getTransform().getY());
-                    int maxX = Math.max(cbl.rect.x + cbl.rect.w,
-                            panel.getTransform().getX() + panel.getTransform().getWidth());
-                    int maxY = Math.max(cbl.rect.y + cbl.rect.h,
-                            panel.getTransform().getY() + panel.getTransform().getHeight());
+                    int maxX = Math.max(cbl.rect.x + cbl.rect.w, panel.getTransform().getX() + panel.getTransform().getWidth());
+                    int maxY = Math.max(cbl.rect.y + cbl.rect.h, panel.getTransform().getY() + panel.getTransform().getHeight());
 
                     cbl.rect.x = minX;
                     cbl.rect.y = minY;
@@ -79,10 +73,8 @@ public class CanvasCullingManager {
 
                 int minX = Math.min(cbl.rect.x, panel.getTransform().getX());
                 int minY = Math.min(cbl.rect.y, panel.getTransform().getY());
-                int maxX = Math.max(cbl.rect.x + cbl.rect.w,
-                        panel.getTransform().getX() + panel.getTransform().getWidth());
-                int maxY = Math.max(cbl.rect.y + cbl.rect.h,
-                        panel.getTransform().getY() + panel.getTransform().getHeight());
+                int maxX = Math.max(cbl.rect.x + cbl.rect.w, panel.getTransform().getX() + panel.getTransform().getWidth());
+                int maxY = Math.max(cbl.rect.y + cbl.rect.h, panel.getTransform().getY() + panel.getTransform().getHeight());
 
                 cbl.rect.x = minX;
                 cbl.rect.y = minY;
@@ -138,8 +130,8 @@ public class CanvasCullingManager {
 
     // TODO: Move this to a utility class
     private static boolean overlapCheck(IGuiRect rect1, IGuiRect rect2) {
-        // Rectangle outside width bounds
-        if (rect1.getX() + rect1.getWidth() < rect2.getX() || rect1.getX() > rect2.getX() + rect2.getWidth()) {
+        if (rect1.getX() + rect1.getWidth() < rect2.getX() || rect1.getX() > rect2.getX() + rect2.getWidth()) // Rectangle outside width bounds
+        {
             return false;
         } else {
             return rect1.getY() + rect1.getHeight() >= rect2.getY() && rect1.getY() <= rect2.getY() + rect2.getHeight();
@@ -147,13 +139,10 @@ public class CanvasCullingManager {
     }
 
     private static class RegionInfo {
-
         private final List<IGuiPanel> panels = new ArrayList<>();
 
-        // Starts disabled so that the cache can be populated on initial checks
-        private boolean enabled = false;
-        // Needs to be updated with the min-max bounds (doesn't actually conform to any grid)
-        private final GuiRectangle rect;
+        private boolean enabled = false; // Starts disabled so that the cache can be populated on initial checks
+        private final GuiRectangle rect; // Needs to be updated with the min-max bounds (doesn't actually conform to any grid)
 
         private RegionInfo(int blockX, int blockY, int gridSize) {
             this.rect = new GuiRectangle(blockX * gridSize, blockY * gridSize, gridSize, gridSize);

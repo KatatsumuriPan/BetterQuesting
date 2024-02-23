@@ -1,16 +1,5 @@
 package betterquesting.api2.client.gui.panels.lists;
 
-import java.util.ArrayDeque;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
-import net.minecraft.entity.player.EntityPlayer;
-
-import org.apache.commons.lang3.StringUtils;
-
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.IQuest;
@@ -30,9 +19,17 @@ import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.misc.QuestSearchEntry;
 import betterquesting.questing.QuestDatabase;
 import betterquesting.questing.QuestLineDatabase;
+import net.minecraft.entity.player.EntityPlayer;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayDeque;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class CanvasQuestSearch extends CanvasSearch<QuestSearchEntry, QuestSearchEntry> {
-
     private List<QuestSearchEntry> questList;
     private Consumer<QuestSearchEntry> questOpenCallback;
     private Consumer<QuestSearchEntry> questHighlightCallback;
@@ -54,14 +51,13 @@ public class CanvasQuestSearch extends CanvasSearch<QuestSearchEntry, QuestSearc
     }
 
     private List<QuestSearchEntry> collectQuests() {
-        return QuestLineDatabase.INSTANCE.getEntries().stream()
-                .flatMap(iQuestLineDBEntry -> iQuestLineDBEntry.getValue().getEntries().stream().map(
-                        iQuestLineEntryDBEntry -> createQuestSearchEntry(iQuestLineEntryDBEntry, iQuestLineDBEntry)))
-                .collect(Collectors.toList());
+        return QuestLineDatabase.INSTANCE.getEntries().stream().flatMap(iQuestLineDBEntry ->
+                iQuestLineDBEntry.getValue().getEntries().stream().map(iQuestLineEntryDBEntry ->
+                        createQuestSearchEntry(iQuestLineEntryDBEntry, iQuestLineDBEntry)
+                )).collect(Collectors.toList());
     }
 
-    private QuestSearchEntry createQuestSearchEntry(DBEntry<IQuestLineEntry> iQuestLineEntryDBEntry,
-                                                    DBEntry<IQuestLine> iQuestLineDBEntry) {
+    private QuestSearchEntry createQuestSearchEntry(DBEntry<IQuestLineEntry> iQuestLineEntryDBEntry, DBEntry<IQuestLine> iQuestLineDBEntry) {
         int questId = iQuestLineEntryDBEntry.getID();
         DBEntry<IQuest> quest = new DBEntry<>(questId, QuestDatabase.INSTANCE.getValue(questId));
         return new QuestSearchEntry(quest, iQuestLineDBEntry);
@@ -76,45 +72,43 @@ public class CanvasQuestSearch extends CanvasSearch<QuestSearchEntry, QuestSearc
                 results.add(entry);
             }
         } else if (
-        // quest id
-        StringUtils.containsIgnoreCase(String.valueOf(entry.getQuest().getID()), query)
+                // quest id
+                StringUtils.containsIgnoreCase(String.valueOf(entry.getQuest().getID()), query)
 
-        // quest title
-                || StringUtils.containsIgnoreCase(value.getProperty(NativeProps.NAME), query) ||
-                StringUtils.containsIgnoreCase(QuestTranslation.translate(value.getProperty(NativeProps.NAME)), query)
+                // quest title
+                || StringUtils.containsIgnoreCase(value.getProperty(NativeProps.NAME), query)
+                || StringUtils.containsIgnoreCase(QuestTranslation.translate(value.getProperty(NativeProps.NAME)), query)
 
                 // quest description
-                || StringUtils.containsIgnoreCase(value.getProperty(NativeProps.DESC), query) || StringUtils
-                        .containsIgnoreCase(QuestTranslation.translate(value.getProperty(NativeProps.DESC)), query)) {
+                || StringUtils.containsIgnoreCase(value.getProperty(NativeProps.DESC), query)
+                || StringUtils.containsIgnoreCase(QuestTranslation.translate(value.getProperty(NativeProps.DESC)), query)) {
 
-                            results.add(entry);
-                        } else {
-                            // task-specific search text
-                            for (DBEntry<ITask> task : entry.getQuest().getValue().getTasks().getEntries()) {
-                                if (task.getValue().getTextForSearch() == null) continue;
-                                for (String text : task.getValue().getTextForSearch()) {
-                                    if (StringUtils.containsIgnoreCase(text, query)) {
-                                        results.add(entry);
-                                    }
-                                }
-                            }
-                        }
+            results.add(entry);
+        } else {
+            // task-specific search text
+            for (DBEntry<ITask> task : entry.getQuest().getValue().getTasks().getEntries()) {
+                if (task.getValue().getTextForSearch() == null) continue;
+                for (String text : task.getValue().getTextForSearch()) {
+                    if (StringUtils.containsIgnoreCase(text, query)) {
+                        results.add(entry);
+                    }
+                }
+            }
+        }
     }
 
     @Override
     protected boolean addResult(QuestSearchEntry entry, int index, int cachedWidth) {
         PanelButtonCustom buttonContainer = createContainerButton(entry, index, cachedWidth);
 
-        addTextBox(cachedWidth, buttonContainer, 56, 6,
-                entry.getQuestLineEntry().getValue().getProperty(NativeProps.NAME));
+        addTextBox(cachedWidth, buttonContainer, 56, 6, entry.getQuestLineEntry().getValue().getProperty(NativeProps.NAME));
         addTextBox(cachedWidth, buttonContainer, 36, 20, entry.getQuest().getValue().getProperty(NativeProps.NAME));
 
         return true;
     }
 
     private PanelButtonCustom createContainerButton(QuestSearchEntry entry, int index, int cachedWidth) {
-        PanelButtonCustom buttonContainer = new PanelButtonCustom(new GuiRectangle(0, index * 32, cachedWidth, 32, 0),
-                2);
+        PanelButtonCustom buttonContainer = new PanelButtonCustom(new GuiRectangle(0, index * 32, cachedWidth, 32, 0), 2);
         buttonContainer.setCallback(panelButtonCustom -> {
             if (!buttonContainer.isActive())
                 return;
@@ -131,7 +125,9 @@ public class CanvasQuestSearch extends CanvasSearch<QuestSearchEntry, QuestSearc
                         new GuiRectangle(36, 2, 14, 14, 0),
                         new OreDictTexture(1F, entry.getQuestLineEntry().getValue().getProperty(NativeProps.ICON),
                                 false,
-                                true)));
+                                true)
+                )
+        );
         return buttonContainer;
     }
 
@@ -140,7 +136,8 @@ public class CanvasQuestSearch extends CanvasSearch<QuestSearchEntry, QuestSearc
                 new GuiRectangle(2, 2, 28, 28),
                 0,
                 "",
-                entry.getQuest());
+                entry.getQuest()
+        );
 
         questButton.setCallback(value -> {
             if (!questButton.isActive())
@@ -152,8 +149,7 @@ public class CanvasQuestSearch extends CanvasSearch<QuestSearchEntry, QuestSearc
     }
 
     private void addTextBox(int cachedWidth, PanelButtonCustom buttonContainer, int xOffset, int yOffset, String text) {
-        PanelTextBox questName = new PanelTextBox(new GuiRectangle(xOffset, yOffset, cachedWidth - xOffset, 16),
-                QuestTranslation.translate(text));
+        PanelTextBox questName = new PanelTextBox(new GuiRectangle(xOffset, yOffset, cachedWidth - xOffset, 16), QuestTranslation.translate(text));
         buttonContainer.addPanel(questName);
     }
 

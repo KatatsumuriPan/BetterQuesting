@@ -1,5 +1,10 @@
 package betterquesting.network.handlers;
 
+import betterquesting.api.api.ApiReference;
+import betterquesting.api.api.QuestingAPI;
+import betterquesting.api.network.QuestingPacket;
+import betterquesting.core.BetterQuesting;
+import betterquesting.questing.rewards.loot.LootRegistry;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -8,17 +13,9 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.apache.logging.log4j.Level;
 
-import betterquesting.api.api.ApiReference;
-import betterquesting.api.api.QuestingAPI;
-import betterquesting.api.network.QuestingPacket;
-import betterquesting.core.BetterQuesting;
-import betterquesting.questing.rewards.loot.LootRegistry;
-
 public class NetLootImport {
-
     private static final ResourceLocation ID_NAME = new ResourceLocation("bq_standard:loot_import");
 
     public static void registerHandler() {
@@ -41,8 +38,7 @@ public class NetLootImport {
         if (sender.getServer() == null) return;
 
         if (!sender.getServer().getPlayerList().canSendCommands(sender.getGameProfile())) {
-            BetterQuesting.logger.log(Level.WARN, "Player " + sender.getName() + " (UUID:" +
-                    QuestingAPI.getQuestingUUID(sender) + ") tried to import loot without OP permissions!");
+            BetterQuesting.logger.log(Level.WARN, "Player " + sender.getName() + " (UUID:" + QuestingAPI.getQuestingUUID(sender) + ") tried to import loot without OP permissions!");
             sender.sendMessage(new TextComponentString(TextFormatting.RED + "You need to be OP to edit loot!"));
             return; // Player is not operator. Do nothing
         }

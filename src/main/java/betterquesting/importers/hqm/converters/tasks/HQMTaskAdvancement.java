@@ -1,19 +1,16 @@
 package betterquesting.importers.hqm.converters.tasks;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.util.ResourceLocation;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.questing.tasks.TaskAdvancement;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import net.minecraft.util.ResourceLocation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HQMTaskAdvancement {
-
     public ITask[] convertTask(JsonObject json) {
         List<ITask> tasks = new ArrayList<>();
 

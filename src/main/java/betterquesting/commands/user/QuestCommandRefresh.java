@@ -1,12 +1,5 @@
 package betterquesting.commands.user;
 
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.server.permission.DefaultPermissionLevel;
-
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.questing.party.IParty;
 import betterquesting.api2.storage.DBEntry;
@@ -15,9 +8,14 @@ import betterquesting.network.handlers.NetBulkSync;
 import betterquesting.network.handlers.NetNameSync;
 import betterquesting.questing.party.PartyManager;
 import betterquesting.storage.NameCache;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.server.permission.DefaultPermissionLevel;
 
 public class QuestCommandRefresh extends QuestCommandBase {
-
     @Override
     public String getCommand() {
         return "refresh";
@@ -52,4 +50,5 @@ public class QuestCommandRefresh extends QuestCommandBase {
     public String getPermissionDescription() {
         return "Permission to manually resync the local questing database with the server in case of potential desync issues";
     }
+
 }

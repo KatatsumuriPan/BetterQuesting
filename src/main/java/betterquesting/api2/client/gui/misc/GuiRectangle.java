@@ -3,7 +3,6 @@ package betterquesting.api2.client.gui.misc;
 import javax.annotation.Nonnull;
 
 public class GuiRectangle implements IGuiRect {
-
     public int x, y, w, h, d;
     private IGuiRect parent = null;
 
@@ -67,15 +66,13 @@ public class GuiRectangle implements IGuiRect {
         int y2 = y1 + this.getHeight();
         return x >= x1 && x < x2 && y >= y1 && y < y2;
     }
-
-    /*
-     * @Override
-     * public void translate(int dx, int dy)
-     * {
-     * this.x += dx;
-     * this.y += dy;
-     * }
-     */
+	
+	/*@Override
+	public void translate(int dx, int dy)
+	{
+		this.x += dx;
+		this.y += dy;
+	}*/
 
     @Override
     public int compareTo(@Nonnull IGuiRect o) {

@@ -1,17 +1,5 @@
 package betterquesting.questing.rewards;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ResourceLocation;
-
-import org.apache.logging.log4j.Level;
-
 import betterquesting.NBTReplaceUtil;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.questing.IQuest;
@@ -24,9 +12,18 @@ import betterquesting.api2.storage.DBEntry;
 import betterquesting.client.gui2.rewards.PanelRewardItem;
 import betterquesting.core.BetterQuesting;
 import betterquesting.questing.rewards.factory.FactoryRewardItem;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
+import org.apache.logging.log4j.Level;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RewardItem implements IReward {
-
     public final List<BigItemStack> items = new ArrayList<>();
 
     @Override
@@ -52,8 +49,7 @@ public class RewardItem implements IReward {
             for (ItemStack s : stack.getCombinedStacks()) {
                 if (s.getTagCompound() != null) {
                     s.setTagCompound(NBTReplaceUtil.replaceStrings(s.getTagCompound(), "VAR_NAME", player.getName()));
-                    s.setTagCompound(NBTReplaceUtil.replaceStrings(s.getTagCompound(), "VAR_UUID",
-                            QuestingAPI.getQuestingUUID(player).toString()));
+                    s.setTagCompound(NBTReplaceUtil.replaceStrings(s.getTagCompound(), "VAR_UUID", QuestingAPI.getQuestingUUID(player).toString()));
                 }
 
                 if (!player.inventory.addItemStackToInventory(s)) {

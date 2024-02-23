@@ -1,7 +1,5 @@
 package betterquesting.client.themes;
 
-import com.google.gson.JsonObject;
-
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import betterquesting.api2.client.gui.resources.factories.colors.FactoryColorPulse;
 import betterquesting.api2.client.gui.resources.factories.colors.FactoryColorSequence;
@@ -14,9 +12,9 @@ import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import betterquesting.api2.client.gui.themes.IResourceReg;
 import betterquesting.api2.registry.FunctionRegistry;
 import betterquesting.api2.registry.IFactoryData;
+import com.google.gson.JsonObject;
 
 public class ResourceRegistry implements IResourceReg {
-
     public static final ResourceRegistry INSTANCE = new ResourceRegistry();
 
     private final FunctionRegistry<IGuiTexture, JsonObject> TEX_REG = new FunctionRegistry<>();

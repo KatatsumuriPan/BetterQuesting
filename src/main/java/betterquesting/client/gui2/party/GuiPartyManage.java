@@ -1,13 +1,5 @@
 package betterquesting.client.gui2.party;
 
-import java.util.List;
-import java.util.UUID;
-
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.nbt.NBTTagCompound;
-
-import org.lwjgl.input.Keyboard;
-
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.client.gui.misc.INeedsRefresh;
 import betterquesting.api.enums.EnumPartyStatus;
@@ -47,9 +39,14 @@ import betterquesting.questing.party.PartyManager;
 import betterquesting.storage.LifeDatabase;
 import betterquesting.storage.NameCache;
 import betterquesting.storage.QuestSettings;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.nbt.NBTTagCompound;
+import org.lwjgl.input.Keyboard;
+
+import java.util.List;
+import java.util.UUID;
 
 public class GuiPartyManage extends GuiScreenCanvas implements IPEventListener, INeedsRefresh {
-
     private IParty party;
     private int partyID = -1;
     private PanelTextField<String> flName;
@@ -102,39 +99,29 @@ public class GuiPartyManage extends GuiScreenCanvas implements IPEventListener, 
         if (status == null) status = EnumPartyStatus.MEMBER; // Fallback (potentially exploitable I know)
 
         // Background panel
-        CanvasTextured cvBackground = new CanvasTextured(
-                new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0),
-                PresetTexture.PANEL_MAIN.getTexture());
+        CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0), PresetTexture.PANEL_MAIN.getTexture());
         this.addPanel(cvBackground);
 
-        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), 0,
-                QuestTranslation.translate("gui.back")));
+        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), 0, QuestTranslation.translate("gui.back")));
 
-        PanelTextBox txTitle = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0),
-                QuestTranslation.translate("betterquesting.title.party",
-                        party.getProperties().getProperty(NativeProps.NAME))).setAlignment(1);
+        PanelTextBox txTitle = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0), QuestTranslation.translate("betterquesting.title.party", party.getProperties().getProperty(NativeProps.NAME))).setAlignment(1);
         txTitle.setColor(PresetColor.TEXT_HEADER.getColor());
         cvBackground.addPanel(txTitle);
 
         // Left side
 
-        CanvasEmpty cvLeftHalf = new CanvasEmpty(
-                new GuiTransform(GuiAlign.HALF_LEFT, new GuiPadding(16, 64, 8, 64), 0));
+        CanvasEmpty cvLeftHalf = new CanvasEmpty(new GuiTransform(GuiAlign.HALF_LEFT, new GuiPadding(16, 64, 8, 64), 0));
         cvBackground.addPanel(cvLeftHalf);
 
-        PanelButtonStorage<String> btnLeave = new PanelButtonStorage<>(
-                new GuiTransform(GuiAlign.MID_CENTER, -75, 32, 70, 16, 0), 3,
-                QuestTranslation.translate("betterquesting.btn.party_leave"), mc.player.getGameProfile().getName());
+        PanelButtonStorage<String> btnLeave = new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, -75, 32, 70, 16, 0), 3, QuestTranslation.translate("betterquesting.btn.party_leave"), mc.player.getGameProfile().getName());
         cvLeftHalf.addPanel(btnLeave);
 
-        PanelButton btnInvite = new PanelButton(new GuiTransform(GuiAlign.MID_CENTER, 5, 32, 70, 16, 0), 2,
-                QuestTranslation.translate("betterquesting.btn.party_invite"));
+        PanelButton btnInvite = new PanelButton(new GuiTransform(GuiAlign.MID_CENTER, 5, 32, 70, 16, 0), 2, QuestTranslation.translate("betterquesting.btn.party_invite"));
         cvLeftHalf.addPanel(btnInvite);
         btnInvite.setActive(status.ordinal() >= EnumPartyStatus.ADMIN.ordinal());
 
         if (flName == null)
-            flName = new PanelTextField<>(new GuiTransform(GuiAlign.MID_CENTER, -75, -32, 134, 16, 0),
-                    party.getProperties().getProperty(NativeProps.NAME), FieldFilterString.INSTANCE);
+            flName = new PanelTextField<>(new GuiTransform(GuiAlign.MID_CENTER, -75, -32, 134, 16, 0), party.getProperties().getProperty(NativeProps.NAME), FieldFilterString.INSTANCE);
         cvLeftHalf.addPanel(flName);
         flName.setActive(status.ordinal() >= EnumPartyStatus.OWNER.ordinal());
 
@@ -144,24 +131,20 @@ public class GuiPartyManage extends GuiScreenCanvas implements IPEventListener, 
         btnSetName.setIcon(PresetIcon.ICON_REFRESH.getTexture());
         btnSetName.setActive(status.ordinal() >= EnumPartyStatus.OWNER.ordinal());
 
-        PanelTextBox txName = new PanelTextBox(new GuiTransform(GuiAlign.MID_CENTER, -75, -48, 134, 16, 0),
-                QuestTranslation.translate("betterquesting.gui.name"));
+        PanelTextBox txName = new PanelTextBox(new GuiTransform(GuiAlign.MID_CENTER, -75, -48, 134, 16, 0), QuestTranslation.translate("betterquesting.gui.name"));
         txName.setColor(PresetColor.TEXT_HEADER.getColor());
         cvLeftHalf.addPanel(txName);
 
         // Right side
 
-        CanvasEmpty cvRightHalf = new CanvasEmpty(
-                new GuiTransform(GuiAlign.HALF_RIGHT, new GuiPadding(8, 32, 16, 32), 0));
+        CanvasEmpty cvRightHalf = new CanvasEmpty(new GuiTransform(GuiAlign.HALF_RIGHT, new GuiPadding(8, 32, 16, 32), 0));
         cvBackground.addPanel(cvRightHalf);
 
-        PanelTextBox txInvite = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 0, -16), 0),
-                QuestTranslation.translate("betterquesting.gui.party_members")).setAlignment(1);
+        PanelTextBox txInvite = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 0, -16), 0), QuestTranslation.translate("betterquesting.gui.party_members")).setAlignment(1);
         txInvite.setColor(PresetColor.TEXT_HEADER.getColor());
         cvRightHalf.addPanel(txInvite);
 
-        CanvasScrolling cvUserList = new CanvasScrolling(
-                new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 16, 8, 0), 0));
+        CanvasScrolling cvUserList = new CanvasScrolling(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 16, 8, 0), 0));
         cvRightHalf.addPanel(cvUserList);
 
         if (scUserList == null)
@@ -184,17 +167,14 @@ public class GuiPartyManage extends GuiScreenCanvas implements IPEventListener, 
                 mName = mc.fontRenderer.trimStringToWidth(mName, cvWidth - 58 - elSize) + "...";
             }
 
-            PanelPlayerPortrait pnPortrait = new PanelPlayerPortrait(new GuiRectangle(0, i * 32, 32, 32, 0), mid,
-                    mName);
+            PanelPlayerPortrait pnPortrait = new PanelPlayerPortrait(new GuiRectangle(0, i * 32, 32, 32, 0), mid, mName);
             cvUserList.addPanel(pnPortrait);
 
             PanelTextBox txMemName = new PanelTextBox(new GuiRectangle(32, i * 32 + 4, cvWidth - 32, 12, 0), mName);
             txMemName.setColor(PresetColor.TEXT_MAIN.getColor());
             cvUserList.addPanel(txMemName);
 
-            PanelButtonStorage<String> btnKick = new PanelButtonStorage<>(
-                    new GuiRectangle(cvWidth - 32, i * 32, 32, 32, 0), 3,
-                    QuestTranslation.translate("betterquesting.btn.party_kick"), mName);
+            PanelButtonStorage<String> btnKick = new PanelButtonStorage<>(new GuiRectangle(cvWidth - 32, i * 32, 32, 32, 0), 3, QuestTranslation.translate("betterquesting.btn.party_kick"), mName);
             cvUserList.addPanel(btnKick);
 
             PanelGeneric pnItem = new PanelGeneric(new GuiRectangle(32, i * 32 + 16, 16, 16, 0), txHeart);
@@ -208,8 +188,7 @@ public class GuiPartyManage extends GuiScreenCanvas implements IPEventListener, 
                 lifeCount = " x \u221E";
             }
 
-            PanelTextBox txLives = new PanelTextBox(new GuiRectangle(48, i * 32 + 20, cvWidth - 48 - 32, 12, 0),
-                    lifeCount);
+            PanelTextBox txLives = new PanelTextBox(new GuiRectangle(48, i * 32 + 20, cvWidth - 48 - 32, 12, 0), lifeCount);
             txLives.setColor(PresetColor.TEXT_MAIN.getColor());
             cvUserList.addPanel(txLives);
         }
@@ -222,8 +201,7 @@ public class GuiPartyManage extends GuiScreenCanvas implements IPEventListener, 
         ls0.setParent(cvBackground.getTransform());
         IGuiRect le0 = new GuiTransform(GuiAlign.BOTTOM_CENTER, 0, -32, 0, 0, 0);
         le0.setParent(cvBackground.getTransform());
-        PanelLine paLine0 = new PanelLine(ls0, le0, PresetLine.GUI_DIVIDER.getLine(), 1,
-                PresetColor.GUI_DIVIDER.getColor(), 1);
+        PanelLine paLine0 = new PanelLine(ls0, le0, PresetLine.GUI_DIVIDER.getLine(), 1, PresetColor.GUI_DIVIDER.getColor(), 1);
         cvBackground.addPanel(paLine0);
     }
 

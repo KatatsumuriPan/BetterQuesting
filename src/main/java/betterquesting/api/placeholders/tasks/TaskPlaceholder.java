@@ -1,23 +1,20 @@
 package betterquesting.api.placeholders.tasks;
 
-import java.util.List;
-import java.util.UUID;
-
-import javax.annotation.Nullable;
-
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.IGuiPanel;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.utils.ParticipantInfo;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.UUID;
 
 public class TaskPlaceholder implements ITask {
-
     private NBTTagCompound nbtData = new NBTTagCompound();
 
     public void setTaskConfigData(NBTTagCompound nbt) {
@@ -69,7 +66,8 @@ public class TaskPlaceholder implements ITask {
     }
 
     @Override
-    public void detect(ParticipantInfo participant, DBEntry<IQuest> quest) {}
+    public void detect(ParticipantInfo participant, DBEntry<IQuest> quest) {
+    }
 
     @Override
     public boolean isComplete(UUID uuid) {
@@ -77,10 +75,12 @@ public class TaskPlaceholder implements ITask {
     }
 
     @Override
-    public void setComplete(UUID uuid) {}
+    public void setComplete(UUID uuid) {
+    }
 
     @Override
-    public void resetUser(UUID uuid) {}
+    public void resetUser(UUID uuid) {
+    }
 
     @Override
     public IGuiPanel getTaskGui(IGuiRect rect, DBEntry<IQuest> quest) {

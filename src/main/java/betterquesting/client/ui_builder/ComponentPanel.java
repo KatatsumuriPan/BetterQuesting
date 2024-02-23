@@ -1,27 +1,23 @@
 package betterquesting.client.ui_builder;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StringUtils;
-
-import org.lwjgl.util.vector.Vector4f;
-
 import betterquesting.api2.client.gui.misc.GuiAlign;
 import betterquesting.api2.client.gui.misc.GuiPadding;
 import betterquesting.api2.client.gui.misc.GuiTransform;
 import betterquesting.api2.client.gui.panels.IGuiPanel;
 import betterquesting.api2.storage.INBTSaveLoad;
 import betterquesting.core.ModReference;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StringUtils;
+import org.lwjgl.util.vector.Vector4f;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ComponentPanel implements INBTSaveLoad<NBTTagCompound> {
-
     // Purely for organisational purposes
     public String refName = "New Panel";
     public String panelType = new ResourceLocation(ModReference.MODID, "canvas_empty").toString();
@@ -74,14 +70,11 @@ public class ComponentPanel implements INBTSaveLoad<NBTTagCompound> {
     }
 
     public IGuiPanel build() {
-        Vector4f anchor = new Vector4f(transTag.getFloat("anchor_left"), transTag.getFloat("anchor_top"),
-                transTag.getFloat("anchor_right"), transTag.getFloat("anchor_bottom"));
-        GuiPadding padding = new GuiPadding(transTag.getInteger("pad_left"), transTag.getInteger("pad_top"),
-                transTag.getInteger("pad_right"), transTag.getInteger("pad_bottom"));
+        Vector4f anchor = new Vector4f(transTag.getFloat("anchor_left"), transTag.getFloat("anchor_top"), transTag.getFloat("anchor_right"), transTag.getFloat("anchor_bottom"));
+        GuiPadding padding = new GuiPadding(transTag.getInteger("pad_left"), transTag.getInteger("pad_top"), transTag.getInteger("pad_right"), transTag.getInteger("pad_bottom"));
         GuiTransform transform = new GuiTransform(anchor, padding, transTag.getInteger("depth"));
 
-        ResourceLocation res = StringUtils.isNullOrEmpty(panelType) ?
-                new ResourceLocation(ModReference.MODID, "canvas_empty") : new ResourceLocation(panelType);
+        ResourceLocation res = StringUtils.isNullOrEmpty(panelType) ? new ResourceLocation(ModReference.MODID, "canvas_empty") : new ResourceLocation(panelType);
         return ComponentRegistry.INSTANCE.createNew(res, transform, panelData);
     }
 

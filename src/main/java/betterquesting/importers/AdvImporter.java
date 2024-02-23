@@ -1,31 +1,5 @@
 package betterquesting.importers;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.nio.file.FileVisitOption;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.*;
-import java.util.Map.Entry;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import net.minecraft.advancements.FrameType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.JsonUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-
-import org.apache.commons.io.FilenameUtils;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-
 import betterquesting.api.client.importers.IImporter;
 import betterquesting.api.enums.EnumQuestVisibility;
 import betterquesting.api.properties.NativeProps;
@@ -40,9 +14,30 @@ import betterquesting.questing.rewards.RewardItem;
 import betterquesting.questing.rewards.RewardRecipe;
 import betterquesting.questing.rewards.RewardXP;
 import betterquesting.questing.tasks.TaskTrigger;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import net.minecraft.advancements.FrameType;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.JsonUtils;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import org.apache.commons.io.FilenameUtils;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.io.File;
+import java.io.FileFilter;
+import java.nio.file.FileVisitOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
+import java.util.Map.Entry;
 
 public class AdvImporter implements IImporter {
-
     public static final AdvImporter INSTANCE = new AdvImporter();
     private static final FileFilter FILTER = new FileExtensionFilter(".json");
 
@@ -66,8 +61,7 @@ public class AdvImporter implements IImporter {
         ID_MAP.clear();
         PENDING_CHILDREN.clear();
 
-        if (files.length == 1 && !files[0].isDirectory() &&
-                files[0].getName().equalsIgnoreCase("bq_adv_manifest.json")) {
+        if (files.length == 1 && !files[0].isDirectory() && files[0].getName().equalsIgnoreCase("bq_adv_manifest.json")) {
             System.out.println("Importing manifest file...");
             JsonObject manifest = JsonHelper.ReadFromFile(files[0]);
 
@@ -85,12 +79,12 @@ public class AdvImporter implements IImporter {
                         if (!"json".equals(FilenameUtils.getExtension(path.toString()))) continue;
 
                         String relPath = folder.toPath().relativize(path).toString();
-                        ResourceLocation advID = new ResourceLocation(entry.getKey(),
-                                FilenameUtils.removeExtension(relPath).replaceAll("\\\\", "/"));
+                        ResourceLocation advID = new ResourceLocation(entry.getKey(), FilenameUtils.removeExtension(relPath).replaceAll("\\\\", "/"));
                         loadAdvancemenet(advID, JsonHelper.ReadFromFile(path.toFile()), questDB);
                     }
 
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
             }
         } else {
             for (File selected : files) {
@@ -102,8 +96,7 @@ public class AdvImporter implements IImporter {
 
         // Partial imports may
         for (DBEntry<IQuest> entry : ID_MAP.values()) {
-            if (entry.getValue().getRequirements().length <= 0 &&
-                    entry.getValue().getProperty(NativeProps.VISIBILITY) != EnumQuestVisibility.HIDDEN)
+            if (entry.getValue().getRequirements().length <= 0 && entry.getValue().getProperty(NativeProps.VISIBILITY) != EnumQuestVisibility.HIDDEN)
                 generateLayout(entry, lineDB);
         }
     }
@@ -119,11 +112,9 @@ public class AdvImporter implements IImporter {
         File lastDir = file;
         File parent = file.getParentFile();
         while (parent != null) {
-            if (parent.getName().equalsIgnoreCase("advancements") || (parent.getName().equalsIgnoreCase("json") &&
-                    parent.getParentFile() != null && parent.getParentFile().getName().equalsIgnoreCase("triumph"))) {
+            if (parent.getName().equalsIgnoreCase("advancements") || (parent.getName().equalsIgnoreCase("json") && parent.getParentFile() != null && parent.getParentFile().getName().equalsIgnoreCase("triumph"))) {
                 String relPath = lastDir.toPath().relativize(file.toPath()).toString();
-                return new ResourceLocation(lastDir.getName(),
-                        FilenameUtils.removeExtension(relPath).replaceAll("\\\\", "/"));
+                return new ResourceLocation(lastDir.getName(), FilenameUtils.removeExtension(relPath).replaceAll("\\\\", "/"));
             }
 
             lastDir = parent;
@@ -132,9 +123,7 @@ public class AdvImporter implements IImporter {
         return new ResourceLocation("minecraft", FilenameUtils.removeExtension(file.getName()));
     }
 
-    private final TreeMap<ResourceLocation, DBEntry<IQuest>> ID_MAP = new TreeMap<>(
-            (o1, o2) -> o2.toString().compareToIgnoreCase(o1.toString())); // Reverse sort... because Minecraft does (I
-                                                                           // think?).
+    private final TreeMap<ResourceLocation, DBEntry<IQuest>> ID_MAP = new TreeMap<>((o1, o2) -> o2.toString().compareToIgnoreCase(o1.toString())); // Reverse sort... because Minecraft does (I think?).
     private final HashMap<ResourceLocation, List<IQuest>> PENDING_CHILDREN = new HashMap<>();
 
     private void registerQuest(ResourceLocation id, DBEntry<IQuest> entry) {
@@ -310,8 +299,7 @@ public class AdvImporter implements IImporter {
                     AdvTreeNode child = childStack.pop();
                     int prev = child.offY;
                     int cPosYBase = Math.max(0, child.getParent().getChildren().size() - 1) * 16;
-                    int cPosY = child.getParent().getChildren().size() <= 1 ? 0 :
-                            (child.getParent().getChildren().indexOf(child) * 32 - cPosYBase);
+                    int cPosY = child.getParent().getChildren().size() <= 1 ? 0 : (child.getParent().getChildren().indexOf(child) * 32 - cPosYBase);
                     int pOff = child.getParent().getPosY() - (child.getPosY() - child.offY);
                     child.offY = pOff + cPosY;
                     if (child.aboveNode != null) child.offY = Math.max(0, child.offY);
@@ -333,8 +321,7 @@ public class AdvImporter implements IImporter {
                 if (node.getChildren().size() <= 0) continue;
 
                 int prev = node.offY;
-                int cPosY = (node.getChildren().get(node.getChildren().size() - 1).getPosY() + 24) -
-                        node.getChildren().get(0).getPosY();
+                int cPosY = (node.getChildren().get(node.getChildren().size() - 1).getPosY() + 24) - node.getChildren().get(0).getPosY();
                 cPosY = (cPosY / 2) - 12;
                 int pOff = node.getChildren().get(0).getPosY() - (node.getPosY() - node.offY);
                 int nPos = pOff + cPosY;
@@ -405,7 +392,6 @@ public class AdvImporter implements IImporter {
     }
 
     private static class AdvTreeNode {
-
         // Used for positioning, not heirachy
         private AdvTreeNode aboveNode;
         private int depth = 0;

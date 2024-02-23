@@ -1,7 +1,13 @@
 package betterquesting.importers.hqm;
 
-import java.util.HashMap;
-
+import betterquesting.api.placeholders.PlaceholderConverter;
+import betterquesting.api.utils.BigItemStack;
+import betterquesting.api.utils.JsonHelper;
+import betterquesting.core.BetterQuesting;
+import betterquesting.importers.hqm.converters.items.HQMItem;
+import betterquesting.importers.hqm.converters.items.HQMItemBag;
+import betterquesting.importers.hqm.converters.items.HQMItemHeart;
+import com.google.gson.JsonObject;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,26 +16,16 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
-
 import org.apache.logging.log4j.Level;
 
-import com.google.gson.JsonObject;
-
-import betterquesting.api.placeholders.PlaceholderConverter;
-import betterquesting.api.utils.BigItemStack;
-import betterquesting.api.utils.JsonHelper;
-import betterquesting.core.BetterQuesting;
-import betterquesting.importers.hqm.converters.items.HQMItem;
-import betterquesting.importers.hqm.converters.items.HQMItemBag;
-import betterquesting.importers.hqm.converters.items.HQMItemHeart;
+import java.util.HashMap;
 
 public class HQMUtilities {
-
     /**
      * Get HQM formatted item, Type 1
-     * This can return multiple stacks in the event the stack size exceeds 127
      */
-    public static BigItemStack HQMStackT1(JsonObject json) {
+    public static BigItemStack HQMStackT1(JsonObject json) // This can return multiple stacks in the event the stack size exceeds 127
+    {
         String iID = JsonHelper.GetString(json, "id", "minecraft:stone");
         Item item = Item.REGISTRY.getObject(new ResourceLocation(iID));
         int amount = JsonHelper.GetNumber(json, "amount", 1).intValue();
@@ -38,8 +34,7 @@ public class HQMUtilities {
 
         if (json.has("nbt")) {
             try {
-                // Must use this method. Gson formatting will damage it otherwise
-                String rawNbt = json.get("nbt").toString();
+                String rawNbt = json.get("nbt").toString(); // Must use this method. Gson formatting will damage it otherwise
 
                 // Hack job to fix backslashes (why are 2 Json formats being used in HQM?!)
                 rawNbt = rawNbt.replaceFirst("\"", ""); // Delete first quote
@@ -53,8 +48,7 @@ public class HQMUtilities {
 
                 tags = JsonToNBT.getTagFromJson(rawNbt);
             } catch (Exception e) {
-                BetterQuesting.logger.log(Level.ERROR,
-                        "Unable to convert HQM NBT data. This is likely a HQM Gson/Json formatting issue", e);
+                BetterQuesting.logger.log(Level.ERROR, "Unable to convert HQM NBT data. This is likely a HQM Gson/Json formatting issue", e);
             }
         }
 
@@ -66,9 +60,9 @@ public class HQMUtilities {
 
     /**
      * Get HQM formatted item, Type 2
-     * This can return multiple stacks in the event the stack size exceeds 127
      */
-    public static BigItemStack HQMStackT2(JsonObject rJson) {
+    public static BigItemStack HQMStackT2(JsonObject rJson) // This can return multiple stacks in the event the stack size exceeds 127
+    {
         JsonObject json = JsonHelper.GetObject(rJson, "item");
         String iID = JsonHelper.GetString(json, "id", "minecraft:stone");
         Item item = Item.REGISTRY.getObject(new ResourceLocation(iID));
@@ -80,8 +74,7 @@ public class HQMUtilities {
 
         if (json.has("nbt")) {
             try {
-                // Must use this method. Gson formatting will damage it otherwise
-                String rawNbt = json.get("nbt").toString();
+                String rawNbt = json.get("nbt").toString(); // Must use this method. Gson formatting will damage it otherwise
 
                 // Hack job to fix backslashes (why are 2 Json formats being used in HQM?!)
                 rawNbt = rawNbt.replaceFirst("\"", ""); // Delete first quote
@@ -95,8 +88,7 @@ public class HQMUtilities {
 
                 tags = JsonToNBT.getTagFromJson(rawNbt);
             } catch (Exception e) {
-                BetterQuesting.logger.log(Level.ERROR,
-                        "Unable to convert HQM NBT data. This is likely a HQM Gson/Json formatting issue", e);
+                BetterQuesting.logger.log(Level.ERROR, "Unable to convert HQM NBT data. This is likely a HQM Gson/Json formatting issue", e);
             }
         }
 

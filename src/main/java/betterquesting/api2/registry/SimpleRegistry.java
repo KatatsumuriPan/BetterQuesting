@@ -1,19 +1,16 @@
 package betterquesting.api2.registry;
 
+import betterquesting.core.BetterQuesting;
+import net.minecraft.util.ResourceLocation;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import net.minecraft.util.ResourceLocation;
-
-import betterquesting.core.BetterQuesting;
-
 public class SimpleRegistry<T> {
-
     private final HashMap<ResourceLocation, Callable<T>> factories = new HashMap<>();
 
     public void register(@Nonnull ResourceLocation idname, @Nonnull Callable<T> factory) {

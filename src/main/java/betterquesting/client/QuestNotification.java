@@ -1,9 +1,8 @@
 package betterquesting.client;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-
+import betterquesting.api.storage.BQ_Settings;
+import betterquesting.api.utils.RenderUtils;
+import betterquesting.api2.utils.QuestTranslation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.ScaledResolution;
@@ -21,13 +20,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import betterquesting.api.storage.BQ_Settings;
-import betterquesting.api.utils.RenderUtils;
-import betterquesting.api2.utils.QuestTranslation;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class QuestNotification {
-
     public static void ScheduleNotice(String mainTxt, String subTxt, ItemStack icon, String sound) {
         if (BQ_Settings.questNotices) notices.add(new QuestNotice(mainTxt, subTxt, icon, sound));
     }
@@ -61,8 +59,7 @@ public class QuestNotification {
 
             notice.init = true;
             notice.startTime = Minecraft.getSystemTime();
-            mc.getSoundHandler().playSound(
-                    PositionedSoundRecord.getMasterRecord(new SoundEvent(new ResourceLocation(notice.sound)), 1.0F));
+            mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(new SoundEvent(new ResourceLocation(notice.sound)), 1.0F));
         }
 
         if (notice.getTime() >= 6F) {
@@ -85,8 +82,7 @@ public class QuestNotification {
         GlStateManager.color(1F, 1F, 1F, alpha);
 
         if (notice.icon != null) {
-            RenderUtils.RenderItemStack(mc, notice.icon, width / 2 - 8, height / 4 - 20, "",
-                    new Color(1F, 1F, 1F, alpha));
+            RenderUtils.RenderItemStack(mc, notice.icon, width / 2 - 8, height / 4 - 20, "", new Color(1F, 1F, 1F, alpha));
         }
 
         GlStateManager.enableBlend();
@@ -100,12 +96,11 @@ public class QuestNotification {
         txtW = RenderUtils.getStringWidth(tmp, mc.fontRenderer);
         mc.fontRenderer.drawString(tmp, width / 2 - txtW / 2, height / 4 + 12, color, false);
 
-        // GlStateManager.disableBlend();
+        //GlStateManager.disableBlend();
         GlStateManager.popMatrix();
     }
 
     public static class QuestNotice {
-
         public long startTime;
         public boolean init = false;
         private final String mainTxt;

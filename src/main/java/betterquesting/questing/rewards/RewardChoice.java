@@ -1,21 +1,5 @@
 package betterquesting.questing.rewards;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
-import java.util.UUID;
-
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.apache.logging.log4j.Level;
-
 import betterquesting.NBTReplaceUtil;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.questing.IQuest;
@@ -28,9 +12,22 @@ import betterquesting.api2.storage.DBEntry;
 import betterquesting.client.gui2.rewards.PanelRewardChoice;
 import betterquesting.core.BetterQuesting;
 import betterquesting.questing.rewards.factory.FactoryRewardChoice;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.logging.log4j.Level;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+import java.util.UUID;
 
 public class RewardChoice implements IReward {
-
     /**
      * The selected reward index to be claimed.<br>
      * Should only ever be used client side. NEVER onHit server
@@ -81,8 +78,7 @@ public class RewardChoice implements IReward {
         int tmp = selected.get(playerID);
 
         if (tmp < 0 || tmp >= choices.size()) {
-            BetterQuesting.logger.log(Level.ERROR, "Choice reward was forcibly claimed with invalid choice",
-                    new IllegalStateException());
+            BetterQuesting.logger.log(Level.ERROR, "Choice reward was forcibly claimed with invalid choice", new IllegalStateException());
             return;
         }
 
@@ -97,8 +93,7 @@ public class RewardChoice implements IReward {
         for (ItemStack s : stack.getCombinedStacks()) {
             if (s.getTagCompound() != null) {
                 s.setTagCompound(NBTReplaceUtil.replaceStrings(s.getTagCompound(), "VAR_NAME", player.getName()));
-                s.setTagCompound(NBTReplaceUtil.replaceStrings(s.getTagCompound(), "VAR_UUID",
-                        QuestingAPI.getQuestingUUID(player).toString()));
+                s.setTagCompound(NBTReplaceUtil.replaceStrings(s.getTagCompound(), "VAR_UUID", QuestingAPI.getQuestingUUID(player).toString()));
             }
 
             if (!player.inventory.addItemStackToInventory(s)) {

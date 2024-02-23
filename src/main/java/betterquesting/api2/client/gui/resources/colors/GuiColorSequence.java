@@ -1,7 +1,6 @@
 package betterquesting.api2.client.gui.resources.colors;
 
 public class GuiColorSequence implements IGuiColor {
-
     private final IGuiColor[] colors;
     private final float interval;
 

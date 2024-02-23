@@ -1,14 +1,5 @@
 package betterquesting.client.gui2.party;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.nbt.NBTTagCompound;
-
-import org.lwjgl.input.Keyboard;
-
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.party.IParty;
@@ -38,10 +29,16 @@ import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.network.handlers.NetPartyAction;
 import betterquesting.questing.party.PartyManager;
 import betterquesting.storage.NameCache;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.nbt.NBTTagCompound;
+import org.lwjgl.input.Keyboard;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 // TODO: Make this use a proper scrolling search for big servers
 public class GuiPartyInvite extends GuiScreenCanvas implements IPEventListener {
-
     private IParty party;
     private int partyID;
     private PanelTextField<String> flName;
@@ -69,37 +66,27 @@ public class GuiPartyInvite extends GuiScreenCanvas implements IPEventListener {
         Keyboard.enableRepeatEvents(true);
 
         // Background panel
-        CanvasTextured cvBackground = new CanvasTextured(
-                new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0),
-                PresetTexture.PANEL_MAIN.getTexture());
+        CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0), PresetTexture.PANEL_MAIN.getTexture());
         this.addPanel(cvBackground);
 
-        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), 0,
-                QuestTranslation.translate("gui.back")));
+        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), 0, QuestTranslation.translate("gui.back")));
 
-        PanelTextBox txTitle = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0),
-                QuestTranslation.translate("betterquesting.title.party_invite",
-                        party.getProperties().getProperty(NativeProps.NAME))).setAlignment(1);
+        PanelTextBox txTitle = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0), QuestTranslation.translate("betterquesting.title.party_invite", party.getProperties().getProperty(NativeProps.NAME))).setAlignment(1);
         txTitle.setColor(PresetColor.TEXT_HEADER.getColor());
         cvBackground.addPanel(txTitle);
 
-        flName = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(32, 32, 72, -48), 0), "",
-                FieldFilterString.INSTANCE);
+        flName = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(32, 32, 72, -48), 0), "", FieldFilterString.INSTANCE);
         flName.setMaxLength(16);
         flName.setWatermark("Username");
         cvBackground.addPanel(flName);
 
-        PanelButton btnInvite = new PanelButton(
-                new GuiTransform(GuiAlign.TOP_RIGHT, new GuiPadding(-72, 32, 32, -48), 0), 1,
-                QuestTranslation.translate("betterquesting.btn.party_invite"));
+        PanelButton btnInvite = new PanelButton(new GuiTransform(GuiAlign.TOP_RIGHT, new GuiPadding(-72, 32, 32, -48), 0), 1, QuestTranslation.translate("betterquesting.btn.party_invite"));
         cvBackground.addPanel(btnInvite);
 
-        CanvasScrolling cvNameList = new CanvasScrolling(
-                new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(32, 64, 40, 32), 0));
+        CanvasScrolling cvNameList = new CanvasScrolling(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(32, 64, 40, 32), 0));
         cvBackground.addPanel(cvNameList);
 
-        PanelVScrollBar scNameScroll = new PanelVScrollBar(
-                new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(0, 0, -8, 0), 0));
+        PanelVScrollBar scNameScroll = new PanelVScrollBar(new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(0, 0, -8, 0), 0));
         cvBackground.addPanel(scNameScroll);
         scNameScroll.getTransform().setParent(cvNameList.getTransform());
         cvNameList.setScrollDriverY(scNameScroll);
@@ -120,8 +107,7 @@ public class GuiPartyInvite extends GuiScreenCanvas implements IPEventListener {
             int x1 = i % columnNum;
             int y1 = i / columnNum;
             String name = nameList.get(i);
-            PanelButtonStorage<String> btnName = new PanelButtonStorage<>(
-                    new GuiRectangle(x1 * nameSize, y1 * 16, nameSize, 16), 2, name, name);
+            PanelButtonStorage<String> btnName = new PanelButtonStorage<>(new GuiRectangle(x1 * nameSize, y1 * 16, nameSize, 16), 2, name, name);
             cvNameList.addPanel(btnName);
         }
 

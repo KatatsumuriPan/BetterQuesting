@@ -1,15 +1,12 @@
 package betterquesting.api2.supporter;
 
-import java.util.HashMap;
-
-import javax.annotation.Nonnull;
-
+import betterquesting.api2.storage.INBTSaveLoad;
 import net.minecraft.nbt.NBTTagCompound;
 
-import betterquesting.api2.storage.INBTSaveLoad;
+import javax.annotation.Nonnull;
+import java.util.HashMap;
 
 public class SupporterEntry implements INBTSaveLoad<NBTTagCompound> {
-
     private final HashMap<String, HashMap<String, Integer>> services = new HashMap<>();
 
     @Nonnull
@@ -23,5 +20,7 @@ public class SupporterEntry implements INBTSaveLoad<NBTTagCompound> {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt) {}
+    public void readFromNBT(NBTTagCompound nbt) {
+
+    }
 }

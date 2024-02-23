@@ -1,11 +1,10 @@
 package betterquesting.api2.client.gui.controls.io;
 
-import java.util.concurrent.Callable;
-
 import betterquesting.api2.client.gui.controls.IValueIO;
 
-public class ValueFuncIO<T> implements IValueIO<T> {
+import java.util.concurrent.Callable;
 
+public class ValueFuncIO<T> implements IValueIO<T> {
     private final Callable<T> v;
 
     public ValueFuncIO(Callable<T> value) {
@@ -23,7 +22,8 @@ public class ValueFuncIO<T> implements IValueIO<T> {
     }
 
     @Override
-    public void writeValue(T value) {}
+    public void writeValue(T value) {
+    }
 
     @Override
     public T readValueRaw() {
@@ -31,5 +31,6 @@ public class ValueFuncIO<T> implements IValueIO<T> {
     }
 
     @Override
-    public void writeValueRaw(T value) {}
+    public void writeValueRaw(T value) {
+    }
 }

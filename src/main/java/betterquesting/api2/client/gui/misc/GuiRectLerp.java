@@ -1,11 +1,10 @@
 package betterquesting.api2.client.gui.misc;
 
-import javax.annotation.Nonnull;
-
 import betterquesting.api.utils.RenderUtils;
 
-public class GuiRectLerp implements IGuiRect {
+import javax.annotation.Nonnull;
 
+public class GuiRectLerp implements IGuiRect {
     private IGuiRect startRect;
     private IGuiRect targetRect;
     private long duration = 200L;
@@ -52,27 +51,22 @@ public class GuiRectLerp implements IGuiRect {
 
     @Override
     public int getX() {
-        return isIdle() ? targetRect.getX() : (int) Math.round(RenderUtils.lerpDouble((double) startRect.getX(),
-                (double) targetRect.getX(), (System.currentTimeMillis() - et) / (double) duration));
+        return isIdle() ? targetRect.getX() : (int) Math.round(RenderUtils.lerpDouble((double) startRect.getX(), (double) targetRect.getX(), (System.currentTimeMillis() - et) / (double) duration));
     }
 
     @Override
     public int getY() {
-        return isIdle() ? targetRect.getY() : (int) Math.round(RenderUtils.lerpDouble((double) startRect.getY(),
-                (double) targetRect.getY(), (System.currentTimeMillis() - et) / (double) duration));
+        return isIdle() ? targetRect.getY() : (int) Math.round(RenderUtils.lerpDouble((double) startRect.getY(), (double) targetRect.getY(), (System.currentTimeMillis() - et) / (double) duration));
     }
 
     @Override
     public int getWidth() {
-        return isIdle() ? targetRect.getWidth() : (int) Math.round(RenderUtils.lerpDouble((double) startRect.getWidth(),
-                (double) targetRect.getWidth(), (System.currentTimeMillis() - et) / (double) duration));
+        return isIdle() ? targetRect.getWidth() : (int) Math.round(RenderUtils.lerpDouble((double) startRect.getWidth(), (double) targetRect.getWidth(), (System.currentTimeMillis() - et) / (double) duration));
     }
 
     @Override
     public int getHeight() {
-        return isIdle() ? targetRect.getHeight() :
-                (int) Math.round(RenderUtils.lerpDouble((double) startRect.getHeight(), (double) targetRect.getHeight(),
-                        (System.currentTimeMillis() - et) / (double) duration));
+        return isIdle() ? targetRect.getHeight() : (int) Math.round(RenderUtils.lerpDouble((double) startRect.getHeight(), (double) targetRect.getHeight(), (System.currentTimeMillis() - et) / (double) duration));
     }
 
     @Override

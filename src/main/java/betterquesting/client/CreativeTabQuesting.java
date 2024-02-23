@@ -1,13 +1,11 @@
 package betterquesting.client;
 
+import betterquesting.core.BetterQuesting;
+import betterquesting.core.ModReference;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 
-import betterquesting.core.BetterQuesting;
-import betterquesting.core.ModReference;
-
 public class CreativeTabQuesting extends CreativeTabs {
-
     private ItemStack tabStack;
 
     public CreativeTabQuesting() {

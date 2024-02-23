@@ -1,5 +1,10 @@
 package betterquesting.api2.client.gui.resources.textures;
 
+import betterquesting.api2.client.gui.misc.GuiRectangle;
+import betterquesting.api2.client.gui.misc.IGuiRect;
+import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
+import betterquesting.api2.client.gui.resources.colors.IGuiColor;
+import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -9,17 +14,9 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
-
 import org.lwjgl.opengl.GL11;
 
-import betterquesting.api2.client.gui.misc.GuiRectangle;
-import betterquesting.api2.client.gui.misc.IGuiRect;
-import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
-import betterquesting.api2.client.gui.resources.colors.IGuiColor;
-import betterquesting.api2.client.gui.themes.presets.PresetTexture;
-
 public class FluidTexture implements IGuiTexture {
-
     private static final IGuiColor defColor = new GuiColorStatic(255, 255, 255, 255);
 
     private final FluidStack fluid;
@@ -99,17 +96,13 @@ public class FluidTexture implements IGuiTexture {
         return bounds;
     }
 
-    private void drawTexturedModalRect(double xCoord, double yCoord, double zDepth, TextureAtlasSprite textureSprite,
-                                       double widthIn, double heightIn) {
+    private void drawTexturedModalRect(double xCoord, double yCoord, double zDepth, TextureAtlasSprite textureSprite, double widthIn, double heightIn) {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.pos(xCoord, yCoord + heightIn, zDepth).tex(textureSprite.getMinU(), textureSprite.getMaxV())
-                .endVertex();
-        bufferbuilder.pos(xCoord + widthIn, yCoord + heightIn, zDepth)
-                .tex(textureSprite.getMaxU(), textureSprite.getMaxV()).endVertex();
-        bufferbuilder.pos(xCoord + widthIn, yCoord, zDepth).tex(textureSprite.getMaxU(), textureSprite.getMinV())
-                .endVertex();
+        bufferbuilder.pos(xCoord, yCoord + heightIn, zDepth).tex(textureSprite.getMinU(), textureSprite.getMaxV()).endVertex();
+        bufferbuilder.pos(xCoord + widthIn, yCoord + heightIn, zDepth).tex(textureSprite.getMaxU(), textureSprite.getMaxV()).endVertex();
+        bufferbuilder.pos(xCoord + widthIn, yCoord, zDepth).tex(textureSprite.getMaxU(), textureSprite.getMinV()).endVertex();
         bufferbuilder.pos(xCoord, yCoord, zDepth).tex(textureSprite.getMinU(), textureSprite.getMinV()).endVertex();
         tessellator.draw();
     }

@@ -1,17 +1,15 @@
 package betterquesting.api2.supporter;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
-import java.io.IOException;
-
-import javax.annotation.Nonnull;
-
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.resources.IResourceManager;
 
-public class RgbTexture extends AbstractTexture {
+import javax.annotation.Nonnull;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+import java.io.IOException;
 
+public class RgbTexture extends AbstractTexture {
     private final int[] rgbAry;
 
     private final int w;

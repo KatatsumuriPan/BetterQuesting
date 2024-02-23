@@ -1,11 +1,5 @@
 package betterquesting.api2.client.gui.popups;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import betterquesting.api2.client.gui.SceneController;
 import betterquesting.api2.client.gui.controls.PanelButton;
 import betterquesting.api2.client.gui.misc.GuiAlign;
@@ -21,8 +15,12 @@ import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import betterquesting.api2.utils.QuestTranslation;
 
-public class PopContextMenu extends CanvasEmpty {
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
+public class PopContextMenu extends CanvasEmpty {
     private final ContextCategory catRoot = new ContextCategory(null, "root");
     private final GuiRectangle rect;
     private final boolean autoClose;
@@ -57,8 +55,7 @@ public class PopContextMenu extends CanvasEmpty {
             rect.y += Math.min(0, (par.getY() + par.getHeight()) - (rect.getY() + listH));
         }
 
-        CanvasResizeable cvBG = new CanvasResizeable(new GuiRectangle(0, 0, 0, 0, 0),
-                PresetTexture.PANEL_INNER.getTexture());
+        CanvasResizeable cvBG = new CanvasResizeable(new GuiRectangle(0, 0, 0, 0, 0), PresetTexture.PANEL_INNER.getTexture());
         this.addPanel(cvBG);
         cvBG.lerpToRect(new GuiRectangle(0, 0, rect.w - 8, listH, 0), 100, true);
 
@@ -73,8 +70,7 @@ public class PopContextMenu extends CanvasEmpty {
             ContextEntry entry = category.entries.get(i);
             if (entry.icon != null) {
                 cvScroll.addPanel(new PanelGeneric(new GuiRectangle(0, i * 16, 16, 16, 0), entry.icon));
-                PanelButton eBtn = new PanelButton(new GuiRectangle(16, i * 16, rect.w - 24, 16, 0), -1,
-                        QuestTranslation.translate(entry.text));
+                PanelButton eBtn = new PanelButton(new GuiRectangle(16, i * 16, rect.w - 24, 16, 0), -1, QuestTranslation.translate(entry.text));
                 if (entry.action != null) {
                     eBtn.setClickAction((b) -> entry.action.run());
                 } else {
@@ -82,8 +78,7 @@ public class PopContextMenu extends CanvasEmpty {
                 }
                 cvScroll.addPanel(eBtn);
             } else {
-                PanelButton eBtn = new PanelButton(new GuiRectangle(0, i * 16, rect.w - 8, 16, 0), -1,
-                        QuestTranslation.translate(entry.text));
+                PanelButton eBtn = new PanelButton(new GuiRectangle(0, i * 16, rect.w - 8, 16, 0), -1, QuestTranslation.translate(entry.text));
                 if (entry.action != null) {
                     eBtn.setClickAction((b) -> entry.action.run());
                 } else {
@@ -116,7 +111,6 @@ public class PopContextMenu extends CanvasEmpty {
     }
 
     public class ContextCategory {
-
         private final String name;
         private final ContextCategory parent;
         private final List<ContextEntry> entries = new ArrayList<>();
@@ -140,7 +134,6 @@ public class PopContextMenu extends CanvasEmpty {
     }
 
     public class ContextEntry {
-
         private final String text;
         private final IGuiTexture icon;
         private final Runnable action;

@@ -1,23 +1,20 @@
 package betterquesting.client.toolbox.tools;
 
-import java.util.Collections;
-import java.util.List;
-
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.NonNullList;
-
-import org.lwjgl.input.Keyboard;
-
 import betterquesting.api.client.toolbox.IToolboxTool;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api2.client.gui.controls.PanelButtonQuest;
 import betterquesting.api2.client.gui.panels.lists.CanvasQuestLine;
 import betterquesting.client.gui2.editors.designer.PanelToolController;
 import betterquesting.network.handlers.NetQuestEdit;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
+import org.lwjgl.input.Keyboard;
+
+import java.util.Collections;
+import java.util.List;
 
 public class ToolboxToolFrame implements IToolboxTool {
-
     private CanvasQuestLine gui;
 
     @Override
@@ -26,19 +23,28 @@ public class ToolboxToolFrame implements IToolboxTool {
     }
 
     @Override
-    public void refresh(CanvasQuestLine gui) {}
+    public void refresh(CanvasQuestLine gui) {
+
+    }
 
     @Override
-    public void disableTool() {}
+    public void disableTool() {
+
+    }
 
     @Override
-    public void drawCanvas(int mx, int my, float partialTick) {}
+    public void drawCanvas(int mx, int my, float partialTick) {
+
+    }
 
     @Override
-    public void drawOverlay(int mx, int my, float partialTick) {}
+    public void drawOverlay(int mx, int my, float partialTick) {
+
+    }
 
     @Override
-    public void onSelection(NonNullList<PanelButtonQuest> buttons) {}
+    public void onSelection(NonNullList<PanelButtonQuest> buttons) {
+    }
 
     @Override
     public boolean onMouseClick(int mx, int my, int click) {
@@ -49,8 +55,7 @@ public class ToolboxToolFrame implements IToolboxTool {
         if (btn == null) return false;
         if (PanelToolController.selected.size() > 0 && !PanelToolController.selected.contains(btn)) return false;
 
-        List<PanelButtonQuest> btnList = PanelToolController.selected.size() > 0 ? PanelToolController.selected :
-                Collections.singletonList(btn);
+        List<PanelButtonQuest> btnList = PanelToolController.selected.size() > 0 ? PanelToolController.selected : Collections.singletonList(btn);
         changeFrame(btnList);
         return true;
     }

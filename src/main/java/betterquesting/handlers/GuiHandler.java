@@ -1,11 +1,5 @@
 package betterquesting.handlers;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.IGuiHandler;
-
 import betterquesting.api.storage.BQ_Settings;
 import betterquesting.blocks.TileSubmitStation;
 import betterquesting.client.gui2.GuiHome;
@@ -13,9 +7,13 @@ import betterquesting.client.gui2.GuiQuestHelp;
 import betterquesting.client.gui2.editors.GuiEditLootGroup;
 import betterquesting.client.gui2.inventory.ContainerSubmitStation;
 import betterquesting.client.gui2.inventory.GuiSubmitStation;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.IGuiHandler;
 
 public class GuiHandler implements IGuiHandler {
-
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
@@ -37,14 +35,17 @@ public class GuiHandler implements IGuiHandler {
             return new GuiQuestHelp(null);
         } else if (ID == 2) {
             return new GuiEditLootGroup(null);
-        } else if (ID == 3) {
-            if (BQ_Settings.useBookmark && GuiHome.bookmark != null) {
+        }
+        else if(ID == 3) {
+            if(BQ_Settings.useBookmark && GuiHome.bookmark != null) {
                 return GuiHome.bookmark;
-            } else {
+            }
+            else {
                 return new GuiHome(null);
             }
         }
 
         return null;
     }
+
 }

@@ -1,17 +1,14 @@
 package betterquesting.api2.client.gui.resources.factories.colors;
 
-import net.minecraft.util.ResourceLocation;
-
-import com.google.gson.JsonObject;
-
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import betterquesting.api2.registry.IFactoryData;
 import betterquesting.core.ModReference;
+import com.google.gson.JsonObject;
+import net.minecraft.util.ResourceLocation;
 
 public class FactoryColorStatic implements IFactoryData<IGuiColor, JsonObject> {
-
     public static final FactoryColorStatic INSTANCE = new FactoryColorStatic();
 
     private static final ResourceLocation RES_ID = new ResourceLocation(ModReference.MODID, "color_static");

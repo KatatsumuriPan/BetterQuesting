@@ -1,16 +1,14 @@
 package betterquesting.importers.ftbq.converters.tasks;
 
-import net.minecraft.init.Items;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.DimensionType;
-
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.importers.ftbq.FTBQQuestImporter;
 import betterquesting.questing.tasks.TaskLocation;
+import net.minecraft.init.Items;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.DimensionType;
 
 public class FtbqTaskDimension {
-
     public ITask[] converTask(NBTTagCompound tag) {
         TaskLocation task = new TaskLocation();
 
@@ -24,6 +22,6 @@ public class FtbqTaskDimension {
 
         FTBQQuestImporter.provideQuestIcon(new BigItemStack(Items.COMPASS));
 
-        return new ITask[] { task };
+        return new ITask[]{task};
     }
 }

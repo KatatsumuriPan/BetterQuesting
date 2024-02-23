@@ -1,8 +1,5 @@
 package betterquesting.core;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.client.importers.ImporterRegistry;
@@ -19,9 +16,10 @@ import betterquesting.questing.tasks.TaskRegistry;
 import betterquesting.storage.LifeDatabase;
 import betterquesting.storage.NameCache;
 import betterquesting.storage.QuestSettings;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ExpansionLoader {
-
     public static final ExpansionLoader INSTANCE = new ExpansionLoader();
 
     public void initCommonAPIs() {

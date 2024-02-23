@@ -1,20 +1,5 @@
 package betterquesting.network.handlers;
 
-import java.util.UUID;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Tuple;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.apache.logging.log4j.Level;
-
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.enums.EnumPartyStatus;
 import betterquesting.api.events.DatabaseEvent;
@@ -30,9 +15,21 @@ import betterquesting.network.PacketTypeRegistry;
 import betterquesting.questing.party.PartyInvitations;
 import betterquesting.questing.party.PartyManager;
 import betterquesting.storage.NameCache;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Tuple;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.logging.log4j.Level;
+
+import java.util.UUID;
 
 public class NetPartyAction {
-
     private static final ResourceLocation ID_NAME = new ResourceLocation(ModReference.MODID, "party_action");
 
     public static void registerHandler() {
@@ -85,8 +82,7 @@ public class NetPartyAction {
                 break;
             }
             default: {
-                BetterQuesting.logger.log(Level.ERROR,
-                        "Invalid party action '" + action + "'. Full payload:\n" + message.getFirst().toString());
+                BetterQuesting.logger.log(Level.ERROR, "Invalid party action '" + action + "'. Full payload:\n" + message.getFirst().toString());
             }
         }
     }
@@ -99,7 +95,7 @@ public class NetPartyAction {
         IParty party = PartyManager.INSTANCE.createNew(partyID);
         party.getProperties().setProperty(NativeProps.NAME, name);
         party.setStatus(playerID, EnumPartyStatus.OWNER);
-        NetPartySync.sendSync(new EntityPlayerMP[] { sender }, new int[] { partyID });
+        NetPartySync.sendSync(new EntityPlayerMP[]{sender}, new int[]{partyID});
     }
 
     private static void deleteParty(int partyID) {
@@ -109,8 +105,7 @@ public class NetPartyAction {
         NBTTagCompound payload = new NBTTagCompound();
         payload.setInteger("action", 1);
         payload.setInteger("partyID", partyID);
-        PacketSender.INSTANCE.sendToAll(new QuestingPacket(ID_NAME, payload)); // Invites need to be purged from
-                                                                               // everyone
+        PacketSender.INSTANCE.sendToAll(new QuestingPacket(ID_NAME, payload)); // Invites need to be purged from everyone
     }
 
     private static void editParty(int partyID, IParty party, NBTTagCompound settings) {
@@ -127,12 +122,11 @@ public class NetPartyAction {
         if (uuid != null) {
             PartyInvitations.INSTANCE.postInvite(uuid, partyID, expiry);
             if (player != null) {
-                NetPartySync.sendSync(new EntityPlayerMP[] { player }, new int[] { partyID });
+                NetPartySync.sendSync(new EntityPlayerMP[]{player}, new int[]{partyID});
                 NetInviteSync.sendSync(player);
             }
         } else {
-            // No idea who this is
-            BetterQuesting.logger.error("Unable to identify " + username + " to invite to party " + partyID);
+            BetterQuesting.logger.error("Unable to identify " + username + " to invite to party " + partyID); // No idea who this is
         }
     }
 
@@ -149,8 +143,8 @@ public class NetPartyAction {
         NetInviteSync.sendSync(sender);
     }
 
-    // Is also the leave action (self kick if you will)
-    private static void kickUser(int partyID, EntityPlayerMP sender, IParty party, String username, int permission) {
+    private static void kickUser(int partyID, EntityPlayerMP sender, IParty party, String username, int permission) // Is also the leave action (self kick if you will)
+    {
         if (party == null) {
             BetterQuesting.logger.error("Tried to kick a player from a non-existant party (" + partyID + ")");
             return;
@@ -166,8 +160,8 @@ public class NetPartyAction {
             return; // No idea who this is
         }
 
-        // For future reference, this is checking the target has a permission lower than the sender
-        if (uuid.equals(QuestingAPI.getQuestingUUID(sender)) || checkPermission(uuid, party) < permission) {
+        if (uuid.equals(QuestingAPI.getQuestingUUID(sender)) || checkPermission(uuid, party) < permission) // For future reference, this is checking the target has a permission lower than the sender
+        {
             // Even if the kick isn't confirmed we still need to tell the clients incase of desync
             if (party.getStatus(uuid) != null) party.kickUser(uuid);
 
@@ -187,8 +181,7 @@ public class NetPartyAction {
                 NBTTagCompound payload = new NBTTagCompound();
                 payload.setInteger("action", 1);
                 payload.setInteger("partyID", partyID);
-                // Invites need to be purged from everyone
-                PacketSender.INSTANCE.sendToAll(new QuestingPacket(ID_NAME, payload));
+                PacketSender.INSTANCE.sendToAll(new QuestingPacket(ID_NAME, payload)); // Invites need to be purged from everyone
             }
         } else {
             BetterQuesting.logger.error("Insufficient permissions to kick " + username + " from party " + partyID);

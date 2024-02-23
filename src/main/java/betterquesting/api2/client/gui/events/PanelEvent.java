@@ -1,7 +1,6 @@
 package betterquesting.api2.client.gui.events;
 
 public abstract class PanelEvent {
-
     private boolean cancelled = false;
 
     public abstract boolean canCancel();

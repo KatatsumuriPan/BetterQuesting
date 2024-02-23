@@ -1,18 +1,5 @@
 package betterquesting.api2.client.gui.controls;
 
-import java.util.List;
-import java.util.function.Consumer;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.MathHelper;
-
-import org.lwjgl.input.Mouse;
-
 import betterquesting.api.utils.RenderUtils;
 import betterquesting.api2.client.gui.events.PEventBroadcaster;
 import betterquesting.api2.client.gui.events.types.PEventButton;
@@ -24,16 +11,25 @@ import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import betterquesting.api2.storage.INBTSaveLoad;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.MathHelper;
+import org.lwjgl.input.Mouse;
+
+import java.util.List;
+import java.util.function.Consumer;
 
 public class PanelButton implements IPanelButton, IGuiPanel, INBTSaveLoad<NBTTagCompound> {
-
     private final IGuiRect transform;
     private boolean enabled = true;
     private boolean hovered = false;
 
     private final IGuiTexture[] texStates = new IGuiTexture[3];
-    private IGuiColor[] colStates = new IGuiColor[] { new GuiColorStatic(128, 128, 128, 255),
-            new GuiColorStatic(255, 255, 255, 255), new GuiColorStatic(16777120) };
+    private IGuiColor[] colStates = new IGuiColor[]{new GuiColorStatic(128, 128, 128, 255), new GuiColorStatic(255, 255, 255, 255), new GuiColorStatic(16777120)};
     private IGuiTexture texIcon = null;
     private IGuiColor colIcon = null;
     private int icoPadding = 0;
@@ -53,10 +49,8 @@ public class PanelButton implements IPanelButton, IGuiPanel, INBTSaveLoad<NBTTag
         this.btnText = txt;
         this.btnID = id;
 
-        this.setTextures(PresetTexture.BTN_NORMAL_0.getTexture(), PresetTexture.BTN_NORMAL_1.getTexture(),
-                PresetTexture.BTN_NORMAL_2.getTexture());
-        this.setTextHighlight(PresetColor.BTN_DISABLED.getColor(), PresetColor.BTN_IDLE.getColor(),
-                PresetColor.BTN_HOVER.getColor());
+        this.setTextures(PresetTexture.BTN_NORMAL_0.getTexture(), PresetTexture.BTN_NORMAL_1.getTexture(), PresetTexture.BTN_NORMAL_2.getTexture());
+        this.setTextHighlight(PresetColor.BTN_DISABLED.getColor(), PresetColor.BTN_IDLE.getColor(), PresetColor.BTN_HOVER.getColor());
     }
 
     public PanelButton setClickAction(Consumer<PanelButton> action) {
@@ -155,7 +149,8 @@ public class PanelButton implements IPanelButton, IGuiPanel, INBTSaveLoad<NBTTag
     }
 
     @Override
-    public void initPanel() {}
+    public void initPanel() {
+    }
 
     @Override
     public void drawPanel(int mx, int my, float partialTick) {
@@ -181,26 +176,21 @@ public class PanelButton implements IPanelButton, IGuiPanel, INBTSaveLoad<NBTTag
 
             if (isz > 0) {
                 if (colIcon != null) {
-                    texIcon.drawTexture(bounds.getX() + (bounds.getWidth() / 2) - (isz / 2),
-                            bounds.getY() + (bounds.getHeight() / 2) - (isz / 2), isz, isz, 0F, partialTick, colIcon);
+                    texIcon.drawTexture(bounds.getX() + (bounds.getWidth() / 2) - (isz / 2), bounds.getY() + (bounds.getHeight() / 2) - (isz / 2), isz, isz, 0F, partialTick, colIcon);
                 } else {
-                    texIcon.drawTexture(bounds.getX() + (bounds.getWidth() / 2) - (isz / 2),
-                            bounds.getY() + (bounds.getHeight() / 2) - (isz / 2), isz, isz, 0F, partialTick);
+                    texIcon.drawTexture(bounds.getX() + (bounds.getWidth() / 2) - (isz / 2), bounds.getY() + (bounds.getHeight() / 2) - (isz / 2), isz, isz, 0F, partialTick);
                 }
             }
         }
 
         if (btnText != null && btnText.length() > 0) {
-            drawCenteredString(Minecraft.getMinecraft().fontRenderer, btnText, bounds.getX(),
-                    bounds.getY() + bounds.getHeight() / 2 - 4, bounds.getWidth(), colStates[curState].getRGB(),
-                    txtShadow, textAlign);
+            drawCenteredString(Minecraft.getMinecraft().fontRenderer, btnText, bounds.getX(), bounds.getY() + bounds.getHeight() / 2 - 4, bounds.getWidth(), colStates[curState].getRGB(), txtShadow, textAlign);
         }
 
         GlStateManager.popMatrix();
     }
 
-    private static void drawCenteredString(FontRenderer font, String text, int x, int y, int width, int color,
-                                           boolean shadow, int align) {
+    private static void drawCenteredString(FontRenderer font, String text, int x, int y, int width, int color, boolean shadow, int align) {
         switch (align) {
             case 0: {
                 font.drawString(text, x + 4, y, color, shadow);
@@ -211,8 +201,7 @@ public class PanelButton implements IPanelButton, IGuiPanel, INBTSaveLoad<NBTTag
                 break;
             }
             default: {
-                font.drawString(text, x + Math.floorDiv(width, 2) - RenderUtils.getStringWidth(text, font) / 2F, y,
-                        color, shadow);
+                font.drawString(text, x + Math.floorDiv(width, 2) - RenderUtils.getStringWidth(text, font) / 2F, y, color, shadow);
             }
         }
     }
@@ -232,12 +221,10 @@ public class PanelButton implements IPanelButton, IGuiPanel, INBTSaveLoad<NBTTag
 
         pendingRelease = false;
 
-        boolean clicked = isActive() && isHovered() &&
-                (click == 1 || (click == 0 && !PEventBroadcaster.INSTANCE.postEvent(new PEventButton(this))));
+        boolean clicked = isActive() && isHovered() && (click == 1 || (click == 0 && !PEventBroadcaster.INSTANCE.postEvent(new PEventButton(this))));
 
         if (clicked) {
-            Minecraft.getMinecraft().getSoundHandler()
-                    .playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+            Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             if (click == 0) onButtonClick();
             else if (click == 1) onRightButtonClick();
         }
@@ -269,7 +256,8 @@ public class PanelButton implements IPanelButton, IGuiPanel, INBTSaveLoad<NBTTag
         if (clickAction != null) clickAction.accept(this);
     }
 
-    public void onRightButtonClick() {}
+    public void onRightButtonClick() {
+    }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
@@ -278,5 +266,7 @@ public class PanelButton implements IPanelButton, IGuiPanel, INBTSaveLoad<NBTTag
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt) {}
+    public void readFromNBT(NBTTagCompound nbt) {
+
+    }
 }

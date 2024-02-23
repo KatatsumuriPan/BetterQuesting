@@ -1,14 +1,13 @@
 package betterquesting.api2.client.gui.panels.lists;
 
+import betterquesting.api2.client.gui.misc.IGuiRect;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.util.*;
 
-import betterquesting.api2.client.gui.misc.IGuiRect;
-
 @SuppressWarnings("WeakerAccess")
 public abstract class CanvasFileDirectory extends CanvasSearch<File, File> {
-
     private static final FileSort sorter = new FileSort();
     private final FileFilter filter;
     private File curDir;
@@ -47,7 +46,6 @@ public abstract class CanvasFileDirectory extends CanvasSearch<File, File> {
     }
 
     private static class FileSort implements Comparator<File> {
-
         @Override
         public int compare(File f1, File f2) {
             if (f1 == null || f2 == null) {

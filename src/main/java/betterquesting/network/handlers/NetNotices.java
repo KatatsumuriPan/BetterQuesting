@@ -1,7 +1,11 @@
 package betterquesting.network.handlers;
 
-import javax.annotation.Nullable;
-
+import betterquesting.api.network.QuestingPacket;
+import betterquesting.client.QuestNotification;
+import betterquesting.core.BetterQuesting;
+import betterquesting.core.ModReference;
+import betterquesting.network.PacketSender;
+import betterquesting.network.PacketTypeRegistry;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,15 +13,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import betterquesting.api.network.QuestingPacket;
-import betterquesting.client.QuestNotification;
-import betterquesting.core.BetterQuesting;
-import betterquesting.core.ModReference;
-import betterquesting.network.PacketSender;
-import betterquesting.network.PacketTypeRegistry;
+import javax.annotation.Nullable;
 
 public class NetNotices {
-
     // TODO: Convert over to inbox system in future
     private static final ResourceLocation ID_NAME = new ResourceLocation(ModReference.MODID, "notification");
 
@@ -27,8 +25,7 @@ public class NetNotices {
         }
     }
 
-    public static void sendNotice(@Nullable EntityPlayerMP[] players, ItemStack icon, String mainText, String subText,
-                                  String sound) {
+    public static void sendNotice(@Nullable EntityPlayerMP[] players, ItemStack icon, String mainText, String subText, String sound) {
         NBTTagCompound payload = new NBTTagCompound();
         payload.setTag("icon", (icon != null ? icon : ItemStack.EMPTY).writeToNBT(new NBTTagCompound()));
         if (mainText != null) payload.setString("mainText", mainText);

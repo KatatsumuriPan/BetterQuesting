@@ -1,15 +1,13 @@
 package betterquesting.questing.tasks.factory;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api2.registry.IFactoryData;
 import betterquesting.core.BetterQuesting;
 import betterquesting.questing.tasks.TaskAdvancement;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 
 public final class FactoryTaskAdvancement implements IFactoryData<ITask, NBTTagCompound> {
-
     public static final FactoryTaskAdvancement INSTANCE = new FactoryTaskAdvancement();
 
     private final ResourceLocation REG_ID = new ResourceLocation(BetterQuesting.MODID_STD, "advancement");

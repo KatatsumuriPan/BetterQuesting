@@ -1,21 +1,18 @@
 package betterquesting.api2.client.gui.events;
 
+import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 
-import javax.annotation.Nonnull;
-
-import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
 /*
- * Provides a means of broadcasting various things to and around the currently open GUI.
- * Useful if your panel/canvas is contained within a screen you're not in control of but still needs to respond
- * to events
+    Provides a means of broadcasting various things to and around the currently open GUI.
+    Useful if your panel/canvas is contained within a screen you're not in control of but still needs to respond to events
  */
 public class PEventBroadcaster {
-
     public static PEventBroadcaster INSTANCE = new PEventBroadcaster();
 
     private final HashMap<Class<? extends PanelEvent>, PEventEntry<? extends PanelEvent>> entryList = new HashMap<>();
@@ -57,8 +54,7 @@ public class PEventBroadcaster {
     }
 
     /**
-     * Clears event listeners whenever a new GUI loads.
-     * If you must have cross GUI communication either handle this yourself or re-register the relevant listeners.
+     * Clears event listeners whenever a new GUI loads. If you must have cross GUI communication either handle this yourself or re-register the relevant listeners.
      */
     @SubscribeEvent
     public void onGuiOpened(GuiOpenEvent event) {

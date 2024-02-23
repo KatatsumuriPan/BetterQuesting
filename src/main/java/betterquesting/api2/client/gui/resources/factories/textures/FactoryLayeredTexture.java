@@ -1,14 +1,5 @@
 package betterquesting.api2.client.gui.resources.factories.textures;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.util.ResourceLocation;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.utils.JsonHelper;
@@ -19,14 +10,19 @@ import betterquesting.api2.client.gui.resources.textures.SimpleTexture;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import betterquesting.api2.registry.IFactoryData;
 import betterquesting.core.ModReference;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import net.minecraft.util.ResourceLocation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FactoryLayeredTexture implements IFactoryData<IGuiTexture, JsonObject> {
-
     public static final FactoryLayeredTexture INSTANCE = new FactoryLayeredTexture();
 
     private static final ResourceLocation RES_ID = new ResourceLocation(ModReference.MODID, "texture_layered");
-    private static final IGuiTexture NULL_TX = new SimpleTexture(PresetTexture.TX_NULL, new GuiRectangle(0, 0, 16, 16))
-            .maintainAspect(false);
+    private static final IGuiTexture NULL_TX = new SimpleTexture(PresetTexture.TX_NULL, new GuiRectangle(0, 0, 16, 16)).maintainAspect(false);
 
     @Override
     public LayeredTexture loadFromData(JsonObject data) {
@@ -38,8 +34,7 @@ public class FactoryLayeredTexture implements IFactoryData<IGuiTexture, JsonObje
             JsonObject jo = je.getAsJsonObject();
 
             try {
-                IGuiTexture tFact = QuestingAPI.getAPI(ApiReference.RESOURCE_REG).getTexReg()
-                        .createNew(new ResourceLocation(JsonHelper.GetString(jo, "textureType", "null")), jo);
+                IGuiTexture tFact = QuestingAPI.getAPI(ApiReference.RESOURCE_REG).getTexReg().createNew(new ResourceLocation(JsonHelper.GetString(jo, "textureType", "null")), jo);
                 layers.add(tFact);
             } catch (Exception ignored) {
                 layers.add(NULL_TX);

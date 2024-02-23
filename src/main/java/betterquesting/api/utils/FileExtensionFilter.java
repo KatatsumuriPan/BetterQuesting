@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileFilter;
 
 public class FileExtensionFilter implements FileFilter {
-
     public final String ext;
 
     public FileExtensionFilter(String extension) {

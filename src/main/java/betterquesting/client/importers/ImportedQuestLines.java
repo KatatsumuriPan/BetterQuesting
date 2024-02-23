@@ -1,22 +1,20 @@
 package betterquesting.client.importers;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-
 import betterquesting.api.questing.IQuestLine;
 import betterquesting.api.questing.IQuestLineDatabase;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.storage.SimpleDatabase;
 import betterquesting.api2.utils.QuestLineSorter;
 import betterquesting.questing.QuestLine;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 public class ImportedQuestLines extends SimpleDatabase<IQuestLine> implements IQuestLineDatabase {
-
     private final List<Integer> lineOrder = new ArrayList<>();
     private final QuestLineSorter SORTER = new QuestLineSorter(this);
 

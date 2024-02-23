@@ -1,17 +1,15 @@
 package betterquesting.api2.client.gui.themes.presets;
 
-import net.minecraft.util.ResourceLocation;
-
 import betterquesting.api2.client.gui.resources.colors.GuiColorPulse;
 import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import betterquesting.api2.client.gui.themes.IThemeRegistry;
 import betterquesting.client.themes.ThemeRegistry;
 import betterquesting.core.ModReference;
+import net.minecraft.util.ResourceLocation;
 
 // WARNING: Don't use the ordinal indexes. I'll probably be adding/removing enums infrequently
 public enum PresetColor {
-
     TEXT_HEADER("text_header"),
     TEXT_MAIN("text_main"),
     TEXT_AUX_0("text_aux_0"),
@@ -38,6 +36,7 @@ public enum PresetColor {
     QUEST_LINE_COMPLETE("quest_line_complete"),
     QUEST_LINE_REPEATABLE("quest_line_repeatable"),
 
+
     QUEST_ICON_LOCKED("quest_icon_locked"),
     QUEST_ICON_UNLOCKED("quest_icon_unlocked"),
     QUEST_ICON_PENDING("quest_icon_pending"),
@@ -63,17 +62,14 @@ public enum PresetColor {
         reg.setDefaultColor(TEXT_MAIN.key, new GuiColorStatic(0, 0, 0, 255)); // Paragraphs
         reg.setDefaultColor(TEXT_AUX_0.key, new GuiColorStatic(255, 255, 255, 255)); // Dark panels (White Text)
         reg.setDefaultColor(TEXT_AUX_1.key, new GuiColorStatic(0, 0, 0, 255)); // Light panels (Black Text)
-        // Selection Highlight (Blue Invert)
-        reg.setDefaultColor(TEXT_HIGHLIGHT.key, new GuiColorStatic(0, 0, 255, 255));
-        // Text Field Watermark (Grey Text)
-        reg.setDefaultColor(TEXT_WATERMARK.key, new GuiColorStatic(128, 128, 128, 255));
+        reg.setDefaultColor(TEXT_HIGHLIGHT.key, new GuiColorStatic(0, 0, 255, 255)); // Selection Highlight (Blue Invert)
+        reg.setDefaultColor(TEXT_WATERMARK.key, new GuiColorStatic(128, 128, 128, 255)); // Text Field Watermark (Grey Text)
 
         reg.setDefaultColor(ITEM_HIGHLIGHT.key, new GuiColorStatic(255, 255, 255, 128));
 
         reg.setDefaultColor(GUI_DIVIDER.key, new GuiColorStatic(0, 0, 0, 255));
 
-        reg.setDefaultColor(UPDATE_NOTICE.key,
-                new GuiColorPulse(quickMix(255, 255, 0, 255), quickMix(128, 128, 0, 255), 1F, 0F));
+        reg.setDefaultColor(UPDATE_NOTICE.key, new GuiColorPulse(quickMix(255, 255, 0, 255), quickMix(128, 128, 0, 255), 1F, 0F));
 
         reg.setDefaultColor(GRID_MAJOR.key, new GuiColorStatic(0, 0, 0, 255));
         reg.setDefaultColor(GRID_MINOR.key, new GuiColorStatic(0, 0, 0, 255));
@@ -83,19 +79,15 @@ public enum PresetColor {
         reg.setDefaultColor(BTN_HOVER.key, new GuiColorStatic(16777120));
 
         reg.setDefaultColor(QUEST_LINE_LOCKED.key, new GuiColorStatic(192, 0, 0, 255));
-        reg.setDefaultColor(QUEST_LINE_UNLOCKED.key,
-                new GuiColorPulse(quickMix(255, 255, 0, 255), quickMix(128, 128, 0, 255), 1F, 0F));
+        reg.setDefaultColor(QUEST_LINE_UNLOCKED.key, new GuiColorPulse(quickMix(255, 255, 0, 255), quickMix(128, 128, 0, 255), 1F, 0F));
         reg.setDefaultColor(QUEST_LINE_PENDING.key, new GuiColorStatic(0, 255, 0, 255));
         reg.setDefaultColor(QUEST_LINE_COMPLETE.key, new GuiColorStatic(0, 255, 0, 255));
 
         reg.setDefaultColor(QUEST_ICON_LOCKED.key, new GuiColorStatic(128, 128, 128, 255));
-        reg.setDefaultColor(QUEST_ICON_UNLOCKED.key,
-                new GuiColorPulse(quickMix(192, 0, 0, 255), quickMix(96, 0, 0, 255), 1F, 0F));
-        reg.setDefaultColor(QUEST_ICON_PENDING.key,
-                new GuiColorPulse(quickMix(0, 255, 255, 255), quickMix(0, 128, 128, 255), 1F, 0F));
+        reg.setDefaultColor(QUEST_ICON_UNLOCKED.key, new GuiColorPulse(quickMix(192, 0, 0, 255), quickMix(96, 0, 0, 255), 1F, 0F));
+        reg.setDefaultColor(QUEST_ICON_PENDING.key, new GuiColorPulse(quickMix(0, 255, 255, 255), quickMix(0, 128, 128, 255), 1F, 0F));
         reg.setDefaultColor(QUEST_ICON_COMPLETE.key, new GuiColorStatic(0, 255, 0, 255));
-        reg.setDefaultColor(QUEST_ICON_REPEATABLE.key,
-                new GuiColorPulse(quickMix(255, 69, 0, 255), quickMix(255, 96, 0, 255), 1F, 0F));
+        reg.setDefaultColor(QUEST_ICON_REPEATABLE.key, new GuiColorPulse(quickMix(255, 69, 0, 255), quickMix(255, 96, 0, 255), 1F, 0F));
     }
 
     /**

@@ -1,7 +1,6 @@
 package betterquesting.api2.client.gui.misc;
 
 public class GuiPadding {
-
     public int l, t, r, b = 0;
 
     public GuiPadding() {

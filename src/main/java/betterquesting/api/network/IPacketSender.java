@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 public interface IPacketSender {
-
     // Server to Client
     void sendToPlayers(QuestingPacket payload, EntityPlayerMP... players);
 

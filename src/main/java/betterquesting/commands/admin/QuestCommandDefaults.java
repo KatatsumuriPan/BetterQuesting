@@ -1,20 +1,5 @@
 package betterquesting.commands.admin;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.List;
-
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.server.permission.DefaultPermissionLevel;
-
-import com.google.gson.JsonObject;
-
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api.utils.JsonHelper;
@@ -30,9 +15,21 @@ import betterquesting.network.handlers.NetSettingSync;
 import betterquesting.questing.QuestDatabase;
 import betterquesting.questing.QuestLineDatabase;
 import betterquesting.storage.QuestSettings;
+import com.google.gson.JsonObject;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.server.permission.DefaultPermissionLevel;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.List;
 
 public class QuestCommandDefaults extends QuestCommandBase {
-
     @Override
     public String getUsageSuffix() {
         return "[save|load|set] [file_name]";
@@ -60,8 +57,7 @@ public class QuestCommandDefaults extends QuestCommandBase {
     }
 
     @Override
-    public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender,
-                           String[] args) throws CommandException {
+    public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, String[] args) throws CommandException {
         File qFile;
 
         if (args.length == 3 && !args[2].equalsIgnoreCase("DefaultQuests")) {
@@ -98,8 +94,7 @@ public class QuestCommandDefaults extends QuestCommandBase {
                 JsonObject j1 = JsonHelper.ReadFromFile(qFile);
                 NBTTagCompound nbt1 = NBTConverter.JSONtoNBT_Object(j1, new NBTTagCompound(), true);
 
-                ILegacyLoader loader = LegacyLoaderRegistry
-                        .getLoader(nbt1.hasKey("format", 8) ? nbt1.getString("format") : "0.0.0");
+                ILegacyLoader loader = LegacyLoaderRegistry.getLoader(nbt1.hasKey("format", 8) ? nbt1.getString("format") : "0.0.0");
 
                 if (loader == null) {
                     QuestSettings.INSTANCE.readFromNBT(nbt1.getCompoundTag("questSettings"));
@@ -115,8 +110,7 @@ public class QuestCommandDefaults extends QuestCommandBase {
                 QuestSettings.INSTANCE.setProperty(NativeProps.HARDCORE, hardMode);
 
                 if (args.length == 3 && !args[2].equalsIgnoreCase("DefaultQuests")) {
-                    sender.sendMessage(
-                            new TextComponentTranslation("betterquesting.cmd.default.load2", args[2] + ".json"));
+                    sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.default.load2", args[2] + ".json"));
                 } else {
                     sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.default.load"));
                 }

@@ -1,28 +1,5 @@
 package betterquesting.importers.ftbq;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.function.Function;
-
-import javax.annotation.Nullable;
-
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.math.MathHelper;
-
-import org.apache.commons.lang3.tuple.Pair;
-
 import betterquesting.api.client.importers.IImporter;
 import betterquesting.api.enums.EnumLogic;
 import betterquesting.api.enums.EnumQuestVisibility;
@@ -41,9 +18,28 @@ import betterquesting.importers.ftbq.converters.rewards.FtbqRewardItem;
 import betterquesting.importers.ftbq.converters.rewards.FtbqRewardXP;
 import betterquesting.importers.ftbq.converters.tasks.*;
 import betterquesting.questing.tasks.TaskCheckbox;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.math.MathHelper;
+import org.apache.commons.lang3.tuple.Pair;
+
+import javax.annotation.Nullable;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.function.Function;
 
 public class FTBQQuestImporter implements IImporter {
-
     public static final FTBQQuestImporter INSTANCE = new FTBQQuestImporter();
     private static final FileFilter FILTER = new FTBQFileFIlter();
 
@@ -91,12 +87,10 @@ public class FTBQQuestImporter implements IImporter {
             }
         }
     }
-
-    private void startImport(IQuestDatabase questDB, IQuestLineDatabase lineDB, NBTTagCompound tagIndex, File folder,
-                             boolean isSnbt) {
+    private void startImport(IQuestDatabase questDB, IQuestLineDatabase lineDB, NBTTagCompound tagIndex, File folder, boolean isSnbt) {
         String[] indexIDs; // Read out the chapter index names
         if (isSnbt) {
-            // String
+            //String
             NBTTagList tagList = tagIndex.getTagList("index", 8);
             indexIDs = new String[tagList.tagCount()];
             int i = 0;
@@ -117,7 +111,7 @@ public class FTBQQuestImporter implements IImporter {
         requestQuestIcon(null);
         requestChapterIcon(null);
 
-        HashMap<IQuest, Pair<String[], Boolean>> parentMap = new HashMap<>();// quest->(dependencies,hideLine)
+        HashMap<IQuest, Pair<String[], Boolean>> parentMap = new HashMap<>();//quest->(dependencies,hideLine)
 
         BetterQuesting.logger.info("Found " + indexIDs.length + " quest chapter(s) to import");
         for (String id : indexIDs) {
@@ -137,8 +131,7 @@ public class FTBQQuestImporter implements IImporter {
             requestChapterIcon(questLine);
 
             for (File questFile : contents) {
-                if (!questFile.getName().toLowerCase().endsWith(".nbt") &&
-                        !questFile.getName().toLowerCase().endsWith(".snbt"))
+                if (!questFile.getName().toLowerCase().endsWith(".nbt") && !questFile.getName().toLowerCase().endsWith(".snbt"))
                     continue; // No idea why this file is in here
 
                 NBTTagCompound qTag = readFile(questFile);
@@ -147,8 +140,7 @@ public class FTBQQuestImporter implements IImporter {
 
                 // === CHAPTER INFO ===
 
-                if (questFile.getName().equalsIgnoreCase("chapter.nbt") ||
-                        questFile.getName().equalsIgnoreCase("chapter.snbt")) {
+                if (questFile.getName().equalsIgnoreCase("chapter.nbt") || questFile.getName().equalsIgnoreCase("chapter.snbt")) {
                     questLine.setProperty(NativeProps.NAME, qTag.getString("title"));
                     NBTTagList desc = qTag.getTagList("description", 8);
                     StringBuilder sb = new StringBuilder();
@@ -159,8 +151,7 @@ public class FTBQQuestImporter implements IImporter {
                     }
                     questLine.setProperty(NativeProps.DESC, sb.toString());
                     if (qTag.hasKey("icon")) {
-                        // We're not even going to try and make an equivalent dynamic icon
-                        // (although BQ could support it later)
+                        // We're not even going to try and make an equivalent dynamic icon (although BQ could support it later)
                         BigItemStack icoStack = FTBQUtils.convertItem(qTag.getTag("icon"));
                         if (!icoStack.getBaseStack().isEmpty())
                             questLine.setProperty(NativeProps.ICON, icoStack);
@@ -173,13 +164,11 @@ public class FTBQQuestImporter implements IImporter {
 
                 // === QUEST DATA ===
 
-                String hexID = questFile.getName().substring(0,
-                        questFile.getName().length() - (isSnbt ? ".snbt".length() : ".nbt".length()));
+                String hexID = questFile.getName().substring(0, questFile.getName().length() - (isSnbt ? ".snbt".length() : ".nbt".length()));
                 int questID = questDB.nextID();
                 IQuest quest = questDB.createNew(questID);
                 IQuestLineEntry qle = questLine.createNew(questID);
-                // Add this to the weird ass ID mapping
-                ID_MAP.put(hexID, new FTBEntry(questID, quest, FTBEntryType.QUEST));
+                ID_MAP.put(hexID, new FTBEntry(questID, quest, FTBEntryType.QUEST)); // Add this to the weird ass ID mapping
                 if (qTag.hasKey("title", 8)) {
                     quest.setProperty(NativeProps.NAME, qTag.getString("title"));
                 } else {
@@ -202,8 +191,7 @@ public class FTBQQuestImporter implements IImporter {
                 quest.setProperty(NativeProps.VISIBILITY, EnumQuestVisibility.ALWAYS);
 
                 if (qTag.hasKey("icon")) {
-                    // We're not even going to try and make an equivalent dynamic icon
-                    // (although BQ could support it later)
+                    // We're not even going to try and make an equivalent dynamic icon (although BQ could support it later)
                     BigItemStack icoStack = FTBQUtils.convertItem(qTag.getTag("icon"));
                     if (!icoStack.getBaseStack().isEmpty())
                         quest.setProperty(NativeProps.ICON, icoStack);
@@ -223,17 +211,14 @@ public class FTBQQuestImporter implements IImporter {
                     }
                 }
 
-                // Fun Fact: FTBQ used to have a hard limit of -25 to +25 for it's quest coordinates
-                // even if you try forcing it higher
-                // Update: It's now infinite, uses double floating point percision, isn't grid snapped, and has size.
-                // Progress!
+                // Fun Fact: FTBQ used to have a hard limit of -25 to +25 for it's quest coordinates even if you try forcing it higher
+                // Update: It's now infinite, uses double floating point percision, isn't grid snapped, and has size. Progress!
                 double iconSize = 24;
                 double gridSize = 32;
                 double size = qTag.hasKey("size") ? qTag.getDouble("size") : 1D;
                 size *= iconSize;
                 qle.setSize(MathHelper.ceil(size), MathHelper.ceil(size));
-                qle.setPosition(MathHelper.ceil(qTag.getDouble("x") * gridSize - (gridSize / 2D)),
-                        MathHelper.ceil(qTag.getDouble("y") * gridSize - (gridSize / 2D)));
+                qle.setPosition(MathHelper.ceil(qTag.getDouble("x") * gridSize - (gridSize / 2D)), MathHelper.ceil(qTag.getDouble("y") * gridSize - (gridSize / 2D)));
 
                 // === PARENTING INFO ===
 
@@ -251,7 +236,7 @@ public class FTBQQuestImporter implements IImporter {
                     if (qTag.hasKey("dependencies", 11))
                         depend = qTag.getIntArray("dependencies");
                     if (qTag.hasKey("dependency", 3))
-                        depend = new int[] { qTag.getInteger("dependency") };
+                        depend = new int[]{qTag.getInteger("dependency")};
                     if (depend != null && depend.length > 0) {
                         depKeys = new String[depend.length];
                         for (int d = 0; d < depend.length; d++) {
@@ -268,21 +253,21 @@ public class FTBQQuestImporter implements IImporter {
                     }
 
                     if (qTag.hasKey("dependency_requirement")) {
-                        switch (qTag.getString("dependency_requirement")) {
-                            case "all_completed": {
+                        switch (qTag.getString("dependency_requirement")){
+                            case "all_completed":{
                                 quest.setProperty(NativeProps.LOGIC_QUEST, EnumLogic.AND);
                                 break;
                             }
-                            case "one_completed": {
+                            case "one_completed":{
                                 quest.setProperty(NativeProps.LOGIC_QUEST, EnumLogic.OR);
                                 break;
                             }
                             // BetterQuesting has no "started" options.
-                            case "all_started": {
+                            case "all_started":{
                                 quest.setProperty(NativeProps.LOGIC_QUEST, EnumLogic.AND);
                                 break;
                             }
-                            case "one_started": {
+                            case "one_started":{
                                 quest.setProperty(NativeProps.LOGIC_QUEST, EnumLogic.OR);
                                 break;
                             }
@@ -313,10 +298,7 @@ public class FTBQQuestImporter implements IImporter {
                     }
                 }
                 if (quest.getProperty(NativeProps.NAME).equals(hexID)) {
-                    quest.getTasks().getEntries().stream().findFirst()
-                            .flatMap(entry -> Optional.ofNullable(entry.getValue().getTextForSearch()))
-                            .flatMap(list -> list.stream().findFirst())
-                            .ifPresent(text -> quest.setProperty(NativeProps.NAME, text));
+                    quest.getTasks().getEntries().stream().findFirst().flatMap(entry -> Optional.ofNullable(entry.getValue().getTextForSearch())).flatMap(list -> list.stream().findFirst()).ifPresent(text -> quest.setProperty(NativeProps.NAME, text));
                 }
 
                 // === IMPORT REWARDS ===
@@ -435,7 +417,7 @@ public class FTBQQuestImporter implements IImporter {
         taskConverters.put("stat", new FtbqTaskStat()::convertTask);
         taskConverters.put("kill", new FtbqTaskKill()::convertTask);
         taskConverters.put("location", new FtbqTaskLocation()::convertTask);
-        taskConverters.put("checkmark", tag -> new ITask[] { new TaskCheckbox() });
+        taskConverters.put("checkmark", tag -> new ITask[]{new TaskCheckbox()});
         taskConverters.put("advancement", new FtbqTaskAdvancement()::converTask);
 
         rewardConverters.put("item", new FtbqRewardItem()::convertTask);

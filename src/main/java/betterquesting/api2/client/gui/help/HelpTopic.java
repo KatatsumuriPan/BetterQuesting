@@ -1,11 +1,10 @@
 package betterquesting.api2.client.gui.help;
 
-import javax.annotation.Nonnull;
-
 import betterquesting.api2.utils.QuestTranslation;
 
-public class HelpTopic {
+import javax.annotation.Nonnull;
 
+public class HelpTopic {
     private final String title;
     private final String description;
 

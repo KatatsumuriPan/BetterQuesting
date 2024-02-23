@@ -1,18 +1,15 @@
 package betterquesting.api2.client.gui.themes;
 
-import java.util.function.Function;
-
-import javax.annotation.Nullable;
-
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.ResourceLocation;
-
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import betterquesting.api2.client.gui.resources.lines.IGuiLine;
 import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.ResourceLocation;
+
+import javax.annotation.Nullable;
+import java.util.function.Function;
 
 public interface IGuiTheme {
-
     String getName();
 
     ResourceLocation getID();

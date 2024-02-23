@@ -1,11 +1,5 @@
 package betterquesting.client.toolbox.tools;
 
-import java.util.*;
-
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.NonNullList;
-
 import betterquesting.api.client.toolbox.IToolboxTool;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.IQuestLine;
@@ -20,9 +14,13 @@ import betterquesting.network.handlers.NetQuestEdit;
 import betterquesting.questing.QuestDatabase;
 import betterquesting.questing.QuestLineDatabase;
 import betterquesting.questing.QuestLineEntry;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
+
+import java.util.*;
 
 public class ToolboxToolCopy implements IToolboxTool {
-
     private CanvasQuestLine gui = null;
 
     private final NonNullList<GrabEntry> grabList = NonNullList.create();
@@ -105,12 +103,10 @@ public class ToolboxToolCopy implements IToolboxTool {
 
                     for (PanelButtonQuest btn : PanelToolController.selected) {
                         GuiRectangle rect = new GuiRectangle(btn.rect);
-                        grabList.add(new GrabEntry(new PanelButtonQuest(rect, -1, "", btn.getStoredValue()),
-                                rect.x - btnClicked.rect.x, rect.y - btnClicked.rect.y));
+                        grabList.add(new GrabEntry(new PanelButtonQuest(rect, -1, "", btn.getStoredValue()), rect.x - btnClicked.rect.x, rect.y - btnClicked.rect.y));
                     }
                 } else {
-                    grabList.add(new GrabEntry(new PanelButtonQuest(new GuiRectangle(btnClicked.rect), -1, "",
-                            btnClicked.getStoredValue()), 0, 0));
+                    grabList.add(new GrabEntry(new PanelButtonQuest(new GuiRectangle(btnClicked.rect), -1, "", btnClicked.getStoredValue()), 0, 0));
                 }
 
                 return true;
@@ -224,7 +220,8 @@ public class ToolboxToolCopy implements IToolboxTool {
     }
 
     @Override
-    public void onSelection(NonNullList<PanelButtonQuest> buttons) {}
+    public void onSelection(NonNullList<PanelButtonQuest> buttons) {
+    }
 
     @Override
     public boolean useSelection() {
@@ -232,7 +229,6 @@ public class ToolboxToolCopy implements IToolboxTool {
     }
 
     private class GrabEntry {
-
         private final PanelButtonQuest btn;
         private final int offX;
         private final int offY;

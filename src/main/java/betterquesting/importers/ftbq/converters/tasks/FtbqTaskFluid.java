@@ -1,5 +1,10 @@
 package betterquesting.importers.ftbq.converters.tasks;
 
+import betterquesting.api.placeholders.PlaceholderConverter;
+import betterquesting.api.questing.tasks.ITask;
+import betterquesting.api.utils.BigItemStack;
+import betterquesting.importers.ftbq.FTBQQuestImporter;
+import betterquesting.questing.tasks.TaskFluid;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,14 +14,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
-import betterquesting.api.placeholders.PlaceholderConverter;
-import betterquesting.api.questing.tasks.ITask;
-import betterquesting.api.utils.BigItemStack;
-import betterquesting.importers.ftbq.FTBQQuestImporter;
-import betterquesting.questing.tasks.TaskFluid;
-
 public class FtbqTaskFluid {
-
     public ITask[] convertTask(NBTTagCompound nbt) {
         String fName = nbt.getString("fluid");
         Fluid fluid = FluidRegistry.getFluid(fName);
@@ -25,8 +23,7 @@ public class FtbqTaskFluid {
             amount = nbt.getLong("amount"); // Sigh... longs again. No matter, we'll just split them if they're too big
         else
             amount = Fluid.BUCKET_VOLUME;
-        // FTBQ doesn't support tags yet but we'll try supporting it in advance
-        NBTTagCompound tag = !nbt.hasKey("tag", 10) ? null : nbt.getCompoundTag("tag");
+        NBTTagCompound tag = !nbt.hasKey("tag", 10) ? null : nbt.getCompoundTag("tag"); // FTBQ doesn't support tags yet but we'll try supporting it in advance
         FluidStack stack = PlaceholderConverter.convertFluid(fluid, fName, 1, tag);
 
         TaskFluid task = new TaskFluid();
@@ -38,8 +35,7 @@ public class FtbqTaskFluid {
             task.requiredFluids.add(stack.copy());
             rem -= split;
         }
-        IFluidHandlerItem handler = new ItemStack(Items.BUCKET)
-                .getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+        IFluidHandlerItem handler = new ItemStack(Items.BUCKET).getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
         stack = stack.copy();
         stack.amount = Integer.MAX_VALUE;
         if (handler.fill(stack, true) > 0)
@@ -47,6 +43,6 @@ public class FtbqTaskFluid {
         else
             FTBQQuestImporter.provideQuestIcon(new BigItemStack(Items.BUCKET));
 
-        return new ITask[] { task };
+        return new ITask[]{task};
     }
 }

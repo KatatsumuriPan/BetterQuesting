@@ -5,7 +5,6 @@ import betterquesting.api.questing.IQuestLine;
 import betterquesting.api2.storage.DBEntry;
 
 public class QuestSearchEntry {
-
     public QuestSearchEntry(DBEntry<IQuest> quest, DBEntry<IQuestLine> questLineEntry) {
         this.quest = quest;
         this.questLineEntry = questLineEntry;

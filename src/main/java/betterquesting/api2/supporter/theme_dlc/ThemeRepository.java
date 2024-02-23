@@ -1,17 +1,14 @@
 package betterquesting.api2.supporter.theme_dlc;
 
+import betterquesting.api.utils.JsonHelper;
+import com.google.gson.JsonObject;
+
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
-import com.google.gson.JsonObject;
-
-import betterquesting.api.utils.JsonHelper;
-
 public class ThemeRepository {
-
     private final String repoAddress;
     public String repoName = "Unknown Theme Repository";
 

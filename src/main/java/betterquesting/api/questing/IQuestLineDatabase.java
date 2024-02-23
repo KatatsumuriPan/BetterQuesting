@@ -1,15 +1,13 @@
 package betterquesting.api.questing;
 
-import java.util.List;
-
-import net.minecraft.nbt.NBTTagList;
-
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.storage.IDatabase;
 import betterquesting.api2.storage.INBTPartial;
+import net.minecraft.nbt.NBTTagList;
+
+import java.util.List;
 
 public interface IQuestLineDatabase extends IDatabase<IQuestLine>, INBTPartial<NBTTagList, Integer> {
-
     IQuestLine createNew(int id);
 
     /**
@@ -22,4 +20,5 @@ public interface IQuestLineDatabase extends IDatabase<IQuestLine>, INBTPartial<N
     void setOrderIndex(int lineID, int index);
 
     List<DBEntry<IQuestLine>> getSortedEntries();
+
 }

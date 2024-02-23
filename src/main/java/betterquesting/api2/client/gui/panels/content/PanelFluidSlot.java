@@ -1,11 +1,5 @@
 package betterquesting.api2.client.gui.panels.content;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fluids.FluidStack;
-
 import betterquesting.api2.client.gui.controls.PanelButtonStorage;
 import betterquesting.api2.client.gui.misc.GuiPadding;
 import betterquesting.api2.client.gui.misc.IGuiRect;
@@ -14,9 +8,13 @@ import betterquesting.api2.client.gui.resources.textures.FluidTexture;
 import betterquesting.api2.client.gui.resources.textures.LayeredTexture;
 import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fluids.FluidStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PanelFluidSlot extends PanelButtonStorage<FluidStack> {
-
     private final boolean showCount;
 
     public PanelFluidSlot(IGuiRect rect, int id, FluidStack value) {
@@ -27,10 +25,9 @@ public class PanelFluidSlot extends PanelButtonStorage<FluidStack> {
         super(rect, id, "", value);
         this.showCount = showCount;
 
-        this.setTextures(PresetTexture.ITEM_FRAME.getTexture(), PresetTexture.ITEM_FRAME.getTexture(),
-                new LayeredTexture(PresetTexture.ITEM_FRAME.getTexture(),
-                        new ColorTexture(PresetColor.ITEM_HIGHLIGHT.getColor(), new GuiPadding(1, 1, 1, 1))));
+        this.setTextures(PresetTexture.ITEM_FRAME.getTexture(), PresetTexture.ITEM_FRAME.getTexture(), new LayeredTexture(PresetTexture.ITEM_FRAME.getTexture(), new ColorTexture(PresetColor.ITEM_HIGHLIGHT.getColor(), new GuiPadding(1, 1, 1, 1))));
         this.setStoredValue(value); // Need to run this again because of the instatiation order of showCount
+
     }
 
     @Override

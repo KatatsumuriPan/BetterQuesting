@@ -1,10 +1,16 @@
 package betterquesting.questing.tasks;
 
-import java.util.*;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import betterquesting.NbtBlockType;
+import betterquesting.api.questing.IQuest;
+import betterquesting.api.questing.tasks.ITask;
+import betterquesting.api.utils.ItemComparison;
+import betterquesting.api2.client.gui.misc.IGuiRect;
+import betterquesting.api2.client.gui.panels.IGuiPanel;
+import betterquesting.api2.storage.DBEntry;
+import betterquesting.api2.utils.ParticipantInfo;
+import betterquesting.client.gui2.tasks.PanelTaskBlockBreak;
+import betterquesting.core.BetterQuesting;
+import betterquesting.questing.tasks.factory.FactoryTaskBlockBreak;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
@@ -21,23 +27,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-
 import org.apache.logging.log4j.Level;
 
-import betterquesting.NbtBlockType;
-import betterquesting.api.questing.IQuest;
-import betterquesting.api.questing.tasks.ITask;
-import betterquesting.api.utils.ItemComparison;
-import betterquesting.api2.client.gui.misc.IGuiRect;
-import betterquesting.api2.client.gui.panels.IGuiPanel;
-import betterquesting.api2.storage.DBEntry;
-import betterquesting.api2.utils.ParticipantInfo;
-import betterquesting.client.gui2.tasks.PanelTaskBlockBreak;
-import betterquesting.core.BetterQuesting;
-import betterquesting.questing.tasks.factory.FactoryTaskBlockBreak;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.*;
 
 public class TaskBlockBreak implements ITask {
-
     private final Set<UUID> completeUsers = new TreeSet<>();
     private final TreeMap<UUID, int[]> userProgress = new TreeMap<>();
     public final List<NbtBlockType> blockTypes = new ArrayList<>();
@@ -92,15 +88,11 @@ public class TaskBlockBreak implements ITask {
         for (int i = 0; i < blockTypes.size(); i++) {
             NbtBlockType targetBlock = blockTypes.get(i);
 
-            int tmpMeta = (targetBlock.m < 0 || targetBlock.m == OreDictionary.WILDCARD_VALUE) ?
-                    OreDictionary.WILDCARD_VALUE : state.getBlock().getMetaFromState(state);
-            boolean oreMatch = targetBlock.oreDict.length() > 0 &&
-                    OreDictionary.getOres(targetBlock.oreDict).contains(new ItemStack(state.getBlock(), 1, tmpMeta));
+            int tmpMeta = (targetBlock.m < 0 || targetBlock.m == OreDictionary.WILDCARD_VALUE) ? OreDictionary.WILDCARD_VALUE : state.getBlock().getMetaFromState(state);
+            boolean oreMatch = targetBlock.oreDict.length() > 0 && OreDictionary.getOres(targetBlock.oreDict).contains(new ItemStack(state.getBlock(), 1, tmpMeta));
             final int index = i;
 
-            if ((oreMatch || (state.getBlock() == targetBlock.b &&
-                    (targetBlock.m < 0 || state.getBlock().getMetaFromState(state) == targetBlock.m))) &&
-                    ItemComparison.CompareNBTTag(targetBlock.tags, tags, true)) {
+            if ((oreMatch || (state.getBlock() == targetBlock.b && (targetBlock.m < 0 || state.getBlock().getMetaFromState(state) == targetBlock.m))) && ItemComparison.CompareNBTTag(targetBlock.tags, tags, true)) {
                 progress.forEach((entry) -> {
                     if (entry.getSecond()[index] >= targetBlock.n) return;
                     entry.getSecond()[index]++;
@@ -178,8 +170,8 @@ public class TaskBlockBreak implements ITask {
 
                 int[] data = new int[blockTypes.size()];
                 NBTTagList dNbt = pTag.getTagList("data", 3);
-                // TODO: Change this to an int array. This is dumb...
-                for (int i = 0; i < data.length && i < dNbt.tagCount(); i++) {
+                for (int i = 0; i < data.length && i < dNbt.tagCount(); i++) // TODO: Change this to an int array. This is dumb...
+                {
                     data[i] = dNbt.getIntAt(i);
                 }
 

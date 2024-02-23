@@ -1,11 +1,10 @@
 package betterquesting.questing.tasks;
 
-import java.util.UUID;
-
-import net.minecraft.util.ResourceLocation;
-
 import betterquesting.core.BetterQuesting;
 import betterquesting.questing.tasks.factory.FactoryTaskOptionalRetrieval;
+import net.minecraft.util.ResourceLocation;
+
+import java.util.UUID;
 
 public class TaskOptionalRetrieval extends TaskRetrieval {
 

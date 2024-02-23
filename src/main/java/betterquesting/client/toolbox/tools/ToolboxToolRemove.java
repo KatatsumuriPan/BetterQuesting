@@ -1,13 +1,5 @@
 package betterquesting.client.toolbox.tools;
 
-import java.util.List;
-
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.NonNullList;
-
-import org.lwjgl.input.Keyboard;
-
 import betterquesting.api.client.toolbox.IToolboxTool;
 import betterquesting.api.questing.IQuestLine;
 import betterquesting.api2.client.gui.controls.PanelButtonQuest;
@@ -15,9 +7,14 @@ import betterquesting.api2.client.gui.panels.lists.CanvasQuestLine;
 import betterquesting.client.gui2.editors.designer.PanelToolController;
 import betterquesting.network.handlers.NetChapterEdit;
 import betterquesting.questing.QuestLineDatabase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
+import org.lwjgl.input.Keyboard;
+
+import java.util.List;
 
 public class ToolboxToolRemove implements IToolboxTool {
-
     private CanvasQuestLine gui;
 
     @Override
@@ -26,10 +23,12 @@ public class ToolboxToolRemove implements IToolboxTool {
     }
 
     @Override
-    public void disableTool() {}
+    public void disableTool() {
+    }
 
     @Override
-    public void refresh(CanvasQuestLine gui) {}
+    public void refresh(CanvasQuestLine gui) {
+    }
 
     @Override
     public boolean onMouseClick(int mx, int my, int click) {
@@ -71,10 +70,12 @@ public class ToolboxToolRemove implements IToolboxTool {
     }
 
     @Override
-    public void drawCanvas(int mx, int my, float partialTick) {}
+    public void drawCanvas(int mx, int my, float partialTick) {
+    }
 
     @Override
-    public void drawOverlay(int mx, int my, float partialTick) {}
+    public void drawOverlay(int mx, int my, float partialTick) {
+    }
 
     @Override
     public List<String> getTooltip(int mx, int my) {
@@ -114,7 +115,8 @@ public class ToolboxToolRemove implements IToolboxTool {
     }
 
     @Override
-    public void onSelection(NonNullList<PanelButtonQuest> buttons) {}
+    public void onSelection(NonNullList<PanelButtonQuest> buttons) {
+    }
 
     @Override
     public boolean useSelection() {

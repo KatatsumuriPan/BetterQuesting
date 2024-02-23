@@ -1,13 +1,5 @@
 package betterquesting.questing.party;
 
-import java.util.*;
-import java.util.Map.Entry;
-
-import javax.annotation.Nonnull;
-
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-
 import betterquesting.api.enums.EnumPartyStatus;
 import betterquesting.api.properties.IPropertyContainer;
 import betterquesting.api.properties.IPropertyType;
@@ -15,9 +7,14 @@ import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.party.IParty;
 import betterquesting.core.BetterQuesting;
 import betterquesting.storage.PropertyContainer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+
+import javax.annotation.Nonnull;
+import java.util.*;
+import java.util.Map.Entry;
 
 public class PartyInstance implements IParty {
-
     private final HashMap<UUID, EnumPartyStatus> members = new HashMap<>();
     private List<UUID> memCache = null;
 
@@ -135,8 +132,7 @@ public class PartyInstance implements IParty {
         if (migrate != null) {
             members.put(migrate, EnumPartyStatus.OWNER);
         } else {
-            BetterQuesting.logger
-                    .error("Failed to find suitable host to migrate party " + this.pInfo.getProperty(NativeProps.NAME));
+            BetterQuesting.logger.error("Failed to find suitable host to migrate party " + this.pInfo.getProperty(NativeProps.NAME));
         }
     }
 
@@ -175,7 +171,8 @@ public class PartyInstance implements IParty {
                 UUID uuid = UUID.fromString(jMem.getString("uuid"));
                 EnumPartyStatus priv = EnumPartyStatus.valueOf(jMem.getString("status"));
                 members.put(uuid, priv);
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
 
         refreshCache();

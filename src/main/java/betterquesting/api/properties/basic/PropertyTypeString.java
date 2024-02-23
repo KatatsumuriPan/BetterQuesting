@@ -5,7 +5,6 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
 
 public class PropertyTypeString extends PropertyTypeBase<String> {
-
     public PropertyTypeString(ResourceLocation key, String def) {
         super(key, def);
     }

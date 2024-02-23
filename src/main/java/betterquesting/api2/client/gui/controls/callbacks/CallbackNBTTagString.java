@@ -1,14 +1,12 @@
 package betterquesting.api2.client.gui.controls.callbacks;
 
+import betterquesting.api.misc.ICallback;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 
-import betterquesting.api.misc.ICallback;
-
 public class CallbackNBTTagString implements ICallback<String> {
-
     private final NBTBase tag;
     private final String sKey;
     private final int iKey;

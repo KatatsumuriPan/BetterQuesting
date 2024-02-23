@@ -1,11 +1,9 @@
 package betterquesting.api2.client.gui.themes.gui_args;
 
+import betterquesting.api.misc.ICallback;
 import net.minecraft.client.gui.GuiScreen;
 
-import betterquesting.api.misc.ICallback;
-
 public class GArgsCallback<T> extends GArgsNone {
-
     public final T value;
     public final ICallback<T> callback;
 

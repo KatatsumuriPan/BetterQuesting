@@ -1,17 +1,15 @@
 package betterquesting.api2.client.gui.themes.presets;
 
-import net.minecraft.util.ResourceLocation;
-
 import betterquesting.api2.client.gui.misc.GuiRectangle;
 import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import betterquesting.api2.client.gui.resources.textures.SimpleTexture;
 import betterquesting.api2.client.gui.themes.IThemeRegistry;
 import betterquesting.client.themes.ThemeRegistry;
 import betterquesting.core.ModReference;
+import net.minecraft.util.ResourceLocation;
 
 // TODO: Reorganise these when the icon atlas is no longer bound by legacy constraints
 public enum PresetIcon {
-
     // === SIMPLE ===
     ICON_TICK("icon_tick"),
     ICON_CROSS("icon_cross"),
@@ -103,8 +101,7 @@ public enum PresetIcon {
     ICON_PATREON("icon_patreon"),
     ICON_TWITCH("icon_twitch");
 
-    public static final ResourceLocation TX_ICONS = new ResourceLocation(ModReference.MODID,
-            "textures/gui/editor_icons.png");
+    public static final ResourceLocation TX_ICONS = new ResourceLocation(ModReference.MODID, "textures/gui/editor_icons.png");
 
     private final ResourceLocation key;
 
@@ -121,151 +118,84 @@ public enum PresetIcon {
     }
 
     public static void registerIcons(IThemeRegistry reg) {
-        reg.setDefaultTexture(ICON_TICK.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(128, 0, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_CROSS.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(160, 16, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_TICK.key, new SimpleTexture(TX_ICONS, new GuiRectangle(128, 0, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_CROSS.key, new SimpleTexture(TX_ICONS, new GuiRectangle(160, 16, 16, 16)).maintainAspect(true));
 
-        reg.setDefaultTexture(ICON_POSITIVE.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(32, 16, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_NEGATIVE.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(112, 16, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_POSITIVE.key, new SimpleTexture(TX_ICONS, new GuiRectangle(32, 16, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_NEGATIVE.key, new SimpleTexture(TX_ICONS, new GuiRectangle(112, 16, 16, 16)).maintainAspect(true));
 
-        reg.setDefaultTexture(ICON_LEFT.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(208, 16, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_RIGHT.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(224, 16, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_UP.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(176, 16, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_DOWN.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(192, 16, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_LEFT.key, new SimpleTexture(TX_ICONS, new GuiRectangle(208, 16, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_RIGHT.key, new SimpleTexture(TX_ICONS, new GuiRectangle(224, 16, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_UP.key, new SimpleTexture(TX_ICONS, new GuiRectangle(176, 16, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_DOWN.key, new SimpleTexture(TX_ICONS, new GuiRectangle(192, 16, 16, 16)).maintainAspect(true));
 
-        reg.setDefaultTexture(ICON_PROPS.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(0, 0, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_GEAR.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(0, 16, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_TRASH.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(16, 0, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_SELECTION.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(16, 16, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_COPY.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(32, 0, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_GRAB.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(48, 0, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_NEW.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(48, 16, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_GRID.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(64, 0, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_TWO_WAY.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(64, 16, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_LINK.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(80, 0, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_SORT.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(80, 16, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_VIEW.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(96, 0, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_FUNC.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(96, 16, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_CURSOR.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(112, 0, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_REFRESH.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(128, 16, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_ITEM.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(144, 0, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_SCALE.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(144, 16, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_EXIT.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(160, 0, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_NOTICE.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(176, 0, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_PARTY.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(192, 0, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_THEME.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(208, 0, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_HOME.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(224, 0, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_INFO.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(64, 80, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_DESC.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(208, 64, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_BOOKS.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(224, 64, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_IMAGE.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(240, 64, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_PROPS.key, new SimpleTexture(TX_ICONS, new GuiRectangle(0, 0, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_GEAR.key, new SimpleTexture(TX_ICONS, new GuiRectangle(0, 16, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_TRASH.key, new SimpleTexture(TX_ICONS, new GuiRectangle(16, 0, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_SELECTION.key, new SimpleTexture(TX_ICONS, new GuiRectangle(16, 16, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_COPY.key, new SimpleTexture(TX_ICONS, new GuiRectangle(32, 0, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_GRAB.key, new SimpleTexture(TX_ICONS, new GuiRectangle(48, 0, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_NEW.key, new SimpleTexture(TX_ICONS, new GuiRectangle(48, 16, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_GRID.key, new SimpleTexture(TX_ICONS, new GuiRectangle(64, 0, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_TWO_WAY.key, new SimpleTexture(TX_ICONS, new GuiRectangle(64, 16, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_LINK.key, new SimpleTexture(TX_ICONS, new GuiRectangle(80, 0, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_SORT.key, new SimpleTexture(TX_ICONS, new GuiRectangle(80, 16, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_VIEW.key, new SimpleTexture(TX_ICONS, new GuiRectangle(96, 0, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_FUNC.key, new SimpleTexture(TX_ICONS, new GuiRectangle(96, 16, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_CURSOR.key, new SimpleTexture(TX_ICONS, new GuiRectangle(112, 0, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_REFRESH.key, new SimpleTexture(TX_ICONS, new GuiRectangle(128, 16, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_ITEM.key, new SimpleTexture(TX_ICONS, new GuiRectangle(144, 0, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_SCALE.key, new SimpleTexture(TX_ICONS, new GuiRectangle(144, 16, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_EXIT.key, new SimpleTexture(TX_ICONS, new GuiRectangle(160, 0, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_NOTICE.key, new SimpleTexture(TX_ICONS, new GuiRectangle(176, 0, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_PARTY.key, new SimpleTexture(TX_ICONS, new GuiRectangle(192, 0, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_THEME.key, new SimpleTexture(TX_ICONS, new GuiRectangle(208, 0, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_HOME.key, new SimpleTexture(TX_ICONS, new GuiRectangle(224, 0, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_INFO.key, new SimpleTexture(TX_ICONS, new GuiRectangle(64, 80, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_DESC.key, new SimpleTexture(TX_ICONS, new GuiRectangle(208, 64, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_BOOKS.key, new SimpleTexture(TX_ICONS, new GuiRectangle(224, 64, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_IMAGE.key, new SimpleTexture(TX_ICONS, new GuiRectangle(240, 64, 16, 16)).maintainAspect(true));
 
         // === AUDIO ===
-        reg.setDefaultTexture(ICON_AV_PLAY.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(0, 32, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_AV_PAUSE.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(32, 32, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_AV_STOP.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(16, 32, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_AV_BACK.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(48, 32, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_AV_SKIP.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(64, 32, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_AV_FF.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(32, 80, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_AV_REWIND.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(48, 80, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_AV_VOL_UP.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(80, 32, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_AV_VOL_DOWN.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(96, 32, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_AV_VOL_MUTE.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(112, 32, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_AV_SOUND.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(128, 32, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_AV_PLAY.key, new SimpleTexture(TX_ICONS, new GuiRectangle(0, 32, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_AV_PAUSE.key, new SimpleTexture(TX_ICONS, new GuiRectangle(32, 32, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_AV_STOP.key, new SimpleTexture(TX_ICONS, new GuiRectangle(16, 32, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_AV_BACK.key, new SimpleTexture(TX_ICONS, new GuiRectangle(48, 32, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_AV_SKIP.key, new SimpleTexture(TX_ICONS, new GuiRectangle(64, 32, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_AV_FF.key, new SimpleTexture(TX_ICONS, new GuiRectangle(32, 80, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_AV_REWIND.key, new SimpleTexture(TX_ICONS, new GuiRectangle(48, 80, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_AV_VOL_UP.key, new SimpleTexture(TX_ICONS, new GuiRectangle(80, 32, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_AV_VOL_DOWN.key, new SimpleTexture(TX_ICONS, new GuiRectangle(96, 32, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_AV_VOL_MUTE.key, new SimpleTexture(TX_ICONS, new GuiRectangle(112, 32, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_AV_SOUND.key, new SimpleTexture(TX_ICONS, new GuiRectangle(128, 32, 16, 16)).maintainAspect(true));
 
         // === FILES ==
-        reg.setDefaultTexture(ICON_FILE.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(0, 64, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_FOLDER_OPEN.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(16, 64, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_FOLDER_CLOSED.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(32, 64, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_DIR_UP.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(48, 64, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_PG_PREV.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(224, 48, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_PG_NEXT.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(240, 48, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_SAVE.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(0, 80, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_FILE.key, new SimpleTexture(TX_ICONS, new GuiRectangle(0, 64, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_FOLDER_OPEN.key, new SimpleTexture(TX_ICONS, new GuiRectangle(16, 64, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_FOLDER_CLOSED.key, new SimpleTexture(TX_ICONS, new GuiRectangle(32, 64, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_DIR_UP.key, new SimpleTexture(TX_ICONS, new GuiRectangle(48, 64, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_PG_PREV.key, new SimpleTexture(TX_ICONS, new GuiRectangle(224, 48, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_PG_NEXT.key, new SimpleTexture(TX_ICONS, new GuiRectangle(240, 48, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_SAVE.key, new SimpleTexture(TX_ICONS, new GuiRectangle(0, 80, 16, 16)).maintainAspect(true));
 
         // === OPTIONS ===
-        reg.setDefaultTexture(ICON_LOCKED.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(80, 48, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_UNLOCKED.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(96, 48, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_VISIBILITY_NORMAL.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(192, 80, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_VISIBILITY_IMPLICIT.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(208, 80, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_VISIBILITY_HIDDEN.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(224, 80, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_LOCKED.key, new SimpleTexture(TX_ICONS, new GuiRectangle(80, 48, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_UNLOCKED.key, new SimpleTexture(TX_ICONS, new GuiRectangle(96, 48, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_VISIBILITY_NORMAL.key, new SimpleTexture(TX_ICONS, new GuiRectangle(192, 80, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_VISIBILITY_IMPLICIT.key, new SimpleTexture(TX_ICONS, new GuiRectangle(208, 80, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_VISIBILITY_HIDDEN.key, new SimpleTexture(TX_ICONS, new GuiRectangle(224, 80, 16, 16)).maintainAspect(true));
 
         // === MISC ===
-        reg.setDefaultTexture(ICON_BOX_FIT.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(80, 64, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_ZOOM.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(96, 64, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_ZOOM_IN.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(112, 64, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_ZOOM_OUT.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(128, 64, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_CHEST_ALL.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(144, 64, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_CHEST.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(160, 64, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_BOOKMARK.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(176, 64, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_MENU.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(192, 64, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_BOX_FIT.key, new SimpleTexture(TX_ICONS, new GuiRectangle(80, 64, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_ZOOM.key, new SimpleTexture(TX_ICONS, new GuiRectangle(96, 64, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_ZOOM_IN.key, new SimpleTexture(TX_ICONS, new GuiRectangle(112, 64, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_ZOOM_OUT.key, new SimpleTexture(TX_ICONS, new GuiRectangle(128, 64, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_CHEST_ALL.key, new SimpleTexture(TX_ICONS, new GuiRectangle(144, 64, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_CHEST.key, new SimpleTexture(TX_ICONS, new GuiRectangle(160, 64, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_BOOKMARK.key, new SimpleTexture(TX_ICONS, new GuiRectangle(176, 64, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_MENU.key, new SimpleTexture(TX_ICONS, new GuiRectangle(192, 64, 16, 16)).maintainAspect(true));
 
-        reg.setDefaultTexture(ICON_PATREON.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(144, 80, 16, 16)).maintainAspect(true));
-        reg.setDefaultTexture(ICON_TWITCH.key,
-                new SimpleTexture(TX_ICONS, new GuiRectangle(160, 80, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_PATREON.key, new SimpleTexture(TX_ICONS, new GuiRectangle(144, 80, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_TWITCH.key, new SimpleTexture(TX_ICONS, new GuiRectangle(160, 80, 16, 16)).maintainAspect(true));
     }
 }

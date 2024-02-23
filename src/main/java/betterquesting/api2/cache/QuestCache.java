@@ -1,16 +1,5 @@
 package betterquesting.api2.cache;
 
-import java.util.List;
-import java.util.TreeSet;
-import java.util.UUID;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.NonNullList;
-import net.minecraftforge.common.util.INBTSerializable;
-
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.enums.EnumQuestVisibility;
@@ -20,19 +9,26 @@ import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.network.handlers.NetCacheSync;
 import betterquesting.questing.QuestDatabase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.common.util.INBTSerializable;
+
+import java.util.List;
+import java.util.TreeSet;
+import java.util.UUID;
 
 public class QuestCache implements INBTSerializable<NBTTagCompound> {
-
     // Quests that are visible to the player
     private final TreeSet<Integer> visibleQuests = new TreeSet<>();
 
-    // Quests that are currently being undertaken.
-    // NOTE: Quests can be locked but still processing data if configured todo so
+    // Quests that are currently being undertaken. NOTE: Quests can be locked but still processing data if configured to do so
     private final TreeSet<Integer> activeQuests = new TreeSet<>();
 
     // Quests and their scheduled time of being reset
-    private final TreeSet<QResetTime> resetSchedule = new TreeSet<>(
-            (o1, o2) -> o1.questID == o2.questID ? 0 : Long.compare(o1.time, o2.time));
+    private final TreeSet<QResetTime> resetSchedule = new TreeSet<>((o1, o2) -> o1.questID == o2.questID ? 0 : Long.compare(o1.time, o2.time));
 
     // Quests with pending auto claims (usually should be empty unless a condition needs to be met)
     private final TreeSet<Integer> autoClaims = new TreeSet<>();
@@ -92,8 +88,7 @@ public class QuestCache implements INBTSerializable<NBTTagCompound> {
     }
 
     // TODO: Ensure this is thread safe because we're likely going to run this in the background
-    // NOTE: Only run this when the quests completion and claim states change.
-    // Use markQuestDirty() for progression changes that need syncing
+    // NOTE: Only run this when the quests completion and claim states change. Use markQuestDirty() for progression changes that need syncing
     public synchronized void updateCache(EntityPlayer player) {
         if (player == null) return;
 
@@ -106,14 +101,13 @@ public class QuestCache implements INBTSerializable<NBTTagCompound> {
         NonNullList<Integer> tmpAutoClaim = NonNullList.create();
 
         for (DBEntry<IQuest> entry : questDB) {
-            // Unlocked or actively processing progression data
-            if (entry.getValue().isUnlocked(uuid) || entry.getValue().isComplete(uuid) ||
-                    entry.getValue().getProperty(NativeProps.LOCKED_PROGRESS)) {
+            if (entry.getValue().isUnlocked(uuid) || entry.getValue().isComplete(uuid) || entry.getValue().getProperty(NativeProps.LOCKED_PROGRESS)) // Unlocked or actively processing progression data
+            {
                 int repeat = entry.getValue().getProperty(NativeProps.REPEAT_TIME);
                 NBTTagCompound ue = entry.getValue().getCompletionInfo(uuid);
 
-                // Can be active without completion in the case of locked progress. Also account for taskless quests
-                if ((ue == null && entry.getValue().getTasks().size() <= 0) || entry.getValue().canSubmit(player)) {
+                if ((ue == null && entry.getValue().getTasks().size() <= 0) || entry.getValue().canSubmit(player)) // Can be active without completion in the case of locked progress. Also account for taskless quests
+                {
                     tmpActive.add(entry.getID());
                 } else if (ue != null) // These conditions only trigger after first completion
                 {
@@ -194,7 +188,6 @@ public class QuestCache implements INBTSerializable<NBTTagCompound> {
     }
 
     public class QResetTime implements Comparable<QResetTime> {
-
         public final int questID;
         public final long time;
 
@@ -224,10 +217,11 @@ public class QuestCache implements INBTSerializable<NBTTagCompound> {
 
         EnumQuestVisibility vis = quest.getProperty(NativeProps.VISIBILITY);
 
-        // Always shown or in edit mode, or in view mode if not overridden
         if (QuestingAPI.getAPI(ApiReference.SETTINGS).canUserEdit(player) ||
                 (BQ_Settings.viewMode && !quest.getProperty(NativeProps.IGNORES_VIEW_MODE) ||
-                        vis == EnumQuestVisibility.ALWAYS)) {
+                vis == EnumQuestVisibility.ALWAYS)
+        ) // Always shown or in edit mode, or in view mode if not overridden
+        {
             return true;
         } else if (vis == EnumQuestVisibility.HIDDEN) {
             return false;

@@ -1,9 +1,5 @@
 package betterquesting.api2.client.gui.resources.factories.colors;
 
-import net.minecraft.util.ResourceLocation;
-
-import com.google.gson.JsonObject;
-
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.utils.JsonHelper;
@@ -12,9 +8,10 @@ import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import betterquesting.api2.registry.IFactoryData;
 import betterquesting.core.ModReference;
+import com.google.gson.JsonObject;
+import net.minecraft.util.ResourceLocation;
 
 public class FactoryColorPulse implements IFactoryData<IGuiColor, JsonObject> {
-
     public static final FactoryColorPulse INSTANCE = new FactoryColorPulse();
 
     private static final ResourceLocation RES_ID = new ResourceLocation(ModReference.MODID, "color_pulse");
@@ -27,13 +24,11 @@ public class FactoryColorPulse implements IFactoryData<IGuiColor, JsonObject> {
         IGuiColor color2;
 
         JsonObject jo1 = JsonHelper.GetObject(data, "color1");
-        color1 = QuestingAPI.getAPI(ApiReference.RESOURCE_REG).getColorReg()
-                .createNew(new ResourceLocation(JsonHelper.GetString(jo1, "colorType", "null")), jo1);
+        color1 = QuestingAPI.getAPI(ApiReference.RESOURCE_REG).getColorReg().createNew(new ResourceLocation(JsonHelper.GetString(jo1, "colorType", "null")), jo1);
         if (color1 == null) color1 = new GuiColorStatic(0xFFFFFFFF);
 
         JsonObject jo2 = JsonHelper.GetObject(data, "color2");
-        color2 = QuestingAPI.getAPI(ApiReference.RESOURCE_REG).getColorReg()
-                .createNew(new ResourceLocation(JsonHelper.GetString(jo2, "colorType", "null")), jo2);
+        color2 = QuestingAPI.getAPI(ApiReference.RESOURCE_REG).getColorReg().createNew(new ResourceLocation(JsonHelper.GetString(jo2, "colorType", "null")), jo2);
         if (color2 == null) color2 = new GuiColorStatic(0xFFFFFFFF);
 
         return new GuiColorPulse(color1, color2, period, phase);

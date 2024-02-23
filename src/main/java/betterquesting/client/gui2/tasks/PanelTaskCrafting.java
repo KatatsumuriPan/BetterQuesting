@@ -1,11 +1,5 @@
 package betterquesting.client.gui2.tasks;
 
-import java.util.UUID;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.text.TextFormatting;
-
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.api2.client.gui.misc.GuiRectangle;
@@ -22,6 +16,11 @@ import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.client.gui.themes.presets.PresetIcon;
 import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.questing.tasks.TaskCrafting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.text.TextFormatting;
+
+import java.util.UUID;
 
 public class PanelTaskCrafting extends CanvasMinimum {
 
@@ -45,16 +44,13 @@ public class PanelTaskCrafting extends CanvasMinimum {
         IGuiTexture txTick = new GuiTextureColored(PresetIcon.ICON_TICK.getTexture(), new GuiColorStatic(0xFF00FF00));
         IGuiTexture txCross = new GuiTextureColored(PresetIcon.ICON_CROSS.getTexture(), new GuiColorStatic(0xFFFF0000));
 
-        this.addPanel(new PanelGeneric(new GuiRectangle(0, 0, 16, 16, 0),
-                new ItemTexture(new BigItemStack(Blocks.CRAFTING_TABLE))));
+        this.addPanel(new PanelGeneric(new GuiRectangle(0, 0, 16, 16, 0), new ItemTexture(new BigItemStack(Blocks.CRAFTING_TABLE))));
         this.addPanel(new PanelGeneric(new GuiRectangle(10, 10, 6, 6, 0), task.allowCraft ? txTick : txCross));
 
-        this.addPanel(new PanelGeneric(new GuiRectangle(24, 0, 16, 16, 0),
-                new ItemTexture(new BigItemStack(Blocks.FURNACE))));
+        this.addPanel(new PanelGeneric(new GuiRectangle(24, 0, 16, 16, 0), new ItemTexture(new BigItemStack(Blocks.FURNACE))));
         this.addPanel(new PanelGeneric(new GuiRectangle(34, 10, 6, 6, 0), task.allowSmelt ? txTick : txCross));
 
-        this.addPanel(
-                new PanelGeneric(new GuiRectangle(48, 0, 16, 16, 0), new ItemTexture(new BigItemStack(Blocks.ANVIL))));
+        this.addPanel(new PanelGeneric(new GuiRectangle(48, 0, 16, 16, 0), new ItemTexture(new BigItemStack(Blocks.ANVIL))));
         this.addPanel(new PanelGeneric(new GuiRectangle(58, 10, 6, 6, 0), task.allowAnvil ? txTick : txCross));
 
         int listW = initialRect.getWidth();

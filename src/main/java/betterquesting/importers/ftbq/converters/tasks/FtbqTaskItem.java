@@ -1,8 +1,5 @@
 package betterquesting.importers.ftbq.converters.tasks;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-
 import betterquesting.api.enums.EnumLogic;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api.utils.BigItemStack;
@@ -10,17 +7,14 @@ import betterquesting.core.BetterQuesting;
 import betterquesting.importers.ftbq.FTBQQuestImporter;
 import betterquesting.importers.ftbq.FTBQUtils;
 import betterquesting.questing.tasks.TaskRetrieval;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 
 public class FtbqTaskItem {
-
     public ITask[] convertTask(NBTTagCompound nbt) {
         TaskRetrieval task = new TaskRetrieval();
-        // If the default were changed to true and this was redacted then too bad.
-        // I'm not going looking for the root file just for this task
-        task.consume = nbt.getBoolean("consume_items");
-        // Why this isn't per item I have no idea. Ask the FTBQ dev.
-        // Also not a fan of supporting stack counts in excess of 2 BILLION items.
-        long count = !nbt.hasKey("count") ? 1 : nbt.getLong("count");
+        task.consume = nbt.getBoolean("consume_items"); // If the default were changed to true and this was redacted then too bad. I'm not going looking for the root file just for this task
+        long count = !nbt.hasKey("count") ? 1 : nbt.getLong("count"); // Why this isn't per item I have no idea. Ask the FTBQ dev. Also not a fan of supporting stack counts in excess of 2 BILLION items.
 
         if (nbt.hasKey("item", 8) || nbt.hasKey("item", 10)) {
             BigItemStack item = FTBQUtils.convertItem(nbt.getTag("item"));
@@ -65,6 +59,6 @@ public class FtbqTaskItem {
             BetterQuesting.logger.error("Unable read item tag!");
         }
 
-        return new ITask[] { task };
+        return new ITask[]{task};
     }
 }

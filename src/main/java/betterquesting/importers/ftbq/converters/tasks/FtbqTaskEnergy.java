@@ -1,20 +1,17 @@
 package betterquesting.importers.ftbq.converters.tasks;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.placeholders.tasks.TaskPlaceholder;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.importers.ftbq.FTBQQuestImporter;
+import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 
 public class FtbqTaskEnergy {
-
-    // With a little magic we're going to support this
-    // without having to reference RF Expansion nor even have it installed!
+    // With a little magic we're going to support this without having to reference RF Expansion nor even have it installed!
     public ITask[] converTask(NBTTagCompound tag) {
         NBTTagCompound rfTaskTag = new NBTTagCompound();
         rfTaskTag.setString("taskID", "bq_rf:rf_charge");
@@ -31,6 +28,6 @@ public class FtbqTaskEnergy {
 
         FTBQQuestImporter.provideQuestIcon(new BigItemStack(Blocks.REDSTONE_BLOCK));
 
-        return new ITask[] { task };
+        return new ITask[]{task};
     }
 }

@@ -1,20 +1,16 @@
 package betterquesting.api2.storage;
 
-import static betterquesting.api2.storage.SimpleDatabase.CACHE_MAX_SIZE;
-import static betterquesting.api2.storage.SimpleDatabase.SPARSE_RATIO;
-
 import java.util.function.Function;
 import java.util.function.Predicate;
+
+import static betterquesting.api2.storage.SimpleDatabase.CACHE_MAX_SIZE;
+import static betterquesting.api2.storage.SimpleDatabase.SPARSE_RATIO;
 
 enum LookupLogicType {
 
     Empty(db -> db.mapDB.isEmpty(), EmptyLookupLogic::new),
-    ArrayCache(
-            db -> db.mapDB.size() < CACHE_MAX_SIZE &&
-                    db.mapDB.size() > SPARSE_RATIO * (db.mapDB.lastKey() - db.mapDB.firstKey()),
-            ArrayCacheLookupLogic::new),
+    ArrayCache(db -> db.mapDB.size() < CACHE_MAX_SIZE && db.mapDB.size() > SPARSE_RATIO * (db.mapDB.lastKey() - db.mapDB.firstKey()), ArrayCacheLookupLogic::new),
     Naive(db -> true, NaiveLookupLogic::new);
-
     private final Predicate<SimpleDatabase<?>> shouldUse;
     private final Function<SimpleDatabase<?>, LookupLogic<?>> factory;
 

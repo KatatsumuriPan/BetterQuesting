@@ -1,5 +1,20 @@
 package betterquesting.misc;
 
+import betterquesting.core.BetterQuesting;
+import betterquesting.core.ModReference;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureUtil;
+import net.minecraft.client.resources.IResourcePack;
+import net.minecraft.client.resources.ResourcePackFileNotFoundException;
+import net.minecraft.client.resources.data.IMetadataSection;
+import net.minecraft.client.resources.data.MetadataSerializer;
+import net.minecraft.util.ResourceLocation;
+import org.apache.logging.log4j.Level;
+
+import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 import java.io.Closeable;
 import java.io.File;
@@ -8,25 +23,6 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import javax.annotation.Nonnull;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureUtil;
-import net.minecraft.client.resources.IResourcePack;
-import net.minecraft.client.resources.ResourcePackFileNotFoundException;
-import net.minecraft.client.resources.data.IMetadataSection;
-import net.minecraft.client.resources.data.MetadataSerializer;
-import net.minecraft.util.ResourceLocation;
-
-import org.apache.logging.log4j.Level;
-
-import com.google.common.base.Splitter;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
-import betterquesting.core.BetterQuesting;
-import betterquesting.core.ModReference;
 
 public class QuestResourcesFile implements IResourcePack, Closeable {
 
@@ -65,7 +61,8 @@ public class QuestResourcesFile implements IResourcePack, Closeable {
                     return true;
                 }
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
         return false;
     }
@@ -79,7 +76,8 @@ public class QuestResourcesFile implements IResourcePack, Closeable {
             for (ZipFile f : getZipFiles()) {
                 hashset.addAll(GetZipDomains(f));
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
         return hashset;
     }
@@ -121,8 +119,7 @@ public class QuestResourcesFile implements IResourcePack, Closeable {
         if (bufferedImage != null) return bufferedImage;
 
         try {
-            bufferedImage = TextureUtil.readBufferedImage(
-                    Minecraft.getMinecraft().getResourceManager().getResource(UNKNOWN_PACK_TEXTURE).getInputStream());
+            bufferedImage = TextureUtil.readBufferedImage(Minecraft.getMinecraft().getResourceManager().getResource(UNKNOWN_PACK_TEXTURE).getInputStream());
         } catch (IOException ioexception) {
             throw new Error("Couldn't bind resource pack icon", ioexception);
         }
@@ -152,7 +149,8 @@ public class QuestResourcesFile implements IResourcePack, Closeable {
             if (f.exists() && f.isFile()) {
                 try {
                     zipList.add(new ZipFile(f));
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
             }
         }
 
@@ -164,8 +162,7 @@ public class QuestResourcesFile implements IResourcePack, Closeable {
     }
 
     private void logNameNotLowercase(String name, String file) {
-        BetterQuesting.logger.log(Level.WARN, "ResourcePack: ignored non-lowercase namespace: {} in {}",
-                new Object[] { name, file });
+        BetterQuesting.logger.log(Level.WARN, "ResourcePack: ignored non-lowercase namespace: {} in {}", new Object[]{name, file});
     }
 
     @Override

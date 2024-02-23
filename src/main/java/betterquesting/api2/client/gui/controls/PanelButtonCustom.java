@@ -1,19 +1,17 @@
 package betterquesting.api2.client.gui.controls;
 
-import java.util.function.Consumer;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.init.SoundEvents;
-
-import org.lwjgl.input.Mouse;
-
 import betterquesting.api2.client.gui.events.PEventBroadcaster;
 import betterquesting.api2.client.gui.events.types.PEventButton;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.CanvasEmpty;
 import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.init.SoundEvents;
+import org.lwjgl.input.Mouse;
+
+import java.util.function.Consumer;
 
 public class PanelButtonCustom extends CanvasEmpty implements IPanelButton {
 
@@ -27,8 +25,7 @@ public class PanelButtonCustom extends CanvasEmpty implements IPanelButton {
     public PanelButtonCustom(IGuiRect transform, int buttonId) {
         super(transform);
         this.buttonId = buttonId;
-        this.setTextures(PresetTexture.BTN_NORMAL_0.getTexture(), PresetTexture.BTN_NORMAL_1.getTexture(),
-                PresetTexture.BTN_NORMAL_2.getTexture());
+        this.setTextures(PresetTexture.BTN_NORMAL_0.getTexture(), PresetTexture.BTN_NORMAL_1.getTexture(), PresetTexture.BTN_NORMAL_2.getTexture());
     }
 
     @Override
@@ -88,12 +85,10 @@ public class PanelButtonCustom extends CanvasEmpty implements IPanelButton {
         pendingRelease = false;
 
         IGuiRect bounds = this.getTransform();
-        boolean clicked = isActive() && click == 0 && bounds.contains(mx, my) &&
-                !PEventBroadcaster.INSTANCE.postEvent(new PEventButton(this));
+        boolean clicked = isActive() && click == 0 && bounds.contains(mx, my) && !PEventBroadcaster.INSTANCE.postEvent(new PEventButton(this));
 
         if (clicked) {
-            Minecraft.getMinecraft().getSoundHandler()
-                    .playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+            Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             onButtonClick();
         }
 

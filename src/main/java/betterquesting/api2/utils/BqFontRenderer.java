@@ -5,11 +5,9 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 public class BqFontRenderer extends FontRenderer {
-
     public static final BqFontRenderer FONT_UNICODE = new BqFontRenderer(true);
     public static final BqFontRenderer FONT_STANDARD = new BqFontRenderer(false);
 
@@ -18,8 +16,7 @@ public class BqFontRenderer extends FontRenderer {
     private boolean isSmall = false;
 
     public BqFontRenderer(boolean unicode) {
-        super(Minecraft.getMinecraft().gameSettings, new ResourceLocation("minecraft:textures/font/ascii.png"),
-                Minecraft.getMinecraft().renderEngine, unicode);
+        super(Minecraft.getMinecraft().gameSettings, new ResourceLocation("minecraft:textures/font/ascii.png"), Minecraft.getMinecraft().renderEngine, unicode);
         ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(this);
     }
 
@@ -75,14 +72,14 @@ public class BqFontRenderer extends FontRenderer {
                 GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
             }
 
-            // GlStateManager.glTexCoord2f(f2 / 256.0F, f3 / 256.0F);
-            // GlStateManager.glVertex3f(this.posX + f5, this.posY, 0.0F);
-            // GlStateManager.glTexCoord2f(f2 / 256.0F, (f3 + 15.98F) / 256.0F);
-            // GlStateManager.glVertex3f(this.posX - f5, this.posY + ys, 0.0F);
-            // GlStateManager.glTexCoord2f((f2 + f4) / 256.0F, f3 / 256.0F);
-            // GlStateManager.glVertex3f(this.posX + f4 / 2.0F + f5, this.posY, 0.0F);
-            // GlStateManager.glTexCoord2f((f2 + f4) / 256.0F, (f3 + 15.98F) / 256.0F);
-            // GlStateManager.glVertex3f(this.posX + f4 / 2.0F - f5, this.posY + ys, 0.0F);
+            //GlStateManager.glTexCoord2f(f2 / 256.0F, f3 / 256.0F);
+            //GlStateManager.glVertex3f(this.posX + f5, this.posY, 0.0F);
+            //GlStateManager.glTexCoord2f(f2 / 256.0F, (f3 + 15.98F) / 256.0F);
+            //GlStateManager.glVertex3f(this.posX - f5, this.posY + ys, 0.0F);
+            //GlStateManager.glTexCoord2f((f2 + f4) / 256.0F, f3 / 256.0F);
+            //GlStateManager.glVertex3f(this.posX + f4 / 2.0F + f5, this.posY, 0.0F);
+            //GlStateManager.glTexCoord2f((f2 + f4) / 256.0F, (f3 + 15.98F) / 256.0F);
+            //GlStateManager.glVertex3f(this.posX + f4 / 2.0F - f5, this.posY + ys, 0.0F);
 
             GlStateManager.glBegin(GL11.GL_TRIANGLE_STRIP);
             GL11.glTexCoord2d(f2 / 256.0D, f3 / 256.0D);
@@ -139,8 +136,7 @@ public class BqFontRenderer extends FontRenderer {
 
     private ResourceLocation getUnicodePageLocation(int page) {
         if (UNICODE_PAGE_LOCATIONS[page] == null) {
-            UNICODE_PAGE_LOCATIONS[page] = new ResourceLocation(
-                    String.format("textures/font/unicode_page_%02x.png", page));
+            UNICODE_PAGE_LOCATIONS[page] = new ResourceLocation(String.format("textures/font/unicode_page_%02x.png", page));
         }
 
         return UNICODE_PAGE_LOCATIONS[page];
@@ -237,7 +233,6 @@ public class BqFontRenderer extends FontRenderer {
     }
 
     public static boolean isFormatColor(char colorChar) {
-        return colorChar >= '0' && colorChar <= '9' || colorChar >= 'a' && colorChar <= 'f' ||
-                colorChar >= 'A' && colorChar <= 'F';
+        return colorChar >= '0' && colorChar <= '9' || colorChar >= 'a' && colorChar <= 'f' || colorChar >= 'A' && colorChar <= 'F';
     }
 }

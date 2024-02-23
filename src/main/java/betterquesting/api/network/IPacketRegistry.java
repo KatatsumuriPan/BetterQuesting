@@ -1,10 +1,5 @@
 package betterquesting.api.network;
 
-import java.util.function.Consumer;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -12,10 +7,12 @@ import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public interface IPacketRegistry {
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.function.Consumer;
 
-    void registerServerHandler(@Nonnull ResourceLocation idName,
-                               @Nonnull Consumer<Tuple<NBTTagCompound, EntityPlayerMP>> method);
+public interface IPacketRegistry {
+    void registerServerHandler(@Nonnull ResourceLocation idName, @Nonnull Consumer<Tuple<NBTTagCompound, EntityPlayerMP>> method);
 
     @SideOnly(Side.CLIENT)
     void registerClientHandler(@Nonnull ResourceLocation idName, @Nonnull Consumer<NBTTagCompound> method);

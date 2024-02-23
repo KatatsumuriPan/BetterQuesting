@@ -1,15 +1,5 @@
 package betterquesting.importers;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-
 import betterquesting.api.client.importers.IImporter;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.IQuestDatabase;
@@ -18,9 +8,17 @@ import betterquesting.api.questing.IQuestLineDatabase;
 import betterquesting.api.utils.FileExtensionFilter;
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.api.utils.NBTConverter;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+
+import java.io.File;
+import java.io.FileFilter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class NativeFileImporter implements IImporter {
-
     public static final NativeFileImporter INSTANCE = new NativeFileImporter();
     private static final FileFilter FILTER = new FileExtensionFilter(".json");
 
@@ -44,8 +42,7 @@ public class NativeFileImporter implements IImporter {
         for (File selected : files) {
             if (selected == null || !selected.exists()) continue;
 
-            NBTTagCompound nbt = NBTConverter.JSONtoNBT_Object(JsonHelper.ReadFromFile(selected), new NBTTagCompound(),
-                    true);
+            NBTTagCompound nbt = NBTConverter.JSONtoNBT_Object(JsonHelper.ReadFromFile(selected), new NBTTagCompound(), true);
             HashMap<Integer, Integer> remappedIDs = readQuests(nbt.getTagList("questDatabase", 10), questDB);
             readQuestLines(nbt.getTagList("questLines", 10), lineDB, remappedIDs);
         }
@@ -59,6 +56,7 @@ public class NativeFileImporter implements IImporter {
             NBTTagCompound qTag = json.getCompoundTagAt(i);
             int oldID = qTag.hasKey("questID", 99) ? qTag.getInteger("questID") : -1;
             if (oldID < 0) continue;
+
 
             int qID = questDB.nextID();
             IQuest quest = questDB.createNew(qID);

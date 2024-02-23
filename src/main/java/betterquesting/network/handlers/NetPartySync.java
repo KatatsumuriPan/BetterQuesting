@@ -1,11 +1,15 @@
 package betterquesting.network.handlers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import javax.annotation.Nullable;
-
+import betterquesting.api.events.DatabaseEvent;
+import betterquesting.api.events.DatabaseEvent.DBType;
+import betterquesting.api.network.QuestingPacket;
+import betterquesting.api.questing.party.IParty;
+import betterquesting.api2.storage.DBEntry;
+import betterquesting.core.BetterQuesting;
+import betterquesting.core.ModReference;
+import betterquesting.network.PacketSender;
+import betterquesting.network.PacketTypeRegistry;
+import betterquesting.questing.party.PartyManager;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -17,20 +21,13 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import betterquesting.api.events.DatabaseEvent;
-import betterquesting.api.events.DatabaseEvent.DBType;
-import betterquesting.api.network.QuestingPacket;
-import betterquesting.api.questing.party.IParty;
-import betterquesting.api2.storage.DBEntry;
-import betterquesting.core.BetterQuesting;
-import betterquesting.core.ModReference;
-import betterquesting.network.PacketSender;
-import betterquesting.network.PacketTypeRegistry;
-import betterquesting.questing.party.PartyManager;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 // Ignore the invite system here. We'll deal wih that elsewhere
 public class NetPartySync {
-
     private static final ResourceLocation ID_NAME = new ResourceLocation(ModReference.MODID, "party_sync");
 
     public static void registerHandler() {
@@ -50,11 +47,11 @@ public class NetPartySync {
         List<EntityPlayerMP> players = new ArrayList<>();
         for (UUID uuid : party.getMembers()) {
             EntityPlayerMP p = server.getPlayerList().getPlayerByUUID(uuid);
-            // noinspection ConstantConditions
+            //noinspection ConstantConditions
             if (p != null) players.add(p);
         }
 
-        sendSync(players.toArray(new EntityPlayerMP[0]), new int[] { partyID });
+        sendSync(players.toArray(new EntityPlayerMP[0]), new int[]{partyID});
     }
 
     public static void sendSync(@Nullable EntityPlayerMP[] players, @Nullable int[] partyIDs) {
@@ -62,8 +59,7 @@ public class NetPartySync {
         if (players != null && players.length <= 0) return;
 
         NBTTagList dataList = new NBTTagList();
-        final List<DBEntry<IParty>> partySubset = partyIDs == null ? PartyManager.INSTANCE.getEntries() :
-                PartyManager.INSTANCE.bulkLookup(partyIDs);
+        final List<DBEntry<IParty>> partySubset = partyIDs == null ? PartyManager.INSTANCE.getEntries() : PartyManager.INSTANCE.bulkLookup(partyIDs);
         for (DBEntry<IParty> party : partySubset) {
             NBTTagCompound entry = new NBTTagCompound();
             entry.setInteger("partyID", party.getID());
@@ -92,7 +88,7 @@ public class NetPartySync {
     private static void onServer(Tuple<NBTTagCompound, EntityPlayerMP> message) {
         NBTTagCompound payload = message.getFirst();
         int[] reqIDs = !payload.hasKey("partyIDs") ? null : payload.getIntArray("partyIDs");
-        sendSync(new EntityPlayerMP[] { message.getSecond() }, reqIDs);
+        sendSync(new EntityPlayerMP[]{message.getSecond()}, reqIDs);
     }
 
     @SideOnly(Side.CLIENT)

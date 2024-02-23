@@ -6,7 +6,6 @@ import net.minecraft.nbt.NBTTagFloat;
 import net.minecraft.util.ResourceLocation;
 
 public class PropertyTypeFloat extends PropertyTypeBase<Float> {
-
     public PropertyTypeFloat(ResourceLocation key, Float def) {
         super(key, def);
     }

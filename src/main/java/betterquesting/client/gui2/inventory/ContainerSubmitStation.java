@@ -1,22 +1,19 @@
 package betterquesting.client.gui2.inventory;
 
+import betterquesting.blocks.TileSubmitStation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import betterquesting.blocks.TileSubmitStation;
-
 public class ContainerSubmitStation extends Container {
-
     private TileSubmitStation tile;
 
     public ContainerSubmitStation(InventoryPlayer inventory, TileSubmitStation tile) {
         this.tile = tile;
 
         this.addSlotToContainer(new Slot(tile, 0, 0, 0) {
-
             @Override
             public boolean isItemValid(ItemStack stack) {
                 return inventory.isItemValidForSlot(0, stack);
@@ -24,7 +21,6 @@ public class ContainerSubmitStation extends Container {
         });
 
         this.addSlotToContainer(new Slot(tile, 1, 0, 0) {
-
             @Override
             public boolean isItemValid(ItemStack stack) {
                 return false;

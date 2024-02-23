@@ -1,11 +1,9 @@
 package betterquesting.api2.client.gui.controls.callbacks;
 
+import betterquesting.api.misc.ICallback;
 import net.minecraft.nbt.*;
 
-import betterquesting.api.misc.ICallback;
-
 public class CallbackNBTPrimitive<T extends Number> implements ICallback<T> {
-
     private final NBTBase tag;
     private final String sKey;
     private final int iKey;

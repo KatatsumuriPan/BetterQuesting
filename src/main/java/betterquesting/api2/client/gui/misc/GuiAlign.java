@@ -1,16 +1,15 @@
 package betterquesting.api2.client.gui.misc;
 
-import java.nio.FloatBuffer;
-
 import org.lwjgl.util.vector.ReadableVector4f;
 import org.lwjgl.util.vector.Vector;
 import org.lwjgl.util.vector.Vector4f;
+
+import java.nio.FloatBuffer;
 
 /**
  * Provides pre-made anchor points for GUIs with functions to quickly create new ones
  */
 public class GuiAlign {
-
     public static final ReadableVector4f FULL_BOX = new ImmutableVec4f(0F, 0F, 1F, 1F);
 
     public static final ReadableVector4f TOP_LEFT = new ImmutableVec4f(0F, 0F, 0F, 0F);
@@ -48,7 +47,6 @@ public class GuiAlign {
     }
 
     private static class ImmutableVec4f implements ReadableVector4f {
-
         private final ReadableVector4f v4f;
 
         public ImmutableVec4f(float x, float y, float z, float w) {

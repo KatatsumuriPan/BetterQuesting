@@ -1,24 +1,20 @@
 package betterquesting.api.utils;
 
-import java.io.IOException;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeSet;
-
-import net.minecraft.nbt.*;
-
-import org.apache.logging.log4j.Level;
-
+import betterquesting.api.api.QuestingAPI;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.stream.JsonWriter;
+import net.minecraft.nbt.*;
+import org.apache.logging.log4j.Level;
 
-import betterquesting.api.api.QuestingAPI;
+import java.io.IOException;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class NBTConverter {
-
     /**
      * Convert NBT tags to a JSON object
      */
@@ -151,13 +147,13 @@ public class NBTConverter {
     public static long[] readLongArray(NBTTagLongArray tag) {
         if (tag == null) return new long[0];
 
-        // Cut off square braces and "L;" before splitting elements
-        String[] entry = tag.toString().replaceAll("[\\[\\]L;]", "").split(",");
+        String[] entry = tag.toString().replaceAll("[\\[\\]L;]", "").split(","); // Cut off square braces and "L;" before splitting elements
         final long[] ary = new long[entry.length];
         for (int i = 0; i < entry.length; i++) {
             try {
                 ary[i] = Long.parseLong(entry[i]);
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
 
         return ary;
@@ -204,8 +200,7 @@ public class NBTConverter {
                     key = key.substring(0, key.lastIndexOf(":" + id));
                 } catch (Exception e) {
                     if (tags.hasKey(key)) {
-                        QuestingAPI.getLogger().log(Level.WARN,
-                                "JSON/NBT formatting conflict on key '" + key + "'. Skipping...");
+                        QuestingAPI.getLogger().log(Level.WARN, "JSON/NBT formatting conflict on key '" + key + "'. Skipping...");
                         continue;
                     }
                 }
@@ -285,7 +280,7 @@ public class NBTConverter {
                         try {
                             String[] s = entry.getKey().split(":");
                             byte id2 = Byte.parseByte(s[s.length - 1]);
-                            // String key = entry.getKey().substring(0, entry.getKey().lastIndexOf(":" + id));
+                            //String key = entry.getKey().substring(0, entry.getKey().lastIndexOf(":" + id));
                             tList.appendTag(JSONtoNBT_Element(entry.getValue(), id2, format));
                         } catch (Exception e) {
                             tList.appendTag(JSONtoNBT_Element(entry.getValue(), (byte) 0, format));
@@ -296,12 +291,10 @@ public class NBTConverter {
                 return tList;
             }
         } catch (Exception e) {
-            QuestingAPI.getLogger().log(Level.ERROR,
-                    "An error occured while parsing JsonElement to NBTBase (" + tagID + "):", e);
+            QuestingAPI.getLogger().log(Level.ERROR, "An error occured while parsing JsonElement to NBTBase (" + tagID + "):", e);
         }
 
-        QuestingAPI.getLogger().log(Level.WARN,
-                "Unknown NBT representation for " + jObj.toString() + " (ID: " + tagID + ")");
+        QuestingAPI.getLogger().log(Level.WARN, "Unknown NBT representation for " + jObj.toString() + " (ID: " + tagID + ")");
         return new NBTTagString();
     }
 
@@ -349,8 +342,8 @@ public class NBTConverter {
             JsonPrimitive prim = jObj.getAsJsonPrimitive();
 
             if (prim.isNumber()) {
-                // Just in case we'll choose the largest possible container supporting this number type (Long or Double)
-                if (prim.getAsString().contains(".")) {
+                if (prim.getAsString().contains(".")) // Just in case we'll choose the largest possible container supporting this number type (Long or Double)
+                {
                     tagID = 6;
                 } else {
                     tagID = 4;
@@ -364,9 +357,8 @@ public class NBTConverter {
             JsonArray array = jObj.getAsJsonArray();
 
             for (JsonElement entry : array) {
-                // Note: TagLists can only support Integers, Bytes and Compounds
-                // (Strings can be stored but require special handling)
-                if (entry.isJsonPrimitive() && tagID == 0) {
+                if (entry.isJsonPrimitive() && tagID == 0) // Note: TagLists can only support Integers, Bytes and Compounds (Strings can be stored but require special handling)
+                {
                     try {
                         for (JsonElement element : array) {
                             // Make sure all entries can be bytes

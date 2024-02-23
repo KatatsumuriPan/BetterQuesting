@@ -1,9 +1,8 @@
 package betterquesting.commands;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import betterquesting.commands.user.QuestCommandHelp;
+import betterquesting.commands.user.QuestCommandRefresh;
+import betterquesting.commands.user.QuestCommandSPHardcore;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -16,17 +15,15 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 
-import betterquesting.commands.user.QuestCommandHelp;
-import betterquesting.commands.user.QuestCommandRefresh;
-import betterquesting.commands.user.QuestCommandSPHardcore;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class BQ_CommandUser extends CommandBase {
-
     private final List<QuestCommandBase> coms = new ArrayList<>();
 
     public BQ_CommandUser() {
-        PermissionAPI.registerNode("betterquesting.command.user", DefaultPermissionLevel.ALL,
-                "user commmand permission");
+        PermissionAPI.registerNode("betterquesting.command.user", DefaultPermissionLevel.ALL, "user commmand permission");
 
         coms.add(new QuestCommandHelp());
         coms.add(new QuestCommandRefresh());
@@ -45,8 +42,7 @@ public class BQ_CommandUser extends CommandBase {
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-        return !(sender instanceof EntityPlayer) ||
-                PermissionAPI.hasPermission((EntityPlayer) sender, "betterquesting.command.user");
+        return !(sender instanceof EntityPlayer) || PermissionAPI.hasPermission((EntityPlayer) sender, "betterquesting.command.user");
     }
 
     @Override
@@ -73,13 +69,11 @@ public class BQ_CommandUser extends CommandBase {
      * Adds the strings available in this command to the given list of tab completion options.
      */
     @Override
-    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] strings,
-                                          BlockPos pos) {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] strings, BlockPos pos) {
         if (strings.length == 1) {
             List<String> base = new ArrayList<>();
             for (QuestCommandBase c : coms) {
-                if (!(sender instanceof EntityPlayer) ||
-                        PermissionAPI.hasPermission((EntityPlayer) sender, c.getPermissionNode())) {
+                if (!(sender instanceof EntityPlayer) || PermissionAPI.hasPermission((EntityPlayer) sender, c.getPermissionNode())) {
                     base.add(c.getCommand());
                 }
             }
@@ -87,8 +81,7 @@ public class BQ_CommandUser extends CommandBase {
         } else if (strings.length > 1) {
             for (QuestCommandBase c : coms) {
                 if (c.getCommand().equalsIgnoreCase(strings[0])) {
-                    if (!(sender instanceof EntityPlayer) ||
-                            PermissionAPI.hasPermission((EntityPlayer) sender, c.getPermissionNode())) {
+                    if (!(sender instanceof EntityPlayer) || PermissionAPI.hasPermission((EntityPlayer) sender, c.getPermissionNode())) {
                         return c.autoComplete(server, sender, strings);
                     }
                 }
@@ -106,8 +99,7 @@ public class BQ_CommandUser extends CommandBase {
 
         for (QuestCommandBase c : coms) {
             if (c.getCommand().equalsIgnoreCase(args[0])) {
-                if (!(sender instanceof EntityPlayer) ||
-                        PermissionAPI.hasPermission((EntityPlayer) sender, c.getPermissionNode())) {
+                if (!(sender instanceof EntityPlayer) || PermissionAPI.hasPermission((EntityPlayer) sender, c.getPermissionNode())) {
                     if (c.validArgs(args)) {
                         c.runCommand(server, this, sender, args);
                         return;

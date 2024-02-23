@@ -9,7 +9,6 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 // TODO: Replace with a better system. Stop using this for updating screens too
 @Deprecated
 public abstract class DatabaseEvent extends Event {
-
     private final DBType TYPE;
 
     public DatabaseEvent(DBType type) {
@@ -22,7 +21,6 @@ public abstract class DatabaseEvent extends Event {
 
     @Deprecated
     public static class Update extends DatabaseEvent {
-
         public Update(DBType type) {
             super(type);
         }
@@ -30,7 +28,6 @@ public abstract class DatabaseEvent extends Event {
 
     @Deprecated
     public static class Load extends DatabaseEvent {
-
         public Load(DBType type) {
             super(type);
         }
@@ -38,7 +35,6 @@ public abstract class DatabaseEvent extends Event {
 
     @Deprecated
     public static class Save extends DatabaseEvent {
-
         public Save(DBType type) {
             super(type);
         }

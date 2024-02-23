@@ -1,10 +1,16 @@
 package betterquesting.questing.tasks;
 
-import java.util.*;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import betterquesting.api.questing.IQuest;
+import betterquesting.api.questing.tasks.IFluidTask;
+import betterquesting.api.questing.tasks.IItemTask;
+import betterquesting.api.utils.JsonHelper;
+import betterquesting.api2.client.gui.misc.IGuiRect;
+import betterquesting.api2.client.gui.panels.IGuiPanel;
+import betterquesting.api2.storage.DBEntry;
+import betterquesting.api2.utils.ParticipantInfo;
+import betterquesting.client.gui2.tasks.PanelTaskFluid;
+import betterquesting.core.BetterQuesting;
+import betterquesting.questing.tasks.factory.FactoryTaskFluid;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -24,27 +30,17 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.apache.logging.log4j.Level;
 
-import betterquesting.api.questing.IQuest;
-import betterquesting.api.questing.tasks.IFluidTask;
-import betterquesting.api.questing.tasks.IItemTask;
-import betterquesting.api.utils.JsonHelper;
-import betterquesting.api2.client.gui.misc.IGuiRect;
-import betterquesting.api2.client.gui.panels.IGuiPanel;
-import betterquesting.api2.storage.DBEntry;
-import betterquesting.api2.utils.ParticipantInfo;
-import betterquesting.client.gui2.tasks.PanelTaskFluid;
-import betterquesting.core.BetterQuesting;
-import betterquesting.questing.tasks.factory.FactoryTaskFluid;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.*;
 
 public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
-
     private final Set<UUID> completeUsers = new TreeSet<>();
     public final NonNullList<FluidStack> requiredFluids = NonNullList.create();
     public final TreeMap<UUID, int[]> userProgress = new TreeMap<>();
-    // public boolean partialMatch = true; // Not many ideal ways of implementing this with fluid handlers
+    //public boolean partialMatch = true; // Not many ideal ways of implementing this with fluid handlers
     public boolean ignoreNbt = false;
     public boolean consume = true;
     public boolean groupDetect = false;
@@ -81,10 +77,8 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
     public void detect(ParticipantInfo pInfo, DBEntry<IQuest> quest) {
         if (isComplete(pInfo.UUID)) return;
 
-        // Removing the consume check here would make the task cheaper on groups
-        // and for that reason sharing is restricted to detect only
-        final List<Tuple<UUID, int[]>> progress = getBulkProgress(
-                consume ? Collections.singletonList(pInfo.UUID) : pInfo.ALL_UUIDS);
+        // Removing the consume check here would make the task cheaper on groups and for that reason sharing is restricted to detect only
+        final List<Tuple<UUID, int[]>> progress = getBulkProgress(consume ? Collections.singletonList(pInfo.UUID) : pInfo.ALL_UUIDS);
         boolean updated = false;
 
         if (!consume) {
@@ -133,8 +127,7 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
                     FluidStack sample = handler.drain(drainOG, false);
                     if (sample == null || sample.amount <= 0) continue;
 
-                    // Theoretically this could work in consume mode for parties
-                    // but the priority order and manual submission code would need changing
+                    // Theoretically this could work in consume mode for parties but the priority order and manual submission code would need changing
                     for (Tuple<UUID, int[]> value : progress) {
                         if (value.getSecond()[j] >= rStack.amount) continue;
                         int remaining = rStack.amount - value.getSecond()[j];
@@ -144,8 +137,7 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
                         if (ignoreNbt) drain.tag = null;
                         if (drain.amount <= 0) continue;
 
-                        // TODO: Look into reducing this to a single call if possible
-                        FluidStack fluid = handler.drain(drain, consume);
+                        FluidStack fluid = handler.drain(drain, consume); // TODO: Look into reducing this to a single call if possible
                         if (fluid == null || fluid.amount <= 0) continue;
 
                         value.getSecond()[j] += fluid.amount * stack.getCount();
@@ -163,8 +155,7 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
     }
 
     private void checkAndComplete(ParticipantInfo pInfo, DBEntry<IQuest> quest, boolean resync) {
-        final List<Tuple<UUID, int[]>> progress = getBulkProgress(
-                consume ? Collections.singletonList(pInfo.UUID) : pInfo.ALL_UUIDS);
+        final List<Tuple<UUID, int[]>> progress = getBulkProgress(consume ? Collections.singletonList(pInfo.UUID) : pInfo.ALL_UUIDS);
         boolean updated = resync;
 
         topLoop:
@@ -195,7 +186,7 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-        // json.setBoolean("partialMatch", partialMatch);
+        //json.setBoolean("partialMatch", partialMatch);
         nbt.setBoolean("ignoreNBT", ignoreNbt);
         nbt.setBoolean("consume", consume);
         nbt.setBoolean("groupDetect", groupDetect);
@@ -212,7 +203,7 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
-        // partialMatch = json.getBoolean("partialMatch");
+        //partialMatch = json.getBoolean("partialMatch");
         ignoreNbt = nbt.getBoolean("ignoreNBT");
         consume = nbt.getBoolean("consume");
         groupDetect = nbt.getBoolean("groupDetect");
@@ -249,8 +240,8 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
 
                 int[] data = new int[requiredFluids.size()];
                 NBTTagList dNbt = pTag.getTagList("data", 3);
-                // TODO: Change this to an int array. This is dumb...
-                for (int i = 0; i < data.length && i < dNbt.tagCount(); i++) {
+                for (int i = 0; i < data.length && i < dNbt.tagCount(); i++) // TODO: Change this to an int array. This is dumb...
+                {
                     data[i] = dNbt.getIntAt(i);
                 }
 
@@ -324,8 +315,7 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
 
     @Override
     public boolean canAcceptFluid(UUID owner, DBEntry<IQuest> quest, FluidStack fluid) {
-        if (owner == null || fluid == null || fluid.getFluid() == null || !consume || isComplete(owner) ||
-                requiredFluids.size() <= 0) {
+        if (owner == null || fluid == null || fluid.getFluid() == null || !consume || isComplete(owner) || requiredFluids.size() <= 0) {
             return false;
         }
 
@@ -342,8 +332,7 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
 
     @Override
     public boolean canAcceptItem(UUID owner, DBEntry<IQuest> quest, ItemStack item) {
-        if (owner == null || item == null || item.isEmpty() || !consume || isComplete(owner) ||
-                requiredFluids.size() <= 0) {
+        if (owner == null || item == null || item.isEmpty() || !consume || isComplete(owner) || requiredFluids.size() <= 0) {
             return false;
         }
 
@@ -368,8 +357,7 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
     }
 
     private FluidStack submitFluidInternal(UUID owner, DBEntry<IQuest> quest, FluidStack fluid, boolean doFill) {
-        if (owner == null || fluid == null || fluid.amount <= 0 || !consume || isComplete(owner) ||
-                requiredFluids.size() <= 0) {
+        if (owner == null || fluid == null || fluid.amount <= 0 || !consume || isComplete(owner) || requiredFluids.size() <= 0) {
             return fluid;
         }
 

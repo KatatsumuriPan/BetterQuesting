@@ -1,14 +1,12 @@
 package betterquesting.api2.registry;
 
-import java.util.List;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
-
-import net.minecraft.util.ResourceLocation;
+import java.util.List;
 
 @Deprecated
 public interface IRegistry<T extends IFactory<E>, E> {
-
     void register(T factory);
 
     T getFactory(ResourceLocation idName);
