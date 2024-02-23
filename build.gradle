@@ -1,4 +1,10 @@
 //version: 1707682661
+
+/*
+ * DO NOT UPDATE THIS BUILDSCRIPT!!!!!!!!!!!!!!!!!!!!!!
+ * spotless is replaced by CleanroomGradle's
+ */
+
 /*
  * DO NOT CHANGE THIS FILE!
  * Also, you may replace this file at any time if there is an update available.
@@ -27,7 +33,7 @@ plugins {
     id 'com.gtnewhorizons.retrofuturagradle' version '1.3.33'
     id 'net.darkhax.curseforgegradle' version '1.1.18' apply false
     id 'com.modrinth.minotaur' version '2.8.7' apply false
-    id 'com.diffplug.spotless' version '6.13.0' apply false
+    id 'com.diffplug.spotless' version '6.23.3' apply false
     id 'com.palantir.git-version' version '3.0.0' apply false
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
     id 'org.jetbrains.kotlin.jvm' version '1.8.0' apply false
@@ -200,51 +206,36 @@ project.extensions.add(com.diffplug.blowdryer.Blowdryer, 'Blowdryer', com.diffpl
 if (enableSpotless.toBoolean()) {
     apply plugin: 'com.diffplug.spotless'
 
-    // Spotless auto-formatter
-    // See https://github.com/diffplug/spotless/tree/main/plugin-gradle
-    // Can be locally toggled via spotless:off/spotless:on comments
+    // THIS IS FROM CLEANROOM_GRADLE
     spotless {
         encoding 'UTF-8'
-
-        format 'misc', {
-            target '.gitignore'
-
+        format ('misc') {
+            target '*.gradle', '.gitattributes', '.gitignore', '*.properties'
+            indentWithSpaces()
             trimTrailingWhitespace()
-            indentWithSpaces(4)
             endWithNewline()
         }
         java {
             target 'src/main/java/**/*.java', 'src/test/java/**/*.java' // exclude api as they are not our files
 
-            def orderFile = project.file('spotless.importorder')
-            if (!orderFile.exists()) {
-                orderFile = Blowdryer.file('spotless.importorder')
-            }
-            def formatFile = project.file('spotless.eclipseformat.xml')
-            if (!formatFile.exists()) {
-                formatFile = Blowdryer.file('spotless.eclipseformat.xml')
-            }
-
-            toggleOffOn()
-            importOrderFile(orderFile)
+            importOrder 'java', 'javax', 'org', 'com', '', '\\#'
             removeUnusedImports()
-            endWithNewline()
-            //noinspection GroovyAssignabilityCheck
-            eclipse('4.19.0').configFile(formatFile)
-        }
-        kotlin {
-            target 'src/*/kotlin/**/*.kt'
-
-            toggleOffOn()
-            ktfmt('0.39')
-
+            indentWithSpaces()
             trimTrailingWhitespace()
-            indentWithSpaces(4)
             endWithNewline()
+            formatAnnotations()
+            eclipse('4.26').configFile('cleanroom_format.xml')
+            custom 'noWildcardImports', com.diffplug.spotless.FormatterFunc.needsFile((text, file) -> {
+                text.eachLine {
+                    if (it.trim() ==~ /^import\s(static\s)?\S+\*;/) {
+                        throw new Error("${file.getName()}\n\t $it\n\t\tNo wildcard imports allowed, import individually.")
+                    }
+                }
+            })
         }
-        scala {
-            target 'src/*/scala/**/*.scala'
-            scalafmt('3.7.1')
+        json {
+            target 'src/**/*.json'
+            simple().indentWithSpaces(4)
         }
     }
 }
