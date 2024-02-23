@@ -1,13 +1,15 @@
 package betterquesting.storage;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.properties.IPropertyType;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.storage.IQuestSettings;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class QuestSettings extends PropertyContainer implements IQuestSettings {
+
     public static final QuestSettings INSTANCE = new QuestSettings();
 
     public QuestSettings() {

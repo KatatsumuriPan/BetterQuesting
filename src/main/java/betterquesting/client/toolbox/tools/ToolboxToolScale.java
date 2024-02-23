@@ -1,5 +1,16 @@
 package betterquesting.client.toolbox.tools;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Vector4f;
+
 import betterquesting.api.client.toolbox.IToolboxTool;
 import betterquesting.api.questing.IQuestLine;
 import betterquesting.api.questing.IQuestLineEntry;
@@ -14,17 +25,9 @@ import betterquesting.client.gui2.editors.designer.PanelToolController;
 import betterquesting.client.toolbox.ToolboxTabMain;
 import betterquesting.network.handlers.NetChapterEdit;
 import betterquesting.questing.QuestLineDatabase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.NonNullList;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.util.vector.Vector4f;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class ToolboxToolScale implements IToolboxTool {
+
     private CanvasQuestLine gui;
 
     private final NonNullList<GrabEntry> grabList = NonNullList.create();
@@ -182,8 +185,10 @@ public class ToolboxToolScale implements IToolboxTool {
                     } else {
                         scaleBounds.x = Math.min(scaleBounds.x, btn.rect.x);
                         scaleBounds.y = Math.min(scaleBounds.y, btn.rect.y);
-                        scaleBounds.w = Math.max(scaleBounds.x + scaleBounds.w, btn.rect.x + btn.rect.w) - scaleBounds.x;
-                        scaleBounds.h = Math.max(scaleBounds.y + scaleBounds.h, btn.rect.y + btn.rect.h) - scaleBounds.y;
+                        scaleBounds.w = Math.max(scaleBounds.x + scaleBounds.w, btn.rect.x + btn.rect.w) -
+                                scaleBounds.x;
+                        scaleBounds.h = Math.max(scaleBounds.y + scaleBounds.h, btn.rect.y + btn.rect.h) -
+                                scaleBounds.y;
                     }
                 }
 
@@ -229,8 +234,7 @@ public class ToolboxToolScale implements IToolboxTool {
     }
 
     @Override
-    public void onSelection(NonNullList<PanelButtonQuest> buttons) {
-    }
+    public void onSelection(NonNullList<PanelButtonQuest> buttons) {}
 
     @Override
     public boolean useSelection() {
@@ -238,6 +242,7 @@ public class ToolboxToolScale implements IToolboxTool {
     }
 
     private class GrabEntry {
+
         private final PanelButtonQuest btn;
         private final Vector4f anchor;
         private final int sx;

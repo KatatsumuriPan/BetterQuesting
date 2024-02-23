@@ -1,10 +1,8 @@
 package betterquesting.commands.admin;
 
-import betterquesting.api.properties.NativeProps;
-import betterquesting.commands.QuestCommandBase;
-import betterquesting.handlers.SaveLoadHandler;
-import betterquesting.network.handlers.NetSettingSync;
-import betterquesting.storage.QuestSettings;
+import java.util.Collections;
+import java.util.List;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -12,10 +10,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 
-import java.util.Collections;
-import java.util.List;
+import betterquesting.api.properties.NativeProps;
+import betterquesting.commands.QuestCommandBase;
+import betterquesting.handlers.SaveLoadHandler;
+import betterquesting.network.handlers.NetSettingSync;
+import betterquesting.storage.QuestSettings;
 
 public class QuestCommandEdit extends QuestCommandBase {
+
     @Override
     public String getCommand() {
         return "edit";
@@ -33,11 +35,13 @@ public class QuestCommandEdit extends QuestCommandBase {
 
     @Override
     public List<String> autoComplete(MinecraftServer server, ICommandSender sender, String[] args) {
-        return args.length == 2 ? CommandBase.getListOfStringsMatchingLastWord(args, "true", "false") : Collections.emptyList();
+        return args.length == 2 ? CommandBase.getListOfStringsMatchingLastWord(args, "true", "false") :
+                Collections.emptyList();
     }
 
     @Override
-    public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, String[] args) throws CommandException {
+    public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender,
+                           String[] args) throws CommandException {
         boolean flag = !QuestSettings.INSTANCE.getProperty(NativeProps.EDIT_MODE);
 
         if (args.length == 2) {
@@ -56,7 +60,8 @@ public class QuestCommandEdit extends QuestCommandBase {
 
         QuestSettings.INSTANCE.setProperty(NativeProps.EDIT_MODE, flag);
 
-        sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.edit", new TextComponentTranslation(QuestSettings.INSTANCE.getProperty(NativeProps.EDIT_MODE) ? "options.on" : "options.off")));
+        sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.edit", new TextComponentTranslation(
+                QuestSettings.INSTANCE.getProperty(NativeProps.EDIT_MODE) ? "options.on" : "options.off")));
 
         SaveLoadHandler.INSTANCE.markDirty();
         NetSettingSync.sendSync(null);

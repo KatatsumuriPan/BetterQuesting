@@ -4,6 +4,7 @@ import org.lwjgl.util.vector.ReadableVector4f;
 import org.lwjgl.util.vector.Vector4f;
 
 public final class GuiTransform implements IGuiRect {
+
     private IGuiRect parent;
     private final Vector4f anchor; // TODO: Change to one that accounts for min-max dimensions
     private final GuiPadding padding;
@@ -18,7 +19,8 @@ public final class GuiTransform implements IGuiRect {
     }
 
     public GuiTransform(ReadableVector4f anchor, int xOff, int yOff, int width, int height, int order) {
-        this(new Vector4f(anchor.getX(), anchor.getY(), anchor.getX(), anchor.getY()), new GuiPadding(xOff, yOff, -xOff - width, -yOff - height), order);
+        this(new Vector4f(anchor.getX(), anchor.getY(), anchor.getX(), anchor.getY()),
+                new GuiPadding(xOff, yOff, -xOff - width, -yOff - height), order);
     }
 
     public GuiTransform(ReadableVector4f anchor, GuiPadding padding, int depth) {
@@ -108,12 +110,15 @@ public final class GuiTransform implements IGuiRect {
         int y2 = y1 + h;
         return x3 >= x1 && x3 < x2 && y3 >= y1 && y3 < y2;
     }
-	
-	/*@Override
-	public void translate(int x, int y)
-	{
-		this.padding.setPadding(padding.getLeft() + x, padding.getTop() + y, padding.getRight() - x, padding.getBottom() - y);
-	}*/
+
+    /*
+     * @Override
+     * public void translate(int x, int y)
+     * {
+     * this.padding.setPadding(padding.getLeft() + x, padding.getTop() + y, padding.getRight() - x, padding.getBottom()
+     * - y);
+     * }
+     */
 
     @Override
     public int compareTo(IGuiRect o) {

@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.util.ResourceLocation;
 
 public class PropertyTypeByte extends PropertyTypeBase<Byte> {
+
     public PropertyTypeByte(ResourceLocation key, Byte def) {
         super(key, def);
     }

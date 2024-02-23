@@ -1,5 +1,29 @@
 package betterquesting.core;
 
+import net.minecraft.block.Block;
+import net.minecraft.command.ICommandManager;
+import net.minecraft.command.ServerCommandManager;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.launchwrapper.Launch;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+
+import org.apache.logging.log4j.Logger;
+
 import betterquesting.api.placeholders.EntityPlaceholder;
 import betterquesting.api.placeholders.FluidPlaceholder;
 import betterquesting.api2.cache.CapabilityProviderQuestCache;
@@ -22,31 +46,13 @@ import betterquesting.items.ItemLootChest;
 import betterquesting.items.ItemQuestBook;
 import betterquesting.network.PacketQuesting;
 import betterquesting.network.PacketTypeRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.command.ICommandManager;
-import net.minecraft.command.ServerCommandManager;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.launchwrapper.Launch;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.*;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import org.apache.logging.log4j.Logger;
 
-@Mod(modid = ModReference.MODID, version = BetterQuesting.VERSION, name = ModReference.NAME, guiFactory = "betterquesting.handlers.ConfigGuiFactory")
+@Mod(modid = ModReference.MODID,
+     version = BetterQuesting.VERSION,
+     name = ModReference.NAME,
+     guiFactory = "betterquesting.handlers.ConfigGuiFactory")
 public class BetterQuesting {
+
     public static final String VERSION = "@VERSION@";
     public static final String FORMAT = "2.0.0";
 
@@ -61,7 +67,8 @@ public class BetterQuesting {
     @Instance(ModReference.MODID)
     public static BetterQuesting instance;
 
-    @SidedProxy(clientSide = "betterquesting.core.proxies.ClientProxy", serverSide = "betterquesting.core.proxies.CommonProxy")
+    @SidedProxy(clientSide = "betterquesting.core.proxies.ClientProxy",
+                serverSide = "betterquesting.core.proxies.CommonProxy")
     public static CommonProxy proxy;
     public SimpleNetworkWrapper network;
     public static Logger logger;
@@ -97,9 +104,11 @@ public class BetterQuesting {
     public void init(FMLInitializationEvent event) {
         FluidRegistry.registerFluid(FluidPlaceholder.fluidPlaceholder);
 
-        GameRegistry.registerTileEntity(TileSubmitStation.class, new ResourceLocation(ModReference.MODID, "submit_station"));
+        GameRegistry.registerTileEntity(TileSubmitStation.class,
+                new ResourceLocation(ModReference.MODID, "submit_station"));
 
-        EntityRegistry.registerModEntity(new ResourceLocation(ModReference.MODID, "placeholder"), EntityPlaceholder.class, "placeholder", 0, this, 16, 1, false);
+        EntityRegistry.registerModEntity(new ResourceLocation(ModReference.MODID, "placeholder"),
+                EntityPlaceholder.class, "placeholder", 0, this, 16, 1, false);
     }
 
     @EventHandler

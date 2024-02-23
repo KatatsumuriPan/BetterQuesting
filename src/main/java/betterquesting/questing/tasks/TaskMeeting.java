@@ -1,5 +1,22 @@
 package betterquesting.questing.tasks;
 
+import java.util.*;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.utils.ItemComparison;
 import betterquesting.api2.client.gui.misc.IGuiRect;
@@ -10,22 +27,9 @@ import betterquesting.client.gui2.editors.tasks.GuiEditTaskMeeting;
 import betterquesting.client.gui2.tasks.PanelTaskMeeting;
 import betterquesting.core.BetterQuesting;
 import betterquesting.questing.tasks.factory.FactoryTaskMeeting;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
 
 public class TaskMeeting implements ITaskTickable {
+
     private final Set<UUID> completeUsers = new TreeSet<>();
 
     public String idName = "minecraft:villager";
@@ -81,7 +85,8 @@ public class TaskMeeting implements ITaskTickable {
         Class<? extends Entity> target = EntityList.getClass(targetID);
         if (target == null) return;
 
-        List<Entity> list = pInfo.PLAYER.world.getEntitiesWithinAABBExcludingEntity(pInfo.PLAYER, pInfo.PLAYER.getEntityBoundingBox().expand(range, range, range));
+        List<Entity> list = pInfo.PLAYER.world.getEntitiesWithinAABBExcludingEntity(pInfo.PLAYER,
+                pInfo.PLAYER.getEntityBoundingBox().expand(range, range, range));
 
         int n = 0;
 

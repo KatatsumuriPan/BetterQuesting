@@ -1,13 +1,15 @@
 package betterquesting.api2.client.gui.themes.presets;
 
+import net.minecraft.util.ResourceLocation;
+
 import betterquesting.api2.client.gui.resources.lines.IGuiLine;
 import betterquesting.api2.client.gui.resources.lines.SimpleLine;
 import betterquesting.api2.client.gui.themes.IThemeRegistry;
 import betterquesting.client.themes.ThemeRegistry;
 import betterquesting.core.ModReference;
-import net.minecraft.util.ResourceLocation;
 
 public enum PresetLine {
+
     GUI_DIVIDER("gui_divider"),
 
     GRID_MAJOR("grid_major"),

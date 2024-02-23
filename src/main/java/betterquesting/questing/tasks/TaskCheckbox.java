@@ -1,5 +1,22 @@
 package betterquesting.questing.tasks;
 
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api2.client.gui.misc.IGuiRect;
@@ -9,22 +26,9 @@ import betterquesting.api2.utils.ParticipantInfo;
 import betterquesting.client.gui2.tasks.PanelTaskCheckbox;
 import betterquesting.core.BetterQuesting;
 import betterquesting.questing.tasks.factory.FactoryTaskCheckbox;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.UUID;
 
 public class TaskCheckbox implements ITask {
+
     private final Set<UUID> completeUsers = new TreeSet<>();
 
     @Override
@@ -62,8 +66,7 @@ public class TaskCheckbox implements ITask {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt) {
-    }
+    public void readFromNBT(NBTTagCompound nbt) {}
 
     @Override
     public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
@@ -92,8 +95,7 @@ public class TaskCheckbox implements ITask {
     }
 
     @Override
-    public void detect(ParticipantInfo pInfo, DBEntry<IQuest> quest) {
-    }
+    public void detect(ParticipantInfo pInfo, DBEntry<IQuest> quest) {}
 
     @Override
     @SideOnly(Side.CLIENT)

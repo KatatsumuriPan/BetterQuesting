@@ -1,10 +1,11 @@
 package betterquesting.api2.client.gui.panels;
 
-import betterquesting.api2.client.gui.misc.IGuiRect;
-
 import java.util.List;
 
+import betterquesting.api2.client.gui.misc.IGuiRect;
+
 public interface IGuiPanel {
+
     IGuiRect getTransform();
 
     void initPanel();

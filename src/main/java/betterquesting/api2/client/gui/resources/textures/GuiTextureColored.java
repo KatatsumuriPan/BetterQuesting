@@ -1,13 +1,15 @@
 package betterquesting.api2.client.gui.resources.textures;
 
+import net.minecraft.util.ResourceLocation;
+
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
-import net.minecraft.util.ResourceLocation;
 
 /**
  * Wraps an existing IGuiTexture with an IGuiColor
  */
 public class GuiTextureColored implements IGuiTexture {
+
     private final IGuiTexture texture;
     private final IGuiColor color;
 

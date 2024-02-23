@@ -1,5 +1,13 @@
 package betterquesting.client.toolbox.tools;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
+
 import betterquesting.api.client.toolbox.IToolboxTool;
 import betterquesting.api.questing.IQuestLine;
 import betterquesting.api.questing.IQuestLineEntry;
@@ -9,15 +17,9 @@ import betterquesting.client.gui2.editors.designer.PanelToolController;
 import betterquesting.client.toolbox.ToolboxTabMain;
 import betterquesting.network.handlers.NetChapterEdit;
 import betterquesting.questing.QuestLineDatabase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.NonNullList;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class ToolboxToolGrab implements IToolboxTool {
+
     private CanvasQuestLine gui;
 
     private final NonNullList<GrabEntry> grabList = NonNullList.create();
@@ -101,8 +103,7 @@ public class ToolboxToolGrab implements IToolboxTool {
     }
 
     @Override
-    public void onSelection(NonNullList<PanelButtonQuest> buttons) {
-    }
+    public void onSelection(NonNullList<PanelButtonQuest> buttons) {}
 
     @Override
     public boolean onMouseClick(int mx, int my, int click) {
@@ -194,6 +195,7 @@ public class ToolboxToolGrab implements IToolboxTool {
     }
 
     private class GrabEntry {
+
         private final PanelButtonQuest btn;
         private final int offX;
         private final int offY;

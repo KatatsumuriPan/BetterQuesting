@@ -1,5 +1,13 @@
 package betterquesting.api2.client.gui.panels.lists;
 
+import java.util.*;
+import java.util.Map.Entry;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StringUtils;
+
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.enums.EnumQuestState;
@@ -19,18 +27,12 @@ import betterquesting.api2.client.gui.resources.textures.SimpleTexture;
 import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.client.gui.themes.presets.PresetLine;
 import betterquesting.api2.storage.DBEntry;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StringUtils;
-
-import java.util.*;
-import java.util.Map.Entry;
 
 /**
  * My class for lazy quest line setup on a scrolling canvas
  */
 public class CanvasQuestLine extends CanvasScrolling {
+
     private final List<PanelButtonQuest> btnList = new ArrayList<>();
 
     private final int buttonId;
@@ -91,7 +93,8 @@ public class CanvasQuestLine extends CanvasScrolling {
 
         if (!StringUtils.isNullOrEmpty(bgString)) {
             int bgSize = line.getProperty(NativeProps.BG_SIZE);
-            this.addPanel(new PanelGeneric(new GuiRectangle(0, 0, bgSize, bgSize, 1), new SimpleTexture(new ResourceLocation(bgString), new GuiRectangle(0, 0, 256, 256))));
+            this.addPanel(new PanelGeneric(new GuiRectangle(0, 0, bgSize, bgSize, 1),
+                    new SimpleTexture(new ResourceLocation(bgString), new GuiRectangle(0, 0, 256, 256))));
         }
 
         HashMap<Integer, PanelButtonQuest> questBtns = new HashMap<>();
@@ -101,7 +104,8 @@ public class CanvasQuestLine extends CanvasScrolling {
 
             if (!QuestCache.isQuestShown(quest, pid, player)) continue;
 
-            GuiRectangle rect = new GuiRectangle(qle.getValue().getPosX(), qle.getValue().getPosY(), qle.getValue().getSizeX(), qle.getValue().getSizeY());
+            GuiRectangle rect = new GuiRectangle(qle.getValue().getPosX(), qle.getValue().getPosY(),
+                    qle.getValue().getSizeX(), qle.getValue().getSizeY());
             PanelButtonQuest paBtn = new PanelButtonQuest(rect, buttonId, "", new DBEntry<>(qle.getID(), quest));
 
             this.addPanel(paBtn);
@@ -112,7 +116,8 @@ public class CanvasQuestLine extends CanvasScrolling {
         for (Entry<Integer, PanelButtonQuest> entry : questBtns.entrySet()) {
             DBEntry<IQuest> quest = entry.getValue().getStoredValue();
 
-            List<DBEntry<IQuest>> reqList = QuestingAPI.getAPI(ApiReference.QUEST_DB).bulkLookup(quest.getValue().getRequirements());
+            List<DBEntry<IQuest>> reqList = QuestingAPI.getAPI(ApiReference.QUEST_DB)
+                    .bulkLookup(quest.getValue().getRequirements());
 
             if (reqList.size() <= 0) continue;
 
@@ -155,13 +160,15 @@ public class CanvasQuestLine extends CanvasScrolling {
                             predicate = null;
                             break;
                         case IMPLICIT:
-                            predicate = (mx, my, partialTicks) -> questBtns.get(req.getID()).rect.contains(mx, my) || questBtns.get(quest.getID()).rect.contains(mx, my);
+                            predicate = (mx, my, partialTicks) -> questBtns.get(req.getID()).rect.contains(mx, my) ||
+                                    questBtns.get(quest.getID()).rect.contains(mx, my);
                             break;
                         default:
                             // bail early
                             continue;
                     }
-                    this.addPanel(new PanelLine(parBtn.getTransform(), entry.getValue().getTransform(), lineRender, main ? 8 : 4, txLineCol, 1, predicate));
+                    this.addPanel(new PanelLine(parBtn.getTransform(), entry.getValue().getTransform(), lineRender,
+                            main ? 8 : 4, txLineCol, 1, predicate));
                 }
             }
         }
@@ -199,7 +206,8 @@ public class CanvasQuestLine extends CanvasScrolling {
         maxX += zoomToFitMargin;
         maxY += zoomToFitMargin;
 
-        this.setZoom(Math.min(getTransform().getWidth() / (float) (maxX - minX), getTransform().getHeight() / (float) (maxY - minY)));
+        this.setZoom(Math.min(getTransform().getWidth() / (float) (maxX - minX),
+                getTransform().getHeight() / (float) (maxY - minY)));
         this.refreshScrollBounds();
 
         IGuiRect bounds = getScrollBounds();

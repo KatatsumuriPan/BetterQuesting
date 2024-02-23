@@ -1,5 +1,16 @@
 package betterquesting.api2.client.gui.controls;
 
+import java.util.List;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ChatAllowedCharacters;
+import net.minecraft.util.math.MathHelper;
+
+import org.lwjgl.input.Mouse;
+
 import betterquesting.api.misc.ICallback;
 import betterquesting.api.utils.RenderUtils;
 import betterquesting.api2.client.gui.controls.io.FloatSimpleIO;
@@ -10,17 +21,9 @@ import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ChatAllowedCharacters;
-import net.minecraft.util.math.MathHelper;
-import org.lwjgl.input.Mouse;
-
-import java.util.List;
 
 public class PanelTextField<T> implements IGuiPanel {
+
     private final IGuiRect transform;
     private boolean enabled = true;
 
@@ -43,7 +46,8 @@ public class PanelTextField<T> implements IGuiPanel {
     private boolean dragging = false;
     private GuiRectangle cursorLine = new GuiRectangle(4, 4, 1, 8);
 
-    // Yep... we're supporting this without a scrolling canvas (we don't need the zooming and mouse dragging but the scrolling bounds change much more often)
+    // Yep... we're supporting this without a scrolling canvas
+    // (we don't need the zooming and mouse dragging but the scrolling bounds change much more often)
     private IValueIO<Float> scrollX;
     private IValueIO<Float> scrollY;
     private int scrollWidth = 0;
@@ -57,8 +61,10 @@ public class PanelTextField<T> implements IGuiPanel {
         cursorLine.setParent(this.transform);
         this.filter = filter;
 
-        this.setTextures(PresetTexture.TEXT_BOX_0.getTexture(), PresetTexture.TEXT_BOX_1.getTexture(), PresetTexture.TEXT_BOX_2.getTexture());
-        this.setMainColors(PresetColor.TEXT_AUX_0.getColor(), PresetColor.TEXT_AUX_0.getColor(), PresetColor.TEXT_AUX_0.getColor());
+        this.setTextures(PresetTexture.TEXT_BOX_0.getTexture(), PresetTexture.TEXT_BOX_1.getTexture(),
+                PresetTexture.TEXT_BOX_2.getTexture());
+        this.setMainColors(PresetColor.TEXT_AUX_0.getColor(), PresetColor.TEXT_AUX_0.getColor(),
+                PresetColor.TEXT_AUX_0.getColor());
         this.setAuxColors(PresetColor.TEXT_WATERMARK.getColor(), PresetColor.TEXT_HIGHLIGHT.getColor());
 
         // Dummy value drivers
@@ -229,7 +235,7 @@ public class PanelTextField<T> implements IGuiPanel {
             out.append(text, r, text.length());
         }
 
-        //if(filter.isValid(text))
+        // if(filter.isValid(text))
         {
             this.text = filter.filterText(out.toString());
             updateScrollBounds();
@@ -243,8 +249,8 @@ public class PanelTextField<T> implements IGuiPanel {
     }
 
     /**
-     * Deletes the given number of whole words from the current cursor's position, unless there is currently a selection, in
-     * which case the selection is deleted instead.
+     * Deletes the given number of whole words from the current cursor's position,
+     * unless there is currently a selection, in which case the selection is deleted instead.
      */
     public void deleteWords(int num) {
         if (!this.text.isEmpty()) {
@@ -278,7 +284,7 @@ public class PanelTextField<T> implements IGuiPanel {
                     s = s + this.text.substring(j);
                 }
 
-                //if(filter.isValid(s))
+                // if(filter.isValid(s))
                 {
                     this.text = filter.filterText(s);
 
@@ -582,7 +588,9 @@ public class PanelTextField<T> implements IGuiPanel {
             scrollWidth = Math.max(0, RenderUtils.getStringWidth(text, font) - (transform.getWidth() - 8));
         } else {
             scrollWidth = 0;
-            scrollHeight = Math.max(0, (RenderUtils.splitString(text, transform.getWidth() - 8, font).size() * font.FONT_HEIGHT) - (transform.getHeight() - 8));
+            scrollHeight = Math.max(0,
+                    (RenderUtils.splitString(text, transform.getWidth() - 8, font).size() * font.FONT_HEIGHT) -
+                            (transform.getHeight() - 8));
         }
 
         setScrollX(prevX);
@@ -595,9 +603,7 @@ public class PanelTextField<T> implements IGuiPanel {
     }
 
     @Override
-    public void initPanel() {
-
-    }
+    public void initPanel() {}
 
     @Override
     public void setEnabled(boolean state) {
@@ -613,9 +619,12 @@ public class PanelTextField<T> implements IGuiPanel {
     public void drawPanel(int mx, int my, float partialTick) {
         if (isActive && dragging && Mouse.isButtonDown(0)) {
             if (canWrap) {
-                setSelectionPos(RenderUtils.getCursorPos(text, mx - (transform.getX() + 4) + getScrollX(), my - (transform.getY() + 4) + getScrollY(), transform.getWidth() - 8, Minecraft.getMinecraft().fontRenderer));
+                setSelectionPos(RenderUtils.getCursorPos(text, mx - (transform.getX() + 4) + getScrollX(),
+                        my - (transform.getY() + 4) + getScrollY(), transform.getWidth() - 8,
+                        Minecraft.getMinecraft().fontRenderer));
             } else {
-                setSelectionPos(RenderUtils.getCursorPos(text, mx - (transform.getX() + 4) + getScrollX(), Minecraft.getMinecraft().fontRenderer));
+                setSelectionPos(RenderUtils.getCursorPos(text, mx - (transform.getX() + 4) + getScrollX(),
+                        Minecraft.getMinecraft().fontRenderer));
             }
         } else if (dragging) {
             dragging = false;
@@ -637,15 +646,18 @@ public class PanelTextField<T> implements IGuiPanel {
 
         if (text.length() <= 0) {
             if (!isFocused) {
-                mc.fontRenderer.drawString(watermark, bounds.getX() + 4, bounds.getY() + 4, colWatermark.getRGB(), false);
+                mc.fontRenderer.drawString(watermark, bounds.getX() + 4, bounds.getY() + 4, colWatermark.getRGB(),
+                        false);
             }
         } else {
             IGuiColor c = colStates[state];
 
             if (!canWrap) {
-                RenderUtils.drawHighlightedString(mc.fontRenderer, text, bounds.getX() + 4, bounds.getY() + 4, c.getRGB(), false, colHighlight.getRGB(), selectStart, selectEnd);
+                RenderUtils.drawHighlightedString(mc.fontRenderer, text, bounds.getX() + 4, bounds.getY() + 4,
+                        c.getRGB(), false, colHighlight.getRGB(), selectStart, selectEnd);
             } else {
-                RenderUtils.drawHighlightedSplitString(mc.fontRenderer, text, bounds.getX() + 4, bounds.getY() + 4, bounds.getWidth() - 8, c.getRGB(), false, colHighlight.getRGB(), selectStart, selectEnd);
+                RenderUtils.drawHighlightedSplitString(mc.fontRenderer, text, bounds.getX() + 4, bounds.getY() + 4,
+                        bounds.getWidth() - 8, c.getRGB(), false, colHighlight.getRGB(), selectStart, selectEnd);
             }
         }
 
@@ -666,17 +678,20 @@ public class PanelTextField<T> implements IGuiPanel {
             }
 
             if (canWrap) {
-                setCursorPosition(RenderUtils.getCursorPos(text, mx - (transform.getX() + 4) + getScrollX(), my - (transform.getY() + 4) + getScrollY(), transform.getWidth() - 8, Minecraft.getMinecraft().fontRenderer));
+                setCursorPosition(RenderUtils.getCursorPos(text, mx - (transform.getX() + 4) + getScrollX(),
+                        my - (transform.getY() + 4) + getScrollY(), transform.getWidth() - 8,
+                        Minecraft.getMinecraft().fontRenderer));
             } else {
-                setCursorPosition(RenderUtils.getCursorPos(text, mx - (transform.getX() + 4) + getScrollX(), Minecraft.getMinecraft().fontRenderer));
+                setCursorPosition(RenderUtils.getCursorPos(text, mx - (transform.getX() + 4) + getScrollX(),
+                        Minecraft.getMinecraft().fontRenderer));
             }
             dragging = true;
 
-            //return true;
+            // return true;
         } else if (this.isFocused && !lockFocus) {
             this.isFocused = false;
             this.text = filter.parseValue(this.text).toString();
-            //setCursorPosition(0);
+            // setCursorPosition(0);
         }
 
         return false;
@@ -696,11 +711,13 @@ public class PanelTextField<T> implements IGuiPanel {
         if (canWrap) {
             setScrollY(getScrollY() + (scroll * 4));
             return true;
-        } /*else
-        {
-            // This is kinda annoying in lists
-            //setScrollX(getScrollX() + (scroll * 12));
-        }*/
+        } /*
+           * else
+           * {
+           * // This is kinda annoying in lists
+           * //setScrollX(getScrollX() + (scroll * 12));
+           * }
+           */
 
         return false;
     }

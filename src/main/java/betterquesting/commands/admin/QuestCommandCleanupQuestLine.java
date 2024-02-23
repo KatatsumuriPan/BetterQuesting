@@ -1,5 +1,15 @@
 package betterquesting.commands.admin;
 
+import java.util.Collections;
+import java.util.Set;
+import java.util.WeakHashMap;
+
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.server.permission.DefaultPermissionLevel;
+
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.IQuestLine;
 import betterquesting.api.questing.IQuestLineEntry;
@@ -8,15 +18,6 @@ import betterquesting.commands.QuestCommandBase;
 import betterquesting.core.BetterQuesting;
 import betterquesting.questing.QuestDatabase;
 import betterquesting.questing.QuestLineDatabase;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.server.permission.DefaultPermissionLevel;
-
-import java.util.Collections;
-import java.util.Set;
-import java.util.WeakHashMap;
 
 public class QuestCommandCleanupQuestLine extends QuestCommandBase {
 
@@ -57,7 +58,10 @@ public class QuestCommandCleanupQuestLine extends QuestCommandBase {
                         IQuest quest = QuestDatabase.INSTANCE.getValue(questLineEntryDBEntry.getID());
                         if (quest == null) {
                             removed++;
-                            BetterQuesting.logger.info("Removed QuestLineEntry {} in QuestLine {} pointing into nonexistent quest {}", questLineEntryDBEntry.getValue(), questLineDBEntry.getID(), questLineEntryDBEntry.getID());
+                            BetterQuesting.logger.info(
+                                    "Removed QuestLineEntry {} in QuestLine {} pointing into nonexistent quest {}",
+                                    questLineEntryDBEntry.getValue(), questLineDBEntry.getID(),
+                                    questLineEntryDBEntry.getID());
                             questLine.removeID(questLineEntryDBEntry.getID());
                         }
                     }

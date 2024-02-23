@@ -1,15 +1,17 @@
 package betterquesting.client.toolbox.tools;
 
+import java.util.List;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.NonNullList;
+
 import betterquesting.api.client.toolbox.IToolboxTool;
 import betterquesting.api2.client.gui.controls.PanelButtonQuest;
 import betterquesting.api2.client.gui.panels.lists.CanvasQuestLine;
 import betterquesting.client.gui2.GuiQuest;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.NonNullList;
-
-import java.util.List;
 
 public class ToolboxToolOpen implements IToolboxTool {
+
     private CanvasQuestLine gui;
 
     public void initTool(CanvasQuestLine gui) {
@@ -17,12 +19,10 @@ public class ToolboxToolOpen implements IToolboxTool {
     }
 
     @Override
-    public void disableTool() {
-    }
+    public void disableTool() {}
 
     @Override
-    public void refresh(CanvasQuestLine gui) {
-    }
+    public void refresh(CanvasQuestLine gui) {}
 
     @Override
     public boolean onMouseClick(int mx, int my, int click) {
@@ -49,12 +49,10 @@ public class ToolboxToolOpen implements IToolboxTool {
     }
 
     @Override
-    public void drawCanvas(int mx, int my, float partialTick) {
-    }
+    public void drawCanvas(int mx, int my, float partialTick) {}
 
     @Override
-    public void drawOverlay(int mx, int my, float partialTick) {
-    }
+    public void drawOverlay(int mx, int my, float partialTick) {}
 
     @Override
     public List<String> getTooltip(int mx, int my) {
@@ -77,8 +75,7 @@ public class ToolboxToolOpen implements IToolboxTool {
     }
 
     @Override
-    public void onSelection(NonNullList<PanelButtonQuest> buttons) {
-    }
+    public void onSelection(NonNullList<PanelButtonQuest> buttons) {}
 
     @Override
     public boolean useSelection() {

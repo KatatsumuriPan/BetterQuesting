@@ -1,5 +1,15 @@
 package betterquesting.questing.party;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+
 import betterquesting.api.enums.EnumPartyStatus;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.party.IParty;
@@ -7,16 +17,9 @@ import betterquesting.api.questing.party.IPartyDatabase;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.storage.SimpleDatabase;
 import betterquesting.storage.QuestSettings;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
 
 public class PartyManager extends SimpleDatabase<IParty> implements IPartyDatabase {
+
     public static final PartyManager INSTANCE = new PartyManager();
 
     private final HashMap<UUID, Integer> partyCache = new HashMap<>();

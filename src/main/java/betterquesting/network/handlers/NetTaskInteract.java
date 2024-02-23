@@ -1,13 +1,7 @@
 package betterquesting.network.handlers;
 
-import betterquesting.api.api.ApiReference;
-import betterquesting.api.api.QuestingAPI;
-import betterquesting.api.network.QuestingPacket;
-import betterquesting.api.questing.IQuest;
-import betterquesting.api.questing.tasks.ITask;
-import betterquesting.api2.storage.DBEntry;
-import betterquesting.api2.utils.ParticipantInfo;
-import betterquesting.questing.tasks.TaskInteractItem;
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -18,9 +12,17 @@ import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
+import betterquesting.api.api.ApiReference;
+import betterquesting.api.api.QuestingAPI;
+import betterquesting.api.network.QuestingPacket;
+import betterquesting.api.questing.IQuest;
+import betterquesting.api.questing.tasks.ITask;
+import betterquesting.api2.storage.DBEntry;
+import betterquesting.api2.utils.ParticipantInfo;
+import betterquesting.questing.tasks.TaskInteractItem;
 
 public class NetTaskInteract {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation("bq_standard:task_interact");
 
     public static void registerHandler() {
@@ -48,7 +50,8 @@ public class NetTaskInteract {
         for (DBEntry<IQuest> entry : actQuest) {
             for (DBEntry<ITask> task : entry.getValue().getTasks().getEntries()) {
                 if (task.getValue() instanceof TaskInteractItem)
-                    ((TaskInteractItem) task.getValue()).onInteract(pInfo, entry, hand, ItemStack.EMPTY, Blocks.AIR.getDefaultState(), sender.getPosition(), isHit);
+                    ((TaskInteractItem) task.getValue()).onInteract(pInfo, entry, hand, ItemStack.EMPTY,
+                            Blocks.AIR.getDefaultState(), sender.getPosition(), isHit);
             }
         }
     }

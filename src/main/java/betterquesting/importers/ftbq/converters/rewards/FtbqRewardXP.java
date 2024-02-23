@@ -1,10 +1,12 @@
 package betterquesting.importers.ftbq.converters.rewards;
 
-import betterquesting.api.questing.rewards.IReward;
-import betterquesting.questing.rewards.RewardXP;
 import net.minecraft.nbt.NBTTagCompound;
 
+import betterquesting.api.questing.rewards.IReward;
+import betterquesting.questing.rewards.RewardXP;
+
 public class FtbqRewardXP {
+
     private final boolean isLevels;
 
     public FtbqRewardXP(boolean isLevels) {
@@ -15,6 +17,6 @@ public class FtbqRewardXP {
         RewardXP reward = new RewardXP();
         reward.levels = this.isLevels;
         reward.amount = isLevels ? tag.getInteger("xp_levels") : tag.getInteger("xp");
-        return new IReward[]{reward};
+        return new IReward[] { reward };
     }
 }

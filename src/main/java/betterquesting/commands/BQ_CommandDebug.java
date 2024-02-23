@@ -1,10 +1,9 @@
 package betterquesting.commands;
 
-import betterquesting.api.utils.JsonHelper;
-import betterquesting.api2.supporter.SupporterAPI;
-import betterquesting.client.themes.ResourceTheme;
-import betterquesting.client.themes.ThemeRegistry;
-import com.google.gson.JsonObject;
+import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -12,11 +11,15 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 
-import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
+import com.google.gson.JsonObject;
+
+import betterquesting.api.utils.JsonHelper;
+import betterquesting.api2.supporter.SupporterAPI;
+import betterquesting.client.themes.ResourceTheme;
+import betterquesting.client.themes.ThemeRegistry;
 
 public class BQ_CommandDebug extends CommandBase {
+
     @Override
     public String getName() {
         return "bq_debug";
@@ -38,7 +41,8 @@ public class BQ_CommandDebug extends CommandBase {
 
         JsonObject jsonTheme = JsonHelper.ReadFromFile(new File(dir, "bq_themes.json"));
         Set<Tuple<ResourceLocation, File>> textures = new HashSet<>();
-        textures.add(new Tuple<>(new ResourceLocation("dlc_theme:textures/gui/new_gui.png"), new File(dir, "new_gui.png")));
+        textures.add(
+                new Tuple<>(new ResourceLocation("dlc_theme:textures/gui/new_gui.png"), new File(dir, "new_gui.png")));
         SupporterAPI.buildCompressedFile(new File(dir, "theme.thm"), manifest, jsonTheme, textures, null, null, -1);
 
         ResourceTheme r = SupporterAPI.readCompressedFile(new File(dir, "theme.thm"));

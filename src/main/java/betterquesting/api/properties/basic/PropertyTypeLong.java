@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.util.ResourceLocation;
 
 public class PropertyTypeLong extends PropertyTypeBase<Long> {
+
     public PropertyTypeLong(ResourceLocation key, Long def) {
         super(key, def);
     }

@@ -1,5 +1,22 @@
 package betterquesting.network.handlers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Tuple;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.network.QuestingPacket;
 import betterquesting.api.questing.*;
@@ -17,22 +34,9 @@ import betterquesting.questing.QuestLineDatabase;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap.Entry;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Tuple;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
 public class NetImport {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation(ModReference.MODID, "import");
 
     public static void registerHandler() {
@@ -54,8 +58,10 @@ public class NetImport {
         boolean isOP = sender.getServer().getPlayerList().canSendCommands(sender.getGameProfile());
 
         if (!isOP) {
-            BetterQuesting.logger.log(Level.WARN, "Player " + sender.getName() + " (UUID:" + QuestingAPI.getQuestingUUID(sender) + ") tried to import quests without OP permissions!");
-            sender.sendStatusMessage(new TextComponentString(TextFormatting.RED + "You need to be OP to edit quests!"), false);
+            BetterQuesting.logger.log(Level.WARN, "Player " + sender.getName() + " (UUID:" +
+                    QuestingAPI.getQuestingUUID(sender) + ") tried to import quests without OP permissions!");
+            sender.sendStatusMessage(new TextComponentString(TextFormatting.RED + "You need to be OP to edit quests!"),
+                    false);
             return; // Player is not operator. Do nothing
         }
 
@@ -65,7 +71,8 @@ public class NetImport {
         impQuestDB.readFromNBT(message.getFirst().getTagList("quests", 10), false);
         impQuestLineDB.readFromNBT(message.getFirst().getTagList("chapters", 10), false);
 
-        BetterQuesting.logger.log(Level.INFO, "Importing " + impQuestDB.size() + " quest(s) and " + impQuestLineDB.size() + " quest line(s) from " + sender.getGameProfile().getName());
+        BetterQuesting.logger.log(Level.INFO, "Importing " + impQuestDB.size() + " quest(s) and " +
+                impQuestLineDB.size() + " quest line(s) from " + sender.getGameProfile().getName());
 
         HashMap<Integer, Integer> remapped = getRemappedIDs(impQuestDB.getEntries());
 
@@ -103,7 +110,8 @@ public class NetImport {
 
             for (DBEntry<IQuestLineEntry> qle : pendingQLE) {
                 if (!remapped.containsKey(qle.getID())) {
-                    BetterQuesting.logger.error("Failed to import quest into quest line. Unable to remap ID " + qle.getID());
+                    BetterQuesting.logger
+                            .error("Failed to import quest into quest line. Unable to remap ID " + qle.getID());
                     continue;
                 }
 

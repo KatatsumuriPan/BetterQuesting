@@ -1,14 +1,7 @@
 package betterquesting.network.handlers;
 
-import betterquesting.api.api.ApiReference;
-import betterquesting.api.api.QuestingAPI;
-import betterquesting.api.events.DatabaseEvent;
-import betterquesting.api.events.DatabaseEvent.DBType;
-import betterquesting.api.network.QuestingPacket;
-import betterquesting.api.questing.IQuest;
-import betterquesting.api.questing.rewards.IReward;
-import betterquesting.core.BetterQuesting;
-import betterquesting.questing.rewards.RewardChoice;
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -19,9 +12,18 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
+import betterquesting.api.api.ApiReference;
+import betterquesting.api.api.QuestingAPI;
+import betterquesting.api.events.DatabaseEvent;
+import betterquesting.api.events.DatabaseEvent.DBType;
+import betterquesting.api.network.QuestingPacket;
+import betterquesting.api.questing.IQuest;
+import betterquesting.api.questing.rewards.IReward;
+import betterquesting.core.BetterQuesting;
+import betterquesting.questing.rewards.RewardChoice;
 
 public class NetRewardChoice {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation("bq_standard:choice_reward");
 
     public static void registerHandler() {
@@ -85,7 +87,7 @@ public class NetRewardChoice {
         if (reward instanceof RewardChoice) {
             ((RewardChoice) reward).setSelection(QuestingAPI.getQuestingUUID(player), sel);
             MinecraftForge.EVENT_BUS.post(new DatabaseEvent.Update(DBType.QUEST));
-            //MinecraftForge.EVENT_BUS.post(new Update());
+            // MinecraftForge.EVENT_BUS.post(new Update());
         }
     }
 }

@@ -1,21 +1,5 @@
 package betterquesting.api2.supporter;
 
-import betterquesting.api.api.QuestingAPI;
-import betterquesting.api.utils.JsonHelper;
-import betterquesting.client.themes.ResourceTheme;
-import betterquesting.core.ModReference;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Tuple;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -23,7 +7,27 @@ import java.util.*;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.imageio.ImageIO;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Tuple;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+
+import betterquesting.api.api.QuestingAPI;
+import betterquesting.api.utils.JsonHelper;
+import betterquesting.client.themes.ResourceTheme;
+import betterquesting.core.ModReference;
+
 public class SupporterAPI {
+
     private static Gson GSON = new GsonBuilder().create(); // No pretty print
     private static final String charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuv0123456789";
     private static final Random rand = new Random();
@@ -38,18 +42,23 @@ public class SupporterAPI {
     }
 
     public static ResourceTheme readCompressedFile(File loc) {
-        // Yes this obscurity not security. No I don't really care for your opinion. Leave me alone to tinker in peace...
-        // Reversing this isn't necessarily hard but it takes more effort than just making a new theme or donating a dollar
+        // Yes this obscurity not security.
+        // No I don't really care for your opinion. Leave me alone to tinker in peace...
+        // Reversing this isn't necessarily hard but it takes more effort than just making a new theme
+        // or donating a dollar
 
         // Manifest is in charge of constructing this class and checking if the supporter goals were met before install.
         // By this point the file should have been approved so if this fails something is wrong or tampered with.
 
         try (DataInputStream dis = new DataInputStream(new GZIPInputStream(new FileInputStream(loc)))) {
-            JsonObject manifest = GSON.fromJson(new String(Base64.getDecoder().decode(dis.readUTF()), StandardCharsets.UTF_8), JsonObject.class);
+            JsonObject manifest = GSON.fromJson(
+                    new String(Base64.getDecoder().decode(dis.readUTF()), StandardCharsets.UTF_8), JsonObject.class);
 
             int format = JsonHelper.GetNumber(manifest, "format", 0).intValue();
-            ResourceLocation parID = manifest.has("parentID") ? new ResourceLocation(JsonHelper.GetString(manifest, "parentID", "minecraft:null")) : null;
-            ResourceLocation thmID = new ResourceLocation(JsonHelper.GetString(manifest, "themeID", new ResourceLocation(ModReference.MODID, "untitled").toString()));
+            ResourceLocation parID = manifest.has("parentID") ?
+                    new ResourceLocation(JsonHelper.GetString(manifest, "parentID", "minecraft:null")) : null;
+            ResourceLocation thmID = new ResourceLocation(JsonHelper.GetString(manifest, "themeID",
+                    new ResourceLocation(ModReference.MODID, "untitled").toString()));
             String thmName = JsonHelper.GetString(manifest, "themeName", "Untitled Theme");
 
             ResourceTheme theme = new ResourceTheme(parID, thmID, thmName);
@@ -57,7 +66,8 @@ public class SupporterAPI {
             // Subject to change depending on format
             byte[] fileKey = readFileKey(dis, format);
 
-            // Read out first but not applied until the remaining textures have been loaded so fallbacks kick in for missing things
+            // Read out first but not applied until the remaining textures have been loaded
+            // so fallbacks kick in for missing things
             JsonObject themeJson = GSON.fromJson(decode(dis.readUTF(), fileKey), JsonObject.class);
 
             int numTex = dis.readInt();
@@ -74,24 +84,25 @@ public class SupporterAPI {
                     rgb[i] = dis.readInt() ^ flip;
                 }
                 final RgbTexture texture = new RgbTexture(w, h, rgb);
-                Minecraft.getMinecraft().addScheduledTask(() -> Minecraft.getMinecraft().getTextureManager().loadTexture(resID, texture));
+                Minecraft.getMinecraft().addScheduledTask(
+                        () -> Minecraft.getMinecraft().getTextureManager().loadTexture(resID, texture));
             }
 
             // TODO: Support other resource types?
 
             theme.loadFromJson(themeJson);
             return theme;
-        } catch (Exception ignored) {
-        } // I'm not telling you why. You should know if you got this far
+        } catch (Exception ignored) {} // I'm not telling you why. You should know if you got this far
         return null;
     }
 
-    public static void buildCompressedFile(File fileOut, JsonObject jsonDetails, JsonObject jsonTheme, Collection<Tuple<ResourceLocation, File>> textures, String token, String service, int tier) {
+    public static void buildCompressedFile(File fileOut, JsonObject jsonDetails, JsonObject jsonTheme,
+                                           Collection<Tuple<ResourceLocation, File>> textures, String token,
+                                           String service, int tier) {
         if (fileOut.exists()) {
             try {
                 fileOut.delete();
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
         }
 
         try (DataOutputStream dos = new DataOutputStream(new GZIPOutputStream(new FileOutputStream(fileOut)))) {
@@ -99,7 +110,8 @@ public class SupporterAPI {
 
             dos.writeUTF(Base64.getEncoder().encodeToString(GSON.toJson(jsonDetails).getBytes(StandardCharsets.UTF_8)));
 
-            final byte[] key = format == 0 ? makeFormat_0(dos, rand.nextLong()) : makeFormat_1(dos, token, 3 + rand.nextInt(6), service, tier);
+            final byte[] key = format == 0 ? makeFormat_0(dos, rand.nextLong()) :
+                    makeFormat_1(dos, token, 3 + rand.nextInt(6), service, tier);
 
             dos.writeUTF(encode(GSON.toJson(jsonTheme), key));
 
@@ -145,7 +157,8 @@ public class SupporterAPI {
         return b;
     }
 
-    private static byte[] makeFormat_1(@Nonnull DataOutputStream dos, @Nonnull String token, int salts, String service, int threshold) throws IOException {
+    private static byte[] makeFormat_1(@Nonnull DataOutputStream dos, @Nonnull String token, int salts, String service,
+                                       int threshold) throws IOException {
         List<Tuple<Boolean, String>> list = new ArrayList<>();
         list.add(new Tuple<>(true, token));
         for (int i = 0; i < salts; i++) {
@@ -157,7 +170,9 @@ public class SupporterAPI {
         return makeFormat_1(dos, list, service, threshold);
     }
 
-    private static byte[] makeFormat_1(@Nonnull DataOutputStream dos, @Nonnull Collection<Tuple<Boolean, String>> tokens, String service, int threshold) throws IOException {
+    private static byte[] makeFormat_1(@Nonnull DataOutputStream dos,
+                                       @Nonnull Collection<Tuple<Boolean, String>> tokens, String service,
+                                       int threshold) throws IOException {
         dos.writeInt(tokens.size());
         int s = 0;
         Set<byte[]> l = new HashSet<>();
@@ -181,13 +196,13 @@ public class SupporterAPI {
     private static byte[] readFileKey(@Nonnull DataInputStream dis, int format) {
         switch (format) {
             case -1:
-                return new byte[]{127};
+                return new byte[] { 127 };
             case 0:
                 return readFormat_0(dis);
             case 1:
                 return readFormat_1(dis);
             default:
-                return new byte[]{127};
+                return new byte[] { 127 };
         }
     }
 
@@ -198,7 +213,7 @@ public class SupporterAPI {
             new Random(seed).nextBytes(b);
             return b;
         } catch (Exception ignored) {
-            return new byte[]{127};
+            return new byte[] { 127 };
         }
     }
 
@@ -216,7 +231,8 @@ public class SupporterAPI {
             int m = 0;
             Set<byte[]> encoded = new HashSet<>();
             for (String k : tokens) {
-                boolean c = entry != null && entry.getServices(k).entrySet().stream().anyMatch((v) -> v.getKey().equals(service) && v.getValue() >= threshold);
+                boolean c = entry != null && entry.getServices(k).entrySet().stream()
+                        .anyMatch((v) -> v.getKey().equals(service) && v.getValue() >= threshold);
                 byte[] b = c ? k.getBytes(StandardCharsets.UTF_8) : new byte[16];
                 if (c) new Random(k.hashCode()).nextBytes(b);
                 encoded.add(b);
@@ -227,7 +243,7 @@ public class SupporterAPI {
             for (int i = 0; i < m; i++) for (byte[] e : encoded) merged[i] ^= e[i % e.length];
             return merged;
         } catch (Exception ignored) {
-            return new byte[]{127};
+            return new byte[] { 127 };
         }
     }
 }

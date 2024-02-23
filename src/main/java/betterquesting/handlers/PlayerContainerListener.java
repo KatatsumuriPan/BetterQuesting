@@ -1,12 +1,10 @@
 package betterquesting.handlers;
 
-import betterquesting.api.api.ApiReference;
-import betterquesting.api.api.QuestingAPI;
-import betterquesting.api.questing.IQuest;
-import betterquesting.api.questing.tasks.ITask;
-import betterquesting.api2.storage.DBEntry;
-import betterquesting.api2.utils.ParticipantInfo;
-import betterquesting.questing.tasks.ITaskInventory;
+import java.util.HashMap;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
@@ -14,11 +12,10 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
-import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.UUID;
+import betterquesting.api.api.QuestingAPI;
 
 public class PlayerContainerListener implements IContainerListener {
+
     private static final HashMap<UUID, PlayerContainerListener> LISTEN_MAP = new HashMap<>();
 
     public static void refreshListener(@Nonnull EntityPlayer player) {
@@ -33,8 +30,7 @@ public class PlayerContainerListener implements IContainerListener {
 
         try {
             player.inventoryContainer.addListener(listener);
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
     }
 
     private EntityPlayer player;
@@ -57,12 +53,10 @@ public class PlayerContainerListener implements IContainerListener {
     }
 
     @Override
-    public void sendWindowProperty(@Nonnull Container container, int i, int i1) {
-    }
+    public void sendWindowProperty(@Nonnull Container container, int i, int i1) {}
 
     @Override
-    public void sendAllWindowProperties(@Nonnull Container container, @Nonnull IInventory iInventory) {
-    }
+    public void sendAllWindowProperties(@Nonnull Container container, @Nonnull IInventory iInventory) {}
 
     private void updateTasks() {
         EventHandler.schedulePlayerInventoryCheck(player);

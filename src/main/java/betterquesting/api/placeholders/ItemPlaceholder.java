@@ -1,5 +1,9 @@
 package betterquesting.api.placeholders;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,10 +15,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
 public class ItemPlaceholder extends Item {
+
     public static Item placeholder = new ItemPlaceholder();
 
     // Used solely for retaining info to missing items
@@ -33,7 +35,8 @@ public class ItemPlaceholder extends Item {
             return;
         }
 
-        tooltip.add("Original ID: " + stack.getTagCompound().getString("orig_id") + "/" + stack.getTagCompound().getInteger("orig_meta"));
+        tooltip.add("Original ID: " + stack.getTagCompound().getString("orig_id") + "/" +
+                stack.getTagCompound().getInteger("orig_meta"));
     }
 
     /**
@@ -42,8 +45,8 @@ public class ItemPlaceholder extends Item {
      */
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean held) {
-        if (!stack.hasTagCompound() || !(entity instanceof EntityPlayer) || world.getTotalWorldTime() % 100 != 0) // Process this only once a second
-        {
+        // Process this only once a second
+        if (!stack.hasTagCompound() || !(entity instanceof EntityPlayer) || world.getTotalWorldTime() % 100 != 0) {
             return;
         }
 

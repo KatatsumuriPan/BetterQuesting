@@ -1,11 +1,12 @@
 package betterquesting.blocks;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
-import javax.annotation.Nonnull;
-
 public class SSItemHandler implements IItemHandlerModifiable {
+
     private final TileSubmitStation tile;
 
     public SSItemHandler(TileSubmitStation tile) {

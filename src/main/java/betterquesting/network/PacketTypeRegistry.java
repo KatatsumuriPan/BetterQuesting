@@ -1,7 +1,11 @@
 package betterquesting.network;
 
-import betterquesting.api.network.IPacketRegistry;
-import betterquesting.network.handlers.*;
+import java.util.HashMap;
+import java.util.function.Consumer;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -9,12 +13,11 @@ import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.function.Consumer;
+import betterquesting.api.network.IPacketRegistry;
+import betterquesting.network.handlers.*;
 
 public class PacketTypeRegistry implements IPacketRegistry {
+
     public static final PacketTypeRegistry INSTANCE = new PacketTypeRegistry();
 
     private final HashMap<ResourceLocation, Consumer<Tuple<NBTTagCompound, EntityPlayerMP>>> serverHandlers = new HashMap<>();
@@ -44,7 +47,8 @@ public class PacketTypeRegistry implements IPacketRegistry {
     }
 
     @Override
-    public void registerServerHandler(@Nonnull ResourceLocation idName, @Nonnull Consumer<Tuple<NBTTagCompound, EntityPlayerMP>> method) {
+    public void registerServerHandler(@Nonnull ResourceLocation idName,
+                                      @Nonnull Consumer<Tuple<NBTTagCompound, EntityPlayerMP>> method) {
         if (serverHandlers.containsKey(idName)) {
             throw new IllegalArgumentException("Cannot register dupliate packet handler: " + idName);
         }

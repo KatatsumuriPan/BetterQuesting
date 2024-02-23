@@ -1,5 +1,16 @@
 package betterquesting.client.gui2.editors.tasks;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.input.Keyboard;
+
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.client.gui.misc.IVolatileScreen;
@@ -25,17 +36,9 @@ import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.core.ModReference;
 import betterquesting.questing.tasks.TaskHunt;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.input.Keyboard;
 
 public class GuiEditTaskHunt extends GuiScreenCanvas implements IVolatileScreen {
+
     private final DBEntry<IQuest> quest;
     private final TaskHunt task;
 
@@ -54,7 +57,9 @@ public class GuiEditTaskHunt extends GuiScreenCanvas implements IVolatileScreen 
         CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(), PresetTexture.PANEL_MAIN.getTexture());
         this.addPanel(cvBackground);
 
-        cvBackground.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(16, 16, 16, -32), 0), QuestTranslation.translate("bq_standard.title.edit_hunt")).setAlignment(1).setColor(PresetColor.TEXT_HEADER.getColor()));
+        cvBackground.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(16, 16, 16, -32), 0),
+                QuestTranslation.translate("bq_standard.title.edit_hunt")).setAlignment(1)
+                        .setColor(PresetColor.TEXT_HEADER.getColor()));
 
         ResourceLocation targetRes = new ResourceLocation(task.idName);
 
@@ -65,35 +70,50 @@ public class GuiEditTaskHunt extends GuiScreenCanvas implements IVolatileScreen 
             if (target != null) target.readFromNBT(task.targetTags);
         } else target = null;
 
-        this.addPanel(new PanelEntityPreview(new GuiTransform(GuiAlign.HALF_TOP, new GuiPadding(16, 32, 16, 0), 0), target).setRotationDriven(new ValueFuncIO<>(() -> 15F), new ValueFuncIO<>(() -> (float) (Minecraft.getSystemTime() % 30000L / 30000D * 360D)))); // Preview works with null. It's fine (or should be)
+        // Preview works with null. It's fine (or should be)
+        this.addPanel(
+                new PanelEntityPreview(new GuiTransform(GuiAlign.HALF_TOP, new GuiPadding(16, 32, 16, 0), 0), target)
+                        .setRotationDriven(new ValueFuncIO<>(() -> 15F),
+                                new ValueFuncIO<>(() -> (float) (Minecraft.getSystemTime() % 30000L / 30000D * 360D))));
 
-        cvBackground.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.MID_CENTER, -100, 4, 96, 12, 0), QuestTranslation.translate("bq_standard.gui.amount")).setAlignment(2).setColor(PresetColor.TEXT_MAIN.getColor()));
-        cvBackground.addPanel(new PanelTextField<>(new GuiTransform(GuiAlign.MID_CENTER, 0, 0, 100, 16, 0), "" + task.required, FieldFilterNumber.INT).setCallback(value -> task.required = value));
+        cvBackground.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.MID_CENTER, -100, 4, 96, 12, 0),
+                QuestTranslation.translate("bq_standard.gui.amount")).setAlignment(2)
+                        .setColor(PresetColor.TEXT_MAIN.getColor()));
+        cvBackground.addPanel(new PanelTextField<>(new GuiTransform(GuiAlign.MID_CENTER, 0, 0, 100, 16, 0),
+                "" + task.required, FieldFilterNumber.INT).setCallback(value -> task.required = value));
 
         final GuiScreen screenRef = this;
-        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.MID_CENTER, -100, 16, 200, 16, 0), -1, QuestTranslation.translate("bq_standard.btn.select_mob")) {
+        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.MID_CENTER, -100, 16, 200, 16, 0), -1,
+                QuestTranslation.translate("bq_standard.btn.select_mob")) {
+
             @Override
             public void onButtonClick() {
-                mc.displayGuiScreen(QuestingAPI.getAPI(ApiReference.THEME_REG).getGui(PresetGUIs.EDIT_ENTITY, new GArgsCallback<>(screenRef, target, value -> {
-                    Entity tmp = value != null ? value : new EntityZombie(mc.world);
-                    ResourceLocation res = EntityList.getKey(tmp.getClass());
-                    task.idName = res != null ? res.toString() : "minecraft:zombie";
-                    task.targetTags = new NBTTagCompound();
-                    tmp.writeToNBTOptional(task.targetTags);
+                mc.displayGuiScreen(QuestingAPI.getAPI(ApiReference.THEME_REG).getGui(PresetGUIs.EDIT_ENTITY,
+                        new GArgsCallback<>(screenRef, target, value -> {
+                            Entity tmp = value != null ? value : new EntityZombie(mc.world);
+                            ResourceLocation res = EntityList.getKey(tmp.getClass());
+                            task.idName = res != null ? res.toString() : "minecraft:zombie";
+                            task.targetTags = new NBTTagCompound();
+                            tmp.writeToNBTOptional(task.targetTags);
 
-                    sendChanges();
-                })));
+                            sendChanges();
+                        })));
             }
         });
 
-        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.MID_CENTER, -100, 32, 200, 16, 0), -1, QuestTranslation.translate("betterquesting.btn.advanced")) {
+        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.MID_CENTER, -100, 32, 200, 16, 0), -1,
+                QuestTranslation.translate("betterquesting.btn.advanced")) {
+
             @Override
             public void onButtonClick() {
-                mc.displayGuiScreen(QuestingAPI.getAPI(ApiReference.THEME_REG).getGui(PresetGUIs.EDIT_NBT, new GArgsNBT<>(screenRef, task.writeToNBT(new NBTTagCompound()), task::readFromNBT, null)));
+                mc.displayGuiScreen(QuestingAPI.getAPI(ApiReference.THEME_REG).getGui(PresetGUIs.EDIT_NBT,
+                        new GArgsNBT<>(screenRef, task.writeToNBT(new NBTTagCompound()), task::readFromNBT, null)));
             }
         });
 
-        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), -1, QuestTranslation.translate("gui.done")) {
+        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), -1,
+                QuestTranslation.translate("gui.done")) {
+
             @Override
             public void onButtonClick() {
                 sendChanges();
@@ -102,7 +122,8 @@ public class GuiEditTaskHunt extends GuiScreenCanvas implements IVolatileScreen 
         });
     }
 
-    private static final ResourceLocation QUEST_EDIT = new ResourceLocation(ModReference.MODID, "quest_edit"); // TODO: Really need to make the native packet types accessible in the API
+    // TODO: Really need to make the native packet types accessible in the API
+    private static final ResourceLocation QUEST_EDIT = new ResourceLocation(ModReference.MODID, "quest_edit");
 
     private void sendChanges() {
         NBTTagCompound payload = new NBTTagCompound();

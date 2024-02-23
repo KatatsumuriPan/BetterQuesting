@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
 
 public class PropertyTypeEnum<E extends Enum<E>> extends PropertyTypeBase<E> {
+
     private final Class<E> eClazz;
 
     public PropertyTypeEnum(ResourceLocation key, E def) {

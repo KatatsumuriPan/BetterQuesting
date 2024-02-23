@@ -1,5 +1,20 @@
 package betterquesting.network.handlers;
 
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Tuple;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.network.QuestingPacket;
 import betterquesting.api.questing.party.IParty;
@@ -12,22 +27,10 @@ import betterquesting.network.PacketTypeRegistry;
 import betterquesting.questing.party.PartyInvitations;
 import betterquesting.questing.party.PartyManager;
 import betterquesting.storage.NameCache;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Tuple;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.UUID;
 
 public class NetBulkSync // Clears local data and negotiates a full resync with the server
 {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation(ModReference.MODID, "main_sync");
 
     public static void registerHandler() {
@@ -58,7 +61,7 @@ public class NetBulkSync // Clears local data and negotiates a full resync with 
         NetSettingSync.sendSync(player);
         NetQuestSync.sendSync(player, null, true, true);
         NetChapterSync.sendSync(player, null);
-        NetLifeSync.sendSync(new EntityPlayerMP[]{player}, new UUID[]{playerID});
+        NetLifeSync.sendSync(new EntityPlayerMP[] { player }, new UUID[] { playerID });
         DBEntry<IParty> party = PartyManager.INSTANCE.getParty(playerID);
         List<Entry<Integer, Long>> invites = PartyInvitations.INSTANCE.getPartyInvites(playerID);
         int partyCount = invites.size() + (party == null ? 0 : 1);
@@ -68,12 +71,12 @@ public class NetBulkSync // Clears local data and negotiates a full resync with 
                 pids[i] = invites.get(i).getKey();
             }
             if (party != null) pids[partyCount - 1] = party.getID();
-            NetPartySync.sendSync(new EntityPlayerMP[]{player}, pids);
+            NetPartySync.sendSync(new EntityPlayerMP[] { player }, pids);
         }
         if (party != null) {
             NetNameSync.quickSync(nameChanged ? null : player, party.getID());
         } else {
-            NetNameSync.sendNames(new EntityPlayerMP[]{player}, new UUID[]{playerID}, null);
+            NetNameSync.sendNames(new EntityPlayerMP[] { player }, new UUID[] { playerID }, null);
         }
         NetInviteSync.sendSync(player);
         NetCacheSync.sendSync(player);
@@ -85,13 +88,13 @@ public class NetBulkSync // Clears local data and negotiates a full resync with 
 
     @SideOnly(Side.CLIENT)
     private static void onClient(NBTTagCompound message) {
-        if (message.getBoolean("reset") && !Minecraft.getMinecraft().isIntegratedServerRunning()) // DON'T do this on LAN hosts
-        {
+        // DON'T do this on LAN hosts
+        if (message.getBoolean("reset") && !Minecraft.getMinecraft().isIntegratedServerRunning()) {
             SaveLoadHandler.INSTANCE.unloadDatabases();
         }
 
-        if (message.getBoolean("respond")) // Client doesn't really have to honour this but it would mess with things otherwise
-        {
+        // Client doesn't really have to honour this but it would mess with things otherwise
+        if (message.getBoolean("respond")) {
             PacketSender.INSTANCE.sendToServer(new QuestingPacket(ID_NAME, new NBTTagCompound()));
         }
     }

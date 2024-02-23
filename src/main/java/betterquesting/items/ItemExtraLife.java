@@ -1,10 +1,9 @@
 package betterquesting.items;
 
-import betterquesting.api.api.QuestingAPI;
-import betterquesting.api.properties.NativeProps;
-import betterquesting.core.BetterQuesting;
-import betterquesting.storage.LifeDatabase;
-import betterquesting.storage.QuestSettings;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -18,10 +17,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.UUID;
+import betterquesting.api.api.QuestingAPI;
+import betterquesting.api.properties.NativeProps;
+import betterquesting.core.BetterQuesting;
+import betterquesting.storage.LifeDatabase;
+import betterquesting.storage.QuestSettings;
 
 public class ItemExtraLife extends Item {
+
     public ItemExtraLife() {
         this.setTranslationKey("betterquesting.extra_life");
         this.setCreativeTab(BetterQuesting.tabQuesting);
@@ -48,18 +51,21 @@ public class ItemExtraLife extends Item {
 
             if (lives >= QuestSettings.INSTANCE.getProperty(NativeProps.LIVES_MAX)) {
                 if (!world.isRemote) {
-                    player.sendStatusMessage(new TextComponentString(TextFormatting.RED.toString()).appendSibling(new TextComponentTranslation("betterquesting.gui.full_lives")), true);
+                    player.sendStatusMessage(new TextComponentString(TextFormatting.RED.toString())
+                            .appendSibling(new TextComponentTranslation("betterquesting.gui.full_lives")), true);
                 }
 
                 return new ActionResult<>(EnumActionResult.PASS, stack);
             }
 
-            player.world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1F, 1F);
+            player.world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_LEVELUP,
+                    SoundCategory.PLAYERS, 1F, 1F);
 
             if (!world.isRemote) {
                 LifeDatabase.INSTANCE.setLives(uuid, lives + 1);
 
-                player.sendStatusMessage(new TextComponentTranslation("betterquesting.gui.remaining_lives", TextFormatting.YELLOW.toString() + (lives + 1)), true);
+                player.sendStatusMessage(new TextComponentTranslation("betterquesting.gui.remaining_lives",
+                        TextFormatting.YELLOW.toString() + (lives + 1)), true);
             }
         } else if (!world.isRemote) {
             player.sendStatusMessage(new TextComponentTranslation("betterquesting.msg.heart_disabled"), true);

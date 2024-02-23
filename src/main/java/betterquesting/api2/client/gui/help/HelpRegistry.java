@@ -3,8 +3,10 @@ package betterquesting.api2.client.gui.help;
 import java.util.ArrayList;
 import java.util.List;
 
-// Could probably be more refined and fleshed out in functionality at a later date but for now this is just to decouple it from the GUIs
+// Could probably be more refined and fleshed out in functionality at a later date but for now this is just to decouple
+// it from the GUIs
 public class HelpRegistry {
+
     public static final HelpRegistry INSTANCE = new HelpRegistry();
 
     private final List<HelpTopic> topicList = new ArrayList<>();

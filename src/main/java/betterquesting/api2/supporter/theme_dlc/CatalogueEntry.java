@@ -1,18 +1,22 @@
 package betterquesting.api2.supporter.theme_dlc;
 
-import betterquesting.api.utils.JsonHelper;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import net.minecraft.util.ResourceLocation;
-
-import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import javax.annotation.Nonnull;
+
+import net.minecraft.util.ResourceLocation;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import betterquesting.api.utils.JsonHelper;
+
 public class CatalogueEntry {
+
     public final String author;
     public final String name;
     public final ResourceLocation themeID;
@@ -34,7 +38,8 @@ public class CatalogueEntry {
         this.subLink = subLink;
     }
 
-    public CatalogueEntry setRequirement(@Nonnull String token, @Nonnull String service, int amount, @Nonnull String subLink) {
+    public CatalogueEntry setRequirement(@Nonnull String token, @Nonnull String service, int amount,
+                                         @Nonnull String subLink) {
         this.token = token;
         this.service = service;
         this.subTier = amount;

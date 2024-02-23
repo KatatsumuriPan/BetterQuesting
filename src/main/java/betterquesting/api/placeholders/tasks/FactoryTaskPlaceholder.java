@@ -1,17 +1,18 @@
 package betterquesting.api.placeholders.tasks;
 
-import betterquesting.api2.registry.IFactoryData;
-import betterquesting.core.ModReference;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
+import betterquesting.api2.registry.IFactoryData;
+import betterquesting.core.ModReference;
+
 public class FactoryTaskPlaceholder implements IFactoryData<TaskPlaceholder, NBTTagCompound> {
+
     public static final FactoryTaskPlaceholder INSTANCE = new FactoryTaskPlaceholder();
 
     private final ResourceLocation ID = new ResourceLocation(ModReference.MODID, "placeholder");
 
-    private FactoryTaskPlaceholder() {
-    }
+    private FactoryTaskPlaceholder() {}
 
     @Override
     public ResourceLocation getRegistryName() {

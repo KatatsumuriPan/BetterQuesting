@@ -1,18 +1,21 @@
 package betterquesting.importers.hqm.converters.tasks;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.nbt.NBTTagCompound;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.importers.hqm.HQMUtilities;
 import betterquesting.questing.tasks.TaskInteractItem;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import net.minecraft.nbt.NBTTagCompound;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HQMTaskBlockPlace {
+
     public ITask[] convertTask(JsonObject json) {
         List<ITask> tList = new ArrayList<>();
 

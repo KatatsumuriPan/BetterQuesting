@@ -1,5 +1,15 @@
 package betterquesting.client.gui2.inventory;
 
+import java.util.Iterator;
+import java.util.List;
+
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.NonNullList;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Vector4f;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.client.gui.misc.INeedsRefresh;
 import betterquesting.api.properties.NativeProps;
@@ -29,16 +39,9 @@ import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.blocks.TileSubmitStation;
 import betterquesting.network.handlers.NetStationEdit;
 import betterquesting.questing.QuestDatabase;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.NonNullList;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.util.vector.Vector4f;
-
-import java.util.Iterator;
-import java.util.List;
 
 public class GuiSubmitStation extends GuiContainerCanvas implements INeedsRefresh {
+
     private final ContainerSubmitStation ssContainer;
     private final TileSubmitStation tile;
 
@@ -91,16 +94,20 @@ public class GuiSubmitStation extends GuiContainerCanvas implements INeedsRefres
         filterQuests();
 
         // Background panel
-        cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0), PresetTexture.PANEL_MAIN.getTexture());
+        cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0),
+                PresetTexture.PANEL_MAIN.getTexture());
         this.addPanel(cvBackground);
 
-        PanelTextBox txtTitle = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0), QuestTranslation.translate("betterquesting.title.submit_station")).setAlignment(1);
+        PanelTextBox txtTitle = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0),
+                QuestTranslation.translate("betterquesting.title.submit_station")).setAlignment(1);
         txtTitle.setColor(PresetColor.TEXT_HEADER.getColor());
         cvBackground.addPanel(txtTitle);
 
-        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), -1, QuestTranslation.translate("gui.done")).setClickAction((b) -> mc.displayGuiScreen(parent)));
+        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), -1,
+                QuestTranslation.translate("gui.done")).setClickAction((b) -> mc.displayGuiScreen(parent)));
 
         btnQstLeft = new PanelButton(new GuiTransform(new Vector4f(0.5F, 0F, 0.5F, 0F), 8, 32, 16, 16, 0), -1, "") {
+
             @Override
             public void onButtonClick() {
                 selQuest--;
@@ -111,6 +118,7 @@ public class GuiSubmitStation extends GuiContainerCanvas implements INeedsRefres
         cvBackground.addPanel(btnQstLeft);
 
         btnQstRight = new PanelButton(new GuiTransform(new Vector4f(1F, 0F, 1F, 0F), -32, 32, 16, 16, 0), -1, "") {
+
             @Override
             public void onButtonClick() {
                 selQuest++;
@@ -121,6 +129,7 @@ public class GuiSubmitStation extends GuiContainerCanvas implements INeedsRefres
         cvBackground.addPanel(btnQstRight);
 
         btnTskLeft = new PanelButton(new GuiTransform(new Vector4f(0.5F, 0F, 0.5F, 0F), 8, 48, 16, 16, 0), -1, "") {
+
             @Override
             public void onButtonClick() {
                 selTask--;
@@ -131,6 +140,7 @@ public class GuiSubmitStation extends GuiContainerCanvas implements INeedsRefres
         cvBackground.addPanel(btnTskLeft);
 
         btnTskRight = new PanelButton(new GuiTransform(new Vector4f(1F, 0F, 1F, 0F), -32, 48, 16, 16, 0), -1, "") {
+
             @Override
             public void onButtonClick() {
                 selTask++;
@@ -141,9 +151,11 @@ public class GuiSubmitStation extends GuiContainerCanvas implements INeedsRefres
         cvBackground.addPanel(btnTskRight);
 
         btnSet = new PanelButton(new GuiTransform(new Vector4f(0.75F, 0F, 0.75F, 0F), -16, 64, 16, 16, 0), -1, "") {
+
             @Override
             public void onButtonClick() {
-                tile.setupTask(QuestingAPI.getQuestingUUID(mc.player), quests.get(selQuest).getValue(), tasks.get(selTask).getValue());
+                tile.setupTask(QuestingAPI.getQuestingUUID(mc.player), quests.get(selQuest).getValue(),
+                        tasks.get(selTask).getValue());
                 NetStationEdit.setupStation(tile.getPos(), selQuest, selTask);
                 refreshTaskPanel();
             }
@@ -152,6 +164,7 @@ public class GuiSubmitStation extends GuiContainerCanvas implements INeedsRefres
         cvBackground.addPanel(btnSet);
 
         btnRem = new PanelButton(new GuiTransform(new Vector4f(0.75F, 0F, 0.75F, 0F), 0, 64, 16, 16, 0), -1, "") {
+
             @Override
             public void onButtonClick() {
                 tile.reset();
@@ -162,11 +175,13 @@ public class GuiSubmitStation extends GuiContainerCanvas implements INeedsRefres
         ((PanelButton) btnRem).setIcon(PresetIcon.ICON_CROSS.getTexture(), new GuiColorStatic(0xFFFF0000), 0);
         cvBackground.addPanel(btnRem);
 
-        txtQstTitle = new PanelTextBox(new GuiTransform(new Vector4f(0.5F, 0F, 1F, 0F), new GuiPadding(24, 36, 32, -48), 0), "");
+        txtQstTitle = new PanelTextBox(
+                new GuiTransform(new Vector4f(0.5F, 0F, 1F, 0F), new GuiPadding(24, 36, 32, -48), 0), "");
         txtQstTitle.setColor(PresetColor.TEXT_MAIN.getColor()).setAlignment(1);
         cvBackground.addPanel(txtQstTitle);
 
-        txtTskTitle = new PanelTextBox(new GuiTransform(new Vector4f(0.5F, 0F, 1F, 0F), new GuiPadding(24, 52, 32, -64), 0), "");
+        txtTskTitle = new PanelTextBox(
+                new GuiTransform(new Vector4f(0.5F, 0F, 1F, 0F), new GuiPadding(24, 52, 32, -64), 0), "");
         txtTskTitle.setColor(PresetColor.TEXT_MAIN.getColor()).setAlignment(1);
         cvBackground.addPanel(txtTskTitle);
 
@@ -186,12 +201,16 @@ public class GuiSubmitStation extends GuiContainerCanvas implements INeedsRefres
             int k = i / 9 * 18;
             if (i >= 27) k += 4;
 
-            this.addPanel(new PanelGeneric(new GuiTransform(GuiAlign.TOP_LEFT, x + j, y + k + 22, 18, 18, -1), PresetTexture.ITEM_FRAME.getTexture()));
+            this.addPanel(new PanelGeneric(new GuiTransform(GuiAlign.TOP_LEFT, x + j, y + k + 22, 18, 18, -1),
+                    PresetTexture.ITEM_FRAME.getTexture()));
         }
 
-        this.addPanel(new PanelGeneric(new GuiTransform(GuiAlign.TOP_LEFT, x + 54, y, 18, 18, -1), PresetTexture.ITEM_FRAME.getTexture()));
-        this.addPanel(new PanelGeneric(new GuiTransform(GuiAlign.TOP_LEFT, x + 72, y, 18, 18, -1), PresetIcon.ICON_RIGHT.getTexture()));
-        this.addPanel(new PanelGeneric(new GuiTransform(GuiAlign.TOP_LEFT, x + 90, y, 18, 18, -1), PresetTexture.ITEM_FRAME.getTexture()));
+        this.addPanel(new PanelGeneric(new GuiTransform(GuiAlign.TOP_LEFT, x + 54, y, 18, 18, -1),
+                PresetTexture.ITEM_FRAME.getTexture()));
+        this.addPanel(new PanelGeneric(new GuiTransform(GuiAlign.TOP_LEFT, x + 72, y, 18, 18, -1),
+                PresetIcon.ICON_RIGHT.getTexture()));
+        this.addPanel(new PanelGeneric(new GuiTransform(GuiAlign.TOP_LEFT, x + 90, y, 18, 18, -1),
+                PresetTexture.ITEM_FRAME.getTexture()));
     }
 
     private void filterQuests() {
@@ -277,9 +296,11 @@ public class GuiSubmitStation extends GuiContainerCanvas implements INeedsRefres
 
         DBEntry<ITask> curTask = tasks.get(selTask);
         txtTskTitle.setText(QuestTranslation.translate(curTask.getValue().getUnlocalisedName()));
-        btnSet.setActive(!tile.isSetup() && (curTask.getValue() instanceof IItemTask || curTask.getValue() instanceof IFluidTask));
+        btnSet.setActive(!tile.isSetup() &&
+                (curTask.getValue() instanceof IItemTask || curTask.getValue() instanceof IFluidTask));
 
-        taskPanel = curTask.getValue().getTaskGui(new GuiTransform(GuiAlign.HALF_RIGHT, new GuiPadding(8, 88, 16, 24), 0), entry);
+        taskPanel = curTask.getValue()
+                .getTaskGui(new GuiTransform(GuiAlign.HALF_RIGHT, new GuiPadding(8, 88, 16, 24), 0), entry);
         if (taskPanel != null) cvBackground.addPanel(taskPanel);
     }
 

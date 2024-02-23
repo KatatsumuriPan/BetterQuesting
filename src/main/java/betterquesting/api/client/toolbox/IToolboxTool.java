@@ -1,12 +1,14 @@
 package betterquesting.api.client.toolbox;
 
-import betterquesting.api2.client.gui.controls.PanelButtonQuest;
-import betterquesting.api2.client.gui.panels.lists.CanvasQuestLine;
-import net.minecraft.util.NonNullList;
-
 import java.util.List;
 
+import net.minecraft.util.NonNullList;
+
+import betterquesting.api2.client.gui.controls.PanelButtonQuest;
+import betterquesting.api2.client.gui.panels.lists.CanvasQuestLine;
+
 public interface IToolboxTool {
+
     /**
      * Starts up the tool in its initial starting state
      */

@@ -1,23 +1,26 @@
 package betterquesting.questing.party;
 
-import betterquesting.api.enums.EnumPartyStatus;
-import betterquesting.api.questing.party.IParty;
-import betterquesting.api2.storage.INBTPartial;
-import betterquesting.core.BetterQuesting;
-import betterquesting.network.handlers.NetInviteSync;
+import java.util.*;
+import java.util.Map.Entry;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.Map.Entry;
+import betterquesting.api.enums.EnumPartyStatus;
+import betterquesting.api.questing.party.IParty;
+import betterquesting.api2.storage.INBTPartial;
+import betterquesting.core.BetterQuesting;
+import betterquesting.network.handlers.NetInviteSync;
 
 // NOTE: This is in a separate class because it could later be moved to a dedicated inbox system
 public class PartyInvitations implements INBTPartial<NBTTagList, UUID> {
+
     public static final PartyInvitations INSTANCE = new PartyInvitations();
 
     private final HashMap<UUID, HashMap<Integer, Long>> invites = new HashMap<>();
@@ -67,7 +70,8 @@ public class PartyInvitations implements INBTPartial<NBTTagList, UUID> {
         return list;
     }
 
-    // Primarily used when deleting parties to ensure that pending invites don't link to newly created parties under the same ID
+    // Primarily used when deleting parties to ensure that pending invites don't link to newly created parties
+    // under the same ID
     public synchronized void purgeInvites(int partyID) {
         invites.values().forEach((value) -> value.remove(partyID));
     }
@@ -88,11 +92,12 @@ public class PartyInvitations implements INBTPartial<NBTTagList, UUID> {
                 }
             }
             EntityPlayerMP player = server.getPlayerList().getPlayerByUUID(userInvites.getKey());
-            //noinspection ConstantConditions
+            // noinspection ConstantConditions
             if (player != null && revoked.size() >= 0) {
                 int[] revAry = new int[revoked.size()];
                 for (int i = 0; i < revoked.size(); i++) revAry[i] = revoked.get(i);
-                NetInviteSync.sendRevoked(player, revAry); // Normally I avoid including networking calls into the database...
+                // Normally I avoid including networking calls into the database...
+                NetInviteSync.sendRevoked(player, revAry);
             }
             if (userInvites.getValue().size() <= 0) iterA.remove();
         }
@@ -102,9 +107,9 @@ public class PartyInvitations implements INBTPartial<NBTTagList, UUID> {
         invites.clear();
     }
 
+    // Don't bother saving this to disk. We do need to send packets though
     @Override
-    public synchronized NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<UUID> subset) // Don't bother saving this to disk. We do need to send packets though
-    {
+    public synchronized NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<UUID> subset) {
         if (subset != null) {
             subset.forEach((uuid) -> {
                 NBTTagCompound userTag = new NBTTagCompound();

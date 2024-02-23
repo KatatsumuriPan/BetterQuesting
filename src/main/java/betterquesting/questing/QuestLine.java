@@ -1,5 +1,13 @@
 package betterquesting.questing;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.init.Items;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+
 import betterquesting.api.properties.IPropertyType;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.IQuestLine;
@@ -8,14 +16,9 @@ import betterquesting.api.utils.BigItemStack;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.storage.SimpleDatabase;
 import betterquesting.storage.PropertyContainer;
-import net.minecraft.init.Items;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class QuestLine extends SimpleDatabase<IQuestLineEntry> implements IQuestLine {
+
     private PropertyContainer info = new PropertyContainer();
 
     public QuestLine() {

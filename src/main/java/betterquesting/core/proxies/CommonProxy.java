@@ -1,5 +1,9 @@
 package betterquesting.core.proxies;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.questing.rewards.IReward;
@@ -14,11 +18,9 @@ import betterquesting.network.handlers.*;
 import betterquesting.questing.rewards.factory.*;
 import betterquesting.questing.rewards.loot.LootRegistry;
 import betterquesting.questing.tasks.factory.*;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 public class CommonProxy {
+
     public boolean isClient() {
         return false;
     }
@@ -33,8 +35,7 @@ public class CommonProxy {
         NetworkRegistry.INSTANCE.registerGuiHandler(BetterQuesting.instance, new GuiHandler());
     }
 
-    public void registerRenderers() {
-    }
+    public void registerRenderers() {}
 
     public void registerExpansion() {
         IRegistry<IFactoryData<ITask, NBTTagCompound>, ITask> taskReg = QuestingAPI.getAPI(ApiReference.TASK_REG);
@@ -55,7 +56,8 @@ public class CommonProxy {
         taskReg.register(FactoryTaskTrigger.INSTANCE);
         taskReg.register(FactoryTaskOptionalRetrieval.INSTANCE);
 
-        IRegistry<IFactoryData<IReward, NBTTagCompound>, IReward> rewardReg = QuestingAPI.getAPI(ApiReference.REWARD_REG);
+        IRegistry<IFactoryData<IReward, NBTTagCompound>, IReward> rewardReg = QuestingAPI
+                .getAPI(ApiReference.REWARD_REG);
         rewardReg.register(FactoryRewardChoice.INSTANCE);
         rewardReg.register(FactoryRewardCommand.INSTANCE);
         rewardReg.register(FactoryRewardItem.INSTANCE);

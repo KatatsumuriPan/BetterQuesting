@@ -1,20 +1,23 @@
 package betterquesting.questing.rewards;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
+
 import betterquesting.api.placeholders.rewards.RewardPlaceholder;
 import betterquesting.api.questing.rewards.IReward;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.storage.IDatabaseNBT;
 import betterquesting.api2.storage.SimpleDatabase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ResourceLocation;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public class RewardStorage extends SimpleDatabase<IReward> implements IDatabaseNBT<IReward, NBTTagList, NBTTagList> {
+
     @Override
     public NBTTagList writeToNBT(NBTTagList json, @Nullable List<Integer> subset) {
         for (DBEntry<IReward> rew : getEntries()) {
@@ -84,6 +87,5 @@ public class RewardStorage extends SimpleDatabase<IReward> implements IDatabaseN
     }
 
     @Override
-    public void readProgressFromNBT(NBTTagList nbt, boolean merge) {
-    }
+    public void readProgressFromNBT(NBTTagList nbt, boolean merge) {}
 }

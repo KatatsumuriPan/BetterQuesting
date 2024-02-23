@@ -1,17 +1,20 @@
 package betterquesting.questing;
 
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.IQuestDatabase;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.storage.SimpleDatabase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.UUID;
 
 public final class QuestDatabase extends SimpleDatabase<IQuest> implements IQuestDatabase {
+
     public static final QuestDatabase INSTANCE = new QuestDatabase();
 
     @Override

@@ -1,5 +1,20 @@
 package betterquesting.client.ui_builder;
 
+import java.util.*;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector4f;
+
 import betterquesting.api.client.gui.misc.IVolatileScreen;
 import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api2.client.gui.GuiScreenCanvas;
@@ -20,20 +35,9 @@ import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.storage.SimpleDatabase;
 import betterquesting.client.gui2.editors.nbt.PanelScrollingNBT;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector4f;
-
-import javax.annotation.Nonnull;
-import java.util.*;
 
 public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
+
     // Database of panel components given unique IDs
     // We can deal with the save/load here without having to make an entire class for this
     private final SimpleDatabase<ComponentPanel> COM_DB = new SimpleDatabase<>();
@@ -76,18 +80,22 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
         // The normal area with margins will now be the inner preview so we recalculate margins for that here
         int marginX = BQ_Settings.guiWidth <= 0 ? 16 : Math.max(16, (this.width - BQ_Settings.guiWidth) / 2);
         int marginY = BQ_Settings.guiHeight <= 0 ? 16 : Math.max(16, (this.height - BQ_Settings.guiHeight) / 2);
-        GuiTransform pvTransform = new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(marginX, marginY, marginX, marginY), 0);
+        GuiTransform pvTransform = new GuiTransform(GuiAlign.FULL_BOX,
+                new GuiPadding(marginX, marginY, marginX, marginY), 0);
 
         cvPreview = new CanvasEmpty(pvTransform);
         this.addPanel(cvPreview);
 
         // === PROPERTY TRAY ===
 
-        cvPropTray = new CanvasTextured(new GuiTransform(new Vector4f(0.5F, 0F, 1F, 1F), new GuiPadding(0, 32, 0, 0), 0), PresetTexture.PANEL_MAIN.getTexture());
+        cvPropTray = new CanvasTextured(
+                new GuiTransform(new Vector4f(0.5F, 0F, 1F, 1F), new GuiPadding(0, 32, 0, 0), 0),
+                PresetTexture.PANEL_MAIN.getTexture());
         this.addPanel(cvPropTray);
         cvPropTray.setEnabled(false);
 
-        btnTrayToggle = new PanelButton(new GuiTransform(new Vector4f(0.5F, 1F, 0.5F, 1F), -16, -16, 16, 16, 0), -1, "").setIcon(PresetIcon.ICON_UP.getTexture());
+        btnTrayToggle = new PanelButton(new GuiTransform(new Vector4f(0.5F, 1F, 0.5F, 1F), -16, -16, 16, 16, 0), -1, "")
+                .setIcon(PresetIcon.ICON_UP.getTexture());
         btnTrayToggle.setClickAction((btn) -> {
             if (cvPropTray.isEnabled()) {
                 closeTray();
@@ -104,6 +112,7 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
         // === EXIT CORNER ===
 
         PanelButton btnExit = new PanelButton(new GuiTransform(GuiAlign.TOP_RIGHT, -16, 0, 16, 16, 0), -1, "") {
+
             @Override
             public void onButtonClick() {
                 mc.displayGuiScreen(parent);
@@ -114,6 +123,7 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
         // === SAVE - LOAD - REFRESH ===
 
         PanelButton btnSave = new PanelButton(new GuiRectangle(0, 0, 16, 16, 0), -1, "") {
+
             @Override
             public void onButtonClick() {
                 // Deal with this later
@@ -122,6 +132,7 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
         this.addPanel(btnSave);
 
         PanelButton btnLoad = new PanelButton(new GuiRectangle(16, 0, 16, 16, 0), -1, "") {
+
             @Override
             public void onButtonClick() {
                 // Deal with this later
@@ -130,6 +141,7 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
         this.addPanel(btnLoad);
 
         PanelButton btnRefresh = new PanelButton(new GuiRectangle(32, 0, 16, 16, 0), -1, "") {
+
             @Override
             public void onButtonClick() {
                 refreshComponents();
@@ -142,6 +154,7 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
         final List<PanelButton> toolBtns = new ArrayList<>();
 
         PanelButton btnCursor = new PanelButton(new GuiTransform(GuiAlign.BOTTOM_LEFT, 0, -16, 16, 16, 0), -1, "") {
+
             @Override
             public void onButtonClick() {
                 toolBtns.forEach((btn) -> btn.setActive(true));
@@ -154,6 +167,7 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
         toolBtns.add(btnCursor);
 
         PanelButton btnProp = new PanelButton(new GuiTransform(GuiAlign.BOTTOM_LEFT, 16, -16, 16, 16, 0), -1, "") {
+
             @Override
             public void onButtonClick() {
                 toolBtns.forEach((btn) -> btn.setActive(true));
@@ -165,8 +179,10 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
         this.addPanel(btnProp);
         toolBtns.add(btnProp);
 
-        // Adds a new panel based on where the user clicked (we can re-parent thing later so we don't need pre-selection functionality)
+        // Adds a new panel based on where the user clicked
+        // (we can re-parent thing later so we don't need pre-selection functionality)
         PanelButton btnAdd = new PanelButton(new GuiTransform(GuiAlign.BOTTOM_LEFT, 32, -16, 16, 16, 0), -1, "") {
+
             @Override
             public void onButtonClick() {
                 toolBtns.forEach((btn) -> btn.setActive(true));
@@ -182,6 +198,7 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
 
         // Changes the canvas parent
         PanelButton btnSize = new PanelButton(new GuiTransform(GuiAlign.BOTTOM_LEFT, 48, -16, 16, 16, 0), -1, "") {
+
             @Override
             public void onButtonClick() {
                 toolBtns.forEach((btn) -> btn.setActive(true));
@@ -196,6 +213,7 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
         // Edit the transform bounds
         // TODO: Add a CTRL alternate mode to move the transform parent only (doesn't need a whole new button)
         PanelButton btnLink = new PanelButton(new GuiTransform(GuiAlign.BOTTOM_LEFT, 64, -16, 16, 16, 0), -1, "") {
+
             @Override
             public void onButtonClick() {
                 toolBtns.forEach((btn) -> btn.setActive(true));
@@ -209,6 +227,7 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
 
         // Delete the panel and its children
         PanelButton btnDel = new PanelButton(new GuiTransform(GuiAlign.BOTTOM_LEFT, 80, -16, 16, 16, 0), -1, "") {
+
             @Override
             public void onButtonClick() {
                 toolBtns.forEach((btn) -> btn.setActive(true));
@@ -227,8 +246,10 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
     public void drawPanel(int mx, int my, float partialTick) {
         super.drawPanel(mx, my, partialTick);
 
-        int cmx = MathHelper.clamp(mx, cvPreview.getTransform().getX(), cvPreview.getTransform().getX() + cvPreview.getTransform().getWidth());
-        int cmy = MathHelper.clamp(my, cvPreview.getTransform().getY(), cvPreview.getTransform().getY() + cvPreview.getTransform().getHeight());
+        int cmx = MathHelper.clamp(mx, cvPreview.getTransform().getX(),
+                cvPreview.getTransform().getX() + cvPreview.getTransform().getWidth());
+        int cmy = MathHelper.clamp(my, cvPreview.getTransform().getY(),
+                cvPreview.getTransform().getY() + cvPreview.getTransform().getHeight());
 
         // === DRAG ACTIONS ===
 
@@ -280,12 +301,17 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
 
                     if (com != null) com.setTransform(trans);
                 } else if ((dragType & 16) == 0 && selPn.getTransform() instanceof GuiTransform) {
-                    // TODO: Make this work for GuiRectangle (or just deprecate that class entirely... but legacy support uhg)
+                    // TODO: Make this work for GuiRectangle (or just deprecate that class entirely... but legacy
+                    // support uhg)
                     GuiTransform trans = (GuiTransform) selPn.getTransform();
-                    int width = MathHelper.ceil(trans.getParent().getWidth() * (trans.getAnchor().z - trans.getAnchor().x));
-                    int height = MathHelper.ceil(trans.getParent().getHeight() * (trans.getAnchor().w - trans.getAnchor().y));
-                    int dx = cmx - (trans.getParent().getX() + MathHelper.ceil(trans.getParent().getWidth() * trans.getAnchor().x));
-                    int dy = cmy - (trans.getParent().getY() + MathHelper.ceil(trans.getParent().getHeight() * trans.getAnchor().y));
+                    int width = MathHelper
+                            .ceil(trans.getParent().getWidth() * (trans.getAnchor().z - trans.getAnchor().x));
+                    int height = MathHelper
+                            .ceil(trans.getParent().getHeight() * (trans.getAnchor().w - trans.getAnchor().y));
+                    int dx = cmx - (trans.getParent().getX() +
+                            MathHelper.ceil(trans.getParent().getWidth() * trans.getAnchor().x));
+                    int dy = cmy - (trans.getParent().getY() +
+                            MathHelper.ceil(trans.getParent().getHeight() * trans.getAnchor().y));
                     boolean shift = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
 
                     // Edge Bit Map = R L B T
@@ -445,7 +471,8 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
 
         if (toolMode == 1) {
             if (click == 0) {
-                IGuiPanel topPanel = getPanelUnderMouse(mx, my, 0); // Has a bit of give in it so tiny panels can still be grabbed
+                // Has a bit of give in it so tiny panels can still be grabbed
+                IGuiPanel topPanel = getPanelUnderMouse(mx, my, 0);
                 selectedID = PANEL_DB.getID(topPanel);
                 if (selectedID >= 0) selPn = topPanel;
             } else if (click == 1) {
@@ -481,7 +508,7 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
             COM_DB.add(COM_DB.nextID(), com);
 
             com.panelType = paletteSel.toString();
-            //com.setPanelData(ComponentRegistry.INSTANCE.getTemplateNbt(paletteSel));
+            // com.setPanelData(ComponentRegistry.INSTANCE.getTemplateNbt(paletteSel));
 
             int id = PANEL_DB.getID(topPanel);
             selectedID = id; // Quick select this new panel
@@ -493,7 +520,8 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
         } else if (toolMode == 3 && cvPreview.getChildren().size() > 0) // Resize
         {
             if (click == 0 && selPn == null) {
-                IGuiPanel topPanel = getPanelUnderMouse(mx, my, 0); // Has a bit of give in it so tiny panels can still be grabbed
+                // Has a bit of give in it so tiny panels can still be grabbed
+                IGuiPanel topPanel = getPanelUnderMouse(mx, my, 0);
                 selectedID = PANEL_DB.getID(topPanel);
                 if (selectedID >= 0) selPn = topPanel;
             } else if (click == 0) {
@@ -501,8 +529,10 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
                 int edgePar = 0;
 
                 if (edgePad <= 0 && selPn.getTransform() instanceof GuiTransform) {
-                    // We want a version of the transform without the padding but still keeping anchor offsets (because that's what we're grabbing
-                    GuiTransform temp = new GuiTransform(((GuiTransform) selPn.getTransform()).getAnchor(), new GuiPadding(0, 0, 0, 0), 0);
+                    // We want a version of the transform without the padding but still keeping anchor offsets
+                    // (because that's what we're grabbing
+                    GuiTransform temp = new GuiTransform(((GuiTransform) selPn.getTransform()).getAnchor(),
+                            new GuiPadding(0, 0, 0, 0), 0);
                     temp.setParent(selPn.getTransform().getParent());
                     edgePar = selPn.getTransform().getParent() == null ? 0 : getNearbyEdges(temp, mx, my, 4, false);
                 }
@@ -619,7 +649,8 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
 
         while (iter.hasPrevious()) {
             IGuiPanel pan = iter.previous();
-            if (containsRanged(pan.getTransform(), mx, my, range)) // Note: We don't care if this is clickable or not. We just care about the bounds
+            if (containsRanged(pan.getTransform(), mx, my, range)) // Note: We don't care if this is clickable or not.
+                                                                   // We just care about the bounds
             {
                 topPanel = pan;
                 if (pan instanceof IGuiCanvas) // Check if there are any children here that we need
@@ -641,10 +672,12 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
         btnTrayToggle.setIcon(PresetIcon.ICON_DOWN.getTexture());
 
         // TODO: This panel doesn't work on its own
-        PanelScrollingNBT cvNbt = new PanelScrollingNBT(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 8, 0), 0), tag, 1, 2, 3, 4);
+        PanelScrollingNBT cvNbt = new PanelScrollingNBT(
+                new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 8, 0), 0), tag, 1, 2, 3, 4);
         cvPropTray.addPanel(cvNbt);
 
-        PanelVScrollBar scPropTray = new PanelVScrollBar(new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(-8, 0, 0, 0), 0));
+        PanelVScrollBar scPropTray = new PanelVScrollBar(
+                new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(-8, 0, 0, 0), 0));
         cvNbt.setScrollDriverY(scPropTray);
         cvPropTray.addPanel(scPropTray);
     }
@@ -655,10 +688,12 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
 
         btnTrayToggle.setIcon(PresetIcon.ICON_DOWN.getTexture());
 
-        CanvasScrolling cvScroll = new CanvasScrolling(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 8, 0), 0));
+        CanvasScrolling cvScroll = new CanvasScrolling(
+                new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 8, 0), 0));
         cvPropTray.addPanel(cvScroll);
 
-        PanelVScrollBar scPropTray = new PanelVScrollBar(new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(-8, 0, 0, 0), 0));
+        PanelVScrollBar scPropTray = new PanelVScrollBar(
+                new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(-8, 0, 0, 0), 0));
         cvScroll.setScrollDriverY(scPropTray);
         cvPropTray.addPanel(scPropTray);
 
@@ -666,7 +701,8 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
         List<ResourceLocation> resList = ComponentRegistry.INSTANCE.getRegisteredIDs();
         for (int i = 0; i < resList.size(); i++) {
             ResourceLocation res = resList.get(i);
-            PanelButtonStorage<ResourceLocation> btnID = new PanelButtonStorage<>(new GuiRectangle(0, i * 16, cvWidth, 16, 0), -1, res.toString(), res);
+            PanelButtonStorage<ResourceLocation> btnID = new PanelButtonStorage<>(
+                    new GuiRectangle(0, i * 16, cvWidth, 16, 0), -1, res.toString(), res);
             btnID.setCallback((id) -> paletteSel = id);
             cvScroll.addPanel(btnID);
         }
@@ -725,7 +761,7 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
         return x3 >= x1 - range && x3 < x2 + range && y3 >= y1 - range && y3 < y2 + range;
     }
 
-    private static final GuiTransform[] PRE_TF_SEG = new GuiTransform[]{
+    private static final GuiTransform[] PRE_TF_SEG = new GuiTransform[] {
             new GuiTransform(new Vector4f(0F, 0F, 0.5F, 0.5F), new GuiPadding(0, 0, 0, 0), 0),
             new GuiTransform(new Vector4f(0F, 0F, 1F, 0.5F), new GuiPadding(0, 0, 0, 0), 0),
             new GuiTransform(new Vector4f(0.5F, 0F, 1F, 0.5F), new GuiPadding(0, 0, 0, 0), 0),
@@ -746,13 +782,13 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
 
         // Edge Bit Map = R L B T
 
-        //Corners
+        // Corners
         tmp.put(0b0101, new GuiTransform(GuiAlign.TOP_LEFT, new GuiPadding(-4, -4, -4, -4), 0));
         tmp.put(0b1001, new GuiTransform(GuiAlign.TOP_RIGHT, new GuiPadding(-4, -4, -4, -4), 0));
         tmp.put(0b1010, new GuiTransform(GuiAlign.BOTTOM_RIGHT, new GuiPadding(-4, -4, -4, -4), 0));
         tmp.put(0b0110, new GuiTransform(GuiAlign.BOTTOM_LEFT, new GuiPadding(-4, -4, -4, -4), 0));
 
-        //Edges
+        // Edges
         tmp.put(0b0001, new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(-4, -4, -4, -4), 0));
         tmp.put(0b1000, new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(-4, -4, -4, -4), 0));
         tmp.put(0b0010, new GuiTransform(GuiAlign.BOTTOM_EDGE, new GuiPadding(-4, -4, -4, -4), 0));

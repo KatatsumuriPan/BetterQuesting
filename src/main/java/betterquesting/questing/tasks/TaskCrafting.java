@@ -1,5 +1,24 @@
 package betterquesting.questing.tasks;
 
+import java.util.*;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Tuple;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api.utils.BigItemStack;
@@ -12,24 +31,9 @@ import betterquesting.api2.utils.ParticipantInfo;
 import betterquesting.client.gui2.tasks.PanelTaskCrafting;
 import betterquesting.core.BetterQuesting;
 import betterquesting.questing.tasks.factory.FactoryTaskCrafting;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagInt;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Tuple;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
 
 public class TaskCrafting implements ITask {
+
     private final Set<UUID> completeUsers = new TreeSet<>();
     public final NonNullList<BigItemStack> requiredItems = NonNullList.create();
     public final TreeMap<UUID, int[]> userProgress = new TreeMap<>();
@@ -100,7 +104,9 @@ public class TaskCrafting implements ITask {
             final BigItemStack rStack = requiredItems.get(i);
             final int index = i;
 
-            if (ItemComparison.StackMatch(rStack.getBaseStack(), stack, !ignoreNBT, partialMatch) || ItemComparison.OreDictionaryMatch(rStack.getOreIngredient(), rStack.GetTagCompound(), stack, !ignoreNBT, partialMatch)) {
+            if (ItemComparison.StackMatch(rStack.getBaseStack(), stack, !ignoreNBT, partialMatch) ||
+                    ItemComparison.OreDictionaryMatch(rStack.getOreIngredient(), rStack.GetTagCompound(), stack,
+                            !ignoreNBT, partialMatch)) {
                 progress.forEach((entry) -> {
                     if (entry.getSecond()[index] >= rStack.stackSize) return;
                     entry.getSecond()[index] = Math.min(entry.getSecond()[index] + stack.getCount(), rStack.stackSize);
@@ -171,8 +177,8 @@ public class TaskCrafting implements ITask {
 
                 int[] data = new int[requiredItems.size()];
                 NBTTagList dNbt = pTag.getTagList("data", 3);
-                for (int i = 0; i < data.length && i < dNbt.tagCount(); i++) // TODO: Change this to an int array. This is dumb...
-                {
+                // TODO: Change this to an int array. This is dumb...
+                for (int i = 0; i < data.length && i < dNbt.tagCount(); i++) {
                     data[i] = dNbt.getIntAt(i);
                 }
 

@@ -1,19 +1,22 @@
 package betterquesting.storage;
 
-import betterquesting.api.properties.NativeProps;
-import betterquesting.api.storage.ILifeDatabase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.math.MathHelper;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.math.MathHelper;
+
+import betterquesting.api.properties.NativeProps;
+import betterquesting.api.storage.ILifeDatabase;
+
 public final class LifeDatabase implements ILifeDatabase {
+
     public static final LifeDatabase INSTANCE = new LifeDatabase();
 
     private final HashMap<UUID, Integer> playerLives = new HashMap<>();
@@ -54,8 +57,7 @@ public final class LifeDatabase implements ILifeDatabase {
                 UUID uuid = UUID.fromString(j.getString("uuid"));
                 int lives = j.getInteger("lives");
                 playerLives.put(uuid, lives);
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
         }
     }
 

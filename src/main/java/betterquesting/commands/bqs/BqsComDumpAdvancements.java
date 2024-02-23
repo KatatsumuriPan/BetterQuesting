@@ -7,6 +7,7 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 
 public class BqsComDumpAdvancements extends CommandBase {
+
     @Override
     public String getName() {
         return "bqs_advancement_dump";

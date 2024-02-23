@@ -1,22 +1,25 @@
 package betterquesting.network.handlers;
 
-import betterquesting.api.network.QuestingPacket;
-import betterquesting.core.BetterQuesting;
-import betterquesting.core.ModReference;
-import betterquesting.network.PacketSender;
-import betterquesting.network.PacketTypeRegistry;
-import betterquesting.storage.LifeDatabase;
+import java.util.Arrays;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.UUID;
+import betterquesting.api.network.QuestingPacket;
+import betterquesting.core.BetterQuesting;
+import betterquesting.core.ModReference;
+import betterquesting.network.PacketSender;
+import betterquesting.network.PacketTypeRegistry;
+import betterquesting.storage.LifeDatabase;
 
 public class NetLifeSync {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation(ModReference.MODID, "life_sync");
 
     public static void registerHandler() {
@@ -27,7 +30,8 @@ public class NetLifeSync {
 
     public static void sendSync(@Nullable EntityPlayerMP[] players, @Nullable UUID[] playerIDs) {
         NBTTagCompound payload = new NBTTagCompound();
-        payload.setTag("data", LifeDatabase.INSTANCE.writeToNBT(new NBTTagCompound(), playerIDs == null ? null : Arrays.asList(playerIDs)));
+        payload.setTag("data", LifeDatabase.INSTANCE.writeToNBT(new NBTTagCompound(),
+                playerIDs == null ? null : Arrays.asList(playerIDs)));
         payload.setBoolean("merge", playerIDs != null);
 
         if (players != null) {

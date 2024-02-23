@@ -1,5 +1,7 @@
 package betterquesting.client.gui2.tasks;
 
+import net.minecraft.client.Minecraft;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.client.gui.controls.PanelButton;
@@ -12,7 +14,6 @@ import betterquesting.api2.client.gui.themes.presets.PresetIcon;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.network.handlers.NetTaskCheckbox;
 import betterquesting.questing.tasks.TaskCheckbox;
-import net.minecraft.client.Minecraft;
 
 public class PanelTaskCheckbox extends CanvasMinimum {
 
@@ -35,7 +36,9 @@ public class PanelTaskCheckbox extends CanvasMinimum {
         final int questID = quest.getID();
         final int taskID = quest.getValue().getTasks().getID(task);
 
-        PanelButton btnCheck = new PanelButton(new GuiTransform(GuiAlign.TOP_LEFT, (initialRect.getWidth() - 32) / 2, 0, 32, 32, 0), -1, "") {
+        PanelButton btnCheck = new PanelButton(
+                new GuiTransform(GuiAlign.TOP_LEFT, (initialRect.getWidth() - 32) / 2, 0, 32, 32, 0), -1, "") {
+
             @Override
             public void onButtonClick() {
                 setIcon(PresetIcon.ICON_TICK.getTexture(), new GuiColorStatic(0xFF00FF00), 4);
@@ -44,7 +47,8 @@ public class PanelTaskCheckbox extends CanvasMinimum {
                 NetTaskCheckbox.requestClick(questID, taskID);
             }
         };
-        btnCheck.setIcon(isComplete ? PresetIcon.ICON_TICK.getTexture() : PresetIcon.ICON_CROSS.getTexture(), new GuiColorStatic(isComplete ? 0xFF00FF00 : 0xFFFF0000), 4);
+        btnCheck.setIcon(isComplete ? PresetIcon.ICON_TICK.getTexture() : PresetIcon.ICON_CROSS.getTexture(),
+                new GuiColorStatic(isComplete ? 0xFF00FF00 : 0xFFFF0000), 4);
         btnCheck.setActive(!isComplete);
         this.addPanel(btnCheck);
         recalculateSizes();

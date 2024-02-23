@@ -4,6 +4,7 @@ import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 
 public class GuiLineSequence implements IGuiLine {
+
     public final IGuiLine[] lines;
     private final float interval;
 

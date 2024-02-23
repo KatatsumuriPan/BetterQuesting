@@ -1,15 +1,12 @@
 package betterquesting.network.handlers;
 
-import betterquesting.api.events.DatabaseEvent;
-import betterquesting.api.events.DatabaseEvent.DBType;
-import betterquesting.api.network.QuestingPacket;
-import betterquesting.api.questing.party.IParty;
-import betterquesting.core.BetterQuesting;
-import betterquesting.core.ModReference;
-import betterquesting.network.PacketSender;
-import betterquesting.network.PacketTypeRegistry;
-import betterquesting.questing.party.PartyManager;
-import betterquesting.storage.NameCache;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -23,13 +20,19 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import betterquesting.api.events.DatabaseEvent;
+import betterquesting.api.events.DatabaseEvent.DBType;
+import betterquesting.api.network.QuestingPacket;
+import betterquesting.api.questing.party.IParty;
+import betterquesting.core.BetterQuesting;
+import betterquesting.core.ModReference;
+import betterquesting.network.PacketSender;
+import betterquesting.network.PacketTypeRegistry;
+import betterquesting.questing.party.PartyManager;
+import betterquesting.storage.NameCache;
 
 public class NetNameSync {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation(ModReference.MODID, "name_sync");
 
     public static void registerHandler() {
@@ -78,10 +81,11 @@ public class NetNameSync {
             List<EntityPlayerMP> playerList = new ArrayList<>();
             for (UUID playerID : party.getMembers()) {
                 EntityPlayerMP p = server.getPlayerList().getPlayerByUUID(playerID);
-                //noinspection ConstantConditions
+                // noinspection ConstantConditions
                 if (p != null) playerList.add(p);
             }
-            PacketSender.INSTANCE.sendToPlayers(new QuestingPacket(ID_NAME, payload), playerList.toArray(new EntityPlayerMP[0]));
+            PacketSender.INSTANCE.sendToPlayers(new QuestingPacket(ID_NAME, payload),
+                    playerList.toArray(new EntityPlayerMP[0]));
         }
     }
 
@@ -116,8 +120,7 @@ public class NetNameSync {
             for (int i = 0; i < uuids.length; i++) {
                 try {
                     uuids[i] = UUID.fromString(uList.getStringTagAt(i));
-                } catch (Exception ignored) {
-                }
+                } catch (Exception ignored) {}
             }
         }
         if (message.getFirst().hasKey("names", 9)) {
@@ -127,7 +130,7 @@ public class NetNameSync {
                 names[i] = uList.getStringTagAt(i);
             }
         }
-        sendNames(new EntityPlayerMP[]{message.getSecond()}, uuids, names);
+        sendNames(new EntityPlayerMP[] { message.getSecond() }, uuids, names);
     }
 
     @SideOnly(Side.CLIENT)

@@ -1,16 +1,10 @@
 package betterquesting.questing.tasks;
 
-import betterquesting.api.questing.IQuest;
-import betterquesting.api.questing.tasks.ITask;
-import betterquesting.api.utils.ItemComparison;
-import betterquesting.api2.client.gui.misc.IGuiRect;
-import betterquesting.api2.client.gui.panels.IGuiPanel;
-import betterquesting.api2.storage.DBEntry;
-import betterquesting.api2.utils.ParticipantInfo;
-import betterquesting.client.gui2.editors.tasks.GuiEditTaskTame;
-import betterquesting.client.gui2.tasks.PanelTaskTame;
-import betterquesting.core.BetterQuesting;
-import betterquesting.questing.tasks.factory.FactoryTaskTame;
+import java.util.*;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -22,13 +16,23 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.apache.logging.log4j.Level;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
+import betterquesting.api.questing.IQuest;
+import betterquesting.api.questing.tasks.ITask;
+import betterquesting.api.utils.ItemComparison;
+import betterquesting.api2.client.gui.misc.IGuiRect;
+import betterquesting.api2.client.gui.panels.IGuiPanel;
+import betterquesting.api2.storage.DBEntry;
+import betterquesting.api2.utils.ParticipantInfo;
+import betterquesting.client.gui2.editors.tasks.GuiEditTaskTame;
+import betterquesting.client.gui2.tasks.PanelTaskTame;
+import betterquesting.core.BetterQuesting;
+import betterquesting.questing.tasks.factory.FactoryTaskTame;
 
 public class TaskTame implements ITask {
+
     private final Set<UUID> completeUsers = new TreeSet<>();
     public final HashMap<UUID, Integer> userProgress = new HashMap<>();
     public String idName = "minecraft:wolf";

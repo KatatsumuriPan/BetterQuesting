@@ -1,20 +1,23 @@
 package betterquesting.api2.client.gui.panels;
 
-import betterquesting.api.utils.RenderUtils;
-import betterquesting.api2.client.gui.misc.ComparatorGuiDepth;
-import betterquesting.api2.client.gui.misc.GuiRectLerp;
-import betterquesting.api2.client.gui.misc.IGuiRect;
-import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
-import net.minecraft.client.renderer.GlStateManager;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.client.renderer.GlStateManager;
+
+import betterquesting.api.utils.RenderUtils;
+import betterquesting.api2.client.gui.misc.ComparatorGuiDepth;
+import betterquesting.api2.client.gui.misc.GuiRectLerp;
+import betterquesting.api2.client.gui.misc.IGuiRect;
+import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
+
 public class CanvasResizeable implements IGuiCanvas {
+
     private final List<IGuiPanel> guiPanels = new CopyOnWriteArrayList<>();
 
     private IGuiTexture bgTexture;

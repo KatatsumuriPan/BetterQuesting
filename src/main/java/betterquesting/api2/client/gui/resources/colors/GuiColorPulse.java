@@ -1,9 +1,11 @@
 package betterquesting.api2.client.gui.resources.colors;
 
-import betterquesting.api.utils.RenderUtils;
 import net.minecraft.client.renderer.GlStateManager;
 
+import betterquesting.api.utils.RenderUtils;
+
 public class GuiColorPulse implements IGuiColor {
+
     // Saves me having to run the math function every frame
     private final static double RAD = Math.toRadians(360F);
 

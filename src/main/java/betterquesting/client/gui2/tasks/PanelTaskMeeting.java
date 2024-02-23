@@ -1,5 +1,10 @@
 package betterquesting.client.gui2.tasks;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.util.ResourceLocation;
+
 import betterquesting.api2.client.gui.controls.io.ValueFuncIO;
 import betterquesting.api2.client.gui.misc.GuiAlign;
 import betterquesting.api2.client.gui.misc.GuiTransform;
@@ -10,10 +15,6 @@ import betterquesting.api2.client.gui.panels.content.PanelTextBox;
 import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.questing.tasks.TaskMeeting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.util.ResourceLocation;
 
 public class PanelTaskMeeting extends CanvasMinimum {
 
@@ -43,10 +44,14 @@ public class PanelTaskMeeting extends CanvasMinimum {
 
         String tnm = target != null ? target.getName() : task.idName;
 
-        this.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, 0, 0, width, 16, 0), QuestTranslation.translate("bq_standard.gui.meet", tnm) + " x" + task.amount).setAlignment(1).setColor(PresetColor.TEXT_MAIN.getColor()));
+        this.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, 0, 0, width, 16, 0),
+                QuestTranslation.translate("bq_standard.gui.meet", tnm) + " x" + task.amount).setAlignment(1)
+                        .setColor(PresetColor.TEXT_MAIN.getColor()));
 
         if (target != null)
-            this.addPanel(new PanelEntityPreview(new GuiTransform(GuiAlign.TOP_LEFT, 0, 16, width, 64, 0), target).setRotationDriven(new ValueFuncIO<>(() -> 15F), new ValueFuncIO<>(() -> (float) (Minecraft.getSystemTime() % 30000L / 30000D * 360D))));
+            this.addPanel(new PanelEntityPreview(new GuiTransform(GuiAlign.TOP_LEFT, 0, 16, width, 64, 0), target)
+                    .setRotationDriven(new ValueFuncIO<>(() -> 15F),
+                            new ValueFuncIO<>(() -> (float) (Minecraft.getSystemTime() % 30000L / 30000D * 360D))));
         recalculateSizes();
     }
 }

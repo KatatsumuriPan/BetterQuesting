@@ -1,17 +1,20 @@
 package betterquesting.api2.client.gui.panels.content;
 
+import java.util.List;
+
+import net.minecraft.client.renderer.GlStateManager;
+
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.IGuiPanel;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
-import net.minecraft.client.renderer.GlStateManager;
-
-import java.util.List;
 
 /**
- * Sets up a panel with texture and tooltip options. Useful for simple images or even labelling an invisible region with a tooltip
+ * Sets up a panel with texture and tooltip options. Useful for simple images or even labelling an invisible region with
+ * a tooltip
  */
 public class PanelGeneric implements IGuiPanel {
+
     private final IGuiRect transform;
     private boolean enabled = true;
 
@@ -45,8 +48,7 @@ public class PanelGeneric implements IGuiPanel {
     }
 
     @Override
-    public void initPanel() {
-    }
+    public void initPanel() {}
 
     @Override
     public void setEnabled(boolean state) {
@@ -64,9 +66,11 @@ public class PanelGeneric implements IGuiPanel {
             GlStateManager.pushMatrix();
 
             if (color != null) {
-                texture.drawTexture(transform.getX(), transform.getY(), transform.getWidth(), transform.getHeight(), 0F, partialTick, color);
+                texture.drawTexture(transform.getX(), transform.getY(), transform.getWidth(), transform.getHeight(), 0F,
+                        partialTick, color);
             } else {
-                texture.drawTexture(transform.getX(), transform.getY(), transform.getWidth(), transform.getHeight(), 0F, partialTick);
+                texture.drawTexture(transform.getX(), transform.getY(), transform.getWidth(), transform.getHeight(), 0F,
+                        partialTick);
             }
 
             GlStateManager.popMatrix();

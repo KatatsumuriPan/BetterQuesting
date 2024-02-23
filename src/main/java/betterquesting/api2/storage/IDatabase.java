@@ -3,6 +3,7 @@ package betterquesting.api2.storage;
 import java.util.List;
 
 public interface IDatabase<T> {
+
     int nextID();
 
     DBEntry<T> add(int id, T value);

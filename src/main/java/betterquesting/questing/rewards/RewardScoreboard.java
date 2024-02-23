@@ -1,5 +1,15 @@
 package betterquesting.questing.rewards;
 
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.scoreboard.*;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.rewards.IReward;
 import betterquesting.api2.client.gui.misc.IGuiRect;
@@ -8,16 +18,9 @@ import betterquesting.api2.storage.DBEntry;
 import betterquesting.client.gui2.rewards.PanelRewardScoreboard;
 import betterquesting.core.BetterQuesting;
 import betterquesting.questing.rewards.factory.FactoryRewardScoreboard;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.scoreboard.*;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
 
 public class RewardScoreboard implements IReward {
+
     public String score = "Reputation";
     public String type = "dummy";
     public boolean relative = true;

@@ -1,7 +1,5 @@
 package betterquesting.importers.ftbq;
 
-import betterquesting.api.placeholders.PlaceholderConverter;
-import betterquesting.api.utils.BigItemStack;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -11,7 +9,11 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 
+import betterquesting.api.placeholders.PlaceholderConverter;
+import betterquesting.api.utils.BigItemStack;
+
 public class FTBQUtils {
+
     public static BigItemStack convertItem(NBTBase tag) {
         if (tag instanceof NBTTagString) {
             return convertItemType1(((NBTTagString) tag).getString());
@@ -57,7 +59,8 @@ public class FTBQUtils {
         } else {
             Item item = Item.REGISTRY.getObject(new ResourceLocation(split[0]));
             int count = split.length < 2 ? 1 : tryParseInt(split[1], 1);
-            int meta = tag.hasKey("Damage") ? tag.getInteger("Damage") : split.length < 3 ? 0 : tryParseInt(split[2], 0);
+            int meta = tag.hasKey("Damage") ? tag.getInteger("Damage") :
+                    split.length < 3 ? 0 : tryParseInt(split[2], 0);
             NBTTagCompound tags = !tag.hasKey("tag", 10) ? null : tag.getCompoundTag("tag");
             return PlaceholderConverter.convertItem(item, split[0], count, meta, "", tags);
         }

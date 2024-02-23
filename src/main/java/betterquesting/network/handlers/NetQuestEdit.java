@@ -1,5 +1,23 @@
 package betterquesting.network.handlers;
 
+import java.util.List;
+import java.util.UUID;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Tuple;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.events.DatabaseEvent;
 import betterquesting.api.events.DatabaseEvent.DBType;
@@ -15,24 +33,9 @@ import betterquesting.network.PacketSender;
 import betterquesting.network.PacketTypeRegistry;
 import betterquesting.questing.QuestDatabase;
 import betterquesting.questing.QuestLineDatabase;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Tuple;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
-
-import java.util.List;
-import java.util.UUID;
 
 public class NetQuestEdit {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation(ModReference.MODID, "quest_edit");
 
     public static void registerHandler() {
@@ -43,9 +46,9 @@ public class NetQuestEdit {
         }
     }
 
+    // TODO: Make these use proper methods for each action rather than directly assembling the payload
     @SideOnly(Side.CLIENT)
-    public static void sendEdit(NBTTagCompound payload) // TODO: Make these use proper methods for each action rather than directly assembling the payload
-    {
+    public static void sendEdit(NBTTagCompound payload) {
         PacketSender.INSTANCE.sendToServer(new QuestingPacket(ID_NAME, payload));
     }
 
@@ -58,8 +61,10 @@ public class NetQuestEdit {
 
         if (!isOP) // OP pre-check
         {
-            BetterQuesting.logger.log(Level.WARN, "Player " + sender.getName() + " (UUID:" + QuestingAPI.getQuestingUUID(sender) + ") tried to edit quests without OP permissions!");
-            sender.sendStatusMessage(new TextComponentString(TextFormatting.RED + "You need to be OP to edit quests!"), true);
+            BetterQuesting.logger.log(Level.WARN, "Player " + sender.getName() + " (UUID:" +
+                    QuestingAPI.getQuestingUUID(sender) + ") tried to edit quests without OP permissions!");
+            sender.sendStatusMessage(new TextComponentString(TextFormatting.RED + "You need to be OP to edit quests!"),
+                    true);
             return; // Player is not operator. Do nothing
         }
 
@@ -86,7 +91,8 @@ public class NetQuestEdit {
                 break;
             }
             default: {
-                BetterQuesting.logger.log(Level.ERROR, "Invalid quest edit action '" + action + "'. Full payload:\n" + message.getFirst().toString());
+                BetterQuesting.logger.log(Level.ERROR,
+                        "Invalid quest edit action '" + action + "'. Full payload:\n" + message.getFirst().toString());
             }
         }
     }
@@ -139,13 +145,15 @@ public class NetQuestEdit {
 
                 int done = 0;
 
-                if (!entry.getValue().getProperty(NativeProps.LOGIC_TASK).getResult(done, entry.getValue().getTasks().size())) // Preliminary check
+                if (!entry.getValue().getProperty(NativeProps.LOGIC_TASK).getResult(done,
+                        entry.getValue().getTasks().size())) // Preliminary check
                 {
                     for (DBEntry<ITask> task : entry.getValue().getTasks().getEntries()) {
                         task.getValue().setComplete(targetID);
                         done++;
 
-                        if (entry.getValue().getProperty(NativeProps.LOGIC_TASK).getResult(done, entry.getValue().getTasks().size())) {
+                        if (entry.getValue().getProperty(NativeProps.LOGIC_TASK).getResult(done,
+                                entry.getValue().getTasks().size())) {
                             break; // Only complete enough quests to claim the reward
                         }
                     }
@@ -158,7 +166,7 @@ public class NetQuestEdit {
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
         if (server == null) return;
         EntityPlayerMP player = server.getPlayerList().getPlayerByUUID(targetID);
-        //noinspection ConstantConditions
+        // noinspection ConstantConditions
         if (player == null) return;
         NetQuestSync.sendSync(player, questIDs, false, true);
     }

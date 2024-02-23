@@ -1,10 +1,11 @@
 package betterquesting.api.events;
 
-import net.minecraftforge.fml.common.eventhandler.Event;
-
 import java.util.*;
 
+import net.minecraftforge.fml.common.eventhandler.Event;
+
 public class QuestEvent extends Event {
+
     private final Type type;
     private final UUID playerID;
     private final Set<Integer> questIDs;

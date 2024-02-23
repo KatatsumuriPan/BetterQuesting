@@ -1,16 +1,5 @@
 package betterquesting.network.handlers;
 
-import betterquesting.api.api.QuestingAPI;
-import betterquesting.api.events.DatabaseEvent;
-import betterquesting.api.events.DatabaseEvent.DBType;
-import betterquesting.api.network.QuestingPacket;
-import betterquesting.api.questing.IQuestLine;
-import betterquesting.core.BetterQuesting;
-import betterquesting.core.ModReference;
-import betterquesting.handlers.SaveLoadHandler;
-import betterquesting.network.PacketSender;
-import betterquesting.network.PacketTypeRegistry;
-import betterquesting.questing.QuestLineDatabase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -22,9 +11,23 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.apache.logging.log4j.Level;
 
+import betterquesting.api.api.QuestingAPI;
+import betterquesting.api.events.DatabaseEvent;
+import betterquesting.api.events.DatabaseEvent.DBType;
+import betterquesting.api.network.QuestingPacket;
+import betterquesting.api.questing.IQuestLine;
+import betterquesting.core.BetterQuesting;
+import betterquesting.core.ModReference;
+import betterquesting.handlers.SaveLoadHandler;
+import betterquesting.network.PacketSender;
+import betterquesting.network.PacketTypeRegistry;
+import betterquesting.questing.QuestLineDatabase;
+
 public class NetChapterEdit {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation(ModReference.MODID, "chapter_edit");
 
     public static void registerHandler() {
@@ -35,9 +38,9 @@ public class NetChapterEdit {
         }
     }
 
+    // TODO: Make these use proper methods for each action rather than directly assembling the payload
     @SideOnly(Side.CLIENT)
-    public static void sendEdit(NBTTagCompound payload) // TODO: Make these use proper methods for each action rather than directly assembling the payload
-    {
+    public static void sendEdit(NBTTagCompound payload) {
         PacketSender.INSTANCE.sendToServer(new QuestingPacket(ID_NAME, payload));
     }
 
@@ -50,8 +53,10 @@ public class NetChapterEdit {
 
         if (!isOP) // OP pre-check
         {
-            BetterQuesting.logger.log(Level.WARN, "Player " + sender.getName() + " (UUID:" + QuestingAPI.getQuestingUUID(sender) + ") tried to edit chapters without OP permissions!");
-            sender.sendStatusMessage(new TextComponentString(TextFormatting.RED + "You need to be OP to edit quests!"), true);
+            BetterQuesting.logger.log(Level.WARN, "Player " + sender.getName() + " (UUID:" +
+                    QuestingAPI.getQuestingUUID(sender) + ") tried to edit chapters without OP permissions!");
+            sender.sendStatusMessage(new TextComponentString(TextFormatting.RED + "You need to be OP to edit quests!"),
+                    true);
             return; // Player is not operator. Do nothing
         }
 
@@ -76,7 +81,8 @@ public class NetChapterEdit {
                 break;
             }
             default: {
-                BetterQuesting.logger.log(Level.ERROR, "Invalid chapter edit action '" + action + "'. Full payload:\n" + message.getFirst().toString());
+                BetterQuesting.logger.log(Level.ERROR, "Invalid chapter edit action '" + action + "'. Full payload:\n" +
+                        message.getFirst().toString());
             }
         }
     }

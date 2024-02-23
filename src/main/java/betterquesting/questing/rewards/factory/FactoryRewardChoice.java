@@ -1,13 +1,15 @@
 package betterquesting.questing.rewards.factory;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+
 import betterquesting.api.questing.rewards.IReward;
 import betterquesting.api2.registry.IFactoryData;
 import betterquesting.core.BetterQuesting;
 import betterquesting.questing.rewards.RewardChoice;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 
 public class FactoryRewardChoice implements IFactoryData<IReward, NBTTagCompound> {
+
     public static final FactoryRewardChoice INSTANCE = new FactoryRewardChoice();
 
     @Override
@@ -26,5 +28,4 @@ public class FactoryRewardChoice implements IFactoryData<IReward, NBTTagCompound
         reward.readFromNBT(json);
         return reward;
     }
-
 }

@@ -1,11 +1,9 @@
 package betterquesting.advancement;
 
-import betterquesting.api.api.ApiReference;
-import betterquesting.api.api.QuestingAPI;
-import betterquesting.api.questing.IQuest;
-import betterquesting.api.questing.tasks.ITask;
-import betterquesting.core.BetterQuesting;
-import betterquesting.questing.tasks.TaskTrigger;
+import java.lang.reflect.Field;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
@@ -13,10 +11,15 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
-import javax.annotation.Nonnull;
-import java.lang.reflect.Field;
+import betterquesting.api.api.ApiReference;
+import betterquesting.api.api.QuestingAPI;
+import betterquesting.api.questing.IQuest;
+import betterquesting.api.questing.tasks.ITask;
+import betterquesting.core.BetterQuesting;
+import betterquesting.questing.tasks.TaskTrigger;
 
 public class BqsAdvListener<T extends ICriterionInstance> extends ICriterionTrigger.Listener<T> {
+
     private final ICriterionTrigger<T> trigType;
     private final Tuple<Integer, Integer> mappedIDs;
 
@@ -45,7 +48,8 @@ public class BqsAdvListener<T extends ICriterionInstance> extends ICriterionTrig
             ITask t = q.getTasks().getValue(mappedIDs.getSecond());
             if (!(t instanceof TaskTrigger)) return;
 
-            ((TaskTrigger) t).onCriteriaComplete(((EntityPlayerMP) f_playerAdv.get(playerAdv)), this, mappedIDs.getFirst());
+            ((TaskTrigger) t).onCriteriaComplete(((EntityPlayerMP) f_playerAdv.get(playerAdv)), this,
+                    mappedIDs.getFirst());
         } catch (Exception e) {
             BetterQuesting.logger.error(e);
         }

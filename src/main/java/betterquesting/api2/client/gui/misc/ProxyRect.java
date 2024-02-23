@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 // Used as a means to hotswap a rect without disturbing the parenting heirachy
 public class ProxyRect implements IGuiRect {
+
     private IGuiRect ref;
 
     public ProxyRect(IGuiRect refRect) {

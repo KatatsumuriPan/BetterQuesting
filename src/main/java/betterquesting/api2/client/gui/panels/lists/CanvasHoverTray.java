@@ -9,6 +9,7 @@ import betterquesting.api2.client.gui.panels.IGuiCanvas;
 import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 
 public class CanvasHoverTray extends CanvasResizeable {
+
     private boolean manualOpen = false;
 
     private final IGuiRect rectClosed;

@@ -1,12 +1,10 @@
 package betterquesting.commands.admin;
 
-import betterquesting.api.properties.NativeProps;
-import betterquesting.api.questing.IQuest;
-import betterquesting.api2.storage.DBEntry;
-import betterquesting.commands.QuestCommandBase;
-import betterquesting.network.handlers.NetQuestEdit;
-import betterquesting.questing.QuestDatabase;
-import betterquesting.storage.NameCache;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -14,12 +12,16 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import betterquesting.api.properties.NativeProps;
+import betterquesting.api.questing.IQuest;
+import betterquesting.api2.storage.DBEntry;
+import betterquesting.commands.QuestCommandBase;
+import betterquesting.network.handlers.NetQuestEdit;
+import betterquesting.questing.QuestDatabase;
+import betterquesting.storage.NameCache;
 
 public class QuestCommandComplete extends QuestCommandBase {
+
     @Override
     public String getUsageSuffix() {
         return "<quest_id> [username|uuid]";
@@ -51,7 +53,8 @@ public class QuestCommandComplete extends QuestCommandBase {
     }
 
     @Override
-    public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, String[] args) throws CommandException {
+    public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender,
+                           String[] args) throws CommandException {
         UUID uuid;
 
         if (args.length >= 3) {
@@ -71,8 +74,9 @@ public class QuestCommandComplete extends QuestCommandBase {
         int id = Integer.parseInt(args[1].trim());
         IQuest quest = QuestDatabase.INSTANCE.getValue(id);
         if (quest == null) throw getException(command);
-        NetQuestEdit.setQuestStates(new int[]{id}, true, uuid);
-        sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.complete", new TextComponentTranslation(quest.getProperty(NativeProps.NAME)), pName));
+        NetQuestEdit.setQuestStates(new int[] { id }, true, uuid);
+        sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.complete",
+                new TextComponentTranslation(quest.getProperty(NativeProps.NAME)), pName));
     }
 
     @Override

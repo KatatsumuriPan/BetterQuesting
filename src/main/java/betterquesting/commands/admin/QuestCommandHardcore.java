@@ -1,10 +1,8 @@
 package betterquesting.commands.admin;
 
-import betterquesting.api.properties.NativeProps;
-import betterquesting.commands.QuestCommandBase;
-import betterquesting.handlers.SaveLoadHandler;
-import betterquesting.network.handlers.NetSettingSync;
-import betterquesting.storage.QuestSettings;
+import java.util.Collections;
+import java.util.List;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -12,10 +10,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 
-import java.util.Collections;
-import java.util.List;
+import betterquesting.api.properties.NativeProps;
+import betterquesting.commands.QuestCommandBase;
+import betterquesting.handlers.SaveLoadHandler;
+import betterquesting.network.handlers.NetSettingSync;
+import betterquesting.storage.QuestSettings;
 
 public class QuestCommandHardcore extends QuestCommandBase {
+
     @Override
     public String getCommand() {
         return "hardcore";
@@ -33,11 +35,13 @@ public class QuestCommandHardcore extends QuestCommandBase {
 
     @Override
     public List<String> autoComplete(MinecraftServer server, ICommandSender sender, String[] args) {
-        return args.length == 2 ? CommandBase.getListOfStringsMatchingLastWord(args, "true", "false") : Collections.emptyList();
+        return args.length == 2 ? CommandBase.getListOfStringsMatchingLastWord(args, "true", "false") :
+                Collections.emptyList();
     }
 
     @Override
-    public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, String[] args) throws CommandException {
+    public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender,
+                           String[] args) throws CommandException {
         boolean flag = !QuestSettings.INSTANCE.getProperty(NativeProps.HARDCORE);
 
         if (args.length == 2) {
@@ -57,7 +61,8 @@ public class QuestCommandHardcore extends QuestCommandBase {
         QuestSettings.INSTANCE.setProperty(NativeProps.HARDCORE, flag);
         SaveLoadHandler.INSTANCE.markDirty();
 
-        sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.hardcore", new TextComponentTranslation(QuestSettings.INSTANCE.getProperty(NativeProps.HARDCORE) ? "options.on" : "options.off")));
+        sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.hardcore", new TextComponentTranslation(
+                QuestSettings.INSTANCE.getProperty(NativeProps.HARDCORE) ? "options.on" : "options.off")));
         NetSettingSync.sendSync(null);
     }
 

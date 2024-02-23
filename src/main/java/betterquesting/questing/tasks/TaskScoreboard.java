@@ -1,16 +1,10 @@
 package betterquesting.questing.tasks;
 
-import betterquesting.ScoreboardBQ;
-import betterquesting.api.questing.IQuest;
-import betterquesting.api2.client.gui.misc.IGuiRect;
-import betterquesting.api2.client.gui.panels.IGuiPanel;
-import betterquesting.api2.storage.DBEntry;
-import betterquesting.api2.utils.ParticipantInfo;
-import betterquesting.client.gui2.editors.tasks.GuiEditTaskScoreboard;
-import betterquesting.client.gui2.tasks.PanelTaskScoreboard;
-import betterquesting.core.BetterQuesting;
-import betterquesting.network.handlers.NetScoreSync;
-import betterquesting.questing.tasks.factory.FactoryTaskScoreboard;
+import java.util.*;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,13 +17,23 @@ import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.apache.logging.log4j.Level;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
+import betterquesting.ScoreboardBQ;
+import betterquesting.api.questing.IQuest;
+import betterquesting.api2.client.gui.misc.IGuiRect;
+import betterquesting.api2.client.gui.panels.IGuiPanel;
+import betterquesting.api2.storage.DBEntry;
+import betterquesting.api2.utils.ParticipantInfo;
+import betterquesting.client.gui2.editors.tasks.GuiEditTaskScoreboard;
+import betterquesting.client.gui2.tasks.PanelTaskScoreboard;
+import betterquesting.core.BetterQuesting;
+import betterquesting.network.handlers.NetScoreSync;
+import betterquesting.questing.tasks.factory.FactoryTaskScoreboard;
 
 public class TaskScoreboard implements ITaskTickable {
+
     private final Set<UUID> completeUsers = new TreeSet<>();
     public String scoreName = "Score";
     public String scoreDisp = "Score";
@@ -80,7 +84,8 @@ public class TaskScoreboard implements ITaskTickable {
 
         if (scoreObj == null) {
             try {
-                IScoreCriteria criteria = IScoreCriteria.INSTANCES.computeIfAbsent(type, (t) -> new ScoreCriteria(scoreName));
+                IScoreCriteria criteria = IScoreCriteria.INSTANCES.computeIfAbsent(type,
+                        (t) -> new ScoreCriteria(scoreName));
                 scoreObj = board.addScoreObjective(scoreName, criteria);
                 scoreObj.setDisplayName(scoreDisp);
             } catch (Exception e) {
@@ -126,7 +131,8 @@ public class TaskScoreboard implements ITaskTickable {
         conversion = nbt.getFloat("unitConversion");
         suffix = nbt.getString("unitSuffix");
         try {
-            operation = ScoreOperation.valueOf(nbt.hasKey("operation", 8) ? nbt.getString("operation") : "MORE_OR_EQUAL");
+            operation = ScoreOperation
+                    .valueOf(nbt.hasKey("operation", 8) ? nbt.getString("operation") : "MORE_OR_EQUAL");
         } catch (Exception e) {
             operation = ScoreOperation.MORE_OR_EQUAL;
         }
@@ -159,6 +165,7 @@ public class TaskScoreboard implements ITaskTickable {
     }
 
     public enum ScoreOperation {
+
         EQUAL("="),
         LESS_THAN("<"),
         MORE_THAN(">"),

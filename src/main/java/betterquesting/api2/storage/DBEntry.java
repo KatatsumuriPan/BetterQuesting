@@ -3,6 +3,7 @@ package betterquesting.api2.storage;
 import javax.annotation.Nonnull;
 
 public final class DBEntry<T> implements Comparable<DBEntry<T>> {
+
     private final int id;
     @Nonnull
     private final T obj;

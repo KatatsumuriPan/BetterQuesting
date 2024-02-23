@@ -1,10 +1,11 @@
 package betterquesting.api2.client.gui.panels.lists;
 
-import betterquesting.api2.client.gui.misc.IGuiRect;
-import com.google.common.base.Stopwatch;
-
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+
+import com.google.common.base.Stopwatch;
+
+import betterquesting.api2.client.gui.misc.IGuiRect;
 
 public abstract class CanvasSearch<T, E> extends CanvasScrolling {
 

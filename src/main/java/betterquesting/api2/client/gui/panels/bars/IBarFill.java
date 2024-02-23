@@ -6,6 +6,7 @@ import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 
 public interface IBarFill extends IGuiPanel {
+
     IBarFill setFillDriver(IValueIO<Float> driver);
 
     IBarFill setFlipped(boolean flipped);

@@ -1,14 +1,11 @@
 package betterquesting.items;
 
-import betterquesting.api.api.ApiReference;
-import betterquesting.api.api.QuestingAPI;
-import betterquesting.api.properties.NativeProps;
-import betterquesting.api.utils.BigItemStack;
-import betterquesting.api2.utils.QuestTranslation;
-import betterquesting.core.BetterQuesting;
-import betterquesting.network.handlers.NetLootClaim;
-import betterquesting.questing.rewards.loot.LootGroup;
-import betterquesting.questing.rewards.loot.LootRegistry;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,12 +22,18 @@ import net.minecraft.world.storage.loot.LootContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
+import betterquesting.api.api.ApiReference;
+import betterquesting.api.api.QuestingAPI;
+import betterquesting.api.properties.NativeProps;
+import betterquesting.api.utils.BigItemStack;
+import betterquesting.api2.utils.QuestTranslation;
+import betterquesting.core.BetterQuesting;
+import betterquesting.network.handlers.NetLootClaim;
+import betterquesting.questing.rewards.loot.LootGroup;
+import betterquesting.questing.rewards.loot.LootRegistry;
 
 public class ItemLootChest extends Item {
+
     public ItemLootChest() {
         this.setMaxStackSize(1);
         this.setTranslationKey("bq_standard.loot_chest");
@@ -87,11 +90,15 @@ public class ItemLootChest extends Item {
                 return new ActionResult<>(EnumActionResult.PASS, stack);
             }
 
-            LootContext lootcontext = (new LootContext.Builder(((EntityPlayerMP) player).getServerWorld())).withLootedEntity(player).withPlayer(player).withLuck(player.getLuck()).build();
-            String loottable = (stack.getTagCompound() != null && stack.getTagCompound().hasKey("loottable", 8)) ? stack.getTagCompound().getString("loottable") : "minecraft:chests/simple_dungeon";
+            LootContext lootcontext = (new LootContext.Builder(((EntityPlayerMP) player).getServerWorld()))
+                    .withLootedEntity(player).withPlayer(player).withLuck(player.getLuck()).build();
+            String loottable = (stack.getTagCompound() != null && stack.getTagCompound().hasKey("loottable", 8)) ?
+                    stack.getTagCompound().getString("loottable") : "minecraft:chests/simple_dungeon";
 
             List<BigItemStack> loot = new ArrayList<>();
-            for (ItemStack itemstack : player.world.getLootTableManager().getLootTableFromLocation(new ResourceLocation(loottable)).generateLootForPools(player.getRNG(), lootcontext)) {
+            for (ItemStack itemstack : player.world.getLootTableManager()
+                    .getLootTableFromLocation(new ResourceLocation(loottable))
+                    .generateLootForPools(player.getRNG(), lootcontext)) {
                 loot.add(new BigItemStack(itemstack));
             }
 
@@ -114,11 +121,13 @@ public class ItemLootChest extends Item {
             NetLootClaim.sendReward((EntityPlayerMP) player, "Loot", loot.toArray(new BigItemStack[0]));
         } else if (stack.getItemDamage() >= 102) {
             if (QuestingAPI.getAPI(ApiReference.SETTINGS).canUserEdit(player)) {
-                player.openGui(BetterQuesting.instance, 2, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+                player.openGui(BetterQuesting.instance, 2, world, (int) player.posX, (int) player.posY,
+                        (int) player.posZ);
             }
             return new ActionResult<>(EnumActionResult.PASS, stack);
         } else if (!world.isRemote) {
-            float rarity = stack.getItemDamage() == 101 ? itemRand.nextFloat() : MathHelper.clamp(stack.getItemDamage(), 0, 100) / 100F;
+            float rarity = stack.getItemDamage() == 101 ? itemRand.nextFloat() :
+                    MathHelper.clamp(stack.getItemDamage(), 0, 100) / 100F;
             LootGroup group = LootRegistry.INSTANCE.getWeightedGroup(rarity, itemRand);
             List<BigItemStack> loot = new ArrayList<>();
             String title = "No Loot Setup";
@@ -233,7 +242,8 @@ public class ItemLootChest extends Item {
         if (stack.getItemDamage() == 104) {
             if (tag == null) return;
             tooltip.add(QuestTranslation.translate("bq_standard.tooltip.fixed_loot", tag.getString("fixedLootName")));
-            tooltip.add(QuestTranslation.translate("bq_standard.tooltip.fixed_loot_size", tag.getTagList("fixedLootList", 10).tagCount()));
+            tooltip.add(QuestTranslation.translate("bq_standard.tooltip.fixed_loot_size",
+                    tag.getTagList("fixedLootList", 10).tagCount()));
         } else if (stack.getItemDamage() == 103) {
             if (tag == null) return;
             tooltip.add(QuestTranslation.translate("bq_standard.tooltip.loot_table", tag.getString("loottable")));
@@ -243,7 +253,8 @@ public class ItemLootChest extends Item {
             if (stack.getItemDamage() == 101) {
                 tooltip.add(QuestTranslation.translate("bq_standard.tooltip.loot_chest", "???"));
             } else {
-                tooltip.add(QuestTranslation.translate("bq_standard.tooltip.loot_chest", MathHelper.clamp(stack.getItemDamage(), 0, 100) + "%"));
+                tooltip.add(QuestTranslation.translate("bq_standard.tooltip.loot_chest",
+                        MathHelper.clamp(stack.getItemDamage(), 0, 100) + "%"));
             }
         }
     }

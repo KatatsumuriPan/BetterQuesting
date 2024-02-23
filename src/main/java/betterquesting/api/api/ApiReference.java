@@ -1,5 +1,8 @@
 package betterquesting.api.api;
 
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.nbt.NBTTagCompound;
+
 import betterquesting.api.client.importers.IImportRegistry;
 import betterquesting.api.client.toolbox.IToolRegistry;
 import betterquesting.api.network.IPacketRegistry;
@@ -16,11 +19,11 @@ import betterquesting.api2.client.gui.themes.IResourceReg;
 import betterquesting.api2.client.gui.themes.IThemeRegistry;
 import betterquesting.api2.registry.IFactoryData;
 import betterquesting.api2.registry.IRegistry;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.nbt.NBTTagCompound;
 
-public class ApiReference // Note to self: Don't make these client side only. It'll just crash servers regardless of which are used
+public class ApiReference // Note to self: Don't make these client side only. It'll just crash servers regardless of
+                          // which are used
 {
+
     public static final ApiKey<IQuestDatabase> QUEST_DB = new ApiKey<>();
     public static final ApiKey<IQuestLineDatabase> LINE_DB = new ApiKey<>();
     public static final ApiKey<IPartyDatabase> PARTY_DB = new ApiKey<>();

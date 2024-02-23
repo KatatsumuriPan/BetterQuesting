@@ -1,6 +1,7 @@
 package betterquesting.api.enums;
 
 public enum EnumLogic {
+
     AND, // All true
     NAND, // Any false
     OR, // Any true

@@ -1,14 +1,16 @@
 package betterquesting.api.storage;
 
-import betterquesting.core.ModReference;
+import java.io.File;
+
 import net.minecraft.util.ResourceLocation;
 
-import java.io.File;
+import betterquesting.core.ModReference;
 
 /**
  * A container for all the configurable settings in the mod
  */
 public class BQ_Settings {
+
     /**
      * The root directory of the currently loaded world/save
      */

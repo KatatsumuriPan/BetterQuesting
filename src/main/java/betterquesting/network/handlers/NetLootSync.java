@@ -1,10 +1,7 @@
 package betterquesting.network.handlers;
 
-import betterquesting.api.api.ApiReference;
-import betterquesting.api.api.QuestingAPI;
-import betterquesting.api.network.QuestingPacket;
-import betterquesting.core.BetterQuesting;
-import betterquesting.questing.rewards.loot.LootRegistry;
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -13,11 +10,17 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.apache.logging.log4j.Level;
 
-import javax.annotation.Nullable;
+import betterquesting.api.api.ApiReference;
+import betterquesting.api.api.QuestingAPI;
+import betterquesting.api.network.QuestingPacket;
+import betterquesting.core.BetterQuesting;
+import betterquesting.questing.rewards.loot.LootRegistry;
 
 public class NetLootSync {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation("bq_standard:loot_database");
 
     public static void registerHandler() {
@@ -52,8 +55,10 @@ public class NetLootSync {
 
         if (sender.getServer() == null) return;
         if (!sender.getServer().getPlayerList().canSendCommands(sender.getGameProfile())) {
-            BetterQuesting.logger.log(Level.WARN, "Player " + sender.getName() + " (UUID:" + QuestingAPI.getQuestingUUID(sender) + ") tried to edit loot chests without OP permissions!");
-            sender.sendStatusMessage(new TextComponentString(TextFormatting.RED + "You need to be OP to edit loot!"), true);
+            BetterQuesting.logger.log(Level.WARN, "Player " + sender.getName() + " (UUID:" +
+                    QuestingAPI.getQuestingUUID(sender) + ") tried to edit loot chests without OP permissions!");
+            sender.sendStatusMessage(new TextComponentString(TextFormatting.RED + "You need to be OP to edit loot!"),
+                    true);
             return; // Player is not operator. Do nothing
         }
 

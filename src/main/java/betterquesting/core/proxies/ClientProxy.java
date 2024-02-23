@@ -1,5 +1,22 @@
 package betterquesting.core.proxies;
 
+import java.util.ArrayList;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.resources.SimpleReloadableResourceManager;
+import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.ClientCommandHandler;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.placeholders.EntityPlaceholder;
@@ -23,31 +40,16 @@ import betterquesting.importers.hqm.HQMBagImporter;
 import betterquesting.importers.hqm.HQMQuestImporter;
 import betterquesting.misc.QuestResourcesFile;
 import betterquesting.misc.QuestResourcesFolder;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.ModelBakery;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.resources.SimpleReloadableResourceManager;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.ClientCommandHandler;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.ArrayList;
 
 public class ClientProxy extends CommonProxy {
+
     @Override
     public boolean isClient() {
         return true;
     }
 
     @Override
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void registerHandlers() {
         super.registerHandlers();
 
@@ -65,21 +67,25 @@ public class ClientProxy extends CommonProxy {
         BQ_Keybindings.RegisterKeys();
 
         try {
-            //String tmp = "defaultResourcePacks";
-            ArrayList list = ObfuscationReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), "field_110449_ao", "defaultResourcePacks");
+            // String tmp = "defaultResourcePacks";
+            ArrayList list = ObfuscationReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(),
+                    "field_110449_ao", "defaultResourcePacks");
             QuestResourcesFolder qRes1 = new QuestResourcesFolder();
             QuestResourcesFile qRes2 = new QuestResourcesFile();
             list.add(qRes1);
             list.add(qRes2);
-            ((SimpleReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).reloadResourcePack(qRes1); // Make sure the pack(s) are visible to everything
-            ((SimpleReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).reloadResourcePack(qRes2); // Make sure the pack(s) are visible to everything
+            // Make sure the pack(s) are visible to everything
+            ((SimpleReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).reloadResourcePack(qRes1);
+            // Make sure the pack(s) are visible to everything
+            ((SimpleReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).reloadResourcePack(qRes2);
         } catch (Exception e) {
             BetterQuesting.logger.error("Unable to install questing resource loaders", e);
         }
 
         RenderingRegistry.registerEntityRenderingHandler(EntityPlaceholder.class, new PlaceholderRenderFactory());
 
-        ToolboxRegistry.INSTANCE.registerToolTab(new ResourceLocation(ModReference.MODID, "main"), ToolboxTabMain.INSTANCE);
+        ToolboxRegistry.INSTANCE.registerToolTab(new ResourceLocation(ModReference.MODID, "main"),
+                ToolboxTabMain.INSTANCE);
     }
 
     @Override
@@ -88,11 +94,15 @@ public class ClientProxy extends CommonProxy {
 
         registerBlockModel(BetterQuesting.submitStation);
         registerItemModel(ItemPlaceholder.placeholder);
-        registerItemModel(BetterQuesting.extraLife, 0, new ResourceLocation( ModReference.MODID, "heart_full").toString());
-        registerItemModel(BetterQuesting.extraLife, 1, new ResourceLocation( ModReference.MODID, "heart_half").toString());
-        registerItemModel(BetterQuesting.extraLife, 2, new ResourceLocation( ModReference.MODID, "heart_quarter").toString());
+        registerItemModel(BetterQuesting.extraLife, 0,
+                new ResourceLocation(ModReference.MODID, "heart_full").toString());
+        registerItemModel(BetterQuesting.extraLife, 1,
+                new ResourceLocation(ModReference.MODID, "heart_half").toString());
+        registerItemModel(BetterQuesting.extraLife, 2,
+                new ResourceLocation(ModReference.MODID, "heart_quarter").toString());
         registerItemModel(BetterQuesting.guideBook);
-        registerItemModelSubtypes(BetterQuesting.lootChest, 0, 104, BetterQuesting.lootChest.getRegistryName().toString());
+        registerItemModelSubtypes(BetterQuesting.lootChest, 0, 104,
+                BetterQuesting.lootChest.getRegistryName().toString());
         registerItemModel(BetterQuesting.questBook);
 
         ThemeRegistry.INSTANCE.loadResourceThemes();

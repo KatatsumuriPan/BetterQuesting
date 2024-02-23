@@ -1,5 +1,7 @@
 package betterquesting;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.command.CommandResultStats.Type;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
@@ -10,12 +12,11 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-
 /**
  * Elevates the player's privileges to OP level for use in command rewards
  */
 public class AdminExecute implements ICommandSender {
+
     private final EntityPlayer player;
 
     public AdminExecute(EntityPlayer player) {

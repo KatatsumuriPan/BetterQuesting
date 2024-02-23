@@ -4,6 +4,7 @@ import betterquesting.api.misc.ICallback;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 
 public class PanelButtonStorage<T> extends PanelButton {
+
     private T stored = null;
     private ICallback<T> callback = null;
 

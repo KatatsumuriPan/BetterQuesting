@@ -1,5 +1,18 @@
 package betterquesting.questing;
 
+import java.util.*;
+import java.util.Map.Entry;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.nbt.*;
+import net.minecraftforge.common.util.Constants;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.enums.EnumLogic;
 import betterquesting.api.enums.EnumQuestState;
@@ -22,18 +35,9 @@ import betterquesting.storage.PropertyContainer;
 import betterquesting.storage.QuestSettings;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.nbt.*;
-import net.minecraftforge.common.util.Constants;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.Map.Entry;
 
 public class QuestInstance implements IQuest {
+
     private final TaskStorage tasks = new TaskStorage();
     private final RewardStorage rewards = new RewardStorage();
 
@@ -55,7 +59,7 @@ public class QuestInstance implements IQuest {
 
         setupValue(NativeProps.SOUND_COMPLETE);
         setupValue(NativeProps.SOUND_UPDATE);
-        //setupValue(NativeProps.SOUND_UNLOCK);
+        // setupValue(NativeProps.SOUND_UNLOCK);
 
         setupValue(NativeProps.LOGIC_QUEST, EnumLogic.AND);
         setupValue(NativeProps.LOGIC_TASK, EnumLogic.AND);
@@ -94,8 +98,10 @@ public class QuestInstance implements IQuest {
 
         if (tasks.size() <= 0 || qInfo.getProperty(NativeProps.LOGIC_TASK).getResult(done, tasks.size())) {
             setComplete(playerID, System.currentTimeMillis());
-        } else if (done > 0 && qInfo.getProperty(NativeProps.SIMULTANEOUS)) // TODO: There is actually an exploit here to do with locked progression bypassing simultaneous reset conditions. Fix?
-        {
+        } else if (done > 0 && qInfo.getProperty(NativeProps.SIMULTANEOUS)) {
+            // TODO: There is actually an exploit here to do with locked progression bypassing
+            // simultaneous reset conditions. Fix?
+
             resetUser(playerID, false);
         }
     }

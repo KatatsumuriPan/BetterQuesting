@@ -1,16 +1,19 @@
 package betterquesting.api2.client.gui.panels.bars;
 
+import java.util.List;
+
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.math.MathHelper;
+
+import org.lwjgl.input.Mouse;
+
 import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.math.MathHelper;
-import org.lwjgl.input.Mouse;
-
-import java.util.List;
 
 public class PanelVScrollBar implements IScrollBar {
+
     private final IGuiRect transform;
     private boolean enabled = true;
     private boolean active = true;
@@ -26,7 +29,8 @@ public class PanelVScrollBar implements IScrollBar {
 
     public PanelVScrollBar(IGuiRect rect) {
         this.transform = rect;
-        this.setBarTexture(PresetTexture.SCROLL_V_BG.getTexture(), PresetTexture.SCROLL_V_0.getTexture(), PresetTexture.SCROLL_V_1.getTexture(), PresetTexture.SCROLL_V_2.getTexture());
+        this.setBarTexture(PresetTexture.SCROLL_V_BG.getTexture(), PresetTexture.SCROLL_V_0.getTexture(),
+                PresetTexture.SCROLL_V_1.getTexture(), PresetTexture.SCROLL_V_2.getTexture());
     }
 
     @Override
@@ -37,7 +41,8 @@ public class PanelVScrollBar implements IScrollBar {
     }
 
     @Override
-    public PanelVScrollBar setBarTexture(IGuiTexture back, IGuiTexture handleDisabled, IGuiTexture handleIdle, IGuiTexture handleHover) {
+    public PanelVScrollBar setBarTexture(IGuiTexture back, IGuiTexture handleDisabled, IGuiTexture handleIdle,
+                                         IGuiTexture handleHover) {
         this.texBack = back;
         this.texHandleState[0] = handleDisabled;
         this.texHandleState[1] = handleIdle;
@@ -51,8 +56,7 @@ public class PanelVScrollBar implements IScrollBar {
     }
 
     @Override
-    public void initPanel() {
-    }
+    public void initPanel() {}
 
     @Override
     public void setEnabled(boolean state) {
@@ -102,7 +106,8 @@ public class PanelVScrollBar implements IScrollBar {
         IGuiTexture tex = texHandleState[state];
 
         if (tex != null) {
-            tex.drawTexture(bounds.getX() + inset, bounds.getY() + sy + inset, bounds.getWidth() - (inset * 2), hSize, 0F, partialTick);
+            tex.drawTexture(bounds.getX() + inset, bounds.getY() + sy + inset, bounds.getWidth() - (inset * 2), hSize,
+                    0F, partialTick);
         }
 
         GlStateManager.popMatrix();

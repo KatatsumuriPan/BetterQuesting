@@ -1,5 +1,12 @@
 package betterquesting.client.gui2.editors;
 
+import java.io.File;
+import java.util.List;
+
+import net.minecraft.client.gui.GuiScreen;
+
+import org.lwjgl.input.Keyboard;
+
 import betterquesting.api.client.importers.IImporter;
 import betterquesting.api.misc.ICallback;
 import betterquesting.api.questing.IQuestLineDatabase;
@@ -26,13 +33,9 @@ import betterquesting.client.importers.ImportedQuestLines;
 import betterquesting.client.importers.ImportedQuests;
 import betterquesting.client.importers.ImporterRegistry;
 import betterquesting.network.handlers.NetImport;
-import net.minecraft.client.gui.GuiScreen;
-import org.lwjgl.input.Keyboard;
-
-import java.io.File;
-import java.util.List;
 
 public class GuiImporters extends GuiScreenCanvas implements IPEventListener, ICallback<File[]> {
+
     private PanelTextBox impName;
     private CanvasScrolling impDescCV;
     private PanelTextBox impDescTX;
@@ -50,18 +53,23 @@ public class GuiImporters extends GuiScreenCanvas implements IPEventListener, IC
         Keyboard.enableRepeatEvents(true);
 
         // Background panel
-        CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0), PresetTexture.PANEL_MAIN.getTexture());
+        CanvasTextured cvBackground = new CanvasTextured(
+                new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0),
+                PresetTexture.PANEL_MAIN.getTexture());
         this.addPanel(cvBackground);
 
-        PanelTextBox panTxt = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0), QuestTranslation.translate("betterquesting.title.importers")).setAlignment(1);
+        PanelTextBox panTxt = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0),
+                QuestTranslation.translate("betterquesting.title.importers")).setAlignment(1);
         panTxt.setColor(PresetColor.TEXT_HEADER.getColor());
         cvBackground.addPanel(panTxt);
 
-        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), 0, QuestTranslation.translate("gui.back")));
+        cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), 0,
+                QuestTranslation.translate("gui.back")));
 
         // === LEFT SIDE ===
 
-        CanvasScrolling cvImports = new CanvasScrolling(new GuiTransform(GuiAlign.HALF_LEFT, new GuiPadding(16, 32, 16, 24), 0));
+        CanvasScrolling cvImports = new CanvasScrolling(
+                new GuiTransform(GuiAlign.HALF_LEFT, new GuiPadding(16, 32, 16, 24), 0));
         cvBackground.addPanel(cvImports);
 
         int width = cvImports.getTransform().getWidth();
@@ -69,10 +77,12 @@ public class GuiImporters extends GuiScreenCanvas implements IPEventListener, IC
 
         for (int i = 0; i < impList.size(); i++) {
             IImporter imp = impList.get(i);
-            cvImports.addPanel(new PanelButtonStorage<>(new GuiRectangle(0, i * 16, width, 16, 0), 1, QuestTranslation.translate(imp.getUnlocalisedName()), imp));
+            cvImports.addPanel(new PanelButtonStorage<>(new GuiRectangle(0, i * 16, width, 16, 0), 1,
+                    QuestTranslation.translate(imp.getUnlocalisedName()), imp));
         }
 
-        PanelVScrollBar scReq = new PanelVScrollBar(new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(0, 0, -8, 0), 0));
+        PanelVScrollBar scReq = new PanelVScrollBar(
+                new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(0, 0, -8, 0), 0));
         cvBackground.addPanel(scReq);
         scReq.getTransform().setParent(cvImports.getTransform());
         cvImports.setScrollDriverY(scReq);
@@ -82,22 +92,26 @@ public class GuiImporters extends GuiScreenCanvas implements IPEventListener, IC
         CanvasEmpty cvRight = new CanvasEmpty(new GuiTransform(GuiAlign.HALF_RIGHT, new GuiPadding(8, 32, 16, 24), 0));
         cvBackground.addPanel(cvRight);
 
-        impName = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 0, -16), 0), "").setAlignment(1).setColor(PresetColor.TEXT_MAIN.getColor());
+        impName = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 0, -16), 0), "")
+                .setAlignment(1).setColor(PresetColor.TEXT_MAIN.getColor());
         cvRight.addPanel(impName);
 
         impDescCV = new CanvasScrolling(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 16, 8, 24), 0));
         cvRight.addPanel(impDescCV);
 
-        PanelVScrollBar scDesc = new PanelVScrollBar(new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(0, 0, -8, 0), 0));
+        PanelVScrollBar scDesc = new PanelVScrollBar(
+                new GuiTransform(GuiAlign.RIGHT_EDGE, new GuiPadding(0, 0, -8, 0), 0));
         cvRight.addPanel(scDesc);
         scDesc.getTransform().setParent(impDescCV.getTransform());
         impDescCV.setScrollDriverY(scDesc);
 
         width = impDescCV.getTransform().getWidth();
-        impDescTX = new PanelTextBox(new GuiRectangle(0, 0, width, 16, 0), "", true).setColor(PresetColor.TEXT_MAIN.getColor());
+        impDescTX = new PanelTextBox(new GuiRectangle(0, 0, width, 16, 0), "", true)
+                .setColor(PresetColor.TEXT_MAIN.getColor());
         impDescCV.addPanel(impDescTX);
 
-        impBtn = new PanelButtonStorage<>(new GuiTransform(GuiAlign.BOTTOM_EDGE, new GuiPadding(0, -16, 0, 0), 0), 2, QuestTranslation.translate("betterquesting.btn.import"), null);
+        impBtn = new PanelButtonStorage<>(new GuiTransform(GuiAlign.BOTTOM_EDGE, new GuiPadding(0, -16, 0, 0), 0), 2,
+                QuestTranslation.translate("betterquesting.btn.import"), null);
         impBtn.setActive(false);
         cvRight.addPanel(impBtn);
 
@@ -107,7 +121,8 @@ public class GuiImporters extends GuiScreenCanvas implements IPEventListener, IC
         ls0.setParent(cvBackground.getTransform());
         IGuiRect le0 = new GuiTransform(GuiAlign.BOTTOM_CENTER, 0, -24, 0, 0, 0);
         le0.setParent(cvBackground.getTransform());
-        PanelLine paLine0 = new PanelLine(ls0, le0, PresetLine.GUI_DIVIDER.getLine(), 1, PresetColor.GUI_DIVIDER.getColor(), 1);
+        PanelLine paLine0 = new PanelLine(ls0, le0, PresetLine.GUI_DIVIDER.getLine(), 1,
+                PresetColor.GUI_DIVIDER.getColor(), 1);
         cvBackground.addPanel(paLine0);
     }
 
@@ -136,7 +151,8 @@ public class GuiImporters extends GuiScreenCanvas implements IPEventListener, IC
         } else if (btn.getButtonID() == 2) // Import
         {
             lastImport = ((PanelButtonStorage<IImporter>) btn).getStoredValue();
-            mc.displayGuiScreen(new GuiFileBrowser(this, this, new File(".").getAbsoluteFile().getParentFile(), lastImport.getFileFilter()));
+            mc.displayGuiScreen(new GuiFileBrowser(this, this, new File(".").getAbsoluteFile().getParentFile(),
+                    lastImport.getFileFilter()));
         }
     }
 

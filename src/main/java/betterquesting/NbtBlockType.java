@@ -1,23 +1,24 @@
 package betterquesting;
 
-import betterquesting.api.placeholders.ItemPlaceholder;
-import betterquesting.api.utils.BigItemStack;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
+import betterquesting.api.placeholders.ItemPlaceholder;
+import betterquesting.api.utils.BigItemStack;
+
 public class NbtBlockType // TODO: Make a version of this for the base mod and give it a dedicated editor
 {
+
     public Block b = Blocks.LOG;
     public int m = -1;
     public int n = 1;
     public String oreDict = "";
     public NBTTagCompound tags = new NBTTagCompound();
 
-    public NbtBlockType() {
-    }
+    public NbtBlockType() {}
 
     public NbtBlockType(Block block) {
         this.b = block;

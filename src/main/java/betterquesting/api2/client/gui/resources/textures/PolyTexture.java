@@ -1,18 +1,21 @@
 package betterquesting.api2.client.gui.resources.textures;
 
-import betterquesting.api2.client.gui.misc.IGuiRect;
-import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
-import betterquesting.api2.client.gui.resources.colors.IGuiColor;
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
-import javax.annotation.Nonnull;
+import betterquesting.api2.client.gui.misc.IGuiRect;
+import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
+import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 
 public class PolyTexture implements IGuiTexture {
+
     private final IGuiColor defColor;
     private final boolean shadow;
     private final double[] verts;
@@ -75,7 +78,9 @@ public class PolyTexture implements IGuiTexture {
         BufferBuilder vertexbuffer = tessellator.getBuffer();
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA,
+                GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE,
+                GlStateManager.DestFactor.ZERO);
 
         int w = shadow ? width - 2 : width;
         int h = shadow ? height - 2 : height;
@@ -88,8 +93,7 @@ public class PolyTexture implements IGuiTexture {
 
         if (shadow) {
             GlStateManager.color(0F, 0F, 0F, 0.5F);
-            vertexbuffer.begin(GL11.GL_POLYGON, DefaultVertexFormats.POSITION);
-            ;
+            vertexbuffer.begin(GL11.GL_POLYGON, DefaultVertexFormats.POSITION);;
 
             for (int i = 0; i < points + 1; i++) // Wraps around by one point
             {
@@ -101,8 +105,7 @@ public class PolyTexture implements IGuiTexture {
         }
 
         color.applyGlColor();
-        vertexbuffer.begin(GL11.GL_POLYGON, DefaultVertexFormats.POSITION);
-        ;
+        vertexbuffer.begin(GL11.GL_POLYGON, DefaultVertexFormats.POSITION);;
 
         for (int i = 0; i < points + 1; i++) // Wraps around by one point
         {

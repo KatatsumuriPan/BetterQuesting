@@ -1,11 +1,16 @@
 package betterquesting.api.utils;
 
-import betterquesting.api.api.QuestingAPI;
-import betterquesting.api.placeholders.ItemPlaceholder;
-import betterquesting.api.placeholders.PlaceholderConverter;
-import betterquesting.api2.utils.BQThreadedIO;
-import com.google.gson.*;
-import com.google.gson.stream.JsonWriter;
+import java.io.*;
+import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.AtomicMoveNotSupportedException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.concurrent.Future;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.item.Item;
@@ -16,17 +21,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
 import org.apache.logging.log4j.Level;
 
-import javax.annotation.Nonnull;
-import java.io.*;
-import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.AtomicMoveNotSupportedException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.concurrent.Future;
+import com.google.gson.*;
+import com.google.gson.stream.JsonWriter;
+
+import betterquesting.api.api.QuestingAPI;
+import betterquesting.api.placeholders.ItemPlaceholder;
+import betterquesting.api.placeholders.PlaceholderConverter;
+import betterquesting.api2.utils.BQThreadedIO;
 
 /**
  * Used to read JSON data with pre-made checks for null entries and casting.
@@ -35,6 +39,7 @@ import java.util.concurrent.Future;
  * In the event the requested item, fluid or entity is missing, a place holder will be substituted
  */
 public class JsonHelper {
+
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public static JsonArray GetArray(@Nonnull JsonObject json, @Nonnull String id) {
@@ -108,8 +113,10 @@ public class JsonHelper {
         if (file == null || !file.exists()) return new JsonObject();
 
         Future<JsonObject> task = BQThreadedIO.INSTANCE.enqueue(() -> {
-            // NOTE: These are now split due to an edge case in the previous implementation where resource leaking can occur should the outer constructor fail
-            try (FileInputStream fis = new FileInputStream(file); InputStreamReader fr = new InputStreamReader(fis, StandardCharsets.UTF_8)) {
+            // NOTE: These are now split due to an edge case in the previous implementation where resource leaking can
+            // occur should the outer constructor fail
+            try (FileInputStream fis = new FileInputStream(file);
+                    InputStreamReader fr = new InputStreamReader(fis, StandardCharsets.UTF_8)) {
                 JsonObject json = GSON.fromJson(fr, JsonObject.class);
                 fr.close();
                 return json;
@@ -151,46 +158,44 @@ public class JsonHelper {
                 }
 
                 tmp.createNewFile();
-			} catch(Exception e)
-			{
-				QuestingAPI.getLogger().error("An error occured while saving JSON to file (Directory setup):", e);
-				return null;
-			}
-			
-			// NOTE: These are now split due to an edge case in the previous implementation where resource leaking can occur should the outer constructor fail
-			try (FileOutputStream fos = new FileOutputStream(tmp);
-				 OutputStreamWriter fw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
-				 Writer buffer = new BufferedWriter(fw);
-				 JsonWriter json = new JsonWriter(buffer)) {
-				json.setIndent("  "); //two space indents
-				GSON.toJson(jObj, json);
-			} catch (Exception e) {
-				QuestingAPI.getLogger().error("An error occurred while saving JSON to file (File write):", e);
-				return null;
-			}
-			
-			// NOTE: These are now split due to an edge case in the previous implementation where resource leaking can occur should the outer constructor fail
-			try(FileInputStream fis = new FileInputStream(tmp); InputStreamReader fr = new InputStreamReader(fis, StandardCharsets.UTF_8))
-            {
-				// Readback what we wrote to validate it
+            } catch (Exception e) {
+                QuestingAPI.getLogger().error("An error occured while saving JSON to file (Directory setup):", e);
+                return null;
+            }
+
+            // NOTE: These are now split due to an edge case in the previous implementation
+            // where resource leaking can occur should the outer constructor fail
+            try (FileOutputStream fos = new FileOutputStream(tmp);
+                    OutputStreamWriter fw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+                    Writer buffer = new BufferedWriter(fw);
+                    JsonWriter json = new JsonWriter(buffer)) {
+                json.setIndent("  "); // two space indents
+                GSON.toJson(jObj, json);
+            } catch (Exception e) {
+                QuestingAPI.getLogger().error("An error occurred while saving JSON to file (File write):", e);
+                return null;
+            }
+
+            // NOTE: These are now split due to an edge case in the previous implementation
+            // where resource leaking can occur should the outer constructor fail
+            try (FileInputStream fis = new FileInputStream(tmp);
+                    InputStreamReader fr = new InputStreamReader(fis, StandardCharsets.UTF_8)) {
+                // Readback what we wrote to validate it
                 GSON.fromJson(fr, JsonObject.class);
-            } catch(Exception e)
-            {
-				QuestingAPI.getLogger().error("An error occured while saving JSON to file (Validation check):", e);
-				return null;
+            } catch (Exception e) {
+                QuestingAPI.getLogger().error("An error occured while saving JSON to file (Validation check):", e);
+                return null;
             }
-			
-			try
-            {
-                if(file.exists()) file.delete();
+
+            try {
+                if (file.exists()) file.delete();
                 tmp.renameTo(file);
-            } catch(Exception e)
-            {
-				QuestingAPI.getLogger().error("An error occured while saving JSON to file (Temp copy):", e);
+            } catch (Exception e) {
+                QuestingAPI.getLogger().error("An error occured while saving JSON to file (Temp copy):", e);
             }
-			return null;
-		});
-	}
+            return null;
+        });
+    }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static Future<Void> WriteToFile(File file, IOConsumer<JsonWriter> jObj) {
@@ -209,8 +214,10 @@ public class JsonHelper {
                 return null;
             }
 
-            // NOTE: These are now split due to an edge case in the previous implementation where resource leaking can occur should the outer constructor fail
-            try (FileOutputStream fos = new FileOutputStream(tmp); OutputStreamWriter fw = new OutputStreamWriter(fos, StandardCharsets.UTF_8)) {
+            // NOTE: These are now split due to an edge case in the previous implementation
+            // where resource leaking can occur should the outer constructor fail
+            try (FileOutputStream fos = new FileOutputStream(tmp);
+                    OutputStreamWriter fw = new OutputStreamWriter(fos, StandardCharsets.UTF_8)) {
                 jObj.accept(new JsonWriter(fw));
             } catch (Exception e) {
                 QuestingAPI.getLogger().error("An error occured while saving JSON to file (File write):", e);
@@ -218,7 +225,8 @@ public class JsonHelper {
             }
 
             try {
-                Files.move(tmp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+                Files.move(tmp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING,
+                        StandardCopyOption.ATOMIC_MOVE);
             } catch (AtomicMoveNotSupportedException ignored) {
                 try {
                     Files.move(tmp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -265,7 +273,8 @@ public class JsonHelper {
     }
 
     public static boolean isFluid(NBTTagCompound json) {
-        return json != null && json.hasKey("FluidName", 8) && json.hasKey("Amount", 99) && FluidRegistry.getFluid(json.getString("FluidName")) != null;
+        return json != null && json.hasKey("FluidName", 8) && json.hasKey("Amount", 99) &&
+                FluidRegistry.getFluid(json.getString("FluidName")) != null;
     }
 
     public static boolean isEntity(NBTTagCompound tags) {
@@ -279,7 +288,9 @@ public class JsonHelper {
     public static BigItemStack JsonToItemStack(NBTTagCompound nbt) {
         Item preCheck = Item.getByNameOrId(nbt.hasKey("id", 99) ? "" + nbt.getShort("id") : nbt.getString("id"));
         if (preCheck != null && preCheck != ItemPlaceholder.placeholder) return new BigItemStack(nbt);
-        return PlaceholderConverter.convertItem(preCheck, nbt.getString("id"), nbt.getInteger("Count"), nbt.getShort("Damage"), nbt.getString("OreDict"), !nbt.hasKey("tag", 10) ? null : nbt.getCompoundTag("tag"));
+        return PlaceholderConverter.convertItem(preCheck, nbt.getString("id"), nbt.getInteger("Count"),
+                nbt.getShort("Damage"), nbt.getString("OreDict"),
+                !nbt.hasKey("tag", 10) ? null : nbt.getCompoundTag("tag"));
     }
 
     /**
@@ -332,6 +343,7 @@ public class JsonHelper {
 
     @FunctionalInterface
     public interface IOConsumer<T> {
+
         void accept(T arg) throws IOException;
     }
 }

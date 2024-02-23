@@ -1,15 +1,18 @@
 package betterquesting.api2.client.gui.resources.textures;
 
-import betterquesting.api2.client.gui.misc.IGuiRect;
-import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
-import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.GuiUtils;
+
 import org.lwjgl.opengl.GL11;
 
+import betterquesting.api2.client.gui.misc.IGuiRect;
+import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
+import betterquesting.api2.client.gui.resources.colors.IGuiColor;
+
 public class SimpleTexture implements IGuiTexture {
+
     private static final IGuiColor defColor = new GuiColorStatic(255, 255, 255, 255);
 
     private final ResourceLocation texture;
@@ -58,7 +61,8 @@ public class SimpleTexture implements IGuiTexture {
         GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-        GuiUtils.drawTexturedModalRect(0, 0, texBounds.getX(), texBounds.getY(), texBounds.getWidth(), texBounds.getHeight(), zLevel);
+        GuiUtils.drawTexturedModalRect(0, 0, texBounds.getX(), texBounds.getY(), texBounds.getWidth(),
+                texBounds.getHeight(), zLevel);
 
         GlStateManager.popMatrix();
     }

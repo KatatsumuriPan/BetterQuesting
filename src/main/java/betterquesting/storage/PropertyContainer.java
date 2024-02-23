@@ -1,15 +1,17 @@
 package betterquesting.storage;
 
-import betterquesting.api.properties.IPropertyContainer;
-import betterquesting.api.properties.IPropertyType;
-import betterquesting.api2.storage.INBTSaveLoad;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+
+import betterquesting.api.properties.IPropertyContainer;
+import betterquesting.api.properties.IPropertyType;
+import betterquesting.api2.storage.INBTSaveLoad;
+
 public class PropertyContainer implements IPropertyContainer, INBTSaveLoad<NBTTagCompound> {
+
     private final NBTTagCompound nbtInfo = new NBTTagCompound();
 
     @Override
@@ -74,11 +76,13 @@ public class PropertyContainer implements IPropertyContainer, INBTSaveLoad<NBTTa
         nbtInfo.merge(nbt);
 
         // TODO: FIX CASING
-        /*List<String> keys = new ArrayList<>(nbtInfo.getKeySet());
-        for(nbt)
-        {
-        
-        }*/
+        /*
+         * List<String> keys = new ArrayList<>(nbtInfo.getKeySet());
+         * for(nbt)
+         * {
+         * 
+         * }
+         */
     }
 
     private NBTTagCompound getDomain(ResourceLocation res) {

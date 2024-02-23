@@ -1,11 +1,12 @@
 package betterquesting.api.utils;
 
-import betterquesting.api2.client.gui.misc.GuiRectangle;
-import betterquesting.api2.client.gui.misc.IGuiRect;
-import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
-import betterquesting.api2.client.gui.resources.colors.IGuiColor;
-import betterquesting.api2.client.gui.themes.presets.PresetTexture;
-import betterquesting.core.BetterQuesting;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.*;
@@ -19,17 +20,20 @@ import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
 
-import javax.annotation.Nonnull;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import betterquesting.api2.client.gui.misc.GuiRectangle;
+import betterquesting.api2.client.gui.misc.IGuiRect;
+import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
+import betterquesting.api2.client.gui.resources.colors.IGuiColor;
+import betterquesting.api2.client.gui.themes.presets.PresetTexture;
+import betterquesting.core.BetterQuesting;
 
 // TODO: Move text related stuff to its own utility class
 @SideOnly(Side.CLIENT)
 public class RenderUtils {
+
     public static final String REGEX_NUMBER = "[^\\.0123456789-]"; // I keep screwing this up so now it's reusable
 
     public static void RenderItemStack(Minecraft mc, ItemStack stack, int x, int y, String text) {
@@ -120,13 +124,15 @@ public class RenderUtils {
         RenderEntity(posX, posY, 64F, scale, rotation, pitch, entity);
     }
 
-    public static void RenderEntity(float posX, float posY, float posZ, int scale, float rotation, float pitch, Entity entity) {
+    public static void RenderEntity(float posX, float posY, float posZ, int scale, float rotation, float pitch,
+                                    Entity entity) {
         try {
             GlStateManager.enableColorMaterial();
             GlStateManager.pushMatrix();
             GlStateManager.enableDepth();
             GlStateManager.translate(posX, posY, posZ);
-            GlStateManager.scale((float) -scale, (float) scale, (float) scale); // Not entirely sure why mobs are flipped but this is how vanilla GUIs fix it so...
+            // Not entirely sure why mobs are flipped but this is how vanilla GUIs fix it so...
+            GlStateManager.scale((float) -scale, (float) scale, (float) scale);
             GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
             GlStateManager.rotate(pitch, 1F, 0F, 0F);
             GlStateManager.rotate(rotation, 0F, 1F, 0F);
@@ -196,32 +202,42 @@ public class RenderUtils {
         GlStateManager.popMatrix();
     }
 
-    public static void drawSplitString(FontRenderer renderer, String string, int x, int y, int width, int color, boolean shadow) {
-        drawSplitString(renderer, string, x, y, width, color, shadow, 0, splitString(string, width, renderer).size() - 1);
+    public static void drawSplitString(FontRenderer renderer, String string, int x, int y, int width, int color,
+                                       boolean shadow) {
+        drawSplitString(renderer, string, x, y, width, color, shadow, 0,
+                splitString(string, width, renderer).size() - 1);
     }
 
-    public static void drawSplitString(FontRenderer renderer, String string, int x, int y, int width, int color, boolean shadow, int start, int end) {
+    public static void drawSplitString(FontRenderer renderer, String string, int x, int y, int width, int color,
+                                       boolean shadow, int start, int end) {
         drawHighlightedSplitString(renderer, string, x, y, width, color, shadow, start, end, 0, 0, 0);
     }
 
     // TODO: Clean this up. The list of parameters is getting a bit excessive
 
-    public static void drawHighlightedSplitString(FontRenderer renderer, String string, int x, int y, int width, int color, boolean shadow, int highlightColor, int highlightStart, int highlightEnd) {
-        drawHighlightedSplitString(renderer, string, x, y, width, color, shadow, 0, splitString(string, width, renderer).size() - 1, highlightColor, highlightStart, highlightEnd);
+    public static void drawHighlightedSplitString(FontRenderer renderer, String string, int x, int y, int width,
+                                                  int color, boolean shadow, int highlightColor, int highlightStart,
+                                                  int highlightEnd) {
+        drawHighlightedSplitString(renderer, string, x, y, width, color, shadow, 0,
+                splitString(string, width, renderer).size() - 1, highlightColor, highlightStart, highlightEnd);
     }
 
-    public static void drawHighlightedSplitString(FontRenderer renderer, String string, int x, int y, int width, int color, boolean shadow, int start, int end, int highlightColor, int highlightStart, int highlightEnd) {
+    public static void drawHighlightedSplitString(FontRenderer renderer, String string, int x, int y, int width,
+                                                  int color, boolean shadow, int start, int end, int highlightColor,
+                                                  int highlightStart, int highlightEnd) {
         if (renderer == null || string == null || string.length() <= 0 || start > end) {
             return;
         }
 
-        string = string.replaceAll("\r", ""); //Line endings from localizations break things so we remove them
+        string = string.replaceAll("\r", ""); // Line endings from localizations break things so we remove them
 
         List<String> list = splitString(string, width, renderer);
-        List<String> noFormat = splitStringWithoutFormat(string, width, renderer); // Needed for accurate highlight index positions
+        // Needed for accurate highlight index positions
+        List<String> noFormat = splitStringWithoutFormat(string, width, renderer);
 
         if (list.size() != noFormat.size()) {
-            //BetterQuesting.logger.error("Line count mismatch (" + list.size() + " != " + noFormat.size() + ") while drawing formatted text!");
+            // BetterQuesting.logger.error("Line count mismatch (" + list.size() + " != " + noFormat.size() + ") while
+            // drawing formatted text!");
             return;
         }
 
@@ -248,22 +264,25 @@ public class RenderUtils {
             renderer.drawString(list.get(i), x, y + (renderer.FONT_HEIGHT * (i - start)), color, shadow);
 
             // DEBUG
-			/*boolean b = (System.currentTimeMillis()/1000)%2 == 0;
-			
-			if(b)
-			{
-				renderer.drawString(i + ": " + list.get(i), x, y + (renderer.FONT_HEIGHT * (i - start)), color, shadow);
-			}
-			
-			if(i >= noFormat.size())
-			{
-				continue;
-			}
-			
-			if(!b)
-			{
-				renderer.drawString(i + ": " + noFormat.get(i), x, y + (renderer.FONT_HEIGHT * (i - start)), color, shadow);
-			}*/
+            /*
+             * boolean b = (System.currentTimeMillis()/1000)%2 == 0;
+             *
+             * if(b)
+             * {
+             * renderer.drawString(i + ": " + list.get(i), x, y + (renderer.FONT_HEIGHT * (i - start)), color, shadow);
+             * }
+             *
+             * if(i >= noFormat.size())
+             * {
+             * continue;
+             * }
+             *
+             * if(!b)
+             * {
+             * renderer.drawString(i + ": " + noFormat.get(i), x, y + (renderer.FONT_HEIGHT * (i - start)), color,
+             * shadow);
+             * }
+             */
 
             int lineSize = noFormat.get(i).length();
             int idxEnd = idxStart + lineSize;
@@ -276,14 +295,16 @@ public class RenderUtils {
                 int x1 = getStringWidth(lastFormat + noFormat.get(i).substring(0, i1), renderer);
                 int x2 = getStringWidth(lastFormat + noFormat.get(i).substring(0, i2), renderer);
 
-                drawHighlightBox(x + x1, y + (renderer.FONT_HEIGHT * (i - start)), x + x2, y + (renderer.FONT_HEIGHT * (i - start)) + renderer.FONT_HEIGHT, highlightColor);
+                drawHighlightBox(x + x1, y + (renderer.FONT_HEIGHT * (i - start)), x + x2,
+                        y + (renderer.FONT_HEIGHT * (i - start)) + renderer.FONT_HEIGHT, highlightColor);
             }
 
             idxStart = idxEnd;
         }
     }
 
-    public static void drawHighlightedString(FontRenderer renderer, String string, int x, int y, int color, boolean shadow, int highlightColor, int highlightStart, int highlightEnd) {
+    public static void drawHighlightedString(FontRenderer renderer, String string, int x, int y, int color,
+                                             boolean shadow, int highlightColor, int highlightStart, int highlightEnd) {
         if (renderer == null || string == null || string.length() <= 0) {
             return;
         }
@@ -306,7 +327,8 @@ public class RenderUtils {
     }
 
     public static void drawHighlightBox(IGuiRect rect, IGuiColor color) {
-        drawHighlightBox(rect.getX(), rect.getY(), rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight(), color.getRGB());
+        drawHighlightBox(rect.getX(), rect.getY(), rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight(),
+                color.getRGB());
     }
 
     public static void drawHighlightBox(int left, int top, int right, int bottom, int color) {
@@ -356,11 +378,14 @@ public class RenderUtils {
         BufferBuilder vertexbuffer = tessellator.getBuffer();
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA,
+                GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE,
+                GlStateManager.DestFactor.ZERO);
         color.applyGlColor();
         vertexbuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         vertexbuffer.pos((double) rect.getX(), (double) rect.getY() + rect.getHeight(), 0.0D).endVertex();
-        vertexbuffer.pos((double) rect.getX() + rect.getWidth(), (double) rect.getY() + rect.getHeight(), 0.0D).endVertex();
+        vertexbuffer.pos((double) rect.getX() + rect.getWidth(), (double) rect.getY() + rect.getHeight(), 0.0D)
+                .endVertex();
         vertexbuffer.pos((double) rect.getX() + rect.getWidth(), (double) rect.getY(), 0.0D).endVertex();
         vertexbuffer.pos((double) rect.getX(), (double) rect.getY(), 0.0D).endVertex();
         tessellator.draw();
@@ -413,7 +438,7 @@ public class RenderUtils {
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glPushMatrix();
         GL11.glLoadIdentity();
-        GL11.glOrtho(0, w, h, 0, -1, 1);  //or whatever size you want
+        GL11.glOrtho(0, w, h, 0, -1, 1);  // or whatever size you want
 
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glPushMatrix();
@@ -489,8 +514,12 @@ public class RenderUtils {
                 boolean flag = c0 == ' ' || c0 == '\n';
                 lastFormat = FontRenderer.getFormatFromString(lastFormat + s);
                 temp = temp.substring(i + (flag ? 1 : 0));
-                // NOTE: The index actually stops just before the space/nl so we don't need to remove it from THIS line. This is why the previous line moves forward by one for the NEXT line
-                list.add(s + (flag ? "\n" : "")); // Although we need to remove the spaces between each line we have to replace them with invisible new line characters to preserve the index count
+                // NOTE: The index actually stops just before the space/nl so we don't need to remove it from THIS line.
+                // This is why the previous line moves forward by one for the NEXT line
+
+                // Although we need to remove the spaces between each line we have to replace them
+                // with invisible new line characters to preserve the index count
+                list.add(s + (flag ? "\n" : ""));
 
                 if (temp.length() <= 0 && !flag) {
                     break;
@@ -629,7 +658,8 @@ public class RenderUtils {
     }
 
     private static boolean isFormatColor(char colorChar) {
-        return colorChar >= '0' && colorChar <= '9' || colorChar >= 'a' && colorChar <= 'f' || colorChar >= 'A' && colorChar <= 'F';
+        return colorChar >= '0' && colorChar <= '9' || colorChar >= 'a' && colorChar <= 'f' ||
+                colorChar >= 'A' && colorChar <= 'F';
     }
 
     public static float lerpFloat(float f1, float f2, float blend) {
@@ -659,17 +689,20 @@ public class RenderUtils {
         return (a3 << 24) + (r3 << 16) + (g3 << 8) + b3;
     }
 
-    public static void drawHoveringText(List<String> textLines, int mouseX, int mouseY, int screenWidth, int screenHeight, int maxTextWidth, FontRenderer font) {
+    public static void drawHoveringText(List<String> textLines, int mouseX, int mouseY, int screenWidth,
+                                        int screenHeight, int maxTextWidth, FontRenderer font) {
         drawHoveringText(ItemStack.EMPTY, textLines, mouseX, mouseY, screenWidth, screenHeight, maxTextWidth, font);
     }
 
     /**
      * Modified version of Forge's tooltip rendering that doesn't adjust Z depth
      */
-    public static void drawHoveringText(@Nonnull final ItemStack stack, List<String> textLines, int mouseX, int mouseY, int screenWidth, int screenHeight, int maxTextWidth, FontRenderer font) {
+    public static void drawHoveringText(@Nonnull final ItemStack stack, List<String> textLines, int mouseX, int mouseY,
+                                        int screenWidth, int screenHeight, int maxTextWidth, FontRenderer font) {
         if (textLines == null || textLines.isEmpty()) return;
 
-        RenderTooltipEvent.Pre event = new RenderTooltipEvent.Pre(stack, textLines, mouseX, mouseY, screenWidth, screenHeight, maxTextWidth, font);
+        RenderTooltipEvent.Pre event = new RenderTooltipEvent.Pre(stack, textLines, mouseX, mouseY, screenWidth,
+                screenHeight, maxTextWidth, font);
         if (MinecraftForge.EVENT_BUS.post(event)) return;
 
         mouseX = event.getX();
@@ -684,7 +717,7 @@ public class RenderUtils {
         GlStateManager.disableRescaleNormal();
         RenderHelper.disableStandardItemLighting();
         GlStateManager.disableLighting();
-        //GlStateManager.enableDepth();
+        // GlStateManager.enableDepth();
         GlStateManager.disableDepth();
         int tooltipTextWidth = 0;
 
@@ -766,29 +799,43 @@ public class RenderUtils {
         } else if (tooltipY + tooltipHeight + 4 > screenHeight) {
             tooltipY = screenHeight - tooltipHeight - 4;
         }
-		
-		/*int backgroundColor = 0xF0100010;
-		int borderColorStart = 0x505000FF;
-		int borderColorEnd = (borderColorStart & 0xFEFEFE) >> 1 | borderColorStart & 0xFF000000;
-		
-		RenderTooltipEvent.Color colorEvent = new RenderTooltipEvent.Color(stack, textLines, tooltipX, tooltipY, font, backgroundColor, borderColorStart, borderColorEnd);
-		MinecraftForge.EVENT_BUS.post(colorEvent);
-		backgroundColor = colorEvent.getBackground();
-		borderColorStart = colorEvent.getBorderStart();
-		borderColorEnd = colorEvent.getBorderEnd();
-		
-		GuiUtils.drawGradientRect(0, tooltipX - 3, tooltipY - 4, tooltipX + tooltipTextWidth + 3, tooltipY - 3, backgroundColor, backgroundColor);
-		GuiUtils.drawGradientRect(0, tooltipX - 3, tooltipY + tooltipHeight + 3, tooltipX + tooltipTextWidth + 3, tooltipY + tooltipHeight + 4, backgroundColor, backgroundColor);
-		GuiUtils.drawGradientRect(0, tooltipX - 3, tooltipY - 3, tooltipX + tooltipTextWidth + 3, tooltipY + tooltipHeight + 3, backgroundColor, backgroundColor);
-		GuiUtils.drawGradientRect(0, tooltipX - 4, tooltipY - 3, tooltipX - 3, tooltipY + tooltipHeight + 3, backgroundColor, backgroundColor);
-		GuiUtils.drawGradientRect(0, tooltipX + tooltipTextWidth + 3, tooltipY - 3, tooltipX + tooltipTextWidth + 4, tooltipY + tooltipHeight + 3, backgroundColor, backgroundColor);
-		GuiUtils.drawGradientRect(0, tooltipX - 3, tooltipY - 3 + 1, tooltipX - 3 + 1, tooltipY + tooltipHeight + 3 - 1, borderColorStart, borderColorEnd);
-		GuiUtils.drawGradientRect(0, tooltipX + tooltipTextWidth + 2, tooltipY - 3 + 1, tooltipX + tooltipTextWidth + 3, tooltipY + tooltipHeight + 3 - 1, borderColorStart, borderColorEnd);
-		GuiUtils.drawGradientRect(0, tooltipX - 3, tooltipY - 3, tooltipX + tooltipTextWidth + 3, tooltipY - 3 + 1, borderColorStart, borderColorStart);
-		GuiUtils.drawGradientRect(0, tooltipX - 3, tooltipY + tooltipHeight + 2, tooltipX + tooltipTextWidth + 3, tooltipY + tooltipHeight + 3, borderColorEnd, borderColorEnd);
 
-		MinecraftForge.EVENT_BUS.post(new RenderTooltipEvent.PostBackground(stack, textLines, tooltipX, tooltipY, font, tooltipTextWidth, tooltipHeight));*/
-        PresetTexture.TOOLTIP_BG.getTexture().drawTexture(tooltipX - 4, tooltipY - 4, tooltipTextWidth + 8, tooltipHeight + 8, 0F, 1F);
+        /*
+         * int backgroundColor = 0xF0100010;
+         * int borderColorStart = 0x505000FF;
+         * int borderColorEnd = (borderColorStart & 0xFEFEFE) >> 1 | borderColorStart & 0xFF000000;
+         *
+         * RenderTooltipEvent.Color colorEvent = new RenderTooltipEvent.Color(stack, textLines, tooltipX, tooltipY,
+         * font, backgroundColor, borderColorStart, borderColorEnd);
+         * MinecraftForge.EVENT_BUS.post(colorEvent);
+         * backgroundColor = colorEvent.getBackground();
+         * borderColorStart = colorEvent.getBorderStart();
+         * borderColorEnd = colorEvent.getBorderEnd();
+         *
+         * GuiUtils.drawGradientRect(0, tooltipX - 3, tooltipY - 4, tooltipX + tooltipTextWidth + 3, tooltipY - 3,
+         * backgroundColor, backgroundColor);
+         * GuiUtils.drawGradientRect(0, tooltipX - 3, tooltipY + tooltipHeight + 3, tooltipX + tooltipTextWidth + 3,
+         * tooltipY + tooltipHeight + 4, backgroundColor, backgroundColor);
+         * GuiUtils.drawGradientRect(0, tooltipX - 3, tooltipY - 3, tooltipX + tooltipTextWidth + 3, tooltipY +
+         * tooltipHeight + 3, backgroundColor, backgroundColor);
+         * GuiUtils.drawGradientRect(0, tooltipX - 4, tooltipY - 3, tooltipX - 3, tooltipY + tooltipHeight + 3,
+         * backgroundColor, backgroundColor);
+         * GuiUtils.drawGradientRect(0, tooltipX + tooltipTextWidth + 3, tooltipY - 3, tooltipX + tooltipTextWidth + 4,
+         * tooltipY + tooltipHeight + 3, backgroundColor, backgroundColor);
+         * GuiUtils.drawGradientRect(0, tooltipX - 3, tooltipY - 3 + 1, tooltipX - 3 + 1, tooltipY + tooltipHeight + 3 -
+         * 1, borderColorStart, borderColorEnd);
+         * GuiUtils.drawGradientRect(0, tooltipX + tooltipTextWidth + 2, tooltipY - 3 + 1, tooltipX + tooltipTextWidth +
+         * 3, tooltipY + tooltipHeight + 3 - 1, borderColorStart, borderColorEnd);
+         * GuiUtils.drawGradientRect(0, tooltipX - 3, tooltipY - 3, tooltipX + tooltipTextWidth + 3, tooltipY - 3 + 1,
+         * borderColorStart, borderColorStart);
+         * GuiUtils.drawGradientRect(0, tooltipX - 3, tooltipY + tooltipHeight + 2, tooltipX + tooltipTextWidth + 3,
+         * tooltipY + tooltipHeight + 3, borderColorEnd, borderColorEnd);
+         *
+         * MinecraftForge.EVENT_BUS.post(new RenderTooltipEvent.PostBackground(stack, textLines, tooltipX, tooltipY,
+         * font, tooltipTextWidth, tooltipHeight));
+         */
+        PresetTexture.TOOLTIP_BG.getTexture().drawTexture(tooltipX - 4, tooltipY - 4, tooltipTextWidth + 8,
+                tooltipHeight + 8, 0F, 1F);
         int tooltipTop = tooltipY;
 
         GlStateManager.translate(0F, 0F, 0.1F);
@@ -804,18 +851,20 @@ public class RenderUtils {
             tooltipY += 10;
         }
 
-        MinecraftForge.EVENT_BUS.post(new RenderTooltipEvent.PostText(stack, textLines, tooltipX, tooltipTop, font, tooltipTextWidth, tooltipHeight));
+        MinecraftForge.EVENT_BUS.post(new RenderTooltipEvent.PostText(stack, textLines, tooltipX, tooltipTop, font,
+                tooltipTextWidth, tooltipHeight));
 
         GlStateManager.enableLighting();
-        //GlStateManager.disableDepth();
-        //GlStateManager.enableDepth();
+        // GlStateManager.disableDepth();
+        // GlStateManager.enableDepth();
         RenderHelper.enableStandardItemLighting();
         GlStateManager.enableRescaleNormal();
         GlStateManager.popMatrix();
     }
 
     /**
-     * A version of getStringWidth that actually behaves according to the format resetting rules of colour codes. Minecraft's built in one is busted!
+     * A version of getStringWidth that actually behaves according to the format resetting rules of colour codes.
+     * Minecraft's built in one is busted!
      */
     public static int getStringWidth(String text, FontRenderer font) {
         if (text == null || text.length() == 0) return 0;
@@ -836,7 +885,7 @@ public class RenderUtils {
 
                 if (c0 != 'l' && c0 != 'L') {
                     int ci = "0123456789abcdefklmnor".indexOf(String.valueOf(c0).toLowerCase(Locale.ROOT).charAt(0));
-                    //if (c0 == 'r' || c0 == 'R') // Minecraft's original implemention. This is broken...
+                    // if (c0 == 'r' || c0 == 'R') // Minecraft's original implemention. This is broken...
                     if (ci < 16 || ci == 21) // Reset bolding. Now supporting colour AND reset codes!
                     {
                         bold = false;

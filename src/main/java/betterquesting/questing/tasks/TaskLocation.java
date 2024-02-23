@@ -1,13 +1,10 @@
 package betterquesting.questing.tasks;
 
-import betterquesting.api.questing.IQuest;
-import betterquesting.api2.client.gui.misc.IGuiRect;
-import betterquesting.api2.client.gui.panels.IGuiPanel;
-import betterquesting.api2.storage.DBEntry;
-import betterquesting.api2.utils.ParticipantInfo;
-import betterquesting.client.gui2.tasks.PanelTaskLocation;
-import betterquesting.core.BetterQuesting;
-import betterquesting.questing.tasks.factory.FactoryTaskLocation;
+import java.util.*;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -19,13 +16,20 @@ import net.minecraft.util.StringUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+
 import org.apache.logging.log4j.Level;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
+import betterquesting.api.questing.IQuest;
+import betterquesting.api2.client.gui.misc.IGuiRect;
+import betterquesting.api2.client.gui.panels.IGuiPanel;
+import betterquesting.api2.storage.DBEntry;
+import betterquesting.api2.utils.ParticipantInfo;
+import betterquesting.client.gui2.tasks.PanelTaskLocation;
+import betterquesting.core.BetterQuesting;
+import betterquesting.questing.tasks.factory.FactoryTaskLocation;
 
 public class TaskLocation implements ITaskTickable {
+
     private final Set<UUID> completeUsers = new TreeSet<>();
     public String name = "New Location";
     public String structure = "";
@@ -87,22 +91,25 @@ public class TaskLocation implements ITaskTickable {
         boolean flag = false;
 
         if (playerMP.dimension == dim && (range <= 0 || getDistance(playerMP) <= range)) {
-            if (!StringUtils.isNullOrEmpty(biome) && !new ResourceLocation(biome).equals(playerMP.getServerWorld().getBiome(playerMP.getPosition()).getRegistryName())) {
+            if (!StringUtils.isNullOrEmpty(biome) && !new ResourceLocation(biome)
+                    .equals(playerMP.getServerWorld().getBiome(playerMP.getPosition()).getRegistryName())) {
                 if (!invert) return;
-            } else if (!StringUtils.isNullOrEmpty(structure) && !playerMP.getServerWorld().getChunkProvider().isInsideStructure(playerMP.world, structure, playerMP.getPosition())) {
-                if (!invert) return;
-            } else if (visible && range > 0) // Do not do ray casting with infinite range!
-            {
-                Vec3d pPos = new Vec3d(playerMP.posX, playerMP.posY + playerMP.getEyeHeight(), playerMP.posZ);
-                Vec3d tPos = new Vec3d(x, y, z);
-                RayTraceResult mop = playerMP.world.rayTraceBlocks(pPos, tPos, false, true, false);
+            } else if (!StringUtils.isNullOrEmpty(structure) && !playerMP.getServerWorld().getChunkProvider()
+                    .isInsideStructure(playerMP.world, structure, playerMP.getPosition())) {
+                        if (!invert) return;
+                    } else
+                if (visible && range > 0) // Do not do ray casting with infinite range!
+                {
+                    Vec3d pPos = new Vec3d(playerMP.posX, playerMP.posY + playerMP.getEyeHeight(), playerMP.posZ);
+                    Vec3d tPos = new Vec3d(x, y, z);
+                    RayTraceResult mop = playerMP.world.rayTraceBlocks(pPos, tPos, false, true, false);
 
-                if (mop == null || mop.typeOfHit != RayTraceResult.Type.BLOCK) {
+                    if (mop == null || mop.typeOfHit != RayTraceResult.Type.BLOCK) {
+                        flag = true;
+                    }
+                } else {
                     flag = true;
                 }
-            } else {
-                flag = true;
-            }
         }
 
         if (flag != invert) {

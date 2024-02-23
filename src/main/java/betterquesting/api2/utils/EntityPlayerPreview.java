@@ -1,7 +1,5 @@
 package betterquesting.api2.utils;
 
-import betterquesting.core.ModReference;
-import com.mojang.authlib.GameProfile;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.util.ResourceLocation;
@@ -11,7 +9,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import com.mojang.authlib.GameProfile;
+
+import betterquesting.core.ModReference;
+
 public class EntityPlayerPreview extends EntityOtherPlayerMP {
+
     private final ResourceLocation resource;
 
     /**

@@ -1,5 +1,25 @@
 package betterquesting.importers.hqm;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.concurrent.Future;
+import java.util.function.Function;
+
+import net.minecraft.init.Items;
+import net.minecraft.nbt.NBTTagList;
+
+import org.apache.logging.log4j.Level;
+
+import com.google.gson.*;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.client.importers.IImporter;
 import betterquesting.api.properties.NativeProps;
@@ -18,25 +38,9 @@ import betterquesting.importers.hqm.converters.rewards.HQMRewardCommand;
 import betterquesting.importers.hqm.converters.rewards.HQMRewardReputation;
 import betterquesting.importers.hqm.converters.rewards.HQMRewardStandard;
 import betterquesting.importers.hqm.converters.tasks.*;
-import com.google.gson.*;
-import net.minecraft.init.Items;
-import net.minecraft.nbt.NBTTagList;
-import org.apache.logging.log4j.Level;
-
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.concurrent.Future;
-import java.util.function.Function;
 
 public class HQMQuestImporter implements IImporter {
+
     public static final HQMQuestImporter INSTANCE = new HQMQuestImporter();
     private static final FileFilter FILTER = new FileExtensionFilter(".json");
 
@@ -138,7 +142,6 @@ public class HQMQuestImporter implements IImporter {
             if (jRep.has("Id")) repId = JsonHelper.GetNumber(jRep, "Id", i).toString();
             if (jRep.has("id")) repId = JsonHelper.GetString(jRep, "id", repId);
 
-
             HQMRep repObj = new HQMRep(repName);
 
             JsonArray mrkAry = null;
@@ -203,7 +206,8 @@ public class HQMQuestImporter implements IImporter {
                 while (loadedQuests.contains(idName + " (" + n + ")")) {
                     n++;
                 }
-                BetterQuesting.logger.log(Level.WARN, "Found duplicate quest " + name + ". Any quests with this pre-requisite will need repair!");
+                BetterQuesting.logger.log(Level.WARN,
+                        "Found duplicate quest " + name + ". Any quests with this pre-requisite will need repair!");
                 idName = name + " (" + n + ")";
             }
 
@@ -306,7 +310,8 @@ public class HQMQuestImporter implements IImporter {
             }
 
             if (questLine.getValue(questDB.getID(quest)) != null) {
-                BetterQuesting.logger.log(Level.WARN, "Tried to add duplicate quest " + quest + " to quest line " + questLine.getUnlocalisedName());
+                BetterQuesting.logger.log(Level.WARN,
+                        "Tried to add duplicate quest " + quest + " to quest line " + questLine.getUnlocalisedName());
             } else {
                 final int qleX = JsonHelper.GetNumber(jQuest, "x", 0).intValue();
                 final int qleY = JsonHelper.GetNumber(jQuest, "y", 0).intValue();

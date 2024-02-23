@@ -1,15 +1,9 @@
 package betterquesting.questing.tasks;
 
-import betterquesting.api.questing.IQuest;
-import betterquesting.api.questing.tasks.ITask;
-import betterquesting.api2.client.gui.misc.IGuiRect;
-import betterquesting.api2.client.gui.panels.IGuiPanel;
-import betterquesting.api2.storage.DBEntry;
-import betterquesting.api2.utils.ParticipantInfo;
-import betterquesting.client.gui2.editors.tasks.GuiEditTaskAdvancement;
-import betterquesting.client.gui2.tasks.PanelTaskAdvancement;
-import betterquesting.core.BetterQuesting;
-import betterquesting.questing.tasks.factory.FactoryTaskAdvancement;
+import java.util.*;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.client.gui.GuiScreen;
@@ -21,12 +15,22 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.apache.logging.log4j.Level;
 
-import javax.annotation.Nullable;
-import java.util.*;
+import betterquesting.api.questing.IQuest;
+import betterquesting.api.questing.tasks.ITask;
+import betterquesting.api2.client.gui.misc.IGuiRect;
+import betterquesting.api2.client.gui.panels.IGuiPanel;
+import betterquesting.api2.storage.DBEntry;
+import betterquesting.api2.utils.ParticipantInfo;
+import betterquesting.client.gui2.editors.tasks.GuiEditTaskAdvancement;
+import betterquesting.client.gui2.tasks.PanelTaskAdvancement;
+import betterquesting.core.BetterQuesting;
+import betterquesting.questing.tasks.factory.FactoryTaskAdvancement;
 
 public class TaskAdvancement implements ITask {
+
     private final Set<UUID> completeUsers = new TreeSet<>();
     public ResourceLocation advID;
 
@@ -51,7 +55,8 @@ public class TaskAdvancement implements ITask {
 
         Advancement adv = pInfo.PLAYER.getServer().getAdvancementManager().getAdvancement(advID);
         if (adv == null) return;
-        PlayerAdvancements playerAdv = pInfo.PLAYER.getServer().getPlayerList().getPlayerAdvancements((EntityPlayerMP) pInfo.PLAYER);
+        PlayerAdvancements playerAdv = pInfo.PLAYER.getServer().getPlayerList()
+                .getPlayerAdvancements((EntityPlayerMP) pInfo.PLAYER);
 
         if (playerAdv.getProgress(adv).isDone()) setComplete(pInfo.UUID);
         pInfo.markDirty(Collections.singletonList(quest.getID()));

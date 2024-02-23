@@ -1,10 +1,11 @@
 package betterquesting.api2.client.gui.resources.colors;
 
-import net.minecraft.client.renderer.GlStateManager;
-
 import java.awt.*;
 
+import net.minecraft.client.renderer.GlStateManager;
+
 public class GuiColorStatic implements IGuiColor {
+
     private final int argb;
 
     public GuiColorStatic(int color) {

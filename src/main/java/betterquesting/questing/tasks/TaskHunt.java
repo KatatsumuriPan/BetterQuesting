@@ -1,16 +1,10 @@
 package betterquesting.questing.tasks;
 
-import betterquesting.api.questing.IQuest;
-import betterquesting.api.questing.tasks.ITask;
-import betterquesting.api.utils.ItemComparison;
-import betterquesting.api2.client.gui.misc.IGuiRect;
-import betterquesting.api2.client.gui.panels.IGuiPanel;
-import betterquesting.api2.storage.DBEntry;
-import betterquesting.api2.utils.ParticipantInfo;
-import betterquesting.client.gui2.editors.tasks.GuiEditTaskHunt;
-import betterquesting.client.gui2.tasks.PanelTaskHunt;
-import betterquesting.core.BetterQuesting;
-import betterquesting.questing.tasks.factory.FactoryTaskHunt;
+import java.util.*;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -23,13 +17,23 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.apache.logging.log4j.Level;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
+import betterquesting.api.questing.IQuest;
+import betterquesting.api.questing.tasks.ITask;
+import betterquesting.api.utils.ItemComparison;
+import betterquesting.api2.client.gui.misc.IGuiRect;
+import betterquesting.api2.client.gui.panels.IGuiPanel;
+import betterquesting.api2.storage.DBEntry;
+import betterquesting.api2.utils.ParticipantInfo;
+import betterquesting.client.gui2.editors.tasks.GuiEditTaskHunt;
+import betterquesting.client.gui2.tasks.PanelTaskHunt;
+import betterquesting.core.BetterQuesting;
+import betterquesting.questing.tasks.factory.FactoryTaskHunt;
 
 public class TaskHunt implements ITask {
+
     private final Set<UUID> completeUsers = new TreeSet<>();
     private final TreeMap<UUID, Integer> userProgress = new TreeMap<>();
     public String idName = "minecraft:zombie";
@@ -74,7 +78,8 @@ public class TaskHunt implements ITask {
         pInfo.markDirtyParty(Collections.singletonList(quest.getID()));
     }
 
-    public void onKilledByPlayer(ParticipantInfo pInfo, DBEntry<IQuest> quest, @Nonnull EntityLivingBase entity, DamageSource source) {
+    public void onKilledByPlayer(ParticipantInfo pInfo, DBEntry<IQuest> quest, @Nonnull EntityLivingBase entity,
+                                 DamageSource source) {
         if (damageType.length() > 0 && (source == null || !damageType.equalsIgnoreCase(source.damageType))) return;
 
         Class<? extends Entity> subject = entity.getClass();

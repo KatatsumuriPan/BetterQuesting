@@ -1,12 +1,7 @@
 package betterquesting.questing.rewards;
 
-import betterquesting.api.questing.IQuest;
-import betterquesting.api.questing.rewards.IReward;
-import betterquesting.api2.client.gui.misc.IGuiRect;
-import betterquesting.api2.client.gui.panels.IGuiPanel;
-import betterquesting.api2.storage.DBEntry;
-import betterquesting.client.gui2.rewards.PanelRewardRecipe;
-import betterquesting.questing.rewards.factory.FactoryRewardRecipe;
+import javax.annotation.Nullable;
+
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,9 +9,16 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
+import betterquesting.api.questing.IQuest;
+import betterquesting.api.questing.rewards.IReward;
+import betterquesting.api2.client.gui.misc.IGuiRect;
+import betterquesting.api2.client.gui.panels.IGuiPanel;
+import betterquesting.api2.storage.DBEntry;
+import betterquesting.client.gui2.rewards.PanelRewardRecipe;
+import betterquesting.questing.rewards.factory.FactoryRewardRecipe;
 
 public class RewardRecipe implements IReward {
+
     public String recipeNames = "minecraft:crafting_table\nminecraft:chest";
 
     @Override

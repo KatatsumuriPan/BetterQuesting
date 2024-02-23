@@ -1,6 +1,5 @@
 package betterquesting.items;
 
-import betterquesting.core.BetterQuesting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,7 +10,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import betterquesting.core.BetterQuesting;
+
 public class ItemGuideBook extends Item {
+
     public ItemGuideBook() {
         this.setTranslationKey("betterquesting.guide");
         this.setCreativeTab(BetterQuesting.tabQuesting);

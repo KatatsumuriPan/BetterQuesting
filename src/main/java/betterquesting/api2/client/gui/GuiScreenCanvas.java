@@ -1,5 +1,22 @@
 package betterquesting.api2.client.gui;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.item.ItemStack;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+
 import betterquesting.api.client.gui.misc.IVolatileScreen;
 import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api.utils.RenderUtils;
@@ -9,22 +26,9 @@ import betterquesting.api2.client.gui.popups.PopChoice;
 import betterquesting.api2.client.gui.themes.presets.PresetIcon;
 import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.client.BQ_Keybindings;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.item.ItemStack;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-
-import javax.annotation.Nonnull;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GuiScreenCanvas extends GuiScreen implements IScene {
+
     private final List<IGuiPanel> guiPanels = new CopyOnWriteArrayList<>();
     private final GuiRectangle rootTransform = new GuiRectangle(0, 0, 0, 0, 0);
     private final GuiTransform transform = new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(16, 16, 16, 16), 0);
@@ -36,7 +40,7 @@ public class GuiScreenCanvas extends GuiScreen implements IScene {
     public final GuiScreen parent;
 
     private IGuiPanel popup = null;
-    //private IGuiPanel focused = null;
+    // private IGuiPanel focused = null;
 
     public GuiScreenCanvas(GuiScreen parent) {
         this.parent = parent;
@@ -47,13 +51,13 @@ public class GuiScreenCanvas extends GuiScreen implements IScene {
         panel.getTransform().setParent(rootTransform);
         popup = panel;
         panel.initPanel();
-        //forceFocus(panel);
+        // forceFocus(panel);
     }
 
     @Override
     public void closePopup() {
         popup = null;
-        //resetFocus();
+        // resetFocus();
     }
 
     @Override
@@ -162,8 +166,7 @@ public class GuiScreenCanvas extends GuiScreen implements IScene {
      */
     @Override
     @Deprecated
-    public void actionPerformed(GuiButton button) {
-    }
+    public void actionPerformed(GuiButton button) {}
 
     // Remembers the last mouse buttons states. Required to fire release events
     private boolean[] mBtnState = new boolean[3];
@@ -197,7 +200,11 @@ public class GuiScreenCanvas extends GuiScreen implements IScene {
         if (keyCode == 1) // ESCAPE
         {
             if (this.isVolatile || this instanceof IVolatileScreen) {
-                openPopup(new PopChoice(QuestTranslation.translate("betterquesting.gui.closing_warning") + "\n\n" + QuestTranslation.translate("betterquesting.gui.closing_confirm"), PresetIcon.ICON_NOTICE.getTexture(), this::confirmClose, QuestTranslation.translate("gui.yes"), QuestTranslation.translate("gui.no")));
+                openPopup(new PopChoice(
+                        QuestTranslation.translate("betterquesting.gui.closing_warning") + "\n\n" +
+                                QuestTranslation.translate("betterquesting.gui.closing_confirm"),
+                        PresetIcon.ICON_NOTICE.getTexture(), this::confirmClose, QuestTranslation.translate("gui.yes"),
+                        QuestTranslation.translate("gui.no")));
             } else {
                 this.mc.displayGuiScreen(null);
                 if (this.mc.currentScreen == null) this.mc.setIngameFocus();
@@ -329,9 +336,14 @@ public class GuiScreenCanvas extends GuiScreen implements IScene {
             }
         }
 
-        if (!used && (BQ_Keybindings.openQuests.getKeyCode() == keycode || mc.gameSettings.keyBindInventory.getKeyCode() == keycode)) {
+        if (!used && (BQ_Keybindings.openQuests.getKeyCode() == keycode ||
+                mc.gameSettings.keyBindInventory.getKeyCode() == keycode)) {
             if (this.isVolatile || this instanceof IVolatileScreen) {
-                openPopup(new PopChoice(QuestTranslation.translate("betterquesting.gui.closing_warning") + "\n\n" + QuestTranslation.translate("betterquesting.gui.closing_confirm"), PresetIcon.ICON_NOTICE.getTexture(), this::confirmClose, QuestTranslation.translate("gui.yes"), QuestTranslation.translate("gui.no")));
+                openPopup(new PopChoice(
+                        QuestTranslation.translate("betterquesting.gui.closing_warning") + "\n\n" +
+                                QuestTranslation.translate("betterquesting.gui.closing_confirm"),
+                        PresetIcon.ICON_NOTICE.getTexture(), this::confirmClose, QuestTranslation.translate("gui.yes"),
+                        QuestTranslation.translate("gui.no")));
             } else {
                 this.mc.displayGuiScreen(null);
                 if (this.mc.currentScreen == null) this.mc.setIngameFocus();
@@ -392,7 +404,8 @@ public class GuiScreenCanvas extends GuiScreen implements IScene {
     @Override
     protected void renderToolTip(ItemStack stack, int x, int y) {
         FontRenderer font = stack.getItem().getFontRenderer(stack);
-        RenderUtils.drawHoveringText(stack, this.getItemToolTip(stack), x, y, width, height, -1, (font == null ? fontRenderer : font));
+        RenderUtils.drawHoveringText(stack, this.getItemToolTip(stack), x, y, width, height, -1,
+                (font == null ? fontRenderer : font));
     }
 
     @Override

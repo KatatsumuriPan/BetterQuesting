@@ -1,12 +1,14 @@
 package betterquesting.importers.hqm.converters.items;
 
-import betterquesting.api.utils.BigItemStack;
-import betterquesting.core.ModReference;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
+import betterquesting.api.utils.BigItemStack;
+import betterquesting.core.ModReference;
+
 public class HQMItemHeart implements HQMItem {
+
     private final Item bqHeart;
 
     public HQMItemHeart() {

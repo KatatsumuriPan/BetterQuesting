@@ -1,17 +1,10 @@
 package betterquesting.questing.tasks;
 
-import betterquesting.NbtBlockType;
-import betterquesting.api.questing.IQuest;
-import betterquesting.api.questing.tasks.ITask;
-import betterquesting.api.utils.BigItemStack;
-import betterquesting.api.utils.ItemComparison;
-import betterquesting.api2.client.gui.misc.IGuiRect;
-import betterquesting.api2.client.gui.panels.IGuiPanel;
-import betterquesting.api2.storage.DBEntry;
-import betterquesting.api2.utils.ParticipantInfo;
-import betterquesting.client.gui2.tasks.PanelTaskInteractItem;
-import betterquesting.core.BetterQuesting;
-import betterquesting.questing.tasks.factory.FactoryTaskInteractItem;
+import java.util.*;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.init.Blocks;
@@ -28,13 +21,24 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
+
 import org.apache.logging.log4j.Level;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
+import betterquesting.NbtBlockType;
+import betterquesting.api.questing.IQuest;
+import betterquesting.api.questing.tasks.ITask;
+import betterquesting.api.utils.BigItemStack;
+import betterquesting.api.utils.ItemComparison;
+import betterquesting.api2.client.gui.misc.IGuiRect;
+import betterquesting.api2.client.gui.panels.IGuiPanel;
+import betterquesting.api2.storage.DBEntry;
+import betterquesting.api2.utils.ParticipantInfo;
+import betterquesting.client.gui2.tasks.PanelTaskInteractItem;
+import betterquesting.core.BetterQuesting;
+import betterquesting.questing.tasks.factory.FactoryTaskInteractItem;
 
 public class TaskInteractItem implements ITask {
+
     private final Set<UUID> completeUsers = new TreeSet<>();
     private final TreeMap<UUID, Integer> userProgress = new TreeMap<>();
 
@@ -58,7 +62,8 @@ public class TaskInteractItem implements ITask {
         return FactoryTaskInteractItem.INSTANCE.getRegistryName();
     }
 
-    public void onInteract(ParticipantInfo pInfo, DBEntry<IQuest> quest, EnumHand hand, ItemStack item, IBlockState state, BlockPos pos, boolean isHit) {
+    public void onInteract(ParticipantInfo pInfo, DBEntry<IQuest> quest, EnumHand hand, ItemStack item,
+                           IBlockState state, BlockPos pos, boolean isHit) {
         if ((!onHit && isHit) || (!onInteract && !isHit)) return;
         if ((!useMainHand && hand == EnumHand.MAIN_HAND) || (!useOffHand && hand == EnumHand.OFF_HAND)) return;
 
@@ -67,16 +72,21 @@ public class TaskInteractItem implements ITask {
             TileEntity tile = state.getBlock().hasTileEntity(state) ? pInfo.PLAYER.world.getTileEntity(pos) : null;
             NBTTagCompound tags = tile == null ? null : tile.writeToNBT(new NBTTagCompound());
 
-            int tmpMeta = (targetBlock.m < 0 || targetBlock.m == OreDictionary.WILDCARD_VALUE) ? OreDictionary.WILDCARD_VALUE : state.getBlock().getMetaFromState(state);
-            boolean oreMatch = targetBlock.oreDict.length() > 0 && OreDictionary.getOres(targetBlock.oreDict).contains(new ItemStack(state.getBlock(), 1, tmpMeta));
+            int tmpMeta = (targetBlock.m < 0 || targetBlock.m == OreDictionary.WILDCARD_VALUE) ?
+                    OreDictionary.WILDCARD_VALUE : state.getBlock().getMetaFromState(state);
+            boolean oreMatch = targetBlock.oreDict.length() > 0 &&
+                    OreDictionary.getOres(targetBlock.oreDict).contains(new ItemStack(state.getBlock(), 1, tmpMeta));
 
-            if ((!oreMatch && (state.getBlock() != targetBlock.b || (targetBlock.m >= 0 && state.getBlock().getMetaFromState(state) != targetBlock.m))) || !ItemComparison.CompareNBTTag(targetBlock.tags, tags, true)) {
+            if ((!oreMatch && (state.getBlock() != targetBlock.b ||
+                    (targetBlock.m >= 0 && state.getBlock().getMetaFromState(state) != targetBlock.m))) ||
+                    !ItemComparison.CompareNBTTag(targetBlock.tags, tags, true)) {
                 return;
             }
         }
 
         if (targetItem.getBaseStack().getItem() != Items.AIR) {
-            if (targetItem.hasOreDict() && !ItemComparison.OreDictionaryMatch(targetItem.getOreIngredient(), targetItem.GetTagCompound(), item, !ignoreNBT, partialMatch)) {
+            if (targetItem.hasOreDict() && !ItemComparison.OreDictionaryMatch(targetItem.getOreIngredient(),
+                    targetItem.GetTagCompound(), item, !ignoreNBT, partialMatch)) {
                 return;
             } else if (!ItemComparison.StackMatch(targetItem.getBaseStack(), item, !ignoreNBT, partialMatch)) {
                 return;

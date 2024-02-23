@@ -16,7 +16,8 @@ public class SimpleDatabase<T> implements IDatabase<T> {
      * If {@code mapDB.size < SPARSE_RATIO * (mapDB.lastKey() - mapDB.firstKey())} the database will be considered
      * sparse and an cache array won't be built to save memory.
      * <p>
-     * Under this sparsity a 10k element database will roughly result in a 0.5MB cache which is more than enough reasonable.
+     * Under this sparsity a 10k element database will roughly result in a 0.5MB cache
+     * which is more than enough reasonable.
      */
     public static double SPARSE_RATIO = 0.15d;
 

@@ -1,12 +1,5 @@
 package betterquesting.network;
 
-import betterquesting.core.BetterQuesting;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTSizeTracker;
-import net.minecraft.nbt.NBTTagByteArray;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.MathHelper;
-
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,7 +7,16 @@ import java.io.DataInputStream;
 import java.util.*;
 import java.util.zip.GZIPInputStream;
 
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTSizeTracker;
+import net.minecraft.nbt.NBTTagByteArray;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.MathHelper;
+
+import betterquesting.core.BetterQuesting;
+
 public final class PacketAssembly {
+
     public static final PacketAssembly INSTANCE = new PacketAssembly();
 
     // TODO: Allow for simultaneous packet assembly (may not be necessary)
@@ -25,7 +27,7 @@ public final class PacketAssembly {
 
     // Internal server packet buffer (server to server or client side)
     private byte[] serverBuf = null;
-    //private int id = 0;
+    // private int id = 0;
 
     private static final int bufSize = 20480; // 20KB
 
@@ -83,16 +85,19 @@ public final class PacketAssembly {
         }
 
         System.arraycopy(data, 0, tmp, index, data.length);
-		/*for(int i = 0; i < data.length && index + i < size; i++)
-		{
-			tmp[index + i] = data[i];
-		}*/
+        /*
+         * for(int i = 0; i < data.length && index + i < size; i++)
+         * {
+         * tmp[index + i] = data[i];
+         * }
+         */
 
         if (end) {
             clearBuffer(owner);
 
             try {
-                DataInputStream dis = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new ByteArrayInputStream(tmp))));
+                DataInputStream dis = new DataInputStream(
+                        new BufferedInputStream(new GZIPInputStream(new ByteArrayInputStream(tmp))));
                 NBTTagCompound tag = CompressedStreamTools.read(dis, NBTSizeTracker.INFINITE);
                 dis.close();
                 return tag;
@@ -120,7 +125,8 @@ public final class PacketAssembly {
         } else {
             synchronized (buffer) {
                 if (buffer.containsKey(owner)) {
-                    throw new IllegalStateException("Attepted to start more than one BQ packet assembly for UUID " + owner.toString());
+                    throw new IllegalStateException(
+                            "Attepted to start more than one BQ packet assembly for UUID " + owner.toString());
                 }
 
                 buffer.put(owner, value);

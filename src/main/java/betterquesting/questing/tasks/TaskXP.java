@@ -1,5 +1,18 @@
 package betterquesting.questing.tasks;
 
+import java.util.*;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.ResourceLocation;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.XPHelper;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.client.gui.misc.IGuiRect;
@@ -9,18 +22,9 @@ import betterquesting.api2.utils.ParticipantInfo;
 import betterquesting.client.gui2.tasks.PanelTaskXP;
 import betterquesting.core.BetterQuesting;
 import betterquesting.questing.tasks.factory.FactoryTaskXP;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.ResourceLocation;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
 
 public class TaskXP implements ITaskTickable {
+
     private final Set<UUID> completeUsers = new TreeSet<>();
     private final HashMap<UUID, Long> userProgress = new HashMap<>();
     public boolean levels = true;
@@ -89,8 +93,9 @@ public class TaskXP implements ITaskTickable {
             changed = true;
         }
 
-        if (changed) // Needs to be here because even if no additional progress was added, a party memeber may have completed the task anyway
-        {
+        // Needs to be here because even if no additional progress was added,
+        // a party memeber may have completed the task anyway
+        if (changed) {
             pInfo.markDirty(Collections.singletonList(quest.getID()));
         }
     }

@@ -1,11 +1,13 @@
 package betterquesting.api2.client.gui.events;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import javax.annotation.Nonnull;
+
 public class PEventEntry<T extends PanelEvent> {
+
     private final List<Consumer<PanelEvent>> listeners = new ArrayList<>();
     private final Class<T> cType;
 

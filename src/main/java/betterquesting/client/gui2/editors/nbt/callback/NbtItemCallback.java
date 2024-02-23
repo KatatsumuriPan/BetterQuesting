@@ -1,12 +1,14 @@
 package betterquesting.client.gui2.editors.nbt.callback;
 
-import betterquesting.api.misc.ICallback;
-import betterquesting.api.utils.BigItemStack;
-import betterquesting.api.utils.JsonHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 
+import betterquesting.api.misc.ICallback;
+import betterquesting.api.utils.BigItemStack;
+import betterquesting.api.utils.JsonHelper;
+
 public class NbtItemCallback implements ICallback<BigItemStack> {
+
     private final NBTTagCompound json;
 
     public NbtItemCallback(NBTTagCompound json) {

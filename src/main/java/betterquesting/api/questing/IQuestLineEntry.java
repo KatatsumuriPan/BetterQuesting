@@ -1,9 +1,11 @@
 package betterquesting.api.questing;
 
-import betterquesting.api2.storage.INBTSaveLoad;
 import net.minecraft.nbt.NBTTagCompound;
 
+import betterquesting.api2.storage.INBTSaveLoad;
+
 public interface IQuestLineEntry extends INBTSaveLoad<NBTTagCompound> {
+
     @Deprecated
     int getSize();
 

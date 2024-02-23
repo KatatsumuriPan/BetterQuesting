@@ -1,18 +1,21 @@
 package betterquesting.storage;
 
-import betterquesting.api.storage.INameCache;
+import java.util.*;
+import java.util.Map.Entry;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.Map.Entry;
+import betterquesting.api.storage.INameCache;
 
 public final class NameCache implements INameCache {
+
     public static final NameCache INSTANCE = new NameCache();
 
     // TODO: Label known names as offline/online and convert accordingly?
@@ -92,8 +95,7 @@ public final class NameCache implements INameCache {
                 j2.setString("name", name);
                 j2.setBoolean("isOP", isOP);
                 cache.put(uuid, j2);
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
         }
     }
 

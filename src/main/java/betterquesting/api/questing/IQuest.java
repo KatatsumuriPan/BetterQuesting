@@ -1,5 +1,14 @@
 package betterquesting.api.questing;
 
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+
 import betterquesting.api.enums.EnumQuestState;
 import betterquesting.api.properties.IPropertyContainer;
 import betterquesting.api.questing.rewards.IReward;
@@ -8,13 +17,6 @@ import betterquesting.api2.client.gui.themes.presets.PresetIcon;
 import betterquesting.api2.storage.IDatabaseNBT;
 import betterquesting.api2.storage.INBTProgress;
 import betterquesting.api2.storage.INBTSaveLoad;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.UUID;
 
 public interface IQuest extends INBTSaveLoad<NBTTagCompound>, INBTProgress<NBTTagCompound>, IPropertyContainer {
 
@@ -43,7 +45,8 @@ public interface IQuest extends INBTSaveLoad<NBTTagCompound>, INBTProgress<NBTTa
     boolean canClaim(EntityPlayer player);
 
     /**
-     * Can we claim reward at all. (If reward available but we can't claim because a rewards not ready (choice reward not chosen, for example))
+     * Can we claim reward at all.
+     * (If reward available but we can't claim because a rewards not ready (choice reward not chosen, for example))
      */
     boolean canClaimBasically(EntityPlayer player);
 
@@ -69,8 +72,8 @@ public interface IQuest extends INBTSaveLoad<NBTTagCompound>, INBTProgress<NBTTa
 
     void setRequirementType(int req, @Nonnull RequirementType kind);
 
-
     enum RequirementType {
+
         NORMAL(PresetIcon.ICON_VISIBILITY_NORMAL),
         IMPLICIT(PresetIcon.ICON_VISIBILITY_IMPLICIT),
         HIDDEN(PresetIcon.ICON_VISIBILITY_HIDDEN);

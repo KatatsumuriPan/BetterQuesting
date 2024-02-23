@@ -1,5 +1,11 @@
 package betterquesting.client.gui2.rewards;
 
+import java.util.UUID;
+
+import net.minecraft.client.Minecraft;
+
+import org.lwjgl.util.vector.Vector4f;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.utils.BigItemStack;
@@ -13,10 +19,6 @@ import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.storage.DBEntry;
 import betterquesting.network.handlers.NetRewardChoice;
 import betterquesting.questing.rewards.RewardChoice;
-import net.minecraft.client.Minecraft;
-import org.lwjgl.util.vector.Vector4f;
-
-import java.util.UUID;
 
 public class PanelRewardChoice extends CanvasMinimum {
 
@@ -37,7 +39,8 @@ public class PanelRewardChoice extends CanvasMinimum {
 
         UUID uuid = QuestingAPI.getQuestingUUID(Minecraft.getMinecraft().player);
         int sel = reward.getSelecton(uuid);
-        PanelItemSlot slot = new PanelItemSlot(new GuiTransform(new Vector4f(0F, 0F, 0F, 0F), 0, 0, 32, 32, 0), -1, sel < 0 ? null : reward.choices.get(sel));
+        PanelItemSlot slot = new PanelItemSlot(new GuiTransform(new Vector4f(0F, 0F, 0F, 0F), 0, 0, 32, 32, 0), -1,
+                sel < 0 ? null : reward.choices.get(sel));
         this.addPanel(slot);
 
         final int qID = quest.getID();
@@ -49,7 +52,9 @@ public class PanelRewardChoice extends CanvasMinimum {
             PanelItemSlot is = new PanelItemSlot(new GuiRectangle(40, i * 18, 18, 18, 0), -1, stack, true);
             this.addPanel(is);
 
-            this.addPanel(new PanelTextBox(new GuiRectangle(62, i * 18 + 4, listWidth - 22, 14, 0), stack.stackSize + " " + stack.getBaseStack().getDisplayName()).setColor(PresetColor.TEXT_MAIN.getColor()));
+            this.addPanel(new PanelTextBox(new GuiRectangle(62, i * 18 + 4, listWidth - 22, 14, 0),
+                    stack.stackSize + " " + stack.getBaseStack().getDisplayName())
+                            .setColor(PresetColor.TEXT_MAIN.getColor()));
 
             final int sID = i;
             is.setCallback(value -> NetRewardChoice.requestChoice(qID, rID, sID));

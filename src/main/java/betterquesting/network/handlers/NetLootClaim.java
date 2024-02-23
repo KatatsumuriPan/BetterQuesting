@@ -1,11 +1,10 @@
 package betterquesting.network.handlers;
 
-import betterquesting.api.api.ApiReference;
-import betterquesting.api.api.QuestingAPI;
-import betterquesting.api.network.QuestingPacket;
-import betterquesting.api.utils.BigItemStack;
-import betterquesting.client.gui2.GuiLootChest;
-import betterquesting.core.BetterQuesting;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,11 +13,15 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
+import betterquesting.api.api.ApiReference;
+import betterquesting.api.api.QuestingAPI;
+import betterquesting.api.network.QuestingPacket;
+import betterquesting.api.utils.BigItemStack;
+import betterquesting.client.gui2.GuiLootChest;
+import betterquesting.core.BetterQuesting;
 
 public class NetLootClaim {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation("bq_standard:loot_claim");
 
     public static void registerHandler() {

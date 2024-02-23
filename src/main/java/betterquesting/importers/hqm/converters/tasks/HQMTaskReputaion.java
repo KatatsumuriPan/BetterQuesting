@@ -1,18 +1,20 @@
 package betterquesting.importers.hqm.converters.tasks;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.importers.hqm.HQMQuestImporter;
 import betterquesting.importers.hqm.converters.HQMRep;
 import betterquesting.questing.tasks.TaskScoreboard;
 import betterquesting.questing.tasks.TaskScoreboard.ScoreOperation;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HQMTaskReputaion {
+
     public ITask[] convertTask(JsonObject json) {
         List<ITask> tasks = new ArrayList<>();
 

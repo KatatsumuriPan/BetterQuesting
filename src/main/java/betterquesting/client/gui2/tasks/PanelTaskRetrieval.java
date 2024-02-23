@@ -1,5 +1,10 @@
 package betterquesting.client.gui2.tasks;
 
+import java.util.UUID;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.TextFormatting;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.api2.client.gui.misc.GuiAlign;
@@ -12,10 +17,6 @@ import betterquesting.api2.client.gui.panels.content.PanelTextBox;
 import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.questing.tasks.TaskRetrieval;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.text.TextFormatting;
-
-import java.util.UUID;
 
 public class PanelTaskRetrieval extends CanvasMinimum {
 
@@ -37,9 +38,12 @@ public class PanelTaskRetrieval extends CanvasMinimum {
         int[] progress = task.getUsersProgress(uuid);
         boolean isComplete = task.isComplete(uuid);
 
-        String sCon = (task.consume ? TextFormatting.RED : TextFormatting.GREEN) + QuestTranslation.translate(task.consume ? "gui.yes" : "gui.no");
+        String sCon = (task.consume ? TextFormatting.RED : TextFormatting.GREEN) +
+                QuestTranslation.translate(task.consume ? "gui.yes" : "gui.no");
 
-        this.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, 0, 0, listW, 16, 0), QuestTranslation.translate("bq_standard.btn.consume", sCon)).setColor(PresetColor.TEXT_MAIN.getColor()));
+        this.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, 0, 0, listW, 16, 0),
+                QuestTranslation.translate("bq_standard.btn.consume", sCon))
+                        .setColor(PresetColor.TEXT_MAIN.getColor()));
 
         for (int i = 0; i < task.requiredItems.size(); i++) {
             BigItemStack stack = task.requiredItems.get(i);

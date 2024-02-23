@@ -1,12 +1,14 @@
 package betterquesting.api2.client.gui.resources.textures;
 
-import betterquesting.api2.client.gui.misc.IGuiRect;
-import betterquesting.api2.client.gui.resources.colors.IGuiColor;
-import net.minecraft.util.ResourceLocation;
-
 import javax.annotation.Nullable;
 
+import net.minecraft.util.ResourceLocation;
+
+import betterquesting.api2.client.gui.misc.IGuiRect;
+import betterquesting.api2.client.gui.resources.colors.IGuiColor;
+
 public class SlideShowTexture implements IGuiTexture {
+
     private final IGuiTexture[] slides;
     private final float interval;
 

@@ -1,5 +1,12 @@
 package betterquesting.client.gui2.tasks;
 
+import java.util.UUID;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.Optional.Method;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api2.client.gui.misc.GuiAlign;
 import betterquesting.api2.client.gui.misc.GuiRectangle;
@@ -15,12 +22,6 @@ import betterquesting.questing.tasks.TaskFluid;
 import mezz.jei.Internal;
 import mezz.jei.api.recipe.IFocus.Mode;
 import mezz.jei.gui.Focus;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.Optional.Method;
-
-import java.util.UUID;
 
 public class PanelTaskFluid extends CanvasMinimum {
 
@@ -42,8 +43,11 @@ public class PanelTaskFluid extends CanvasMinimum {
         int[] progress = task.getUsersProgress(uuid);
         boolean isComplete = task.isComplete(uuid);
 
-        String sCon = (task.consume ? TextFormatting.RED : TextFormatting.GREEN) + QuestTranslation.translate(task.consume ? "gui.yes" : "gui.no");
-        this.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, 0, 0, listW, 12, 0), QuestTranslation.translate("bq_standard.btn.consume", sCon)).setColor(PresetColor.TEXT_MAIN.getColor()));
+        String sCon = (task.consume ? TextFormatting.RED : TextFormatting.GREEN) +
+                QuestTranslation.translate(task.consume ? "gui.yes" : "gui.no");
+        this.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, 0, 0, listW, 12, 0),
+                QuestTranslation.translate("bq_standard.btn.consume", sCon))
+                        .setColor(PresetColor.TEXT_MAIN.getColor()));
 
         for (int i = 0; i < task.requiredFluids.size(); i++) {
             FluidStack stack = task.requiredFluids.get(i);

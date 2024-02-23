@@ -1,5 +1,12 @@
 package betterquesting.client.toolbox.tools;
 
+import java.util.Collections;
+import java.util.List;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
+
 import betterquesting.api.client.toolbox.IToolboxTool;
 import betterquesting.api.questing.IQuestLine;
 import betterquesting.api.questing.IQuestLineEntry;
@@ -12,14 +19,9 @@ import betterquesting.network.handlers.NetQuestEdit;
 import betterquesting.questing.QuestDatabase;
 import betterquesting.questing.QuestLineDatabase;
 import betterquesting.questing.QuestLineEntry;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.NonNullList;
-
-import java.util.Collections;
-import java.util.List;
 
 public class ToolboxToolNew implements IToolboxTool {
+
     private CanvasQuestLine gui = null;
     private PanelButtonQuest nQuest;
 
@@ -31,8 +33,7 @@ public class ToolboxToolNew implements IToolboxTool {
     }
 
     @Override
-    public void refresh(CanvasQuestLine gui) {
-    }
+    public void refresh(CanvasQuestLine gui) {}
 
     @Override
     public void drawCanvas(int mx, int my, float partialTick) {
@@ -76,8 +77,7 @@ public class ToolboxToolNew implements IToolboxTool {
         IQuestLine qLine = gui.getQuestLine();
         int qID = QuestDatabase.INSTANCE.nextID();
         int lID = QuestLineDatabase.INSTANCE.getID(qLine);
-        IQuestLineEntry qe = qLine.getValue(qID);//new QuestLineEntry(mx, my, 24);
-
+        IQuestLineEntry qe = qLine.getValue(qID);// new QuestLineEntry(mx, my, 24);
 
         if (qe == null) {
             qe = new QuestLineEntry(nQuest.rect.x, nQuest.rect.y, 24, 24);
@@ -132,8 +132,7 @@ public class ToolboxToolNew implements IToolboxTool {
     }
 
     @Override
-    public void onSelection(NonNullList<PanelButtonQuest> buttons) {
-    }
+    public void onSelection(NonNullList<PanelButtonQuest> buttons) {}
 
     @Override
     public boolean useSelection() {

@@ -1,5 +1,17 @@
 package betterquesting.client.gui2.editors.designer;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.MathHelper;
+
+import org.lwjgl.input.Keyboard;
+
 import betterquesting.api.client.toolbox.IToolboxTool;
 import betterquesting.api.utils.RenderUtils;
 import betterquesting.api2.client.gui.controls.IValueIO;
@@ -16,18 +28,10 @@ import betterquesting.api2.client.gui.resources.lines.BoxLine;
 import betterquesting.api2.client.gui.resources.lines.IGuiLine;
 import betterquesting.api2.client.gui.resources.textures.ColorTexture;
 import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.MathHelper;
-import org.lwjgl.input.Keyboard;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 // Kinda just a poxy panel where tools can be hotswapped out
 public class PanelToolController implements IGuiPanel {
+
     private CanvasQuestLine questLine;
     private final IGuiRect transform;
     private boolean enabled = true;
@@ -50,6 +54,7 @@ public class PanelToolController implements IGuiPanel {
         this.questLine = questLine;
 
         scDriverX = new FloatSimpleIO() {
+
             @Override
             public void writeValue(Float value) {
                 if (activeTool != null && !activeTool.clampScrolling()) {
@@ -61,6 +66,7 @@ public class PanelToolController implements IGuiPanel {
         }.setLerp(false, 0.02F);
 
         scDriverY = new FloatSimpleIO() {
+
             @Override
             public void writeValue(Float value) {
                 if (activeTool != null && !activeTool.clampScrolling()) {
@@ -124,8 +130,7 @@ public class PanelToolController implements IGuiPanel {
     }
 
     @Override
-    public void initPanel() {
-    }
+    public void initPanel() {}
 
     @Override
     public void setEnabled(boolean state) {
@@ -165,7 +170,8 @@ public class PanelToolController implements IGuiPanel {
 
             for (IGuiPanel pn : highlights) pn.drawPanel(smx, smy, partialTick);
 
-            // Pretending we're on the scrolling canvas (when we're really not) so as not to influence it by hotswapping panels
+            // Pretending we're on the scrolling canvas (when we're really not) so as not to influence it
+            // by hotswapping panels
             activeTool.drawCanvas(smx, smy, partialTick);
 
             RenderUtils.endScissor();
@@ -223,7 +229,8 @@ public class PanelToolController implements IGuiPanel {
             if (!append && !subtract) selected.clear();
 
             for (PanelButtonQuest btn : questLine.getQuestButtons()) {
-                if (selBounds.contains(btn.rect.x + btn.rect.w / 2, btn.rect.y + btn.rect.h / 2) || (btn.rect.contains(selBounds.x, selBounds.y) && Math.max(selBounds.w, selBounds.h) < 4)) {
+                if (selBounds.contains(btn.rect.x + btn.rect.w / 2, btn.rect.y + btn.rect.h / 2) ||
+                        (btn.rect.contains(selBounds.x, selBounds.y) && Math.max(selBounds.w, selBounds.h) < 4)) {
                     if (subtract) {
                         selected.remove(btn);
                         continue;
@@ -256,7 +263,8 @@ public class PanelToolController implements IGuiPanel {
             if (activeTool.onKeyPressed(c, keycode)) return true;
             if (activeTool.useSelection() && keycode == Keyboard.KEY_A) {
                 boolean append = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
-                boolean subtract = append && (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
+                boolean subtract = append &&
+                        (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
 
                 if (subtract) {
                     selBounds = null;

@@ -1,15 +1,17 @@
 package betterquesting.api2.client.gui.panels.content;
 
+import java.util.List;
+
+import net.minecraft.client.renderer.GlStateManager;
+
 import betterquesting.api2.client.gui.misc.GuiRectangle;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.IGuiPanel;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import betterquesting.api2.client.gui.resources.lines.IGuiLine;
-import net.minecraft.client.renderer.GlStateManager;
-
-import java.util.List;
 
 public class PanelLine implements IGuiPanel {
+
     /**
      * Bounds aren't used in the drawing of the line, merely for determining draw order
      */
@@ -27,7 +29,8 @@ public class PanelLine implements IGuiPanel {
         this(start, end, line, width, color, drawOrder, null);
     }
 
-    public PanelLine(IGuiRect start, IGuiRect end, IGuiLine line, int width, IGuiColor color, int drawOrder, ShouldDrawPredicate shouldDraw) {
+    public PanelLine(IGuiRect start, IGuiRect end, IGuiLine line, int width, IGuiColor color, int drawOrder,
+                     ShouldDrawPredicate shouldDraw) {
         this.start = start;
         this.end = end;
         this.line = line;
@@ -44,8 +47,7 @@ public class PanelLine implements IGuiPanel {
     }
 
     @Override
-    public void initPanel() {
-    }
+    public void initPanel() {}
 
     @Override
     public void setEnabled(boolean state) {
@@ -92,6 +94,7 @@ public class PanelLine implements IGuiPanel {
     }
 
     public interface ShouldDrawPredicate {
+
         boolean shouldDraw(int mx_mc, int my_mc, float partialTicks);
     }
 }

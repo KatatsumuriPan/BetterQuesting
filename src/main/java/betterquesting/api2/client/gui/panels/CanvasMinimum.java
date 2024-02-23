@@ -1,12 +1,13 @@
 package betterquesting.api2.client.gui.panels;
 
-import betterquesting.api2.client.gui.misc.ComparatorGuiDepth;
-import betterquesting.api2.client.gui.misc.IGuiRect;
-
-import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import javax.annotation.Nonnull;
+
+import betterquesting.api2.client.gui.misc.ComparatorGuiDepth;
+import betterquesting.api2.client.gui.misc.IGuiRect;
 
 public class CanvasMinimum implements IGuiCanvas {
 
@@ -23,6 +24,7 @@ public class CanvasMinimum implements IGuiCanvas {
     @Override
     public IGuiRect getTransform() {
         return new IGuiRect() {
+
             @Override
             public int getX() {
                 return internalTransform.getX();
