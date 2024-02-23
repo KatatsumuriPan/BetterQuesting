@@ -10,6 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 // WARNING: Don't use the ordinal indexes. I'll probably be adding/removing enums infrequently
 public enum PresetColor {
+
     TEXT_HEADER("text_header"),
     TEXT_MAIN("text_main"),
     TEXT_AUX_0("text_aux_0"),
@@ -36,7 +37,6 @@ public enum PresetColor {
     QUEST_LINE_COMPLETE("quest_line_complete"),
     QUEST_LINE_REPEATABLE("quest_line_repeatable"),
 
-
     QUEST_ICON_LOCKED("quest_icon_locked"),
     QUEST_ICON_UNLOCKED("quest_icon_unlocked"),
     QUEST_ICON_PENDING("quest_icon_pending"),
@@ -49,13 +49,9 @@ public enum PresetColor {
         this.key = new ResourceLocation(ModReference.MODID, key);
     }
 
-    public IGuiColor getColor() {
-        return ThemeRegistry.INSTANCE.getColor(this.key);
-    }
+    public IGuiColor getColor() { return ThemeRegistry.INSTANCE.getColor(this.key); }
 
-    public ResourceLocation getKey() {
-        return this.key;
-    }
+    public ResourceLocation getKey() { return this.key; }
 
     public static void registerColors(IThemeRegistry reg) {
         reg.setDefaultColor(TEXT_HEADER.key, new GuiColorStatic(0, 0, 0, 255)); // Headers
@@ -102,4 +98,5 @@ public enum PresetColor {
     public static int quickMix(int red, int green, int blue, int alpha) {
         return ((alpha & 255) << 24) | ((red & 255) << 16) | ((green & 255) << 8) | (blue & 255);
     }
+
 }

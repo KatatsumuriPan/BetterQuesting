@@ -1,10 +1,15 @@
 package betterquesting.api2.client.gui.panels.lists;
 
-import betterquesting.api2.client.gui.misc.IGuiRect;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import com.google.common.base.Stopwatch;
 
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import betterquesting.api2.client.gui.misc.IGuiRect;
 
 public abstract class CanvasSearch<T, E> extends CanvasScrolling {
 
@@ -81,19 +86,19 @@ public abstract class CanvasSearch<T, E> extends CanvasScrolling {
         searchTime.reset().start();
 
         while (!pendingResults.isEmpty() && searchTime.elapsed(TimeUnit.MILLISECONDS) < 100) {
-            if (addResult(pendingResults.poll(), searchIdx, resultWidth)) searchIdx++;
+            if (addResult(pendingResults.poll(), searchIdx, resultWidth))
+                searchIdx++;
         }
 
         searchTime.stop();
     }
 
-    public List<T> getResults() {
-        return Collections.unmodifiableList(savedResults);
-    }
+    public List<T> getResults() { return Collections.unmodifiableList(savedResults); }
 
     protected abstract Iterator<E> getIterator();
 
     protected abstract void queryMatches(E value, String query, final ArrayDeque<T> results);
 
     protected abstract boolean addResult(T entry, int index, int cachedWidth);
+
 }

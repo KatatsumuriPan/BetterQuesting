@@ -1,5 +1,9 @@
 package betterquesting.api2.client.gui.controls;
 
+import java.util.List;
+
+import org.lwjgl.input.Mouse;
+
 import betterquesting.api.misc.ICallback;
 import betterquesting.api.utils.RenderUtils;
 import betterquesting.api2.client.gui.controls.io.FloatSimpleIO;
@@ -16,11 +20,9 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.input.Mouse;
-
-import java.util.List;
 
 public class PanelTextField<T> implements IGuiPanel {
+
     private final IGuiRect transform;
     private boolean enabled = true;
 
@@ -160,17 +162,11 @@ public class PanelTextField<T> implements IGuiPanel {
         scrollY.writeValue(MathHelper.clamp(value, 0, scrollHeight) / (float) scrollHeight);
     }
 
-    public void setActive(boolean state) {
-        this.isActive = state;
-    }
+    public void setActive(boolean state) { this.isActive = state; }
 
-    public boolean isActive() {
-        return this.isActive;
-    }
+    public boolean isActive() { return this.isActive; }
 
-    public boolean isFocused() {
-        return this.isFocused;
-    }
+    public boolean isFocused() { return this.isFocused; }
 
     public PanelTextField<T> setWatermark(String text) {
         this.watermark = text;
@@ -183,13 +179,9 @@ public class PanelTextField<T> implements IGuiPanel {
         setCursorPosition(0);
     }
 
-    public String getRawText() {
-        return this.text;
-    }
+    public String getRawText() { return this.text; }
 
-    public T getValue() {
-        return this.filter.parseValue(getRawText());
-    }
+    public T getValue() { return this.filter.parseValue(getRawText()); }
 
     public String getSelectedText() {
         int l = Math.min(selectStart, selectEnd);
@@ -590,9 +582,7 @@ public class PanelTextField<T> implements IGuiPanel {
     }
 
     @Override
-    public IGuiRect getTransform() {
-        return transform;
-    }
+    public IGuiRect getTransform() { return transform; }
 
     @Override
     public void initPanel() {
@@ -600,20 +590,20 @@ public class PanelTextField<T> implements IGuiPanel {
     }
 
     @Override
-    public void setEnabled(boolean state) {
-        this.enabled = state;
-    }
+    public void setEnabled(boolean state) { this.enabled = state; }
 
     @Override
-    public boolean isEnabled() {
-        return this.enabled;
-    }
+    public boolean isEnabled() { return this.enabled; }
 
     @Override
     public void drawPanel(int mx, int my, float partialTick) {
         if (isActive && dragging && Mouse.isButtonDown(0)) {
             if (canWrap) {
-                setSelectionPos(RenderUtils.getCursorPos(text, mx - (transform.getX() + 4) + getScrollX(), my - (transform.getY() + 4) + getScrollY(), transform.getWidth() - 8, Minecraft.getMinecraft().fontRenderer));
+                setSelectionPos(RenderUtils.getCursorPos(text,
+                                                         mx - (transform.getX() + 4) + getScrollX(),
+                                                         my - (transform.getY() + 4) + getScrollY(),
+                                                         transform.getWidth() - 8,
+                                                         Minecraft.getMinecraft().fontRenderer));
             } else {
                 setSelectionPos(RenderUtils.getCursorPos(text, mx - (transform.getX() + 4) + getScrollX(), Minecraft.getMinecraft().fontRenderer));
             }
@@ -643,9 +633,26 @@ public class PanelTextField<T> implements IGuiPanel {
             IGuiColor c = colStates[state];
 
             if (!canWrap) {
-                RenderUtils.drawHighlightedString(mc.fontRenderer, text, bounds.getX() + 4, bounds.getY() + 4, c.getRGB(), false, colHighlight.getRGB(), selectStart, selectEnd);
+                RenderUtils.drawHighlightedString(mc.fontRenderer,
+                                                  text,
+                                                  bounds.getX() + 4,
+                                                  bounds.getY() + 4,
+                                                  c.getRGB(),
+                                                  false,
+                                                  colHighlight.getRGB(),
+                                                  selectStart,
+                                                  selectEnd);
             } else {
-                RenderUtils.drawHighlightedSplitString(mc.fontRenderer, text, bounds.getX() + 4, bounds.getY() + 4, bounds.getWidth() - 8, c.getRGB(), false, colHighlight.getRGB(), selectStart, selectEnd);
+                RenderUtils.drawHighlightedSplitString(mc.fontRenderer,
+                                                       text,
+                                                       bounds.getX() + 4,
+                                                       bounds.getY() + 4,
+                                                       bounds.getWidth() - 8,
+                                                       c.getRGB(),
+                                                       false,
+                                                       colHighlight.getRGB(),
+                                                       selectStart,
+                                                       selectEnd);
             }
         }
 
@@ -666,7 +673,11 @@ public class PanelTextField<T> implements IGuiPanel {
             }
 
             if (canWrap) {
-                setCursorPosition(RenderUtils.getCursorPos(text, mx - (transform.getX() + 4) + getScrollX(), my - (transform.getY() + 4) + getScrollY(), transform.getWidth() - 8, Minecraft.getMinecraft().fontRenderer));
+                setCursorPosition(RenderUtils.getCursorPos(text,
+                                                           mx - (transform.getX() + 4) + getScrollX(),
+                                                           my - (transform.getY() + 4) + getScrollY(),
+                                                           transform.getWidth() - 8,
+                                                           Minecraft.getMinecraft().fontRenderer));
             } else {
                 setCursorPosition(RenderUtils.getCursorPos(text, mx - (transform.getX() + 4) + getScrollX(), Minecraft.getMinecraft().fontRenderer));
             }
@@ -697,10 +708,10 @@ public class PanelTextField<T> implements IGuiPanel {
             setScrollY(getScrollY() + (scroll * 4));
             return true;
         } /*else
-        {
+          {
             // This is kinda annoying in lists
             //setScrollX(getScrollX() + (scroll * 12));
-        }*/
+          }*/
 
         return false;
     }
@@ -709,4 +720,5 @@ public class PanelTextField<T> implements IGuiPanel {
     public List<String> getTooltip(int mx, int my) {
         return null;
     }
+
 }

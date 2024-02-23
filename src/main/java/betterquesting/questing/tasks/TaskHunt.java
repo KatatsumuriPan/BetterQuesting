@@ -1,5 +1,18 @@
 package betterquesting.questing.tasks;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api.utils.ItemComparison;
@@ -23,13 +36,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
 
 public class TaskHunt implements ITask {
+
     private final Set<UUID> completeUsers = new TreeSet<>();
     private final TreeMap<UUID, Integer> userProgress = new TreeMap<>();
     public String idName = "minecraft:zombie";
@@ -44,9 +53,7 @@ public class TaskHunt implements ITask {
     public NBTTagCompound targetTags = new NBTTagCompound();
 
     @Override
-    public ResourceLocation getFactoryID() {
-        return FactoryTaskHunt.INSTANCE.getRegistryName();
-    }
+    public ResourceLocation getFactoryID() { return FactoryTaskHunt.INSTANCE.getRegistryName(); }
 
     @Override
     public boolean isComplete(UUID uuid) {
@@ -59,23 +66,24 @@ public class TaskHunt implements ITask {
     }
 
     @Override
-    public String getUnlocalisedName() {
-        return BetterQuesting.MODID_STD + ".task.hunt";
-    }
+    public String getUnlocalisedName() { return BetterQuesting.MODID_STD + ".task.hunt"; }
 
     @Override
     public void detect(ParticipantInfo pInfo, DBEntry<IQuest> quest) {
         final List<Tuple<UUID, Integer>> progress = getBulkProgress(pInfo.ALL_UUIDS);
 
         progress.forEach((value) -> {
-            if (value.getSecond() >= required) setComplete(value.getFirst());
+            if (value.getSecond() >= required)
+                setComplete(value.getFirst());
         });
 
         pInfo.markDirtyParty(Collections.singletonList(quest.getID()));
     }
 
-    public void onKilledByPlayer(ParticipantInfo pInfo, DBEntry<IQuest> quest, @Nonnull EntityLivingBase entity, DamageSource source) {
-        if (damageType.length() > 0 && (source == null || !damageType.equalsIgnoreCase(source.damageType))) return;
+    public void onKilledByPlayer(ParticipantInfo pInfo, DBEntry<IQuest> quest, @Nonnull
+    EntityLivingBase entity, DamageSource source) {
+        if (damageType.length() > 0 && (source == null || !damageType.equalsIgnoreCase(source.damageType)))
+            return;
 
         Class<? extends Entity> subject = entity.getClass();
         ResourceLocation targetID = new ResourceLocation(idName);
@@ -92,15 +100,18 @@ public class TaskHunt implements ITask {
 
         NBTTagCompound subjectTags = new NBTTagCompound();
         entity.writeToNBTOptional(subjectTags);
-        if (!ignoreNBT && !ItemComparison.CompareNBTTag(targetTags, subjectTags, true)) return;
+        if (!ignoreNBT && !ItemComparison.CompareNBTTag(targetTags, subjectTags, true))
+            return;
 
         final List<Tuple<UUID, Integer>> progress = getBulkProgress(pInfo.ALL_UUIDS);
 
         progress.forEach((value) -> {
-            if (isComplete(value.getFirst())) return;
+            if (isComplete(value.getFirst()))
+                return;
             int np = Math.min(required, value.getSecond() + 1);
             setUserProgress(value.getFirst(), np);
-            if (np >= required) setComplete(value.getFirst());
+            if (np >= required)
+                setComplete(value.getFirst());
         });
 
         pInfo.markDirtyParty(Collections.singletonList(quest.getID()));
@@ -157,13 +168,15 @@ public class TaskHunt implements ITask {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
+    List<UUID> users) {
         NBTTagList jArray = new NBTTagList();
         NBTTagList progArray = new NBTTagList();
 
         if (users != null) {
             users.forEach((uuid) -> {
-                if (completeUsers.contains(uuid)) jArray.appendTag(new NBTTagString(uuid.toString()));
+                if (completeUsers.contains(uuid))
+                    jArray.appendTag(new NBTTagString(uuid.toString()));
 
                 Integer data = userProgress.get(uuid);
                 if (data != null) {
@@ -191,7 +204,8 @@ public class TaskHunt implements ITask {
     }
 
     @Override
-    public void resetUser(@Nullable UUID uuid) {
+    public void resetUser(@Nullable
+    UUID uuid) {
         if (uuid == null) {
             completeUsers.clear();
             userProgress.clear();
@@ -204,14 +218,12 @@ public class TaskHunt implements ITask {
     /**
      * Returns a new editor screen for this Reward type to edit the given data
      */
-    @Override
-    @SideOnly(Side.CLIENT)
+    @Override @SideOnly(Side.CLIENT)
     public GuiScreen getTaskEditor(GuiScreen parent, DBEntry<IQuest> quest) {
         return new GuiEditTaskHunt(parent, quest, this);
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
+    @Override @SideOnly(Side.CLIENT)
     public IGuiPanel getTaskGui(IGuiRect rect, DBEntry<IQuest> quest) {
         return new PanelTaskHunt(rect, this);
     }
@@ -225,15 +237,16 @@ public class TaskHunt implements ITask {
         return n == null ? 0 : n;
     }
 
-    private List<Tuple<UUID, Integer>> getBulkProgress(@Nonnull List<UUID> uuids) {
-        if (uuids.size() <= 0) return Collections.emptyList();
+    private List<Tuple<UUID, Integer>> getBulkProgress(@Nonnull
+    List<UUID> uuids) {
+        if (uuids.size() <= 0)
+            return Collections.emptyList();
         List<Tuple<UUID, Integer>> list = new ArrayList<>();
         uuids.forEach((key) -> list.add(new Tuple<>(key, getUsersProgress(key))));
         return list;
     }
 
     @Override
-    public List<String> getTextForSearch() {
-        return Collections.singletonList(idName);
-    }
+    public List<String> getTextForSearch() { return Collections.singletonList(idName); }
+
 }

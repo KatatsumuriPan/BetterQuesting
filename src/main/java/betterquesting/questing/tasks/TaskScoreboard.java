@@ -1,5 +1,17 @@
 package betterquesting.questing.tasks;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.ScoreboardBQ;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.client.gui.misc.IGuiRect;
@@ -23,13 +35,9 @@ import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
 
 public class TaskScoreboard implements ITaskTickable {
+
     private final Set<UUID> completeUsers = new TreeSet<>();
     public String scoreName = "Score";
     public String scoreDisp = "Score";
@@ -40,14 +48,10 @@ public class TaskScoreboard implements ITaskTickable {
     public ScoreOperation operation = ScoreOperation.MORE_OR_EQUAL;
 
     @Override
-    public ResourceLocation getFactoryID() {
-        return FactoryTaskScoreboard.INSTANCE.getRegistryName();
-    }
+    public ResourceLocation getFactoryID() { return FactoryTaskScoreboard.INSTANCE.getRegistryName(); }
 
     @Override
-    public String getUnlocalisedName() {
-        return "bq_standard.task.scoreboard";
-    }
+    public String getUnlocalisedName() { return "bq_standard.task.scoreboard"; }
 
     @Override
     public boolean isComplete(UUID uuid) {
@@ -60,7 +64,8 @@ public class TaskScoreboard implements ITaskTickable {
     }
 
     @Override
-    public void resetUser(@Nullable UUID uuid) {
+    public void resetUser(@Nullable
+    UUID uuid) {
         if (uuid == null) {
             completeUsers.clear();
         } else {
@@ -69,12 +74,15 @@ public class TaskScoreboard implements ITaskTickable {
     }
 
     @Override
-    public void tickTask(@Nonnull ParticipantInfo pInfo, DBEntry<IQuest> quest) {
-        if (pInfo.PLAYER.ticksExisted % 20 == 0) detect(pInfo, quest); // Auto-detect once per second
+    public void tickTask(@Nonnull
+    ParticipantInfo pInfo, DBEntry<IQuest> quest) {
+        if (pInfo.PLAYER.ticksExisted % 20 == 0)
+            detect(pInfo, quest); // Auto-detect once per second
     }
 
     @Override
-    public void detect(@Nonnull ParticipantInfo pInfo, DBEntry<IQuest> quest) {
+    public void detect(@Nonnull
+    ParticipantInfo pInfo, DBEntry<IQuest> quest) {
         Scoreboard board = pInfo.PLAYER.getWorldScoreboard();
         ScoreObjective scoreObj = board.getObjective(scoreName);
 
@@ -94,7 +102,8 @@ public class TaskScoreboard implements ITaskTickable {
 
         if (points != lastValue) {
             ScoreboardBQ.INSTANCE.setScore(pInfo.UUID, scoreName, points);
-            if (pInfo.PLAYER instanceof EntityPlayerMP) NetScoreSync.sendScore((EntityPlayerMP) pInfo.PLAYER);
+            if (pInfo.PLAYER instanceof EntityPlayerMP)
+                NetScoreSync.sendScore((EntityPlayerMP) pInfo.PLAYER);
         }
 
         if (operation.checkValues(points, target)) {
@@ -133,11 +142,13 @@ public class TaskScoreboard implements ITaskTickable {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
+    List<UUID> users) {
         NBTTagList jArray = new NBTTagList();
 
         completeUsers.forEach((uuid) -> {
-            if (users == null || users.contains(uuid)) jArray.appendTag(new NBTTagString(uuid.toString()));
+            if (users == null || users.contains(uuid))
+                jArray.appendTag(new NBTTagString(uuid.toString()));
         });
 
         nbt.setTag("completeUsers", jArray);
@@ -147,7 +158,8 @@ public class TaskScoreboard implements ITaskTickable {
 
     @Override
     public void readProgressFromNBT(NBTTagCompound nbt, boolean merge) {
-        if (!merge) completeUsers.clear();
+        if (!merge)
+            completeUsers.clear();
         NBTTagList cList = nbt.getTagList("completeUsers", 8);
         for (int i = 0; i < cList.tagCount(); i++) {
             try {
@@ -159,6 +171,7 @@ public class TaskScoreboard implements ITaskTickable {
     }
 
     public enum ScoreOperation {
+
         EQUAL("="),
         LESS_THAN("<"),
         MORE_THAN(">"),
@@ -194,16 +207,15 @@ public class TaskScoreboard implements ITaskTickable {
 
             return false;
         }
+
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
+    @Override @SideOnly(Side.CLIENT)
     public IGuiPanel getTaskGui(IGuiRect rect, DBEntry<IQuest> quest) {
         return new PanelTaskScoreboard(rect, this);
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
+    @Override @SideOnly(Side.CLIENT)
     public GuiScreen getTaskEditor(GuiScreen parent, DBEntry<IQuest> quest) {
         return new GuiEditTaskScoreboard(parent, quest, this);
     }
@@ -215,4 +227,5 @@ public class TaskScoreboard implements ITaskTickable {
         texts.add(scoreDisp);
         return texts;
     }
+
 }

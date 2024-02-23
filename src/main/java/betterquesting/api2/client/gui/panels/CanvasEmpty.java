@@ -1,14 +1,16 @@
 package betterquesting.api2.client.gui.panels;
 
-import betterquesting.api2.client.gui.misc.ComparatorGuiDepth;
-import betterquesting.api2.client.gui.misc.IGuiRect;
-
-import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.annotation.Nonnull;
+
+import betterquesting.api2.client.gui.misc.ComparatorGuiDepth;
+import betterquesting.api2.client.gui.misc.IGuiRect;
+
 public class CanvasEmpty implements IGuiCanvas {
+
     private final List<IGuiPanel> guiPanels = new CopyOnWriteArrayList<>();
     private final IGuiRect transform;
     private boolean enabled = true;
@@ -18,15 +20,10 @@ public class CanvasEmpty implements IGuiCanvas {
     }
 
     @Override
-    public IGuiRect getTransform() {
-        return transform;
-    }
+    public IGuiRect getTransform() { return transform; }
 
-    @Nonnull
-    @Override
-    public List<IGuiPanel> getChildren() {
-        return this.guiPanels;
-    }
+    @Nonnull @Override
+    public List<IGuiPanel> getChildren() { return this.guiPanels; }
 
     @Override
     public void initPanel() {
@@ -34,14 +31,10 @@ public class CanvasEmpty implements IGuiCanvas {
     }
 
     @Override
-    public void setEnabled(boolean state) {
-        this.enabled = state;
-    }
+    public void setEnabled(boolean state) { this.enabled = state; }
 
     @Override
-    public boolean isEnabled() {
-        return this.enabled;
-    }
+    public boolean isEnabled() { return this.enabled; }
 
     @Override
     public void drawPanel(int mx, int my, float partialTick) {
@@ -167,4 +160,5 @@ public class CanvasEmpty implements IGuiCanvas {
     public void resetCanvas() {
         guiPanels.clear();
     }
+
 }

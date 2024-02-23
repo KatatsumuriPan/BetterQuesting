@@ -1,5 +1,7 @@
 package betterquesting.client.gui2.editors.nbt;
 
+import org.lwjgl.input.Keyboard;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.client.gui.misc.IVolatileScreen;
 import betterquesting.api.misc.ICallback;
@@ -36,9 +38,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.registry.EntityEntry;
-import org.lwjgl.input.Keyboard;
 
 public class GuiEntitySelection extends GuiScreenCanvas implements IPEventListener, IVolatileScreen {
+
     private final ICallback<Entity> callback;
     private Entity selEntity;
 
@@ -61,12 +63,14 @@ public class GuiEntitySelection extends GuiScreenCanvas implements IPEventListen
         Keyboard.enableRepeatEvents(true);
 
         // Background panel
-        CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0), PresetTexture.PANEL_MAIN.getTexture());
+        CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0),
+                                                         PresetTexture.PANEL_MAIN.getTexture());
         this.addPanel(cvBackground);
 
         cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), 0, QuestTranslation.translate("gui.done")));
 
-        PanelTextBox txTitle = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0), QuestTranslation.translate("betterquesting.title.select_entity")).setAlignment(1);
+        PanelTextBox txTitle = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0),
+                                                QuestTranslation.translate("betterquesting.title.select_entity")).setAlignment(1);
         txTitle.setColor(PresetColor.TEXT_HEADER.getColor());
         cvBackground.addPanel(txTitle);
 
@@ -78,7 +82,9 @@ public class GuiEntitySelection extends GuiScreenCanvas implements IPEventListen
         CanvasEntityDatabase cvDatabase = new CanvasEntityDatabase(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 16, 8, 0), 0), 1);
         cvRight.addPanel(cvDatabase);
 
-        PanelTextField<String> searchBox = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 8, -16), 0), "", FieldFilterString.INSTANCE);
+        PanelTextField<String> searchBox = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 8, -16), 0),
+                                                                "",
+                                                                FieldFilterString.INSTANCE);
         searchBox.setCallback(cvDatabase::setSearchFilter).setWatermark("Search...");
         cvRight.addPanel(searchBox);
 
@@ -117,7 +123,8 @@ public class GuiEntitySelection extends GuiScreenCanvas implements IPEventListen
         if (btn.getButtonID() == 0) // Exit
         {
             try {
-                if (callback != null) callback.setValue(selEntity);
+                if (callback != null)
+                    callback.setValue(selEntity);
             } catch (Exception e) {
                 QuestingAPI.getLogger().error("Unable to return entity selection!", e);
             }
@@ -132,4 +139,5 @@ public class GuiEntitySelection extends GuiScreenCanvas implements IPEventListen
             }
         }
     }
+
 }

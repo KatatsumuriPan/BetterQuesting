@@ -1,6 +1,7 @@
 package betterquesting.api.properties;
 
 public interface IPropertyContainer {
+
     <T> T getProperty(IPropertyType<T> prop);
 
     <T> T getProperty(IPropertyType<T> prop, T def);
@@ -12,4 +13,5 @@ public interface IPropertyContainer {
     <T> void setProperty(IPropertyType<T> prop, T value);
 
     void removeAllProps();
+
 }

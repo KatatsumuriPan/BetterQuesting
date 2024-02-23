@@ -1,5 +1,11 @@
 package betterquesting.client.gui2.party;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import org.lwjgl.input.Keyboard;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.party.IParty;
@@ -31,14 +37,10 @@ import betterquesting.questing.party.PartyManager;
 import betterquesting.storage.NameCache;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.nbt.NBTTagCompound;
-import org.lwjgl.input.Keyboard;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 // TODO: Make this use a proper scrolling search for big servers
 public class GuiPartyInvite extends GuiScreenCanvas implements IPEventListener {
+
     private IParty party;
     private int partyID;
     private PanelTextField<String> flName;
@@ -66,12 +68,15 @@ public class GuiPartyInvite extends GuiScreenCanvas implements IPEventListener {
         Keyboard.enableRepeatEvents(true);
 
         // Background panel
-        CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0), PresetTexture.PANEL_MAIN.getTexture());
+        CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0),
+                                                         PresetTexture.PANEL_MAIN.getTexture());
         this.addPanel(cvBackground);
 
         cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), 0, QuestTranslation.translate("gui.back")));
 
-        PanelTextBox txTitle = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0), QuestTranslation.translate("betterquesting.title.party_invite", party.getProperties().getProperty(NativeProps.NAME))).setAlignment(1);
+        PanelTextBox txTitle = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0),
+                                                QuestTranslation.translate("betterquesting.title.party_invite",
+                                                                           party.getProperties().getProperty(NativeProps.NAME))).setAlignment(1);
         txTitle.setColor(PresetColor.TEXT_HEADER.getColor());
         cvBackground.addPanel(txTitle);
 
@@ -80,7 +85,9 @@ public class GuiPartyInvite extends GuiScreenCanvas implements IPEventListener {
         flName.setWatermark("Username");
         cvBackground.addPanel(flName);
 
-        PanelButton btnInvite = new PanelButton(new GuiTransform(GuiAlign.TOP_RIGHT, new GuiPadding(-72, 32, 32, -48), 0), 1, QuestTranslation.translate("betterquesting.btn.party_invite"));
+        PanelButton btnInvite = new PanelButton(new GuiTransform(GuiAlign.TOP_RIGHT, new GuiPadding(-72, 32, 32, -48), 0),
+                                                1,
+                                                QuestTranslation.translate("betterquesting.btn.party_invite"));
         cvBackground.addPanel(btnInvite);
 
         CanvasScrolling cvNameList = new CanvasScrolling(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(32, 64, 40, 32), 0));
@@ -146,4 +153,5 @@ public class GuiPartyInvite extends GuiScreenCanvas implements IPEventListener {
             NetPartyAction.sendAction(payload);
         }
     }
+
 }

@@ -1,5 +1,11 @@
 package betterquesting.commands;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
 import betterquesting.api.network.QuestingPacket;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.storage.DBEntry;
@@ -15,11 +21,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 
-import javax.annotation.Nonnull;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-
 public class BQ_CopyProgress extends CommandBase {
 
     private static final ResourceLocation ID_NAME = new ResourceLocation(ModReference.MODID, "quest_sync");
@@ -28,30 +29,25 @@ public class BQ_CopyProgress extends CommandBase {
     private static final String COMMAND_USAGE = "/bq_copyquests [toPlayer] <fromPlayer>";
 
     @Override
-    public int getRequiredPermissionLevel() {
-        return 2;
-    }
+    public int getRequiredPermissionLevel() { return 2; }
 
-    @Nonnull
-    @Override
-    public String getName() {
-        return COMMAND_NAME;
-    }
+    @Nonnull @Override
+    public String getName() { return COMMAND_NAME; }
 
-    @Nonnull
-    @Override
-    public String getUsage(@Nonnull ICommandSender sender) {
+    @Nonnull @Override
+    public String getUsage(@Nonnull
+    ICommandSender sender) {
         return COMMAND_USAGE;
     }
 
-    @Nonnull
-    @Override
-    public List<String> getAliases() {
-        return Collections.singletonList(getName());
-    }
+    @Nonnull @Override
+    public List<String> getAliases() { return Collections.singletonList(getName()); }
 
     @Override
-    public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException {
+    public void execute(@Nonnull
+    MinecraftServer server, @Nonnull
+    ICommandSender sender, @Nonnull
+    String[] args) throws CommandException {
         if (sender instanceof EntityPlayer) {
             if (args.length == 0 || args.length > 2) {
                 throw new CommandException(COMMAND_USAGE);
@@ -75,4 +71,5 @@ public class BQ_CopyProgress extends CommandBase {
             sender.sendMessage(new TextComponentString("Completed " + questsCompleted + " for " + addPlayer.getDisplayNameString()));
         }
     }
+
 }

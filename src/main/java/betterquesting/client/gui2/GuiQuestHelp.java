@@ -19,6 +19,7 @@ import betterquesting.api2.utils.QuestTranslation;
 import net.minecraft.client.gui.GuiScreen;
 
 public class GuiQuestHelp extends GuiScreenCanvas {
+
     public GuiQuestHelp(GuiScreen parent) {
         super(parent);
     }
@@ -28,18 +29,22 @@ public class GuiQuestHelp extends GuiScreenCanvas {
         super.initPanel();
 
         // Background panel
-        CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0), PresetTexture.PANEL_MAIN.getTexture());
+        CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0),
+                                                         PresetTexture.PANEL_MAIN.getTexture());
         this.addPanel(cvBackground);
 
-        PanelTextBox panTxt = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0), QuestTranslation.translate("item.betterquesting.guide.name")).setAlignment(1);
+        PanelTextBox panTxt = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0),
+                                               QuestTranslation.translate("item.betterquesting.guide.name")).setAlignment(1);
         panTxt.setColor(PresetColor.TEXT_HEADER.getColor());
         cvBackground.addPanel(panTxt);
 
         PanelButton btnBack = new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), 0, QuestTranslation.translate("gui.back")) {
+
             @Override
             public void onButtonClick() {
                 mc.displayGuiScreen(parent);
             }
+
         };
         cvBackground.addPanel(btnBack);
 
@@ -76,4 +81,5 @@ public class GuiQuestHelp extends GuiScreenCanvas {
             }));
         }
     }
+
 }

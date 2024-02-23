@@ -7,6 +7,7 @@ import betterquesting.api2.storage.INBTPartial;
 import net.minecraft.nbt.NBTTagCompound;
 
 public interface IQuestLine extends IDatabase<IQuestLineEntry>, INBTPartial<NBTTagCompound, Integer>, IPropertyContainer {
+
     IQuestLineEntry createNew(int id);
 
     String getUnlocalisedName();
@@ -14,4 +15,5 @@ public interface IQuestLine extends IDatabase<IQuestLineEntry>, INBTPartial<NBTT
     String getUnlocalisedDescription();
 
     DBEntry<IQuestLineEntry> getEntryAt(int x, int y);
+
 }

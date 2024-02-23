@@ -14,10 +14,9 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 
 public class QuestCommandSPHardcore extends QuestCommandBase {
+
     @Override
-    public String getCommand() {
-        return "hardcore";
-    }
+    public String getCommand() { return "hardcore"; }
 
     @Override
     public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, String[] args) throws CommandException {
@@ -36,17 +35,14 @@ public class QuestCommandSPHardcore extends QuestCommandBase {
     }
 
     @Override
-    public String getPermissionNode() {
-        return "betterquesting.command.user.hardcores";
-    }
+    public String getPermissionNode() { return "betterquesting.command.user.hardcores"; }
 
     @Override
-    public DefaultPermissionLevel getPermissionLevel() {
-        return DefaultPermissionLevel.ALL;
-    }
+    public DefaultPermissionLevel getPermissionLevel() { return DefaultPermissionLevel.ALL; }
 
     @Override
     public String getPermissionDescription() {
         return "Permission to manually resyncs the local questing database with the server in case of potential desync issues";
     }
+
 }

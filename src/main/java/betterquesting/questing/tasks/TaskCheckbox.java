@@ -1,5 +1,14 @@
 package betterquesting.questing.tasks;
 
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api2.client.gui.misc.IGuiRect;
@@ -16,26 +25,16 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.UUID;
 
 public class TaskCheckbox implements ITask {
+
     private final Set<UUID> completeUsers = new TreeSet<>();
 
     @Override
-    public ResourceLocation getFactoryID() {
-        return FactoryTaskCheckbox.INSTANCE.getRegistryName();
-    }
+    public ResourceLocation getFactoryID() { return FactoryTaskCheckbox.INSTANCE.getRegistryName(); }
 
     @Override
-    public String getUnlocalisedName() {
-        return BetterQuesting.MODID_STD + ".task.checkbox";
-    }
+    public String getUnlocalisedName() { return BetterQuesting.MODID_STD + ".task.checkbox"; }
 
     @Override
     public boolean isComplete(UUID uuid) {
@@ -48,7 +47,8 @@ public class TaskCheckbox implements ITask {
     }
 
     @Override
-    public void resetUser(@Nullable UUID uuid) {
+    public void resetUser(@Nullable
+    UUID uuid) {
         if (uuid == null) {
             completeUsers.clear();
         } else {
@@ -66,11 +66,13 @@ public class TaskCheckbox implements ITask {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
+    List<UUID> users) {
         NBTTagList jArray = new NBTTagList();
 
         completeUsers.forEach((uuid) -> {
-            if (users == null || users.contains(uuid)) jArray.appendTag(new NBTTagString(uuid.toString()));
+            if (users == null || users.contains(uuid))
+                jArray.appendTag(new NBTTagString(uuid.toString()));
         });
 
         nbt.setTag("completeUsers", jArray);
@@ -80,7 +82,8 @@ public class TaskCheckbox implements ITask {
 
     @Override
     public void readProgressFromNBT(NBTTagCompound nbt, boolean merge) {
-        if (!merge) completeUsers.clear();
+        if (!merge)
+            completeUsers.clear();
         NBTTagList cList = nbt.getTagList("completeUsers", 8);
         for (int i = 0; i < cList.tagCount(); i++) {
             try {
@@ -95,14 +98,12 @@ public class TaskCheckbox implements ITask {
     public void detect(ParticipantInfo pInfo, DBEntry<IQuest> quest) {
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
+    @Override @SideOnly(Side.CLIENT)
     public IGuiPanel getTaskGui(IGuiRect rect, DBEntry<IQuest> quest) {
         return new PanelTaskCheckbox(rect, quest, this);
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
+    @Override @SideOnly(Side.CLIENT)
     public GuiScreen getTaskEditor(GuiScreen parent, DBEntry<IQuest> quest) {
         return null;
     }
@@ -111,4 +112,5 @@ public class TaskCheckbox implements ITask {
     public boolean displaysCenteredAlone() {
         return true;
     }
+
 }

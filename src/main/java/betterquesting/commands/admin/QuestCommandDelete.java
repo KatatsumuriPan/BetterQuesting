@@ -1,5 +1,9 @@
 package betterquesting.commands.admin;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.storage.DBEntry;
@@ -17,15 +21,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class QuestCommandDelete extends QuestCommandBase {
+
     @Override
-    public String getUsageSuffix() {
-        return "[all|<quest_id>]";
-    }
+    public String getUsageSuffix() { return "[all|<quest_id>]"; }
 
     @Override
     public boolean validArgs(String[] args) {
@@ -48,9 +47,7 @@ public class QuestCommandDelete extends QuestCommandBase {
     }
 
     @Override
-    public String getCommand() {
-        return "delete";
-    }
+    public String getCommand() { return "delete"; }
 
     @Override
     public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, String[] args) throws CommandException {
@@ -66,9 +63,12 @@ public class QuestCommandDelete extends QuestCommandBase {
             try {
                 int id = Integer.parseInt(args[1].trim());
                 IQuest quest = QuestDatabase.INSTANCE.getValue(id);
-                NetQuestEdit.deleteQuests(new int[]{id});
+                NetQuestEdit.deleteQuests(new int[] {
+                        id
+                });
 
-                sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.delete.single", new TextComponentTranslation(quest.getProperty(NativeProps.NAME))));
+                sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.delete.single",
+                                                                new TextComponentTranslation(quest.getProperty(NativeProps.NAME))));
             } catch (Exception e) {
                 throw getException(command);
             }
@@ -76,17 +76,14 @@ public class QuestCommandDelete extends QuestCommandBase {
     }
 
     @Override
-    public String getPermissionNode() {
-        return "betterquesting.command.admin.delete";
-    }
+    public String getPermissionNode() { return "betterquesting.command.admin.delete"; }
 
     @Override
-    public DefaultPermissionLevel getPermissionLevel() {
-        return DefaultPermissionLevel.OP;
-    }
+    public DefaultPermissionLevel getPermissionLevel() { return DefaultPermissionLevel.OP; }
 
     @Override
     public String getPermissionDescription() {
         return "Permission to delete given quest(s) and progression data however it does not delete new world defaults";
     }
+
 }

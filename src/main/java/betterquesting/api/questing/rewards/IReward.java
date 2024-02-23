@@ -1,5 +1,7 @@
 package betterquesting.api.questing.rewards;
 
+import javax.annotation.Nullable;
+
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.IGuiPanel;
@@ -12,9 +14,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-
 public interface IReward extends INBTSaveLoad<NBTTagCompound> {
+
     String getUnlocalisedName();
 
     ResourceLocation getFactoryID();
@@ -26,7 +27,7 @@ public interface IReward extends INBTSaveLoad<NBTTagCompound> {
     @SideOnly(Side.CLIENT)
     IGuiPanel getRewardGui(IGuiRect rect, DBEntry<IQuest> quest);
 
-    @Nullable
-    @SideOnly(Side.CLIENT)
+    @Nullable @SideOnly(Side.CLIENT)
     GuiScreen getRewardEditor(GuiScreen parent, DBEntry<IQuest> quest);
+
 }

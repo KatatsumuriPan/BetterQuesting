@@ -1,17 +1,18 @@
 package betterquesting.api2.client.gui.panels.lists;
 
-import betterquesting.api2.client.gui.misc.ComparatorGuiDepth;
-import betterquesting.api2.client.gui.misc.GuiRectangle;
-import betterquesting.api2.client.gui.misc.IGuiRect;
-import betterquesting.api2.client.gui.panels.IGuiPanel;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import betterquesting.api2.client.gui.misc.ComparatorGuiDepth;
+import betterquesting.api2.client.gui.misc.GuiRectangle;
+import betterquesting.api2.client.gui.misc.IGuiRect;
+import betterquesting.api2.client.gui.panels.IGuiPanel;
+
 public class CanvasCullingManager {
+
     private final List<IGuiPanel> dynamicPanels = new ArrayList<>(); // Panels not regioned (likely moving or important)
 
     private final Map<String, RegionInfo> panelRegions = new HashMap<>(); // Panels separated into regional blocks
@@ -101,9 +102,7 @@ public class CanvasCullingManager {
         }
     }
 
-    public List<IGuiPanel> getVisiblePanels() {
-        return cachedPanels;
-    }
+    public List<IGuiPanel> getVisiblePanels() { return cachedPanels; }
 
     public void updateVisiblePanels(IGuiRect region) {
         boolean changed = false;
@@ -139,6 +138,7 @@ public class CanvasCullingManager {
     }
 
     private static class RegionInfo {
+
         private final List<IGuiPanel> panels = new ArrayList<>();
 
         private boolean enabled = false; // Starts disabled so that the cache can be populated on initial checks
@@ -175,5 +175,7 @@ public class CanvasCullingManager {
             rect.w = maxX - minX;
             rect.h = maxY - minY;
         }
+
     }
+
 }

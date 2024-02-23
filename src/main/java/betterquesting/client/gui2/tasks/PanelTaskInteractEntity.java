@@ -1,5 +1,7 @@
 package betterquesting.client.gui2.tasks;
 
+import java.util.UUID;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api2.client.gui.controls.io.ValueFuncIO;
 import betterquesting.api2.client.gui.misc.GuiAlign;
@@ -21,8 +23,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.util.ResourceLocation;
-
-import java.util.UUID;
 
 public class PanelTaskInteractEntity extends CanvasMinimum {
 
@@ -46,7 +46,8 @@ public class PanelTaskInteractEntity extends CanvasMinimum {
 
         UUID playerID = QuestingAPI.getQuestingUUID(Minecraft.getMinecraft().player);
         int prog = task.getUsersProgress(playerID);
-        this.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_LEFT, 0, 34, 32, 14, 0), prog + "/" + task.required).setAlignment(1).setColor(PresetColor.TEXT_MAIN.getColor()));
+        this.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_LEFT, 0, 34, 32, 14, 0), prog + "/" + task.required).setAlignment(1)
+                .setColor(PresetColor.TEXT_MAIN.getColor()));
 
         this.addPanel(new PanelGeneric(new GuiTransform(GuiAlign.TOP_LEFT, 0, 48, 24, 24, 0), BQSTextures.HAND_LEFT.getTexture()));
         this.addPanel(new PanelGeneric(new GuiTransform(GuiAlign.TOP_LEFT, 24, 48, 24, 24, 0), BQSTextures.HAND_RIGHT.getTexture()));
@@ -61,19 +62,26 @@ public class PanelTaskInteractEntity extends CanvasMinimum {
         this.addPanel(new PanelGeneric(new GuiTransform(GuiAlign.TOP_LEFT, 16, 88, 8, 8, 0), task.onHit ? txTick : txCross));
         this.addPanel(new PanelGeneric(new GuiTransform(GuiAlign.TOP_LEFT, 40, 88, 8, 8, 0), task.onInteract ? txTick : txCross));
 
-
         ResourceLocation targetRes = new ResourceLocation(task.entityID);
         Entity target;
 
         if (EntityList.isRegistered(targetRes)) {
             target = EntityList.createEntityByIDFromName(targetRes, Minecraft.getMinecraft().world);
-            if (target != null) target.readFromNBT(task.entityTags);
+            if (target != null)
+                target.readFromNBT(task.entityTags);
         } else {
             target = null;
         }
 
         if (target != null)
-            this.addPanel(new PanelEntityPreview(new GuiTransform(GuiAlign.TOP_LEFT, 48, 0, initialRect.getWidth() - 48, 96, 0), target).setRotationDriven(new ValueFuncIO<>(() -> 15F), new ValueFuncIO<>(() -> (float) (Minecraft.getSystemTime() % 30000L / 30000D * 360D))));
+            this.addPanel(new PanelEntityPreview(new GuiTransform(GuiAlign.TOP_LEFT, 48, 0, initialRect.getWidth() - 48, 96, 0), target).setRotationDriven(
+                                                                                                                                                           new ValueFuncIO<>(() -> 15F),
+                                                                                                                                                           new ValueFuncIO<>(() -> (float) (Minecraft
+                                                                                                                                                                   .getSystemTime() %
+                                                                                                                                                                   30000L /
+                                                                                                                                                                   30000D *
+                                                                                                                                                                   360D))));
         recalculateSizes();
     }
+
 }

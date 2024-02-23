@@ -1,5 +1,7 @@
 package betterquesting.client.gui2.tasks;
 
+import java.util.UUID;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.api2.client.gui.misc.GuiRectangle;
@@ -12,8 +14,6 @@ import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.questing.tasks.TaskBlockBreak;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextFormatting;
-
-import java.util.UUID;
 
 public class PanelTaskBlockBreak extends CanvasMinimum {
 
@@ -50,7 +50,8 @@ public class PanelTaskBlockBreak extends CanvasMinimum {
 
             sb.append(stack.getBaseStack().getDisplayName());
 
-            if (stack.hasOreDict()) sb.append(" (").append(stack.getOreDict()).append(")");
+            if (stack.hasOreDict())
+                sb.append(" (").append(stack.getOreDict()).append(")");
 
             sb.append("\n").append(progress[i]).append("/").append(stack.stackSize).append("\n");
 
@@ -66,4 +67,5 @@ public class PanelTaskBlockBreak extends CanvasMinimum {
         }
         recalculateSizes();
     }
+
 }

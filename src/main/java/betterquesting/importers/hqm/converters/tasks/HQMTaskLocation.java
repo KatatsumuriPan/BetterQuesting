@@ -1,20 +1,23 @@
 package betterquesting.importers.hqm.converters.tasks;
 
-import betterquesting.api.questing.tasks.ITask;
-import betterquesting.api.utils.JsonHelper;
-import betterquesting.questing.tasks.TaskLocation;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import betterquesting.api.questing.tasks.ITask;
+import betterquesting.api.utils.JsonHelper;
+import betterquesting.questing.tasks.TaskLocation;
+
 public class HQMTaskLocation {
+
     public ITask[] convertTask(JsonObject json) {
         List<ITask> tList = new ArrayList<>();
 
         for (JsonElement element : JsonHelper.GetArray(json, "locations")) {
-            if (!(element instanceof JsonObject)) continue;
+            if (!(element instanceof JsonObject))
+                continue;
             JsonObject jLoc = element.getAsJsonObject();
 
             TaskLocation task = new TaskLocation();
@@ -30,4 +33,5 @@ public class HQMTaskLocation {
 
         return tList.toArray(new ITask[0]);
     }
+
 }

@@ -1,11 +1,13 @@
 package betterquesting.api2.client.gui.resources.lines;
 
+import org.lwjgl.opengl.GL11;
+
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import net.minecraft.client.renderer.GlStateManager;
-import org.lwjgl.opengl.GL11;
 
 public class BoxLine implements IGuiLine {
+
     private final short pattern;
     private final int scale;
 
@@ -50,4 +52,5 @@ public class BoxLine implements IGuiLine {
 
         GlStateManager.popMatrix();
     }
+
 }

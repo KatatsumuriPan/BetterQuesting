@@ -16,18 +16,15 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class RewardXP implements IReward {
+
     public int amount = 1;
     public boolean levels = true;
 
     @Override
-    public ResourceLocation getFactoryID() {
-        return FactoryRewardXP.INSTANCE.getRegistryName();
-    }
+    public ResourceLocation getFactoryID() { return FactoryRewardXP.INSTANCE.getRegistryName(); }
 
     @Override
-    public String getUnlocalisedName() {
-        return "bq_standard.reward.xp";
-    }
+    public String getUnlocalisedName() { return "bq_standard.reward.xp"; }
 
     @Override
     public boolean canClaim(EntityPlayer player, DBEntry<IQuest> quest) {
@@ -52,15 +49,14 @@ public class RewardXP implements IReward {
         return nbt;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
+    @Override @SideOnly(Side.CLIENT)
     public IGuiPanel getRewardGui(IGuiRect rect, DBEntry<IQuest> quest) {
         return new PanelRewardXP(rect, this);
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
+    @Override @SideOnly(Side.CLIENT)
     public GuiScreen getRewardEditor(GuiScreen screen, DBEntry<IQuest> quest) {
         return null;
     }
+
 }

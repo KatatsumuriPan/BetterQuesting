@@ -1,5 +1,10 @@
 package betterquesting.network.handlers;
 
+import java.util.Collections;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.events.DatabaseEvent;
 import betterquesting.api.events.DatabaseEvent.DBType;
@@ -18,11 +23,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.Collections;
-import java.util.UUID;
-
 public class NetInviteSync {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation(ModReference.MODID, "invite_sync");
 
     public static void registerHandler() {
@@ -32,7 +34,8 @@ public class NetInviteSync {
     }
 
     // If I need to send other people's invites to players then I'll deal with that another time
-    public static void sendSync(@Nonnull EntityPlayerMP player) {
+    public static void sendSync(@Nonnull
+    EntityPlayerMP player) {
         NBTTagCompound payload = new NBTTagCompound();
         UUID playerID = QuestingAPI.getQuestingUUID(player);
         payload.setInteger("action", 0);
@@ -40,7 +43,8 @@ public class NetInviteSync {
         PacketSender.INSTANCE.sendToPlayers(new QuestingPacket(ID_NAME, payload), player);
     }
 
-    public static void sendRevoked(@Nonnull EntityPlayerMP player, int... IDs) {
+    public static void sendRevoked(@Nonnull
+    EntityPlayerMP player, int... IDs) {
         NBTTagCompound payload = new NBTTagCompound();
         payload.setInteger("action", 1);
         payload.setIntArray("IDs", IDs);
@@ -59,4 +63,5 @@ public class NetInviteSync {
             MinecraftForge.EVENT_BUS.post(new DatabaseEvent.Update(DBType.PARTY));
         }
     }
+
 }

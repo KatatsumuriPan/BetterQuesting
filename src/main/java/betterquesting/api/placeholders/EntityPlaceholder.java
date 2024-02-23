@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 public class EntityPlaceholder extends Entity {
+
     private final EntityItem eItem;
     private NBTTagCompound original = new NBTTagCompound();
 
@@ -42,4 +43,5 @@ public class EntityPlaceholder extends Entity {
     protected void writeEntityToNBT(NBTTagCompound tags) {
         tags.setTag("original", this.original);
     }
+
 }

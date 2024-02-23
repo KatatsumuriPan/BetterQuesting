@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 public class FactoryRewardPlaceholder implements IFactoryData<RewardPlaceholder, NBTTagCompound> {
+
     public static final FactoryRewardPlaceholder INSTANCE = new FactoryRewardPlaceholder();
 
     private final ResourceLocation ID = new ResourceLocation(ModReference.MODID, "placeholder");
@@ -14,9 +15,7 @@ public class FactoryRewardPlaceholder implements IFactoryData<RewardPlaceholder,
     }
 
     @Override
-    public ResourceLocation getRegistryName() {
-        return ID;
-    }
+    public ResourceLocation getRegistryName() { return ID; }
 
     @Override
     public RewardPlaceholder createNew() {
@@ -29,4 +28,5 @@ public class FactoryRewardPlaceholder implements IFactoryData<RewardPlaceholder,
         reward.readFromNBT(nbt);
         return reward;
     }
+
 }

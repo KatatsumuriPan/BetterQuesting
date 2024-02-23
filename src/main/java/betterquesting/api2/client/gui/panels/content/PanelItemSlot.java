@@ -1,5 +1,10 @@
 package betterquesting.api2.client.gui.panels.content;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.lwjgl.input.Keyboard;
+
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.api2.client.gui.controls.PanelButtonStorage;
 import betterquesting.api2.client.gui.misc.GuiPadding;
@@ -22,12 +27,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.oredict.OreDictionary;
-import org.lwjgl.input.Keyboard;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PanelItemSlot extends PanelButtonStorage<BigItemStack> {
+
     private final boolean showCount;
     private final boolean oreDict;
 
@@ -46,7 +48,10 @@ public class PanelItemSlot extends PanelButtonStorage<BigItemStack> {
         this.showCount = showCount;
         this.oreDict = oreDict;
 
-        this.setTextures(PresetTexture.ITEM_FRAME.getTexture(), PresetTexture.ITEM_FRAME.getTexture(), new LayeredTexture(PresetTexture.ITEM_FRAME.getTexture(), new ColorTexture(PresetColor.ITEM_HIGHLIGHT.getColor(), new GuiPadding(1, 1, 1, 1))));
+        this.setTextures(PresetTexture.ITEM_FRAME.getTexture(),
+                         PresetTexture.ITEM_FRAME.getTexture(),
+                         new LayeredTexture(PresetTexture.ITEM_FRAME.getTexture(),
+                                            new ColorTexture(PresetColor.ITEM_HIGHLIGHT.getColor(), new GuiPadding(1, 1, 1, 1))));
         this.setStoredValue(value); // Need to run this again because of the instatiation order of showCount
     }
 
@@ -56,7 +61,8 @@ public class PanelItemSlot extends PanelButtonStorage<BigItemStack> {
 
         if (value != null) {
             Minecraft mc = Minecraft.getMinecraft();
-            this.setIcon(oreDict || value.getBaseStack().getItemDamage() == OreDictionary.WILDCARD_VALUE ? new OreDictTexture(1F, value, showCount, true) : new ItemTexture(value, showCount, true), 1);
+            this.setIcon(oreDict || value.getBaseStack().getItemDamage() == OreDictionary.WILDCARD_VALUE ? new OreDictTexture(1F, value, showCount, true) :
+                    new ItemTexture(value, showCount, true), 1);
             this.setTooltip(value.getBaseStack().getTooltip(mc.player, mc.gameSettings.advancedItemTooltips ? TooltipFlags.ADVANCED : TooltipFlags.NORMAL));
         } else {
             this.setIcon(null);
@@ -93,7 +99,8 @@ public class PanelItemSlot extends PanelButtonStorage<BigItemStack> {
         oreVariants.clear();
 
         BigItemStack stack = getStoredValue();
-        if (stack == null) return;
+        if (stack == null)
+            return;
 
         if (!stack.hasOreDict()) {
             if (stack.getBaseStack().getItemDamage() == OreDictionary.WILDCARD_VALUE) {
@@ -130,22 +137,30 @@ public class PanelItemSlot extends PanelButtonStorage<BigItemStack> {
 
     @Override
     public void onButtonClick() {
-        if (getCallback() != null) getCallback().setValue(getStoredValue());
-        else if (BetterQuesting.hasJEI && getStoredValue() != null) lookupRecipe(getStoredValue().getBaseStack(), true);
+        if (getCallback() != null)
+            getCallback().setValue(getStoredValue());
+        else if (BetterQuesting.hasJEI && getStoredValue() != null)
+            lookupRecipe(getStoredValue().getBaseStack(), true);
     }
 
     @Override
     public void onRightButtonClick() {
-        if (getCallback() != null) getCallback().setValue(getStoredValue());
-        else if (BetterQuesting.hasJEI && getStoredValue() != null) lookupRecipe(getStoredValue().getBaseStack(), false);
+        if (getCallback() != null)
+            getCallback().setValue(getStoredValue());
+        else if (BetterQuesting.hasJEI && getStoredValue() != null)
+            lookupRecipe(getStoredValue().getBaseStack(), false);
     }
 
     @Override
     public boolean onKeyTyped(char c, int keycode) {
-        if (!BetterQuesting.hasJEI) return false;
-        if (!Keyboard.getEventKeyState()) return false;
-        if (!isHovered()) return false;
-        if (getStoredValue() == null) return false;
+        if (!BetterQuesting.hasJEI)
+            return false;
+        if (!Keyboard.getEventKeyState())
+            return false;
+        if (!isHovered())
+            return false;
+        if (getStoredValue() == null)
+            return false;
 
         final boolean showRecipe = KeyBindings.showRecipe.isActiveAndMatches(keycode);
         final boolean showUses = KeyBindings.showUses.isActiveAndMatches(keycode);
@@ -161,8 +176,10 @@ public class PanelItemSlot extends PanelButtonStorage<BigItemStack> {
      */
     @Method(modid = "jei")
     public void lookupRecipe(ItemStack stack, boolean showRecipe) {
-        if (stack == null || stack.isEmpty() || Internal.getRuntime() == null) return;
+        if (stack == null || stack.isEmpty() || Internal.getRuntime() == null)
+            return;
         Mode mode = showRecipe ? Mode.OUTPUT : Mode.INPUT;
         Internal.getRuntime().getRecipesGui().show(new Focus<>(mode, stack));
     }
+
 }

@@ -1,5 +1,11 @@
 package betterquesting.commands.admin;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.storage.DBEntry;
@@ -15,40 +21,29 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 public class QuestCommandReportAllProgress extends QuestCommandBase {
 
     @Override
-    public String getUsageSuffix() {
-        return "<username|uuid>";
-    }
+    public String getUsageSuffix() { return "<username|uuid>"; }
 
     @Override
-    public String getPermissionNode() {
-        return "betterquesting.command.admin.report_all_quest_progress";
-    }
+    public String getPermissionNode() { return "betterquesting.command.admin.report_all_quest_progress"; }
 
     @Override
-    public DefaultPermissionLevel getPermissionLevel() {
-        return DefaultPermissionLevel.OP;
-    }
+    public DefaultPermissionLevel getPermissionLevel() { return DefaultPermissionLevel.OP; }
 
     @Override
-    public String getPermissionDescription() {
-        return "Permission to report all quest progress of a given user";
-    }
+    public String getPermissionDescription() { return "Permission to report all quest progress of a given user"; }
 
     @Override
-    public boolean validArgs(@Nonnull String[] args) {
+    public boolean validArgs(@Nonnull
+    String[] args) {
         return args.length == 2;
     }
 
     @Override
-    public List<String> autoComplete(MinecraftServer server, ICommandSender sender, @Nonnull String[] args) {
+    public List<String> autoComplete(MinecraftServer server, ICommandSender sender, @Nonnull
+    String[] args) {
         ArrayList<String> list = new ArrayList<>();
 
         if (args.length == 2) {
@@ -59,12 +54,11 @@ public class QuestCommandReportAllProgress extends QuestCommandBase {
     }
 
     @Override
-    public String getCommand() {
-        return "check_all";
-    }
+    public String getCommand() { return "check_all"; }
 
     @Override
-    public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, @Nonnull String[] args) throws CommandException {
+    public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, @Nonnull
+    String[] args) throws CommandException {
         UUID uuid;
 
         uuid = this.findPlayerID(server, sender, args[1]);
@@ -78,7 +72,9 @@ public class QuestCommandReportAllProgress extends QuestCommandBase {
 
         for (DBEntry<IQuest> entry : QuestDatabase.INSTANCE.getEntries()) {
             if (entry.getValue().isComplete(uuid)) {
-                sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.check_all.line", entry.getID(), entry.getValue().getProperty(NativeProps.NAME)));
+                sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.check_all.line",
+                                                                entry.getID(),
+                                                                entry.getValue().getProperty(NativeProps.NAME)));
             }
         }
     }
@@ -87,4 +83,5 @@ public class QuestCommandReportAllProgress extends QuestCommandBase {
     public boolean isArgUsername(String[] args, int index) {
         return index == 1;
     }
+
 }

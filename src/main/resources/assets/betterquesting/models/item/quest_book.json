@@ -1,6 +1,4 @@
 {
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "betterquesting:items/quest_book"
-  }
+    "parent": "item/generated",
+    "textures": {"layer0": "betterquesting:items/quest_book"}
 }

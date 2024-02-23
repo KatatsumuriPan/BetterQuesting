@@ -1,5 +1,19 @@
 package betterquesting.handlers;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.stream.Collectors;
+
+import com.google.gson.JsonObject;
+
 import betterquesting.api.events.DatabaseEvent;
 import betterquesting.api.events.DatabaseEvent.DBType;
 import betterquesting.api.properties.NativeProps;
@@ -19,19 +33,12 @@ import betterquesting.questing.party.PartyManager;
 import betterquesting.storage.LifeDatabase;
 import betterquesting.storage.NameCache;
 import betterquesting.storage.QuestSettings;
-import com.google.gson.JsonObject;
 import io.netty.util.internal.ConcurrentSet;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
-
-import java.io.File;
-import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.stream.Collectors;
 
 public class SaveLoadHandler {
 
@@ -203,7 +210,8 @@ public class SaveLoadHandler {
         {
             String fsVer = JsonHelper.makeFileNameSafe(buildVer);
 
-            if (fsVer.length() <= 0) fsVer = "pre-251";
+            if (fsVer.length() <= 0)
+                fsVer = "pre-251";
 
             BetterQuesting.logger.warn("BetterQuesting has been updated to from \"{}\" to \"{}\"! Creating backups...", fsVer, currVer);
 
@@ -224,7 +232,8 @@ public class SaveLoadHandler {
             legacyLoader.readFromJson(json);
         }
 
-        hasUpdate = packName.equals(QuestSettings.INSTANCE.getProperty(NativeProps.PACK_NAME)) && packVer > QuestSettings.INSTANCE.getProperty(NativeProps.PACK_VER);
+        hasUpdate = packName.equals(QuestSettings.INSTANCE.getProperty(NativeProps.PACK_NAME)) && packVer > QuestSettings.INSTANCE.getProperty(
+                                                                                                                                               NativeProps.PACK_VER);
     }
 
     private void loadProgress() {
@@ -350,4 +359,5 @@ public class SaveLoadHandler {
         }
         return Arrays.stream(files).filter(f -> f.getName().endsWith(".json")).collect(Collectors.toList());
     }
+
 }

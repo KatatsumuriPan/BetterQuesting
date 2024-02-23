@@ -4,6 +4,7 @@ import betterquesting.api.utils.RenderUtils;
 import net.minecraft.client.renderer.GlStateManager;
 
 public class GuiColorPulse implements IGuiColor {
+
     // Saves me having to run the math function every frame
     private final static double RAD = Math.toRadians(360F);
 
@@ -40,24 +41,16 @@ public class GuiColorPulse implements IGuiColor {
     }
 
     @Override
-    public float getRed() {
-        return (getRGB() >> 16 & 255) / 255F;
-    }
+    public float getRed() { return (getRGB() >> 16 & 255) / 255F; }
 
     @Override
-    public float getGreen() {
-        return (getRGB() >> 8 & 255) / 255F;
-    }
+    public float getGreen() { return (getRGB() >> 8 & 255) / 255F; }
 
     @Override
-    public float getBlue() {
-        return (getRGB() & 255) / 255F;
-    }
+    public float getBlue() { return (getRGB() & 255) / 255F; }
 
     @Override
-    public float getAlpha() {
-        return (getRGB() >> 24 & 255) / 255F;
-    }
+    public float getAlpha() { return (getRGB() >> 24 & 255) / 255F; }
 
     @Override
     public void applyGlColor() {
@@ -68,4 +61,5 @@ public class GuiColorPulse implements IGuiColor {
         float b = (float) (color & 255) / 255F;
         GlStateManager.color(r, g, b, a);
     }
+
 }

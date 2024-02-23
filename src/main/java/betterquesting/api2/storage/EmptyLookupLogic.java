@@ -13,4 +13,5 @@ public class EmptyLookupLogic<T> extends LookupLogic<T> {
     public List<DBEntry<T>> bulkLookup(int[] keys) {
         return Collections.emptyList();
     }
+
 }

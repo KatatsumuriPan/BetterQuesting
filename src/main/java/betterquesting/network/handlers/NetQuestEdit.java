@@ -1,5 +1,10 @@
 package betterquesting.network.handlers;
 
+import java.util.List;
+import java.util.UUID;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.events.DatabaseEvent;
 import betterquesting.api.events.DatabaseEvent.DBType;
@@ -27,12 +32,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
-
-import java.util.List;
-import java.util.UUID;
 
 public class NetQuestEdit {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation(ModReference.MODID, "quest_edit");
 
     public static void registerHandler() {
@@ -52,13 +54,16 @@ public class NetQuestEdit {
     private static void onServer(Tuple<NBTTagCompound, EntityPlayerMP> message) {
         EntityPlayerMP sender = message.getSecond();
         MinecraftServer server = sender.getServer();
-        if (server == null) return; // Here mostly just to keep intellisense happy
+        if (server == null)
+            return; // Here mostly just to keep intellisense happy
 
         boolean isOP = server.getPlayerList().canSendCommands(sender.getGameProfile());
 
         if (!isOP) // OP pre-check
         {
-            BetterQuesting.logger.log(Level.WARN, "Player " + sender.getName() + " (UUID:" + QuestingAPI.getQuestingUUID(sender) + ") tried to edit quests without OP permissions!");
+            BetterQuesting.logger.log(Level.WARN,
+                                      "Player " + sender.getName() + " (UUID:" + QuestingAPI.getQuestingUUID(sender) +
+                                              ") tried to edit quests without OP permissions!");
             sender.sendStatusMessage(new TextComponentString(TextFormatting.RED + "You need to be OP to edit quests!"), true);
             return; // Player is not operator. Do nothing
         }
@@ -100,7 +105,8 @@ public class NetQuestEdit {
             ids[i] = questID;
 
             IQuest quest = QuestDatabase.INSTANCE.getValue(questID);
-            if (quest != null) quest.readFromNBT(entry.getCompoundTag("config"));
+            if (quest != null)
+                quest.readFromNBT(entry.getCompoundTag("config"));
         }
 
         SaveLoadHandler.INSTANCE.markDirty();
@@ -156,10 +162,12 @@ public class NetQuestEdit {
         SaveLoadHandler.INSTANCE.markDirty();
 
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-        if (server == null) return;
+        if (server == null)
+            return;
         EntityPlayerMP player = server.getPlayerList().getPlayerByUUID(targetID);
         //noinspection ConstantConditions
-        if (player == null) return;
+        if (player == null)
+            return;
         NetQuestSync.sendSync(player, questIDs, false, true);
     }
 
@@ -169,12 +177,15 @@ public class NetQuestEdit {
         for (int i = 0; i < data.tagCount(); i++) {
             NBTTagCompound entry = data.getCompoundTagAt(i);
             int questID = entry.hasKey("questID", 99) ? entry.getInteger("questID") : -1;
-            if (questID < 0) questID = QuestDatabase.INSTANCE.nextID();
+            if (questID < 0)
+                questID = QuestDatabase.INSTANCE.nextID();
             ids[i] = questID;
 
             IQuest quest = QuestDatabase.INSTANCE.getValue(questID);
-            if (quest == null) quest = QuestDatabase.INSTANCE.createNew(questID);
-            if (entry.hasKey("config", 10)) quest.readFromNBT(entry.getCompoundTag("config"));
+            if (quest == null)
+                quest = QuestDatabase.INSTANCE.createNew(questID);
+            if (entry.hasKey("config", 10))
+                quest.readFromNBT(entry.getCompoundTag("config"));
         }
 
         SaveLoadHandler.INSTANCE.markDirty();
@@ -196,4 +207,5 @@ public class NetQuestEdit {
             MinecraftForge.EVENT_BUS.post(new DatabaseEvent.Update(DBType.CHAPTER));
         }
     }
+
 }

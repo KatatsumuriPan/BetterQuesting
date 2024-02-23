@@ -11,10 +11,9 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 
 public class QuestCommandHelp extends QuestCommandBase {
+
     @Override
-    public String getCommand() {
-        return "help";
-    }
+    public String getCommand() { return "help"; }
 
     @Override
     public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, String[] args) throws CommandException {
@@ -27,18 +26,12 @@ public class QuestCommandHelp extends QuestCommandBase {
     }
 
     @Override
-    public String getPermissionNode() {
-        return "betterquesting.command.user.help";
-    }
+    public String getPermissionNode() { return "betterquesting.command.user.help"; }
 
     @Override
-    public DefaultPermissionLevel getPermissionLevel() {
-        return DefaultPermissionLevel.ALL;
-    }
+    public DefaultPermissionLevel getPermissionLevel() { return DefaultPermissionLevel.ALL; }
 
     @Override
-    public String getPermissionDescription() {
-        return "Permission to execute command which gives the player a copy of the in game starter guide.";
-    }
+    public String getPermissionDescription() { return "Permission to execute command which gives the player a copy of the in game starter guide."; }
 
 }

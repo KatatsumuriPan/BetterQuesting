@@ -1,13 +1,18 @@
 package betterquesting.client.gui2.editors.tasks;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.lists.CanvasSearch;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementList;
 
-import java.util.*;
-
 public abstract class CanvasAdvancementSearch extends CanvasSearch<Advancement, Advancement> {
+
     private final AdvancementList advList;
 
     public CanvasAdvancementSearch(IGuiRect rect, AdvancementList list) {
@@ -18,7 +23,8 @@ public abstract class CanvasAdvancementSearch extends CanvasSearch<Advancement, 
     @Override
     protected Iterator<Advancement> getIterator() {
         List<Advancement> temp = new ArrayList<>();
-        for (Advancement adv : advList.getAdvancements()) temp.add(adv);
+        for (Advancement adv : advList.getAdvancements())
+            temp.add(adv);
         temp.sort(advComparator);
 
         return temp.iterator();
@@ -45,4 +51,5 @@ public abstract class CanvasAdvancementSearch extends CanvasSearch<Advancement, 
 
         return s1.compareTo(s2);
     };
+
 }

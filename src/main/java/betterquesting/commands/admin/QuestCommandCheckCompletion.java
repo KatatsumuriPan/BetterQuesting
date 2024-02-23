@@ -1,5 +1,11 @@
 package betterquesting.commands.admin;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.storage.DBEntry;
@@ -15,40 +21,29 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 public class QuestCommandCheckCompletion extends QuestCommandBase {
 
     @Override
-    public String getUsageSuffix() {
-        return "<username|uuid> <quest_id>";
-    }
+    public String getUsageSuffix() { return "<username|uuid> <quest_id>"; }
 
     @Override
-    public String getPermissionNode() {
-        return "betterquesting.command.admin.check_quest_completion";
-    }
+    public String getPermissionNode() { return "betterquesting.command.admin.check_quest_completion"; }
 
     @Override
-    public DefaultPermissionLevel getPermissionLevel() {
-        return DefaultPermissionLevel.OP;
-    }
+    public DefaultPermissionLevel getPermissionLevel() { return DefaultPermissionLevel.OP; }
 
     @Override
-    public String getPermissionDescription() {
-        return "Permission to check the completion of quests of a given user";
-    }
+    public String getPermissionDescription() { return "Permission to check the completion of quests of a given user"; }
 
     @Override
-    public boolean validArgs(@Nonnull String[] args) {
+    public boolean validArgs(@Nonnull
+    String[] args) {
         return args.length == 3;
     }
 
     @Override
-    public List<String> autoComplete(MinecraftServer server, ICommandSender sender, @Nonnull String[] args) {
+    public List<String> autoComplete(MinecraftServer server, ICommandSender sender, @Nonnull
+    String[] args) {
         ArrayList<String> list = new ArrayList<>();
 
         if (args.length == 2) {
@@ -63,12 +58,11 @@ public class QuestCommandCheckCompletion extends QuestCommandBase {
     }
 
     @Override
-    public String getCommand() {
-        return "check";
-    }
+    public String getCommand() { return "check"; }
 
     @Override
-    public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, @Nonnull String[] args) throws CommandException {
+    public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, @Nonnull
+    String[] args) throws CommandException {
         UUID uuid;
 
         uuid = this.findPlayerID(server, sender, args[1]);
@@ -86,11 +80,14 @@ public class QuestCommandCheckCompletion extends QuestCommandBase {
             sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.check.no_id_match").setStyle(new Style().setColor(TextFormatting.RED)));
             throw getException(command);
         }
-        sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.check." + quest.isComplete(uuid), pName, new TextComponentTranslation(quest.getProperty(NativeProps.NAME))));
+        sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.check." + quest.isComplete(uuid),
+                                                        pName,
+                                                        new TextComponentTranslation(quest.getProperty(NativeProps.NAME))));
     }
 
     @Override
     public boolean isArgUsername(String[] args, int index) {
         return index == 1;
     }
+
 }

@@ -1,5 +1,7 @@
 package betterquesting.network.handlers;
 
+import javax.annotation.Nonnull;
+
 import betterquesting.api.network.QuestingPacket;
 import betterquesting.api2.cache.CapabilityProviderQuestCache;
 import betterquesting.api2.cache.QuestCache;
@@ -15,9 +17,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-
 public class NetCacheSync {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation(ModReference.MODID, "cache_sync");
 
     public static void registerHandler() {
@@ -26,9 +27,11 @@ public class NetCacheSync {
         }
     }
 
-    public static void sendSync(@Nonnull EntityPlayerMP player) {
+    public static void sendSync(@Nonnull
+    EntityPlayerMP player) {
         QuestCache qc = player.getCapability(CapabilityProviderQuestCache.CAP_QUEST_CACHE, null);
-        if (qc == null) return;
+        if (qc == null)
+            return;
         NBTTagCompound payload = new NBTTagCompound();
         payload.setTag("data", qc.serializeNBT());
         PacketSender.INSTANCE.sendToPlayers(new QuestingPacket(ID_NAME, payload), player);
@@ -38,6 +41,8 @@ public class NetCacheSync {
     private static void onClient(NBTTagCompound message) {
         EntityPlayer player = Minecraft.getMinecraft().player;
         QuestCache qc = player != null ? player.getCapability(CapabilityProviderQuestCache.CAP_QUEST_CACHE, null) : null;
-        if (qc != null) qc.deserializeNBT(message.getCompoundTag("data"));
+        if (qc != null)
+            qc.deserializeNBT(message.getCompoundTag("data"));
     }
+
 }

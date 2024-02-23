@@ -1,5 +1,9 @@
 package betterquesting.client.gui2.tasks;
 
+import java.awt.Color;
+
+import org.apache.commons.lang3.StringUtils;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.utils.RenderUtils;
 import betterquesting.api2.client.gui.misc.GuiAlign;
@@ -20,9 +24,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.biome.Biome;
-import org.apache.commons.lang3.StringUtils;
-
-import java.awt.*;
 
 public class PanelTaskLocation extends CanvasMinimum {
 
@@ -47,7 +48,8 @@ public class PanelTaskLocation extends CanvasMinimum {
 
             if (task.range >= 0) {
                 desc += "\n" + QuestTranslation.translate("bq_standard.gui.location", "(" + task.x + ", " + task.y + ", " + task.z + ")");
-                desc += "\n" + QuestTranslation.translate("bq_standard.gui.distance", (int) Minecraft.getMinecraft().player.getDistance(task.x, task.y, task.z) + "m");
+                desc += "\n" + QuestTranslation.translate("bq_standard.gui.distance",
+                                                          (int) Minecraft.getMinecraft().player.getDistance(task.x, task.y, task.z) + "m");
             }
 
             if (!StringUtils.isEmpty(task.biome)) {
@@ -70,6 +72,7 @@ public class PanelTaskLocation extends CanvasMinimum {
         this.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_LEFT, 0, 0, width, textHeight, 0), desc).setColor(PresetColor.TEXT_MAIN.getColor()));
 
         IGuiTexture texCompass = new IGuiTexture() {
+
             @Override
             public void drawTexture(int x, int y, int width, int height, float zDepth, float partialTick) {
                 drawTexture(x, y, width, height, zDepth, partialTick, null);
@@ -108,18 +111,17 @@ public class PanelTaskLocation extends CanvasMinimum {
             }
 
             @Override
-            public ResourceLocation getTexture() {
-                return null;
-            }
+            public ResourceLocation getTexture() { return null; }
 
             @Override
-            public IGuiRect getBounds() {
-                return null;
-            }
+            public IGuiRect getBounds() { return null; }
+
         };
 
         int innerSize = Math.min(Math.min(initialRect.getWidth(), 128), initialRect.getHeight() - textHeight);
-        PanelGeneric panelCompass = new PanelGeneric(new GuiTransform(GuiAlign.TOP_LEFT, (width - innerSize) / 2, textHeight, innerSize, innerSize, 0), texCompass, PresetColor.TEXT_MAIN.getColor());
+        PanelGeneric panelCompass = new PanelGeneric(new GuiTransform(GuiAlign.TOP_LEFT, (width - innerSize) / 2, textHeight, innerSize, innerSize, 0),
+                                                     texCompass,
+                                                     PresetColor.TEXT_MAIN.getColor());
 
         this.addPanel(panelCompass);
         panelCompass.setEnabled(task.range >= 0 && !task.hideInfo);
@@ -133,4 +135,5 @@ public class PanelTaskLocation extends CanvasMinimum {
             return "?";
         }
     }
+
 }

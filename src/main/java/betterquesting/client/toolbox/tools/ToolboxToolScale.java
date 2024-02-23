@@ -1,5 +1,12 @@
 package betterquesting.client.toolbox.tools;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Vector4f;
+
 import betterquesting.api.client.toolbox.IToolboxTool;
 import betterquesting.api.questing.IQuestLine;
 import betterquesting.api.questing.IQuestLineEntry;
@@ -17,14 +24,9 @@ import betterquesting.questing.QuestLineDatabase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.util.vector.Vector4f;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class ToolboxToolScale implements IToolboxTool {
+
     private CanvasQuestLine gui;
 
     private final NonNullList<GrabEntry> grabList = NonNullList.create();
@@ -110,7 +112,8 @@ public class ToolboxToolScale implements IToolboxTool {
 
     @Override
     public void drawOverlay(int mx, int my, float partialTick) {
-        if (grabList.size() > 0) ToolboxTabMain.INSTANCE.drawGrid(gui);
+        if (grabList.size() > 0)
+            ToolboxTabMain.INSTANCE.drawGrid(gui);
     }
 
     @Override
@@ -169,7 +172,8 @@ public class ToolboxToolScale implements IToolboxTool {
         if (btnClicked != null) // Pickup the group or the single one if none are selected
         {
             if (PanelToolController.selected.size() > 0) {
-                if (!PanelToolController.selected.contains(btnClicked)) return false;
+                if (!PanelToolController.selected.contains(btnClicked))
+                    return false;
 
                 boolean first = true;
                 for (PanelButtonQuest btn : PanelToolController.selected) {
@@ -238,6 +242,7 @@ public class ToolboxToolScale implements IToolboxTool {
     }
 
     private class GrabEntry {
+
         private final PanelButtonQuest btn;
         private final Vector4f anchor;
         private final int sx;
@@ -249,5 +254,7 @@ public class ToolboxToolScale implements IToolboxTool {
             this.sx = btn.rect.x + btn.rect.w / 2;
             this.sy = btn.rect.y + btn.rect.h / 2;
         }
+
     }
+
 }

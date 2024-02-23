@@ -1,27 +1,46 @@
 package betterquesting.api.utils;
 
-import betterquesting.api.api.QuestingAPI;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.stream.JsonWriter;
-import net.minecraft.nbt.*;
-import org.apache.logging.log4j.Level;
-
 import java.io.IOException;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.logging.log4j.Level;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.stream.JsonWriter;
+
+import betterquesting.api.api.QuestingAPI;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTPrimitive;
+import net.minecraft.nbt.NBTTagByte;
+import net.minecraft.nbt.NBTTagByteArray;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagDouble;
+import net.minecraft.nbt.NBTTagFloat;
+import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.nbt.NBTTagIntArray;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagLong;
+import net.minecraft.nbt.NBTTagLongArray;
+import net.minecraft.nbt.NBTTagShort;
+import net.minecraft.nbt.NBTTagString;
+
 public class NBTConverter {
+
     /**
      * Convert NBT tags to a JSON object
      */
     private static void NBTtoJSON_Base(NBTBase value, boolean format, JsonWriter out) throws IOException {
-        if (value == null || value.getId() == 0) out.beginObject().endObject();
-        else if (value instanceof NBTPrimitive) out.value(NBTConverter.getNumber(value));
-        else if (value instanceof NBTTagString) out.value(((NBTTagString) value).getString());
+        if (value == null || value.getId() == 0)
+            out.beginObject().endObject();
+        else if (value instanceof NBTPrimitive)
+            out.value(NBTConverter.getNumber(value));
+        else if (value instanceof NBTTagString)
+            out.value(((NBTTagString) value).getString());
         else if (value instanceof NBTTagByteArray) {
             out.beginArray();
             for (byte b : ((NBTTagByteArray) value).getByteArray()) {
@@ -145,7 +164,8 @@ public class NBTConverter {
     // The fact that this is necessary is so dumb
     @SuppressWarnings("WeakerAccess")
     public static long[] readLongArray(NBTTagLongArray tag) {
-        if (tag == null) return new long[0];
+        if (tag == null)
+            return new long[0];
 
         String[] entry = tag.toString().replaceAll("[\\[\\]L;]", "").split(","); // Cut off square braces and "L;" before splitting elements
         final long[] ary = new long[entry.length];
@@ -394,4 +414,5 @@ public class NBTConverter {
 
         return tagID;
     }
+
 }

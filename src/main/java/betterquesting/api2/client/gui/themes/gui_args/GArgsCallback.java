@@ -4,6 +4,7 @@ import betterquesting.api.misc.ICallback;
 import net.minecraft.client.gui.GuiScreen;
 
 public class GArgsCallback<T> extends GArgsNone {
+
     public final T value;
     public final ICallback<T> callback;
 
@@ -12,4 +13,5 @@ public class GArgsCallback<T> extends GArgsNone {
         this.value = value;
         this.callback = callback;
     }
+
 }

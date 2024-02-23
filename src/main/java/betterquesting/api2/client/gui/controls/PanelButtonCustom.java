@@ -1,5 +1,9 @@
 package betterquesting.api2.client.gui.controls;
 
+import java.util.function.Consumer;
+
+import org.lwjgl.input.Mouse;
+
 import betterquesting.api2.client.gui.events.PEventBroadcaster;
 import betterquesting.api2.client.gui.events.types.PEventButton;
 import betterquesting.api2.client.gui.misc.IGuiRect;
@@ -9,9 +13,6 @@ import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.init.SoundEvents;
-import org.lwjgl.input.Mouse;
-
-import java.util.function.Consumer;
 
 public class PanelButtonCustom extends CanvasEmpty implements IPanelButton {
 
@@ -29,19 +30,13 @@ public class PanelButtonCustom extends CanvasEmpty implements IPanelButton {
     }
 
     @Override
-    public int getButtonID() {
-        return buttonId;
-    }
+    public int getButtonID() { return buttonId; }
 
     @Override
-    public boolean isActive() {
-        return isActive;
-    }
+    public boolean isActive() { return isActive; }
 
     @Override
-    public void setActive(boolean state) {
-        isActive = state;
-    }
+    public void setActive(boolean state) { isActive = state; }
 
     @Override
     public void drawPanel(int mx, int my, float partialTick) {
@@ -62,13 +57,15 @@ public class PanelButtonCustom extends CanvasEmpty implements IPanelButton {
 
     @Override
     public void onButtonClick() {
-        if (callback != null) callback.accept(this);
+        if (callback != null)
+            callback.accept(this);
     }
 
     @Override
     public boolean onMouseClick(int mx, int my, int click) {
         boolean used = super.onMouseClick(mx, my, click);
-        if (used) return true;
+        if (used)
+            return true;
 
         boolean contains = this.getTransform().contains(mx, my);
         pendingRelease = isActive() && click == 0 && contains;
@@ -79,9 +76,11 @@ public class PanelButtonCustom extends CanvasEmpty implements IPanelButton {
     @Override
     public boolean onMouseRelease(int mx, int my, int click) {
         boolean released = super.onMouseRelease(mx, my, click);
-        if (released) return true;
+        if (released)
+            return true;
 
-        if (!pendingRelease) return false;
+        if (!pendingRelease)
+            return false;
         pendingRelease = false;
 
         IGuiRect bounds = this.getTransform();
@@ -95,13 +94,9 @@ public class PanelButtonCustom extends CanvasEmpty implements IPanelButton {
         return clicked;
     }
 
-    public Consumer<PanelButtonCustom> getCallback() {
-        return callback;
-    }
+    public Consumer<PanelButtonCustom> getCallback() { return callback; }
 
-    public void setCallback(Consumer<PanelButtonCustom> callback) {
-        this.callback = callback;
-    }
+    public void setCallback(Consumer<PanelButtonCustom> callback) { this.callback = callback; }
 
     public PanelButtonCustom setTextures(IGuiTexture disabled, IGuiTexture idle, IGuiTexture hover) {
         this.texStates[0] = disabled;
@@ -109,4 +104,5 @@ public class PanelButtonCustom extends CanvasEmpty implements IPanelButton {
         this.texStates[2] = hover;
         return this;
     }
+
 }

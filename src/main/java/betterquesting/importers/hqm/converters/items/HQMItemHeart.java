@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 public class HQMItemHeart implements HQMItem {
+
     private final Item bqHeart;
 
     public HQMItemHeart() {
@@ -33,4 +34,5 @@ public class HQMItemHeart implements HQMItem {
 
         return new BigItemStack(bqHeart, amt, dmg);
     }
+
 }

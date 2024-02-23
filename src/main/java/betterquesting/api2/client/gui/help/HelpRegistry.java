@@ -5,6 +5,7 @@ import java.util.List;
 
 // Could probably be more refined and fleshed out in functionality at a later date but for now this is just to decouple it from the GUIs
 public class HelpRegistry {
+
     public static final HelpRegistry INSTANCE = new HelpRegistry();
 
     private final List<HelpTopic> topicList = new ArrayList<>();
@@ -21,11 +22,11 @@ public class HelpRegistry {
     }
 
     public boolean registerTopic(HelpTopic topic) {
-        if (topicList.contains(topic)) return false;
+        if (topicList.contains(topic))
+            return false;
         return topicList.add(topic);
     }
 
-    public HelpTopic[] getTopics() {
-        return topicList.toArray(new HelpTopic[0]);
-    }
+    public HelpTopic[] getTopics() { return topicList.toArray(new HelpTopic[0]); }
+
 }

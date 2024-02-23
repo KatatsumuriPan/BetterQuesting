@@ -8,6 +8,7 @@ import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class FtbqTaskKill {
+
     public ITask[] convertTask(NBTTagCompound tag) {
         TaskHunt task = new TaskHunt();
 
@@ -19,6 +20,9 @@ public class FtbqTaskKill {
 
         FTBQQuestImporter.provideQuestIcon(new BigItemStack(Items.DIAMOND_SWORD));
 
-        return new ITask[]{task};
+        return new ITask[] {
+                task
+        };
     }
+
 }

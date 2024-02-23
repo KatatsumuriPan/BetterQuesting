@@ -1,5 +1,11 @@
 package betterquesting.network.handlers;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.events.DatabaseEvent;
 import betterquesting.api.events.DatabaseEvent.DBType;
@@ -24,12 +30,8 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-
 public class NetQuestSync {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation(ModReference.MODID, "quest_sync");
 
     public static void registerHandler() {
@@ -41,16 +43,21 @@ public class NetQuestSync {
     }
 
     public static void quickSync(int questID, boolean config, boolean progress) {
-        if (!config && !progress) return;
+        if (!config && !progress)
+            return;
 
-        int[] IDs = questID < 0 ? null : new int[]{questID};
+        int[] IDs = questID < 0 ? null : new int[] {
+                questID
+        };
 
-        if (config) sendSync(null, IDs, true, false); // We're not sending progress in this pass.
+        if (config)
+            sendSync(null, IDs, true, false); // We're not sending progress in this pass.
 
         if (progress) // Send everyone's individual progression
         {
             MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-            if (server == null) return;
+            if (server == null)
+                return;
 
             for (EntityPlayerMP player : server.getPlayerList().getPlayers()) {
                 sendSync(player, IDs, false, true); // Progression only this pass
@@ -59,12 +66,18 @@ public class NetQuestSync {
     }
 
     @Deprecated
-    public static void sendSync(@Nullable EntityPlayerMP player, @Nullable int[] questIDs, boolean config, boolean progress) {
+    public static void sendSync(@Nullable
+    EntityPlayerMP player, @Nullable
+    int[] questIDs, boolean config, boolean progress) {
         sendSync(player, questIDs, null, config, progress);
     }
 
-    public static void sendSync(@Nullable EntityPlayerMP player, @Nullable int[] questIDs, @Nullable int[] resetIDs, boolean config, boolean progress) {
-        if ((!config && !progress) || (questIDs != null && questIDs.length <= 0)) return;
+    public static void sendSync(@Nullable
+    EntityPlayerMP player, @Nullable
+    int[] questIDs, @Nullable
+    int[] resetIDs, boolean config, boolean progress) {
+        if ((!config && !progress) || (questIDs != null && questIDs.length <= 0))
+            return;
 
         // Offload this to another thread as it could take a while to build
         BQThreadedIO.INSTANCE.enqueue(() -> {
@@ -75,10 +88,12 @@ public class NetQuestSync {
             for (DBEntry<IQuest> entry : questSubset) {
                 NBTTagCompound tag = new NBTTagCompound();
 
-                if (config) tag.setTag("config", entry.getValue().writeToNBT(new NBTTagCompound()));
+                if (config)
+                    tag.setTag("config", entry.getValue().writeToNBT(new NBTTagCompound()));
                 if (progress)
                     tag.setTag("progress", entry.getValue().writeProgressToNBT(new NBTTagCompound(), pidList));
-                if (resetIDs != null) tag.setIntArray("resets", resetIDs);
+                if (resetIDs != null)
+                    tag.setIntArray("resets", resetIDs);
                 tag.setInteger("questID", entry.getID());
                 dataList.appendTag(tag);
             }
@@ -97,9 +112,11 @@ public class NetQuestSync {
 
     // Asks the server to send specific quest data over
     @SideOnly(Side.CLIENT)
-    public static void requestSync(@Nullable int[] questIDs, boolean configs, boolean progress) {
+    public static void requestSync(@Nullable
+    int[] questIDs, boolean configs, boolean progress) {
         NBTTagCompound payload = new NBTTagCompound();
-        if (questIDs != null) payload.setIntArray("requestIDs", questIDs);
+        if (questIDs != null)
+            payload.setIntArray("requestIDs", questIDs);
         payload.setBoolean("getConfig", configs);
         payload.setBoolean("getProgress", progress);
         PacketSender.INSTANCE.sendToServer(new QuestingPacket(ID_NAME, payload));
@@ -115,17 +132,20 @@ public class NetQuestSync {
     private static void onClient(NBTTagCompound message) {
         NBTTagList data = message.getTagList("data", 10);
         boolean merge = message.getBoolean("merge");
-        if (!merge) QuestDatabase.INSTANCE.reset();
+        if (!merge)
+            QuestDatabase.INSTANCE.reset();
 
         for (int i = 0; i < data.tagCount(); i++) {
             NBTTagCompound tag = data.getCompoundTagAt(i);
-            if (!tag.hasKey("questID", 99)) continue;
+            if (!tag.hasKey("questID", 99))
+                continue;
             int questID = tag.getInteger("questID");
 
             IQuest quest = QuestDatabase.INSTANCE.getValue(questID);
 
             if (tag.hasKey("config", 10)) {
-                if (quest == null) quest = QuestDatabase.INSTANCE.createNew(questID);
+                if (quest == null)
+                    quest = QuestDatabase.INSTANCE.createNew(questID);
                 quest.readFromNBT(tag.getCompoundTag("config"));
             }
 
@@ -138,4 +158,5 @@ public class NetQuestSync {
 
         MinecraftForge.EVENT_BUS.post(new DatabaseEvent.Update(DBType.QUEST));
     }
+
 }

@@ -1,11 +1,13 @@
 package betterquesting.client;
 
+import org.lwjgl.input.Keyboard;
+
 import betterquesting.core.ModReference;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import org.lwjgl.input.Keyboard;
 
 public class BQ_Keybindings {
+
     public static KeyBinding openQuests;
 
     public static void RegisterKeys() {
@@ -13,4 +15,5 @@ public class BQ_Keybindings {
 
         ClientRegistry.registerKeyBinding(openQuests);
     }
+
 }

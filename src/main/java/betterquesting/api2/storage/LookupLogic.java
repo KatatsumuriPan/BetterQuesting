@@ -19,7 +19,8 @@ abstract class LookupLogic<T> {
     }
 
     public List<DBEntry<T>> getRefCache() {
-        if (refCache != null) return refCache;
+        if (refCache != null)
+            return refCache;
         computeRefCache();
         return refCache;
     }
@@ -33,4 +34,5 @@ abstract class LookupLogic<T> {
         }
         refCache = Collections.unmodifiableList(temp);
     }
+
 }

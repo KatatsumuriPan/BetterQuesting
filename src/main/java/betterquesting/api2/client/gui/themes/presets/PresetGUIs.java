@@ -12,6 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 public class PresetGUIs {
+
     public static final GuiKey<GArgsNone> HOME = new GuiKey<>(new ResourceLocation(ModReference.MODID, "home"));
 
     public static final GuiKey<GArgsNBT> EDIT_NBT = new GuiKey<>(new ResourceLocation(ModReference.MODID, "edit_nbt"));
@@ -21,4 +22,5 @@ public class PresetGUIs {
 
     public static final GuiKey<GArgsCallback<String>> EDIT_TEXT = new GuiKey<>(new ResourceLocation(ModReference.MODID, "edit_text"));
     public static final GuiKey<GArgsFileBrowser> FILE_EXPLORE = new GuiKey<>(new ResourceLocation(ModReference.MODID, "file_explore"));
+
 }

@@ -1,6 +1,19 @@
 package betterquesting.commands;
 
-import betterquesting.commands.admin.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import betterquesting.commands.admin.QuestCommandCheckCompletion;
+import betterquesting.commands.admin.QuestCommandComplete;
+import betterquesting.commands.admin.QuestCommandDefaults;
+import betterquesting.commands.admin.QuestCommandDelete;
+import betterquesting.commands.admin.QuestCommandEdit;
+import betterquesting.commands.admin.QuestCommandHardcore;
+import betterquesting.commands.admin.QuestCommandLives;
+import betterquesting.commands.admin.QuestCommandPurge;
+import betterquesting.commands.admin.QuestCommandReportAllProgress;
+import betterquesting.commands.admin.QuestCommandReset;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -13,11 +26,8 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class BQ_CommandAdmin extends CommandBase {
+
     private final List<QuestCommandBase> coms = new ArrayList<>();
 
     public BQ_CommandAdmin() {
@@ -36,9 +46,7 @@ public class BQ_CommandAdmin extends CommandBase {
     }
 
     @Override
-    public String getName() {
-        return "bq_admin";
-    }
+    public String getName() { return "bq_admin"; }
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
@@ -92,9 +100,7 @@ public class BQ_CommandAdmin extends CommandBase {
     }
 
     @Override
-    public int getRequiredPermissionLevel() {
-        return 2;
-    }
+    public int getRequiredPermissionLevel() { return 2; }
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
@@ -140,4 +146,5 @@ public class BQ_CommandAdmin extends CommandBase {
 
         return false;
     }
+
 }

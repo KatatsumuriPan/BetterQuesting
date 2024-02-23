@@ -1,10 +1,11 @@
 package betterquesting.api2.client.gui.misc;
 
-import betterquesting.api.utils.RenderUtils;
-
 import javax.annotation.Nonnull;
 
+import betterquesting.api.utils.RenderUtils;
+
 public class GuiRectLerp implements IGuiRect {
+
     private IGuiRect startRect;
     private IGuiRect targetRect;
     private long duration = 200L;
@@ -12,15 +13,18 @@ public class GuiRectLerp implements IGuiRect {
 
     private final ProxyRect pxRect;
 
-    public GuiRectLerp(@Nonnull IGuiRect start) {
+    public GuiRectLerp(@Nonnull
+    IGuiRect start) {
         this.startRect = start;
         this.targetRect = start;
         this.pxRect = new ProxyRect(start);
         this.et = System.currentTimeMillis();
     }
 
-    public void lerpTo(@Nonnull IGuiRect target, long time) {
-        if (time <= 0) return;
+    public void lerpTo(@Nonnull
+    IGuiRect target, long time) {
+        if (time <= 0)
+            return;
 
         this.targetRect = target;
         this.duration = time;
@@ -28,7 +32,8 @@ public class GuiRectLerp implements IGuiRect {
         this.pxRect.changeReference(target);
     }
 
-    public void snapTo(@Nonnull IGuiRect target) {
+    public void snapTo(@Nonnull
+    IGuiRect target) {
         this.startRect = target;
         this.targetRect = target;
         this.et = System.currentTimeMillis();
@@ -36,12 +41,11 @@ public class GuiRectLerp implements IGuiRect {
     }
 
     // Allows other transforms to snap to new destinations even if the targetRect variable changes instance
-    public IGuiRect getProxyRect() {
-        return pxRect;
-    }
+    public IGuiRect getProxyRect() { return pxRect; }
 
     public boolean isIdle() {
-        if (startRect == targetRect) return true;
+        if (startRect == targetRect)
+            return true;
         if (System.currentTimeMillis() - et >= duration) {
             this.startRect = this.targetRect;
             return true;
@@ -51,33 +55,37 @@ public class GuiRectLerp implements IGuiRect {
 
     @Override
     public int getX() {
-        return isIdle() ? targetRect.getX() : (int) Math.round(RenderUtils.lerpDouble((double) startRect.getX(), (double) targetRect.getX(), (System.currentTimeMillis() - et) / (double) duration));
+        return isIdle() ? targetRect.getX() : (int) Math.round(RenderUtils.lerpDouble((double) startRect.getX(),
+                                                                                      (double) targetRect.getX(),
+                                                                                      (System.currentTimeMillis() - et) / (double) duration));
     }
 
     @Override
     public int getY() {
-        return isIdle() ? targetRect.getY() : (int) Math.round(RenderUtils.lerpDouble((double) startRect.getY(), (double) targetRect.getY(), (System.currentTimeMillis() - et) / (double) duration));
+        return isIdle() ? targetRect.getY() : (int) Math.round(RenderUtils.lerpDouble((double) startRect.getY(),
+                                                                                      (double) targetRect.getY(),
+                                                                                      (System.currentTimeMillis() - et) / (double) duration));
     }
 
     @Override
     public int getWidth() {
-        return isIdle() ? targetRect.getWidth() : (int) Math.round(RenderUtils.lerpDouble((double) startRect.getWidth(), (double) targetRect.getWidth(), (System.currentTimeMillis() - et) / (double) duration));
+        return isIdle() ? targetRect.getWidth() : (int) Math.round(RenderUtils.lerpDouble((double) startRect.getWidth(),
+                                                                                          (double) targetRect.getWidth(),
+                                                                                          (System.currentTimeMillis() - et) / (double) duration));
     }
 
     @Override
     public int getHeight() {
-        return isIdle() ? targetRect.getHeight() : (int) Math.round(RenderUtils.lerpDouble((double) startRect.getHeight(), (double) targetRect.getHeight(), (System.currentTimeMillis() - et) / (double) duration));
+        return isIdle() ? targetRect.getHeight() : (int) Math.round(RenderUtils.lerpDouble((double) startRect.getHeight(),
+                                                                                           (double) targetRect.getHeight(),
+                                                                                           (System.currentTimeMillis() - et) / (double) duration));
     }
 
     @Override
-    public int getDepth() {
-        return targetRect.getDepth();
-    }
+    public int getDepth() { return targetRect.getDepth(); }
 
     @Override
-    public IGuiRect getParent() {
-        return targetRect.getParent();
-    }
+    public IGuiRect getParent() { return targetRect.getParent(); }
 
     @Override
     public void setParent(IGuiRect rect) {
@@ -90,7 +98,9 @@ public class GuiRectLerp implements IGuiRect {
     }
 
     @Override
-    public int compareTo(@Nonnull IGuiRect o) {
+    public int compareTo(@Nonnull
+    IGuiRect o) {
         return targetRect.compareTo(o);
     }
+
 }

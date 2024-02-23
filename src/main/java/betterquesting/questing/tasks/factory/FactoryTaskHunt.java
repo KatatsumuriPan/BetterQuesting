@@ -8,12 +8,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 public class FactoryTaskHunt implements IFactoryData<ITask, NBTTagCompound> {
+
     public static final FactoryTaskHunt INSTANCE = new FactoryTaskHunt();
 
     @Override
-    public ResourceLocation getRegistryName() {
-        return new ResourceLocation(BetterQuesting.MODID_STD + ":hunt");
-    }
+    public ResourceLocation getRegistryName() { return new ResourceLocation(BetterQuesting.MODID_STD + ":hunt"); }
 
     @Override
     public TaskHunt createNew() {

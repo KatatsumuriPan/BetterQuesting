@@ -1,5 +1,10 @@
 package betterquesting.network.handlers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.network.QuestingPacket;
@@ -14,11 +19,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
-
 public class NetLootClaim {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation("bq_standard:loot_claim");
 
     public static void registerHandler() {
@@ -27,7 +29,9 @@ public class NetLootClaim {
         }
     }
 
-    public static void sendReward(@Nonnull EntityPlayerMP player, @Nonnull String title, BigItemStack... items) {
+    public static void sendReward(@Nonnull
+    EntityPlayerMP player, @Nonnull
+    String title, BigItemStack... items) {
         NBTTagCompound payload = new NBTTagCompound();
         NBTTagList list = new NBTTagList();
         for (BigItemStack stack : items) {
@@ -51,4 +55,5 @@ public class NetLootClaim {
 
         Minecraft.getMinecraft().displayGuiScreen(new GuiLootChest(null, rewards, title));
     }
+
 }

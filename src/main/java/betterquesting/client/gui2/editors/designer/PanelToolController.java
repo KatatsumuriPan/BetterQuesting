@@ -1,5 +1,13 @@
 package betterquesting.client.gui2.editors.designer;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.lwjgl.input.Keyboard;
+
 import betterquesting.api.client.toolbox.IToolboxTool;
 import betterquesting.api.utils.RenderUtils;
 import betterquesting.api2.client.gui.controls.IValueIO;
@@ -19,15 +27,10 @@ import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.input.Keyboard;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 // Kinda just a poxy panel where tools can be hotswapped out
 public class PanelToolController implements IGuiPanel {
+
     private CanvasQuestLine questLine;
     private final IGuiRect transform;
     private boolean enabled = true;
@@ -50,6 +53,7 @@ public class PanelToolController implements IGuiPanel {
         this.questLine = questLine;
 
         scDriverX = new FloatSimpleIO() {
+
             @Override
             public void writeValue(Float value) {
                 if (activeTool != null && !activeTool.clampScrolling()) {
@@ -58,9 +62,11 @@ public class PanelToolController implements IGuiPanel {
                     this.v = MathHelper.clamp(value, 0F, 1F);
                 }
             }
+
         }.setLerp(false, 0.02F);
 
         scDriverY = new FloatSimpleIO() {
+
             @Override
             public void writeValue(Float value) {
                 if (activeTool != null && !activeTool.clampScrolling()) {
@@ -69,22 +75,24 @@ public class PanelToolController implements IGuiPanel {
                     this.v = MathHelper.clamp(value, 0F, 1F);
                 }
             }
+
         }.setLerp(false, 0.02F);
     }
 
     public void setActiveTool(IToolboxTool tool) {
-        if (this.activeTool != null) activeTool.disableTool();
-        if (tool == null) return;
+        if (this.activeTool != null)
+            activeTool.disableTool();
+        if (tool == null)
+            return;
 
         activeTool = tool;
         tool.initTool(questLine);
     }
 
-    public IToolboxTool getActiveTool() {
-        return this.activeTool;
-    }
+    public IToolboxTool getActiveTool() { return this.activeTool; }
 
-    public void changeCanvas(@Nonnull CanvasQuestLine canvas) {
+    public void changeCanvas(@Nonnull
+    CanvasQuestLine canvas) {
         this.questLine = canvas;
         refreshCanvas();
         setActiveTool(getActiveTool());
@@ -94,52 +102,44 @@ public class PanelToolController implements IGuiPanel {
         List<PanelButtonQuest> tmp = new ArrayList<>();
         for (PanelButtonQuest b1 : selected) {
             for (PanelButtonQuest b2 : questLine.getQuestButtons())
-                if (b1.getStoredValue().getID() == b2.getStoredValue().getID()) tmp.add(b2);
+                if (b1.getStoredValue().getID() == b2.getStoredValue().getID())
+                    tmp.add(b2);
         }
 
         selected.clear();
         selected.addAll(tmp);
 
         highlights.clear();
-        for (PanelButtonQuest btn : selected) highlights.add(new PanelGeneric(btn.rect, hTex));
+        for (PanelButtonQuest btn : selected)
+            highlights.add(new PanelGeneric(btn.rect, hTex));
 
-        if (this.activeTool != null) activeTool.refresh(this.questLine);
+        if (this.activeTool != null)
+            activeTool.refresh(this.questLine);
     }
 
-    public CanvasQuestLine getCanvas() {
-        return this.getCanvas();
-    }
+    public CanvasQuestLine getCanvas() { return this.getCanvas(); }
 
-    public IValueIO<Float> getScrollX() {
-        return this.scDriverX;
-    }
+    public IValueIO<Float> getScrollX() { return this.scDriverX; }
 
-    public IValueIO<Float> getScrollY() {
-        return this.scDriverY;
-    }
+    public IValueIO<Float> getScrollY() { return this.scDriverY; }
 
     @Override
-    public IGuiRect getTransform() {
-        return transform;
-    }
+    public IGuiRect getTransform() { return transform; }
 
     @Override
     public void initPanel() {
     }
 
     @Override
-    public void setEnabled(boolean state) {
-        this.enabled = state;
-    }
+    public void setEnabled(boolean state) { this.enabled = state; }
 
     @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
+    public boolean isEnabled() { return enabled; }
 
     @Override
     public void drawPanel(int mx, int my, float partialTick) {
-        if (!enabled) return;
+        if (!enabled)
+            return;
 
         if (activeTool != null) {
             float zs = questLine.getZoom();
@@ -163,7 +163,8 @@ public class PanelToolController implements IGuiPanel {
                 selLine.drawLine(selBounds, selBounds, 2, selCol, partialTick);
             }
 
-            for (IGuiPanel pn : highlights) pn.drawPanel(smx, smy, partialTick);
+            for (IGuiPanel pn : highlights)
+                pn.drawPanel(smx, smy, partialTick);
 
             // Pretending we're on the scrolling canvas (when we're really not) so as not to influence it by hotswapping panels
             activeTool.drawCanvas(smx, smy, partialTick);
@@ -178,7 +179,8 @@ public class PanelToolController implements IGuiPanel {
     @Override
     public boolean onMouseClick(int mx, int my, int button) {
         if (activeTool != null && this.getTransform().contains(mx, my)) {
-            if (activeTool.onMouseClick(mx, my, button)) return true;
+            if (activeTool.onMouseClick(mx, my, button))
+                return true;
             if (activeTool.useSelection()) {
                 if (button == 1) {
                     selBounds = null;
@@ -220,40 +222,50 @@ public class PanelToolController implements IGuiPanel {
             boolean append = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
             boolean subtract = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
 
-            if (!append && !subtract) selected.clear();
+            if (!append && !subtract)
+                selected.clear();
 
             for (PanelButtonQuest btn : questLine.getQuestButtons()) {
-                if (selBounds.contains(btn.rect.x + btn.rect.w / 2, btn.rect.y + btn.rect.h / 2) || (btn.rect.contains(selBounds.x, selBounds.y) && Math.max(selBounds.w, selBounds.h) < 4)) {
+                if (selBounds.contains(btn.rect.x + btn.rect.w / 2, btn.rect.y + btn.rect.h / 2) || (btn.rect.contains(selBounds.x, selBounds.y) && Math.max(
+                                                                                                                                                             selBounds.w,
+                                                                                                                                                             selBounds.h) <
+                        4)) {
                     if (subtract) {
                         selected.remove(btn);
                         continue;
                     }
-                    if (append && selected.contains(btn)) continue;
+                    if (append && selected.contains(btn))
+                        continue;
                     selected.add(btn);
                 }
             }
 
             highlights.clear();
-            for (PanelButtonQuest btn : selected) highlights.add(new PanelGeneric(btn.rect, hTex));
+            for (PanelButtonQuest btn : selected)
+                highlights.add(new PanelGeneric(btn.rect, hTex));
 
             selBounds = null;
-            if (activeTool != null) activeTool.onSelection(selected);
+            if (activeTool != null)
+                activeTool.onSelection(selected);
         }
 
-        if (activeTool != null) return activeTool.onMouseRelease(mx, my, button);
+        if (activeTool != null)
+            return activeTool.onMouseRelease(mx, my, button);
         return false;
     }
 
     @Override
     public boolean onMouseScroll(int mx, int my, int scroll) {
-        if (activeTool != null) return activeTool.onMouseScroll(mx, my, scroll);
+        if (activeTool != null)
+            return activeTool.onMouseScroll(mx, my, scroll);
         return false;
     }
 
     @Override
     public boolean onKeyTyped(char c, int keycode) {
         if (activeTool != null) {
-            if (activeTool.onKeyPressed(c, keycode)) return true;
+            if (activeTool.onKeyPressed(c, keycode))
+                return true;
             if (activeTool.useSelection() && keycode == Keyboard.KEY_A) {
                 boolean append = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
                 boolean subtract = append && (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
@@ -284,8 +296,11 @@ public class PanelToolController implements IGuiPanel {
 
     @Override
     public List<String> getTooltip(int mx, int my) {
-        if (selBounds != null) return Collections.emptyList();
-        if (activeTool != null) return activeTool.getTooltip(mx, my);
+        if (selBounds != null)
+            return Collections.emptyList();
+        if (activeTool != null)
+            return activeTool.getTooltip(mx, my);
         return null;
     }
+
 }

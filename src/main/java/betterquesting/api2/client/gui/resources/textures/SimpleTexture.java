@@ -1,5 +1,7 @@
 package betterquesting.api2.client.gui.resources.textures;
 
+import org.lwjgl.opengl.GL11;
+
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
@@ -7,9 +9,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.GuiUtils;
-import org.lwjgl.opengl.GL11;
 
 public class SimpleTexture implements IGuiTexture {
+
     private static final IGuiColor defColor = new GuiColorStatic(255, 255, 255, 255);
 
     private final ResourceLocation texture;
@@ -33,7 +35,8 @@ public class SimpleTexture implements IGuiTexture {
 
     @Override
     public void drawTexture(int x, int y, int width, int height, float zLevel, float partialTick, IGuiColor color) {
-        if (width <= 0 || height <= 0) return;
+        if (width <= 0 || height <= 0)
+            return;
 
         GlStateManager.pushMatrix();
 
@@ -64,12 +67,9 @@ public class SimpleTexture implements IGuiTexture {
     }
 
     @Override
-    public ResourceLocation getTexture() {
-        return this.texture;
-    }
+    public ResourceLocation getTexture() { return this.texture; }
 
     @Override
-    public IGuiRect getBounds() {
-        return this.texBounds;
-    }
+    public IGuiRect getBounds() { return this.texBounds; }
+
 }

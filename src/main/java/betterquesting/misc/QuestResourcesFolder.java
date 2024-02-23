@@ -1,17 +1,5 @@
 package betterquesting.misc;
 
-import betterquesting.core.BetterQuesting;
-import betterquesting.core.ModReference;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureUtil;
-import net.minecraft.client.resources.IResourcePack;
-import net.minecraft.client.resources.ResourcePackFileNotFoundException;
-import net.minecraft.client.resources.data.IMetadataSection;
-import net.minecraft.client.resources.data.MetadataSerializer;
-import net.minecraft.util.ResourceLocation;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,15 +9,30 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
+import org.apache.logging.log4j.Level;
+
+import betterquesting.core.BetterQuesting;
+import betterquesting.core.ModReference;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureUtil;
+import net.minecraft.client.resources.IResourcePack;
+import net.minecraft.client.resources.ResourcePackFileNotFoundException;
+import net.minecraft.client.resources.data.IMetadataSection;
+import net.minecraft.client.resources.data.MetadataSerializer;
+import net.minecraft.util.ResourceLocation;
+
 public class QuestResourcesFolder implements IResourcePack {
+
     private static final ResourceLocation UNKNOWN_PACK_TEXTURE = new ResourceLocation("textures/misc/unknown_pack.png");
 
     private static final File rootFolder = new File("config/betterquesting/resources/");
     private BufferedImage bufferedImage = null;
 
-    @Nonnull
-    @Override
-    public InputStream getInputStream(@Nonnull ResourceLocation location) throws IOException {
+    @Nonnull @Override
+    public InputStream getInputStream(@Nonnull
+    ResourceLocation location) throws IOException {
         if (!resourceExists(location)) {
             throw new ResourcePackFileNotFoundException(rootFolder, location.toString());
         }
@@ -39,20 +42,21 @@ public class QuestResourcesFolder implements IResourcePack {
     }
 
     @Override
-    public boolean resourceExists(@Nonnull ResourceLocation location) {
+    public boolean resourceExists(@Nonnull
+    ResourceLocation location) {
         File res = new File(rootFolder.getPath() + "/" + location.getNamespace(), location.getPath());
         return res.exists();
     }
 
-    @Nonnull
-    @Override
+    @Nonnull @Override
     public Set<String> getResourceDomains() {
         if (!rootFolder.exists() && !rootFolder.mkdirs()) {
             return Collections.emptySet();
         }
 
         String[] content = rootFolder.list();
-        if (content == null || content.length <= 0) return Collections.emptySet();
+        if (content == null || content.length <= 0)
+            return Collections.emptySet();
 
         HashSet<String> folders = new HashSet<>();
         for (String s : content) {
@@ -71,14 +75,16 @@ public class QuestResourcesFolder implements IResourcePack {
     }
 
     @Override
-    public <T extends IMetadataSection> T getPackMetadata(@Nonnull MetadataSerializer meta, @Nonnull String s) {
+    public <T extends IMetadataSection> T getPackMetadata(@Nonnull
+    MetadataSerializer meta, @Nonnull
+    String s) {
         return null;
     }
 
-    @Nonnull
-    @Override
+    @Nonnull @Override
     public BufferedImage getPackImage() {
-        if (bufferedImage != null) return bufferedImage;
+        if (bufferedImage != null)
+            return bufferedImage;
 
         try {
             bufferedImage = TextureUtil.readBufferedImage(Minecraft.getMinecraft().getResourceManager().getResource(UNKNOWN_PACK_TEXTURE).getInputStream());
@@ -89,13 +95,13 @@ public class QuestResourcesFolder implements IResourcePack {
         return bufferedImage;
     }
 
-    @Nonnull
-    @Override
-    public String getPackName() {
-        return ModReference.NAME + "_folders";
-    }
+    @Nonnull @Override
+    public String getPackName() { return ModReference.NAME + "_folders"; }
 
     private void logNameNotLowercase(String name, String file) {
-        BetterQuesting.logger.log(Level.WARN, "ResourcePack: ignored non-lowercase namespace: {} in {}", new Object[]{name, file});
+        BetterQuesting.logger.log(Level.WARN, "ResourcePack: ignored non-lowercase namespace: {} in {}", new Object[] {
+                name, file
+        });
     }
+
 }

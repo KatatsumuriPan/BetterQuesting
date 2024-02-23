@@ -1,5 +1,13 @@
 package betterquesting.api2.client.gui.panels;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import betterquesting.api.utils.RenderUtils;
 import betterquesting.api2.client.gui.misc.ComparatorGuiDepth;
 import betterquesting.api2.client.gui.misc.GuiRectLerp;
@@ -7,14 +15,8 @@ import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import net.minecraft.client.renderer.GlStateManager;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 public class CanvasResizeable implements IGuiCanvas {
+
     private final List<IGuiPanel> guiPanels = new CopyOnWriteArrayList<>();
 
     private IGuiTexture bgTexture;
@@ -32,24 +34,18 @@ public class CanvasResizeable implements IGuiCanvas {
         this.crop = crop;
     }
 
-    public void changeBG(@Nullable IGuiTexture texture) {
+    public void changeBG(@Nullable
+    IGuiTexture texture) {
         this.bgTexture = texture;
     }
 
     @Override
-    public IGuiRect getTransform() {
-        return crop ? rectLerp.getProxyRect() : rectLerp;
-    }
+    public IGuiRect getTransform() { return crop ? rectLerp.getProxyRect() : rectLerp; }
 
-    public GuiRectLerp getRectLerp() {
-        return this.rectLerp;
-    }
+    public GuiRectLerp getRectLerp() { return this.rectLerp; }
 
-    @Nonnull
-    @Override
-    public List<IGuiPanel> getChildren() {
-        return this.guiPanels;
-    }
+    @Nonnull @Override
+    public List<IGuiPanel> getChildren() { return this.guiPanels; }
 
     @Override
     public void initPanel() {
@@ -57,28 +53,29 @@ public class CanvasResizeable implements IGuiCanvas {
     }
 
     @Override
-    public void setEnabled(boolean state) {
-        this.enabled = state;
-    }
+    public void setEnabled(boolean state) { this.enabled = state; }
 
     @Override
-    public boolean isEnabled() {
-        return this.enabled;
-    }
+    public boolean isEnabled() { return this.enabled; }
 
-    public void lerpToRect(@Nonnull IGuiRect rect, long time, boolean inheritParent) {
-        if (inheritParent) rect.setParent(rectLerp.getParent());
+    public void lerpToRect(@Nonnull
+    IGuiRect rect, long time, boolean inheritParent) {
+        if (inheritParent)
+            rect.setParent(rectLerp.getParent());
         rectLerp.lerpTo(rect, time);
     }
 
-    public void snapToRect(@Nonnull IGuiRect rect, boolean inheritParent) {
-        if (inheritParent) rect.setParent(rectLerp.getParent());
+    public void snapToRect(@Nonnull
+    IGuiRect rect, boolean inheritParent) {
+        if (inheritParent)
+            rect.setParent(rectLerp.getParent());
         rectLerp.snapTo(rect);
     }
 
     @Override
     public void drawPanel(int mx, int my, float partialTick) {
-        if (crop) RenderUtils.startScissor(rectLerp);
+        if (crop)
+            RenderUtils.startScissor(rectLerp);
 
         if (bgTexture != null) {
             IGuiRect bounds = rectLerp;
@@ -89,10 +86,12 @@ public class CanvasResizeable implements IGuiCanvas {
         }
 
         for (IGuiPanel entry : guiPanels) {
-            if (entry.isEnabled()) entry.drawPanel(mx, my, partialTick);
+            if (entry.isEnabled())
+                entry.drawPanel(mx, my, partialTick);
         }
 
-        if (crop) RenderUtils.endScissor();
+        if (crop)
+            RenderUtils.endScissor();
     }
 
     @Override
@@ -210,4 +209,5 @@ public class CanvasResizeable implements IGuiCanvas {
     public void resetCanvas() {
         guiPanels.clear();
     }
+
 }

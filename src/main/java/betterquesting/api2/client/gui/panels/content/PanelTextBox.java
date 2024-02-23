@@ -1,5 +1,10 @@
 package betterquesting.api2.client.gui.panels.content;
 
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import betterquesting.api.utils.RenderUtils;
 import betterquesting.api2.client.gui.misc.GuiRectangle;
 import betterquesting.api2.client.gui.misc.IGuiRect;
@@ -11,11 +16,8 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.math.MathHelper;
 
-import javax.annotation.Nonnull;
-import java.util.Collections;
-import java.util.List;
-
 public class PanelTextBox implements IGuiPanel {
+
     private final GuiRectText transform;
     private final GuiRectangle refRect = new GuiRectangle(0, 0, 0, 0, 0);
     private boolean enabled = true;
@@ -91,9 +93,7 @@ public class PanelTextBox implements IGuiPanel {
     }
 
     @Override
-    public IGuiRect getTransform() {
-        return transform;
-    }
+    public IGuiRect getTransform() { return transform; }
 
     @Override
     public void initPanel() {
@@ -101,20 +101,17 @@ public class PanelTextBox implements IGuiPanel {
     }
 
     @Override
-    public void setEnabled(boolean state) {
-        this.enabled = state;
-    }
+    public void setEnabled(boolean state) { this.enabled = state; }
 
     @Override
-    public boolean isEnabled() {
-        return this.enabled;
-    }
+    public boolean isEnabled() { return this.enabled; }
 
     @Override
     public void drawPanel(int mx, int my, float partialTick) {
         if (!isRectEqual(refRect, getTransform()))
             refreshText(); // Makes this panel work with resizable canvases without having to update every frame
-        if (lines < 0) return;
+        if (lines < 0)
+            return;
 
         IGuiRect bounds = this.getTransform();
         FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
@@ -125,12 +122,15 @@ public class PanelTextBox implements IGuiPanel {
         int bw = (int) Math.ceil(bounds.getWidth() / s);
         double w = Math.min(bw, RenderUtils.getStringWidth(text, fr) * s);
 
-        if (bw <= 0) return;
+        if (bw <= 0)
+            return;
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(bounds.getX(), bounds.getY(), 1);
-        if (align == 1) GlStateManager.translate(bounds.getWidth() / 2D - w / 2D, 0D, 0D);
-        if (align == 2) GlStateManager.translate(bounds.getWidth() - w, 0D, 0D);
+        if (align == 1)
+            GlStateManager.translate(bounds.getWidth() / 2D - w / 2D, 0D, 0D);
+        if (align == 2)
+            GlStateManager.translate(bounds.getWidth() - w, 0D, 0D);
         GlStateManager.scale(s, s, 1D);
 
         if (align == 2) {
@@ -170,6 +170,7 @@ public class PanelTextBox implements IGuiPanel {
     }
 
     private static class GuiRectText implements IGuiRect {
+
         private final IGuiRect proxy;
         private final boolean useH;
         private int h;
@@ -180,34 +181,22 @@ public class PanelTextBox implements IGuiPanel {
         }
 
         @Override
-        public int getX() {
-            return proxy.getX();
-        }
+        public int getX() { return proxy.getX(); }
 
         @Override
-        public int getY() {
-            return proxy.getY();
-        }
+        public int getY() { return proxy.getY(); }
 
         @Override
-        public int getWidth() {
-            return proxy.getWidth();
-        }
+        public int getWidth() { return proxy.getWidth(); }
 
         @Override
-        public int getHeight() {
-            return useH ? h : proxy.getHeight();
-        }
+        public int getHeight() { return useH ? h : proxy.getHeight(); }
 
         @Override
-        public int getDepth() {
-            return proxy.getDepth();
-        }
+        public int getDepth() { return proxy.getDepth(); }
 
         @Override
-        public IGuiRect getParent() {
-            return proxy.getParent();
-        }
+        public IGuiRect getParent() { return proxy.getParent(); }
 
         @Override
         public void setParent(IGuiRect rect) {
@@ -224,12 +213,15 @@ public class PanelTextBox implements IGuiPanel {
         }
 
         @Override
-        public int compareTo(@Nonnull IGuiRect o) {
+        public int compareTo(@Nonnull
+        IGuiRect o) {
             return proxy.compareTo(o);
         }
+
     }
 
     private boolean isRectEqual(IGuiRect r1, IGuiRect r2) {
         return r1.getX() == r2.getX() && r1.getY() == r2.getY() && r1.getWidth() == r2.getWidth() && r1.getHeight() == r2.getHeight();
     }
+
 }

@@ -6,6 +6,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 
 public class CreativeTabQuesting extends CreativeTabs {
+
     private ItemStack tabStack;
 
     public CreativeTabQuesting() {
@@ -20,4 +21,5 @@ public class CreativeTabQuesting extends CreativeTabs {
 
         return tabStack;
     }
+
 }

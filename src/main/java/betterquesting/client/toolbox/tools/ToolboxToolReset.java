@@ -1,5 +1,10 @@
 package betterquesting.client.toolbox.tools;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.lwjgl.input.Keyboard;
+
 import betterquesting.api.client.toolbox.IToolboxTool;
 import betterquesting.api2.client.gui.controls.PanelButtonQuest;
 import betterquesting.api2.client.gui.panels.lists.CanvasQuestLine;
@@ -9,12 +14,9 @@ import betterquesting.network.handlers.NetQuestEdit;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
-import org.lwjgl.input.Keyboard;
-
-import java.util.Collections;
-import java.util.List;
 
 public class ToolboxToolReset implements IToolboxTool {
+
     private CanvasQuestLine gui;
 
     @Override
@@ -90,7 +92,8 @@ public class ToolboxToolReset implements IToolboxTool {
 
     @Override
     public boolean onKeyPressed(char c, int key) {
-        if (PanelToolController.selected.size() <= 0 || key != Keyboard.KEY_RETURN) return false;
+        if (PanelToolController.selected.size() <= 0 || key != Keyboard.KEY_RETURN)
+            return false;
 
         List<PanelButtonQuest> btnList = PanelToolController.selected;
         int[] questIDs = new int[btnList.size()];
@@ -122,4 +125,5 @@ public class ToolboxToolReset implements IToolboxTool {
     public boolean useSelection() {
         return true;
     }
+
 }

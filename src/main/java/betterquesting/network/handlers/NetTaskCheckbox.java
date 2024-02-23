@@ -16,6 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class NetTaskCheckbox {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation("bq_standard:task_checkbox");
 
     public static void registerHandler() {
@@ -44,8 +45,10 @@ public class NetTaskCheckbox {
 
             if (task instanceof TaskCheckbox) {
                 task.setComplete(QuestingAPI.getQuestingUUID(sender));
-                if (qc != null) qc.markQuestDirty(qId);
+                if (qc != null)
+                    qc.markQuestDirty(qId);
             }
         }
     }
+
 }

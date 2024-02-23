@@ -1,17 +1,19 @@
 package betterquesting.importers.hqm.converters.tasks;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.importers.hqm.HQMUtilities;
 import betterquesting.questing.tasks.TaskFluid;
 import betterquesting.questing.tasks.TaskRetrieval;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HQMTaskDetect {
+
     private final boolean consume;
 
     public HQMTaskDetect(boolean consume) {
@@ -26,7 +28,8 @@ public class HQMTaskDetect {
         retTask.consume = this.consume;
 
         for (JsonElement je : JsonHelper.GetArray(json, "items")) {
-            if (!(je instanceof JsonObject)) continue;
+            if (!(je instanceof JsonObject))
+                continue;
             JsonObject ji = je.getAsJsonObject();
 
             if (ji.has("fluid")) {
@@ -36,10 +39,13 @@ public class HQMTaskDetect {
             }
         }
 
-        if (retTask.requiredItems.size() > 0) tList.add(retTask);
+        if (retTask.requiredItems.size() > 0)
+            tList.add(retTask);
 
-        if (fluTask.requiredFluids.size() > 0) tList.add(fluTask);
+        if (fluTask.requiredFluids.size() > 0)
+            tList.add(fluTask);
 
         return tList.toArray(new ITask[0]);
     }
+
 }

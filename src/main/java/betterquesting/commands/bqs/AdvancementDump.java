@@ -1,10 +1,23 @@
 package betterquesting.commands.bqs;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Queue;
+
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.enums.EnumQuestVisibility;
 import betterquesting.api.properties.NativeProps;
-import betterquesting.api.questing.*;
+import betterquesting.api.questing.IQuest;
+import betterquesting.api.questing.IQuestDatabase;
+import betterquesting.api.questing.IQuestLine;
+import betterquesting.api.questing.IQuestLineDatabase;
+import betterquesting.api.questing.IQuestLineEntry;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.api2.storage.DBEntry;
@@ -16,10 +29,8 @@ import net.minecraft.advancements.FrameType;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 
-import java.util.*;
-import java.util.Map.Entry;
-
 public class AdvancementDump {
+
     public static final AdvancementDump INSTANCE = new AdvancementDump();
 
     private HashMap<Advancement, DBEntry<IQuest>> idMap = new HashMap<>();
@@ -34,7 +45,8 @@ public class AdvancementDump {
 
         // Generate quest representations
         for (Advancement adv : server.getAdvancementManager().getAdvancements()) {
-            if (adv.getDisplay() == null) continue; // Hidden advancement
+            if (adv.getDisplay() == null)
+                continue; // Hidden advancement
 
             int id = questDB.nextID();
             IQuest quest = questDB.createNew(id);
@@ -51,7 +63,8 @@ public class AdvancementDump {
             quest.setProperty(NativeProps.DESC, disp.getDescription().getFormattedText());
             quest.setProperty(NativeProps.ICON, new BigItemStack(disp.getIcon()));
             quest.setProperty(NativeProps.SILENT, true); // There's already toast notifications. Double stacking would just be annoying
-            quest.setProperty(NativeProps.VISIBILITY, (disp.isHidden() || adv.getParent() == null) ? EnumQuestVisibility.COMPLETED : EnumQuestVisibility.UNLOCKED);
+            quest.setProperty(NativeProps.VISIBILITY,
+                              (disp.isHidden() || adv.getParent() == null) ? EnumQuestVisibility.COMPLETED : EnumQuestVisibility.UNLOCKED);
             quest.setProperty(NativeProps.MAIN, disp.getFrame() == FrameType.GOAL);
 
             TaskAdvancement task = new TaskAdvancement();
@@ -100,16 +113,20 @@ public class AdvancementDump {
     }
 
     private boolean containsReq(IQuest quest, int id) {
-        for (int reqID : quest.getRequirements()) if (id == reqID) return true;
+        for (int reqID : quest.getRequirements())
+            if (id == reqID)
+                return true;
         return false;
     }
 
     private boolean addReq(IQuest quest, int id) {
-        if (containsReq(quest, id)) return false;
+        if (containsReq(quest, id))
+            return false;
         int[] orig = quest.getRequirements();
         int[] added = Arrays.copyOf(orig, orig.length + 1);
         added[orig.length] = id;
         quest.setRequirements(added);
         return true;
     }
+
 }

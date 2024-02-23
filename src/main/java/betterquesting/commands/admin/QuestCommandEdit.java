@@ -1,5 +1,8 @@
 package betterquesting.commands.admin;
 
+import java.util.Collections;
+import java.util.List;
+
 import betterquesting.api.properties.NativeProps;
 import betterquesting.commands.QuestCommandBase;
 import betterquesting.handlers.SaveLoadHandler;
@@ -12,19 +15,13 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 
-import java.util.Collections;
-import java.util.List;
-
 public class QuestCommandEdit extends QuestCommandBase {
-    @Override
-    public String getCommand() {
-        return "edit";
-    }
 
     @Override
-    public String getUsageSuffix() {
-        return "[true|false]";
-    }
+    public String getCommand() { return "edit"; }
+
+    @Override
+    public String getUsageSuffix() { return "[true|false]"; }
 
     @Override
     public boolean validArgs(String[] args) {
@@ -56,24 +53,21 @@ public class QuestCommandEdit extends QuestCommandBase {
 
         QuestSettings.INSTANCE.setProperty(NativeProps.EDIT_MODE, flag);
 
-        sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.edit", new TextComponentTranslation(QuestSettings.INSTANCE.getProperty(NativeProps.EDIT_MODE) ? "options.on" : "options.off")));
+        sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.edit",
+                                                        new TextComponentTranslation(QuestSettings.INSTANCE.getProperty(NativeProps.EDIT_MODE) ? "options.on" :
+                                                                "options.off")));
 
         SaveLoadHandler.INSTANCE.markDirty();
         NetSettingSync.sendSync(null);
     }
 
     @Override
-    public String getPermissionNode() {
-        return "betterquesting.command.admin.edit";
-    }
+    public String getPermissionNode() { return "betterquesting.command.admin.edit"; }
 
     @Override
-    public DefaultPermissionLevel getPermissionLevel() {
-        return DefaultPermissionLevel.OP;
-    }
+    public DefaultPermissionLevel getPermissionLevel() { return DefaultPermissionLevel.OP; }
 
     @Override
-    public String getPermissionDescription() {
-        return "Permission to activate quest editing mode on and off";
-    }
+    public String getPermissionDescription() { return "Permission to activate quest editing mode on and off"; }
+
 }

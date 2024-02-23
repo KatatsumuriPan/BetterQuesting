@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileFilter;
 
 public class FileExtensionFilter implements FileFilter {
+
     public final String ext;
 
     public FileExtensionFilter(String extension) {
@@ -14,4 +15,5 @@ public class FileExtensionFilter implements FileFilter {
     public boolean accept(File pathname) {
         return pathname != null && (pathname.isDirectory() || pathname.getAbsolutePath().toLowerCase().endsWith(ext));
     }
+
 }

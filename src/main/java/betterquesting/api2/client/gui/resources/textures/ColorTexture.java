@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
 public class ColorTexture implements IGuiTexture {
+
     private final IGuiColor baseColor;
     private final GuiRectangle rect = new GuiRectangle(0, 0, 0, 0);
     private final GuiPadding pad;
@@ -33,7 +34,8 @@ public class ColorTexture implements IGuiTexture {
 
     @Override
     public void drawTexture(int x, int y, int width, int height, float zDepth, float partialTick, IGuiColor color) {
-        if (width <= 0 || height <= 0) return;
+        if (width <= 0 || height <= 0)
+            return;
 
         GlStateManager.pushMatrix();
 
@@ -49,12 +51,9 @@ public class ColorTexture implements IGuiTexture {
     }
 
     @Override
-    public ResourceLocation getTexture() {
-        return PresetTexture.TX_SIMPLE;
-    }
+    public ResourceLocation getTexture() { return PresetTexture.TX_SIMPLE; }
 
     @Override
-    public IGuiRect getBounds() {
-        return bounds;
-    }
+    public IGuiRect getBounds() { return bounds; }
+
 }

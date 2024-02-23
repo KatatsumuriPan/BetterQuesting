@@ -1,5 +1,20 @@
 package betterquesting.questing.tasks;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.apache.logging.log4j.Level;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+
 import betterquesting.advancement.BqsAdvListener;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.questing.IQuest;
@@ -14,9 +29,6 @@ import betterquesting.api2.storage.DBEntry;
 import betterquesting.api2.utils.ParticipantInfo;
 import betterquesting.core.BetterQuesting;
 import betterquesting.questing.tasks.factory.FactoryTaskTrigger;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.ICriterionTrigger;
@@ -30,13 +42,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
 
 public class TaskTrigger implements ITask {
+
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     private final Set<UUID> completeUsers = new TreeSet<>();
@@ -48,12 +56,11 @@ public class TaskTrigger implements ITask {
 
     public String desc = "";
 
-    public String getCriteriaJson() {
-        return this.critJson;
-    }
+    public String getCriteriaJson() { return this.critJson; }
 
     public void setCriteriaJson(String json) {
-        if (critJson.equals(json)) return;
+        if (critJson.equals(json))
+            return;
         critJson = StringUtils.isNullOrEmpty(json) ? "{}" : json;
         try {
             GSON.fromJson(json, JsonObject.class);
@@ -64,12 +71,11 @@ public class TaskTrigger implements ITask {
         needsSetup = true;
     }
 
-    public String getTriggerID() {
-        return this.triggerID;
-    }
+    public String getTriggerID() { return this.triggerID; }
 
     public void setTriggerID(String id) {
-        if (this.triggerID.equals(id)) return;
+        if (this.triggerID.equals(id))
+            return;
         this.triggerID = id;
         needsSetup = true;
     }
@@ -81,7 +87,8 @@ public class TaskTrigger implements ITask {
         int tskID = quest.getValue().getTasks().getID(this);
 
         ICriterionTrigger trig = CriteriaTriggers.get(new ResourceLocation(triggerID));
-        if (trig == null) return;
+        if (trig == null)
+            return;
 
         try {
             ICriterionInstance in = trig.deserializeInstance(GSON.fromJson(critJson, JsonObject.class), null);
@@ -90,36 +97,35 @@ public class TaskTrigger implements ITask {
         }
     }
 
-    public BqsAdvListener<?> getListener() {
-        return this.listener;
-    }
+    public BqsAdvListener<?> getListener() { return this.listener; }
 
     public boolean hasSetup() {
         return !this.needsSetup;
     }
 
     public void onCriteriaComplete(EntityPlayerMP player, BqsAdvListener advList, int questID) {
-        if (advList != this.listener) return;
+        if (advList != this.listener)
+            return;
         UUID playerID = QuestingAPI.getQuestingUUID(player);
         setComplete(playerID);
         QuestCache qc = player.getCapability(CapabilityProviderQuestCache.CAP_QUEST_CACHE, null);
-        if (qc != null) qc.markQuestDirty(questID);
+        if (qc != null)
+            qc.markQuestDirty(questID);
     }
 
-    public void checkSetup(@Nonnull EntityPlayer player, @Nonnull DBEntry<IQuest> quest) {
-        if (!needsSetup) return;
+    public void checkSetup(@Nonnull
+    EntityPlayer player, @Nonnull
+    DBEntry<IQuest> quest) {
+        if (!needsSetup)
+            return;
         setupListener(quest);
     }
 
     @Override
-    public String getUnlocalisedName() {
-        return BetterQuesting.MODID_STD + ".task.trigger";
-    }
+    public String getUnlocalisedName() { return BetterQuesting.MODID_STD + ".task.trigger"; }
 
     @Override
-    public ResourceLocation getFactoryID() {
-        return FactoryTaskTrigger.INSTANCE.getRegistryName();
-    }
+    public ResourceLocation getFactoryID() { return FactoryTaskTrigger.INSTANCE.getRegistryName(); }
 
     @Override
     public void detect(ParticipantInfo pInfo, DBEntry<IQuest> quest) {
@@ -136,7 +142,8 @@ public class TaskTrigger implements ITask {
     }
 
     @Override
-    public void resetUser(@Nullable UUID uuid) {
+    public void resetUser(@Nullable
+    UUID uuid) {
         if (uuid == null) {
             completeUsers.clear();
         } else {
@@ -144,26 +151,24 @@ public class TaskTrigger implements ITask {
         }
     }
 
-    @Override
-    @Nullable
-    @SideOnly(Side.CLIENT)
+    @Override @Nullable @SideOnly(Side.CLIENT)
     public IGuiPanel getTaskGui(IGuiRect rect, DBEntry<IQuest> quest) {
         return new PanelTextBox(rect, desc).setColor(PresetColor.TEXT_MAIN.getColor());
     }
 
-    @Override
-    @Nullable
-    @SideOnly(Side.CLIENT)
+    @Override @Nullable @SideOnly(Side.CLIENT)
     public GuiScreen getTaskEditor(GuiScreen parent, DBEntry<IQuest> quest) {
         return null;
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
+    List<UUID> users) {
         NBTTagList jArray = new NBTTagList();
 
         completeUsers.forEach((uuid) -> {
-            if (users == null || users.contains(uuid)) jArray.appendTag(new NBTTagString(uuid.toString()));
+            if (users == null || users.contains(uuid))
+                jArray.appendTag(new NBTTagString(uuid.toString()));
         });
 
         nbt.setTag("completeUsers", jArray);
@@ -173,7 +178,8 @@ public class TaskTrigger implements ITask {
 
     @Override
     public void readProgressFromNBT(NBTTagCompound nbt, boolean merge) {
-        if (!merge) completeUsers.clear();
+        if (!merge)
+            completeUsers.clear();
         NBTTagList cList = nbt.getTagList("completeUsers", 8);
         for (int i = 0; i < cList.tagCount(); i++) {
             try {
@@ -200,7 +206,6 @@ public class TaskTrigger implements ITask {
     }
 
     @Override
-    public List<String> getTextForSearch() {
-        return Collections.singletonList(triggerID);
-    }
+    public List<String> getTextForSearch() { return Collections.singletonList(triggerID); }
+
 }

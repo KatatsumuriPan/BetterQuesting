@@ -16,14 +16,14 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 
 public class QuestCommandRefresh extends QuestCommandBase {
+
     @Override
-    public String getCommand() {
-        return "refresh";
-    }
+    public String getCommand() { return "refresh"; }
 
     @Override
     public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, String[] args) {
-        if (!(sender instanceof EntityPlayerMP)) return;
+        if (!(sender instanceof EntityPlayerMP))
+            return;
         EntityPlayerMP player = (EntityPlayerMP) sender;
 
         if (server.isDedicatedServer() || !server.getServerOwner().equals(player.getGameProfile().getName())) {
@@ -32,19 +32,16 @@ public class QuestCommandRefresh extends QuestCommandBase {
         } else {
             boolean nameChanged = NameCache.INSTANCE.updateName(player);
             DBEntry<IParty> party = PartyManager.INSTANCE.getParty(QuestingAPI.getQuestingUUID(player));
-            if (nameChanged && party != null) NetNameSync.quickSync(null, party.getID());
+            if (nameChanged && party != null)
+                NetNameSync.quickSync(null, party.getID());
         }
     }
 
     @Override
-    public String getPermissionNode() {
-        return "betterquesting.command.user.refresh";
-    }
+    public String getPermissionNode() { return "betterquesting.command.user.refresh"; }
 
     @Override
-    public DefaultPermissionLevel getPermissionLevel() {
-        return DefaultPermissionLevel.ALL;
-    }
+    public DefaultPermissionLevel getPermissionLevel() { return DefaultPermissionLevel.ALL; }
 
     @Override
     public String getPermissionDescription() {

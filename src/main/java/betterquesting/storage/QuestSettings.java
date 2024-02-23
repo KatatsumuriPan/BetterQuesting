@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class QuestSettings extends PropertyContainer implements IQuestSettings {
+
     public static final QuestSettings INSTANCE = new QuestSettings();
 
     public QuestSettings() {
@@ -16,7 +17,8 @@ public class QuestSettings extends PropertyContainer implements IQuestSettings {
 
     @Override
     public boolean canUserEdit(EntityPlayer player) {
-        if (player == null) return false;
+        if (player == null)
+            return false;
         return this.getProperty(NativeProps.EDIT_MODE) && NameCache.INSTANCE.isOP(QuestingAPI.getQuestingUUID(player));
     }
 
@@ -56,4 +58,5 @@ public class QuestSettings extends PropertyContainer implements IQuestSettings {
     private <T> void setupValue(IPropertyType<T> prop, T def) {
         this.setProperty(prop, this.getProperty(prop, def));
     }
+
 }

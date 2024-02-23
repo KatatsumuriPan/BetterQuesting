@@ -1,5 +1,10 @@
 package betterquesting.questing.rewards;
 
+import java.util.Arrays;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
 import betterquesting.AdminExecute;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.questing.IQuest;
@@ -23,11 +28,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.UUID;
-
 public class RewardCommand implements IReward {
+
     public String command = "#Script Comment\nsay Running reward script...\nsay @s Claimed a reward";
     public String title = "bq_standard.reward.command";
     public String desc = "Run a command script";
@@ -36,24 +38,20 @@ public class RewardCommand implements IReward {
     public boolean asScript = true;
 
     @Override
-    public ResourceLocation getFactoryID() {
-        return FactoryRewardCommand.INSTANCE.getRegistryName();
-    }
+    public ResourceLocation getFactoryID() { return FactoryRewardCommand.INSTANCE.getRegistryName(); }
 
     @Override
-    public String getUnlocalisedName() {
-        return title;
-    }
+    public String getUnlocalisedName() { return title; }
 
     @Override
     public boolean canClaim(EntityPlayer player, DBEntry<IQuest> quest) {
         return true;
     }
 
-    @Override
-    @SuppressWarnings("ConstantConditions")
+    @Override @SuppressWarnings("ConstantConditions")
     public void claimReward(final EntityPlayer player, DBEntry<IQuest> quest) {
-        if (player.world.isRemote) return;
+        if (player.world.isRemote)
+            return;
 
         UUID playerID = QuestingAPI.getQuestingUUID(player);
 
@@ -68,7 +66,8 @@ public class RewardCommand implements IReward {
         if (asScript) {
             // New functions don't support preceeding forward slash so we remove them on legacy commands
             for (int i = 0; i < comAry.length; i++)
-                if (comAry[i].startsWith("/")) comAry[i] = comAry[i].replaceFirst("/", "");
+                if (comAry[i].startsWith("/"))
+                    comAry[i] = comAry[i].replaceFirst("/", "");
 
             FunctionObject func = FunctionObject.create(server.getFunctionManager(), Arrays.asList(comAry));
 
@@ -110,57 +109,44 @@ public class RewardCommand implements IReward {
     }
 
     public static class RewardCommandSender extends CommandBlockBaseLogic {
+
         private final Entity entity;
 
-        private RewardCommandSender(@Nonnull Entity entity) {
+        private RewardCommandSender(@Nonnull
+        Entity entity) {
             this.entity = entity;
         }
 
-        @Nonnull
-        @Override
-        public BlockPos getPosition() {
-            return entity.getPosition();
-        }
+        @Nonnull @Override
+        public BlockPos getPosition() { return entity.getPosition(); }
 
-        @Nonnull
-        @Override
-        public Vec3d getPositionVector() {
-            return entity.getPositionVector();
-        }
+        @Nonnull @Override
+        public Vec3d getPositionVector() { return entity.getPositionVector(); }
 
-        @Nonnull
-        @Override
-        public World getEntityWorld() {
-            return entity.getEntityWorld();
-        }
+        @Nonnull @Override
+        public World getEntityWorld() { return entity.getEntityWorld(); }
 
         @Override
-        public Entity getCommandSenderEntity() {
-            return entity;
-        }
+        public Entity getCommandSenderEntity() { return entity; }
 
         @Override
         public void updateCommand() {
         }
 
         @Override
-        public int getCommandBlockType() {
-            return 0;
-        }
+        public int getCommandBlockType() { return 0; }
 
         @Override
-        public void fillInInfo(@Nonnull ByteBuf p_145757_1_) {
+        public void fillInInfo(@Nonnull
+        ByteBuf p_145757_1_) {
         }
 
-        @Nonnull
-        @Override
-        public String getName() {
-            return "BetterQuesting";
-        }
+        @Nonnull @Override
+        public String getName() { return "BetterQuesting"; }
 
         @Override
-        public MinecraftServer getServer() {
-            return entity.getServer();
-        }
+        public MinecraftServer getServer() { return entity.getServer(); }
+
     }
+
 }

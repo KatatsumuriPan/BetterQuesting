@@ -1,5 +1,7 @@
 package betterquesting.client.gui2;
 
+import java.util.function.Consumer;
+
 import betterquesting.api2.client.gui.GuiScreenCanvas;
 import betterquesting.api2.client.gui.controls.PanelButton;
 import betterquesting.api2.client.gui.controls.PanelTextField;
@@ -18,8 +20,6 @@ import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.misc.QuestSearchEntry;
 import net.minecraft.client.gui.GuiScreen;
 
-import java.util.function.Consumer;
-
 public class GuiQuestSearch extends GuiScreenCanvas {
 
     private PanelTextField<String> searchBox;
@@ -31,7 +31,8 @@ public class GuiQuestSearch extends GuiScreenCanvas {
     @Override
     public void initPanel() {
         super.initPanel();
-        CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0), PresetTexture.PANEL_MAIN.getTexture());
+        CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0),
+                                                         PresetTexture.PANEL_MAIN.getTexture());
         this.addPanel(cvBackground);
 
         CanvasEmpty cvInner = new CanvasEmpty(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(8, 8, 8, 8), 0));
@@ -39,18 +40,16 @@ public class GuiQuestSearch extends GuiScreenCanvas {
 
         createExitButton(cvInner);
 
-        PanelTextBox txtDb = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 0, -16), 0), QuestTranslation.translate("betterquesting.gui.search")).setAlignment(1).setColor(PresetColor.TEXT_MAIN.getColor());
+        PanelTextBox txtDb = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 0, -16), 0),
+                                              QuestTranslation.translate("betterquesting.gui.search")).setAlignment(1)
+                .setColor(PresetColor.TEXT_MAIN.getColor());
         cvInner.addPanel(txtDb);
 
         createSearchBox(cvInner);
     }
 
     private void createExitButton(CanvasEmpty cvInner) {
-        PanelButton btnExit = new PanelButton(
-                new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0),
-                0,
-                QuestTranslation.translate("gui.back")
-        );
+        PanelButton btnExit = new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), 0, QuestTranslation.translate("gui.back"));
         btnExit.setClickAction((b) -> mc.displayGuiScreen(parent));
         cvInner.addPanel(btnExit);
     }
@@ -88,15 +87,13 @@ public class GuiQuestSearch extends GuiScreenCanvas {
 
     private Consumer<QuestSearchEntry> callback;
 
-    public void setCallback(Consumer<QuestSearchEntry> callback) {
-        this.callback = callback;
-    }
+    public void setCallback(Consumer<QuestSearchEntry> callback) { this.callback = callback; }
 
     private void acceptCallback(QuestSearchEntry questSearchEntry) {
-        if (callback != null) callback.accept(questSearchEntry);
+        if (callback != null)
+            callback.accept(questSearchEntry);
     }
 
-    public boolean isSearchFocused() {
-        return searchBox != null && searchBox.isFocused();
-    }
+    public boolean isSearchFocused() { return searchBox != null && searchBox.isFocused(); }
+
 }

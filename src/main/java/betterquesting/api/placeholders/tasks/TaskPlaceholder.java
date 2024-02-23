@@ -1,5 +1,10 @@
 package betterquesting.api.placeholders.tasks;
 
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api2.client.gui.misc.IGuiRect;
@@ -10,11 +15,8 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.UUID;
-
 public class TaskPlaceholder implements ITask {
+
     private NBTTagCompound nbtData = new NBTTagCompound();
 
     public void setTaskConfigData(NBTTagCompound nbt) {
@@ -25,13 +27,9 @@ public class TaskPlaceholder implements ITask {
         nbtData.setTag("orig_prog", nbt);
     }
 
-    public NBTTagCompound getTaskConfigData() {
-        return nbtData.getCompoundTag("orig_data");
-    }
+    public NBTTagCompound getTaskConfigData() { return nbtData.getCompoundTag("orig_data"); }
 
-    public NBTTagCompound getTaskProgressData() {
-        return nbtData.getCompoundTag("orig_prog");
-    }
+    public NBTTagCompound getTaskProgressData() { return nbtData.getCompoundTag("orig_prog"); }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
@@ -45,7 +43,8 @@ public class TaskPlaceholder implements ITask {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
+    List<UUID> users) {
         nbt.setTag("orig_prog", nbtData.getCompoundTag("orig_prog"));
         return nbt;
     }
@@ -56,14 +55,10 @@ public class TaskPlaceholder implements ITask {
     }
 
     @Override
-    public String getUnlocalisedName() {
-        return "betterquesting.placeholder";
-    }
+    public String getUnlocalisedName() { return "betterquesting.placeholder"; }
 
     @Override
-    public ResourceLocation getFactoryID() {
-        return FactoryTaskPlaceholder.INSTANCE.getRegistryName();
-    }
+    public ResourceLocation getFactoryID() { return FactoryTaskPlaceholder.INSTANCE.getRegistryName(); }
 
     @Override
     public void detect(ParticipantInfo participant, DBEntry<IQuest> quest) {
@@ -91,4 +86,5 @@ public class TaskPlaceholder implements ITask {
     public GuiScreen getTaskEditor(GuiScreen parent, DBEntry<IQuest> quest) {
         return null;
     }
+
 }

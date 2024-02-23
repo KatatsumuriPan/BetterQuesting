@@ -1,18 +1,21 @@
 package betterquesting.api2.supporter.theme_dlc;
 
-import betterquesting.api.utils.JsonHelper;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import net.minecraft.util.ResourceLocation;
-
-import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import javax.annotation.Nonnull;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import betterquesting.api.utils.JsonHelper;
+import net.minecraft.util.ResourceLocation;
+
 public class CatalogueEntry {
+
     public final String author;
     public final String name;
     public final ResourceLocation themeID;
@@ -34,7 +37,10 @@ public class CatalogueEntry {
         this.subLink = subLink;
     }
 
-    public CatalogueEntry setRequirement(@Nonnull String token, @Nonnull String service, int amount, @Nonnull String subLink) {
+    public CatalogueEntry setRequirement(@Nonnull
+    String token, @Nonnull
+    String service, int amount, @Nonnull
+    String subLink) {
         this.token = token;
         this.service = service;
         this.subTier = amount;
@@ -42,7 +48,8 @@ public class CatalogueEntry {
         return this;
     }
 
-    public CatalogueEntry(@Nonnull JsonObject json) {
+    public CatalogueEntry(@Nonnull
+    JsonObject json) {
         this.author = JsonHelper.GetString(json, "author", "Unknown");
         this.name = JsonHelper.GetString(json, "themeName", "Untitled");
         this.themeID = new ResourceLocation(JsonHelper.GetString(json, "themeID", "minecraft:untitled"));
@@ -51,14 +58,16 @@ public class CatalogueEntry {
         reqMods.clear();
         JsonArray aryMods = JsonHelper.GetArray(json, "reqMods");
         for (JsonElement je : aryMods) {
-            if (!je.isJsonPrimitive() || !je.getAsJsonPrimitive().isString()) continue;
+            if (!je.isJsonPrimitive() || !je.getAsJsonPrimitive().isString())
+                continue;
             reqMods.add(je.getAsString());
         }
 
         reqMods.clear();
         JsonArray aryThms = JsonHelper.GetArray(json, "reqThemes");
         for (JsonElement je : aryThms) {
-            if (!je.isJsonPrimitive() || !je.getAsJsonPrimitive().isString()) continue;
+            if (!je.isJsonPrimitive() || !je.getAsJsonPrimitive().isString())
+                continue;
             reqThemes.add(je.getAsString());
         }
     }
@@ -66,4 +75,5 @@ public class CatalogueEntry {
     public Future<File> downloadTheme() {
         return null;
     }
+
 }

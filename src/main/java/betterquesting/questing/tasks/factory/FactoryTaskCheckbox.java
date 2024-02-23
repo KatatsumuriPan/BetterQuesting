@@ -8,12 +8,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 public class FactoryTaskCheckbox implements IFactoryData<ITask, NBTTagCompound> {
+
     public static final FactoryTaskCheckbox INSTANCE = new FactoryTaskCheckbox();
 
     @Override
-    public ResourceLocation getRegistryName() {
-        return new ResourceLocation(BetterQuesting.MODID_STD + ":checkbox");
-    }
+    public ResourceLocation getRegistryName() { return new ResourceLocation(BetterQuesting.MODID_STD + ":checkbox"); }
 
     @Override
     public TaskCheckbox createNew() {

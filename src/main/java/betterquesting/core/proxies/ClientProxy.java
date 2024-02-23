@@ -1,5 +1,7 @@
 package betterquesting.core.proxies;
 
+import java.util.ArrayList;
+
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.placeholders.EntityPlaceholder;
@@ -38,16 +40,14 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
-
 public class ClientProxy extends CommonProxy {
-    @Override
-    public boolean isClient() {
-        return true;
-    }
 
     @Override
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    public boolean isClient() { return true; }
+
+    @Override @SuppressWarnings({
+            "unchecked", "rawtypes"
+    })
     public void registerHandlers() {
         super.registerHandlers();
 
@@ -88,9 +88,9 @@ public class ClientProxy extends CommonProxy {
 
         registerBlockModel(BetterQuesting.submitStation);
         registerItemModel(ItemPlaceholder.placeholder);
-        registerItemModel(BetterQuesting.extraLife, 0, new ResourceLocation( ModReference.MODID, "heart_full").toString());
-        registerItemModel(BetterQuesting.extraLife, 1, new ResourceLocation( ModReference.MODID, "heart_half").toString());
-        registerItemModel(BetterQuesting.extraLife, 2, new ResourceLocation( ModReference.MODID, "heart_quarter").toString());
+        registerItemModel(BetterQuesting.extraLife, 0, new ResourceLocation(ModReference.MODID, "heart_full").toString());
+        registerItemModel(BetterQuesting.extraLife, 1, new ResourceLocation(ModReference.MODID, "heart_half").toString());
+        registerItemModel(BetterQuesting.extraLife, 2, new ResourceLocation(ModReference.MODID, "heart_quarter").toString());
         registerItemModel(BetterQuesting.guideBook);
         registerItemModelSubtypes(BetterQuesting.lootChest, 0, 104, BetterQuesting.lootChest.getRegistryName().toString());
         registerItemModel(BetterQuesting.questBook);
@@ -160,4 +160,5 @@ public class ClientProxy extends CommonProxy {
 
         ClientCommandHandler.instance.registerCommand(new BQ_CommandClient());
     }
+
 }

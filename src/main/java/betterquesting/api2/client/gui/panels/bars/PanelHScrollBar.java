@@ -1,16 +1,18 @@
 package betterquesting.api2.client.gui.panels.bars;
 
+import java.util.List;
+
+import org.lwjgl.input.Mouse;
+
 import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.input.Mouse;
-
-import java.util.List;
 
 public class PanelHScrollBar implements IScrollBar {
+
     private final IGuiRect transform;
     private boolean enabled = true;
     private boolean active = true;
@@ -26,7 +28,10 @@ public class PanelHScrollBar implements IScrollBar {
 
     public PanelHScrollBar(IGuiRect rect) {
         this.transform = rect;
-        this.setBarTexture(PresetTexture.SCROLL_H_BG.getTexture(), PresetTexture.SCROLL_H_0.getTexture(), PresetTexture.SCROLL_H_1.getTexture(), PresetTexture.SCROLL_H_2.getTexture());
+        this.setBarTexture(PresetTexture.SCROLL_H_BG.getTexture(),
+                           PresetTexture.SCROLL_H_0.getTexture(),
+                           PresetTexture.SCROLL_H_1.getTexture(),
+                           PresetTexture.SCROLL_H_2.getTexture());
     }
 
     @Override
@@ -56,29 +61,19 @@ public class PanelHScrollBar implements IScrollBar {
     }
 
     @Override
-    public void setEnabled(boolean state) {
-        this.enabled = state;
-    }
+    public void setEnabled(boolean state) { this.enabled = state; }
 
     @Override
-    public boolean isEnabled() {
-        return this.enabled;
-    }
+    public boolean isEnabled() { return this.enabled; }
 
     @Override
-    public void setActive(boolean state) {
-        this.active = state;
-    }
+    public void setActive(boolean state) { this.active = state; }
 
     @Override
-    public boolean isActive() {
-        return this.active;
-    }
+    public boolean isActive() { return this.active; }
 
     @Override
-    public IGuiRect getTransform() {
-        return transform;
-    }
+    public IGuiRect getTransform() { return transform; }
 
     @Override
     public void drawPanel(int mx, int my, float partialTick) {
@@ -176,4 +171,5 @@ public class PanelHScrollBar implements IScrollBar {
     public void writeValueRaw(Float value) {
         this.scroll = value;
     }
+
 }

@@ -1,5 +1,9 @@
 package betterquesting.api2.cache;
 
+import java.util.List;
+import java.util.TreeSet;
+import java.util.UUID;
+
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.enums.EnumQuestVisibility;
@@ -16,11 +20,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.INBTSerializable;
 
-import java.util.List;
-import java.util.TreeSet;
-import java.util.UUID;
-
 public class QuestCache implements INBTSerializable<NBTTagCompound> {
+
     // Quests that are visible to the player
     private final TreeSet<Integer> visibleQuests = new TreeSet<>();
 
@@ -40,7 +41,8 @@ public class QuestCache implements INBTSerializable<NBTTagCompound> {
         // Probably a better way of doing this but this will do for now
         int i = 0;
         int[] aryAct = new int[activeQuests.size()];
-        for (Integer q : activeQuests) aryAct[i++] = q;
+        for (Integer q : activeQuests)
+            aryAct[i++] = q;
         return aryAct;
     }
 
@@ -48,7 +50,8 @@ public class QuestCache implements INBTSerializable<NBTTagCompound> {
         // Probably a better way of doing this but this will do for now
         int i = 0;
         int[] aryVis = new int[visibleQuests.size()];
-        for (Integer q : visibleQuests) aryVis[i++] = q;
+        for (Integer q : visibleQuests)
+            aryVis[i++] = q;
         return aryVis;
     }
 
@@ -56,22 +59,23 @@ public class QuestCache implements INBTSerializable<NBTTagCompound> {
         // Probably a better way of doing this but this will do for now
         int i = 0;
         int[] aryAC = new int[autoClaims.size()];
-        for (Integer q : autoClaims) aryAC[i++] = q;
+        for (Integer q : autoClaims)
+            aryAC[i++] = q;
         return aryAC;
     }
 
     public synchronized QResetTime[] getScheduledResets() // Already sorted by time
-    {
-        return resetSchedule.toArray(new QResetTime[0]);
-    }
+    { return resetSchedule.toArray(new QResetTime[0]); }
 
     public synchronized void markQuestDirty(int questID) {
-        if (questID < 0) return;
+        if (questID < 0)
+            return;
         markedDirty.add(questID);
     }
 
     public synchronized void markQuestClean(int questID) {
-        if (questID < 0) return;
+        if (questID < 0)
+            return;
         markedDirty.remove(questID);
     }
 
@@ -83,14 +87,16 @@ public class QuestCache implements INBTSerializable<NBTTagCompound> {
         // Probably a better way of doing this but this will do for now
         int i = 0;
         int[] aryMD = new int[markedDirty.size()];
-        for (Integer q : markedDirty) aryMD[i++] = q;
+        for (Integer q : markedDirty)
+            aryMD[i++] = q;
         return aryMD;
     }
 
     // TODO: Ensure this is thread safe because we're likely going to run this in the background
     // NOTE: Only run this when the quests completion and claim states change. Use markQuestDirty() for progression changes that need syncing
     public synchronized void updateCache(EntityPlayer player) {
-        if (player == null) return;
+        if (player == null)
+            return;
 
         UUID uuid = QuestingAPI.getQuestingUUID(player);
         List<DBEntry<IQuest>> questDB = QuestingAPI.getAPI(ApiReference.QUEST_DB).getEntries();
@@ -141,7 +147,8 @@ public class QuestCache implements INBTSerializable<NBTTagCompound> {
         autoClaims.clear();
         autoClaims.addAll(tmpAutoClaim);
 
-        if (player instanceof EntityPlayerMP) NetCacheSync.sendSync((EntityPlayerMP) player);
+        if (player instanceof EntityPlayerMP)
+            NetCacheSync.sendSync((EntityPlayerMP) player);
     }
 
     @Override
@@ -173,10 +180,14 @@ public class QuestCache implements INBTSerializable<NBTTagCompound> {
         autoClaims.clear();
         markedDirty.clear();
 
-        for (int i : nbt.getIntArray("visibleQuests")) visibleQuests.add(i);
-        for (int i : nbt.getIntArray("activeQuests")) activeQuests.add(i);
-        for (int i : nbt.getIntArray("autoClaims")) autoClaims.add(i);
-        for (int i : nbt.getIntArray("markedDirty")) markedDirty.add(i);
+        for (int i : nbt.getIntArray("visibleQuests"))
+            visibleQuests.add(i);
+        for (int i : nbt.getIntArray("activeQuests"))
+            activeQuests.add(i);
+        for (int i : nbt.getIntArray("autoClaims"))
+            autoClaims.add(i);
+        for (int i : nbt.getIntArray("markedDirty"))
+            markedDirty.add(i);
 
         NBTTagList tagList = nbt.getTagList("resetSchedule", 10);
         for (int i = 0; i < tagList.tagCount(); i++) {
@@ -188,6 +199,7 @@ public class QuestCache implements INBTSerializable<NBTTagCompound> {
     }
 
     public class QResetTime implements Comparable<QResetTime> {
+
         public final int questID;
         public final long time;
 
@@ -203,9 +215,11 @@ public class QuestCache implements INBTSerializable<NBTTagCompound> {
 
         @Override
         public boolean equals(Object o) {
-            if (!(o instanceof QResetTime)) return false;
+            if (!(o instanceof QResetTime))
+                return false;
             return ((QResetTime) o).questID == questID;
         }
+
     }
 
     // TODO: Make this based on a fixed state stored on the quest instead of calculated on demand
@@ -217,10 +231,8 @@ public class QuestCache implements INBTSerializable<NBTTagCompound> {
 
         EnumQuestVisibility vis = quest.getProperty(NativeProps.VISIBILITY);
 
-        if (QuestingAPI.getAPI(ApiReference.SETTINGS).canUserEdit(player) ||
-                (BQ_Settings.viewMode && !quest.getProperty(NativeProps.IGNORES_VIEW_MODE) ||
-                vis == EnumQuestVisibility.ALWAYS)
-        ) // Always shown or in edit mode, or in view mode if not overridden
+        if (QuestingAPI.getAPI(ApiReference.SETTINGS).canUserEdit(player) || (BQ_Settings.viewMode && !quest.getProperty(NativeProps.IGNORES_VIEW_MODE) ||
+                vis == EnumQuestVisibility.ALWAYS)) // Always shown or in edit mode, or in view mode if not overridden
         {
             return true;
         } else if (vis == EnumQuestVisibility.HIDDEN) {
@@ -249,7 +261,8 @@ public class QuestCache implements INBTSerializable<NBTTagCompound> {
             }
 
             for (DBEntry<IQuest> q : QuestDatabase.INSTANCE.bulkLookup(quest.getRequirements())) {
-                if (q == null) return true;
+                if (q == null)
+                    return true;
 
                 if (isQuestShown(q.getValue(), uuid, player)) {
                     return true;
@@ -261,4 +274,5 @@ public class QuestCache implements INBTSerializable<NBTTagCompound> {
 
         return true;
     }
+
 }

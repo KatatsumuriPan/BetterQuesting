@@ -1,5 +1,11 @@
 package betterquesting.importers.hqm;
 
+import java.util.HashMap;
+
+import org.apache.logging.log4j.Level;
+
+import com.google.gson.JsonObject;
+
 import betterquesting.api.placeholders.PlaceholderConverter;
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.api.utils.JsonHelper;
@@ -7,7 +13,6 @@ import betterquesting.core.BetterQuesting;
 import betterquesting.importers.hqm.converters.items.HQMItem;
 import betterquesting.importers.hqm.converters.items.HQMItemBag;
 import betterquesting.importers.hqm.converters.items.HQMItemHeart;
-import com.google.gson.JsonObject;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,11 +21,9 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
-import org.apache.logging.log4j.Level;
-
-import java.util.HashMap;
 
 public class HQMUtilities {
+
     /**
      * Get HQM formatted item, Type 1
      */
@@ -53,7 +56,8 @@ public class HQMUtilities {
         }
 
         HQMItem hqm = itemConverters.get(iID.toLowerCase());
-        if (hqm != null) return hqm.convertItem(damage, amount, tags);
+        if (hqm != null)
+            return hqm.convertItem(damage, amount, tags);
 
         return PlaceholderConverter.convertItem(item, iID, amount, damage, "", tags);
     }
@@ -93,13 +97,15 @@ public class HQMUtilities {
         }
 
         HQMItem hqm = itemConverters.get(iID.toLowerCase());
-        if (hqm != null) return hqm.convertItem(damage, amount, tags);
+        if (hqm != null)
+            return hqm.convertItem(damage, amount, tags);
 
         BigItemStack stack = PlaceholderConverter.convertItem(item, iID, amount, damage, "", tags);
 
         if (oreDict && item != null) {
             int[] oreId = OreDictionary.getOreIDs(stack.getBaseStack());
-            if (oreId.length > 0) stack.setOreDict(OreDictionary.getOreName(oreId[0]));
+            if (oreId.length > 0)
+                stack.setOreDict(OreDictionary.getOreName(oreId[0]));
         }
 
         return stack;
@@ -119,4 +125,5 @@ public class HQMUtilities {
         itemConverters.put("hardcorequesting:hearts", new HQMItemHeart());
         itemConverters.put("hardcorequesting:bags", new HQMItemBag());
     }
+
 }

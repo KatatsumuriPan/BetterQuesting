@@ -4,6 +4,7 @@ import betterquesting.api.properties.IPropertyType;
 import net.minecraft.util.ResourceLocation;
 
 public abstract class PropertyTypeBase<T> implements IPropertyType<T> {
+
     private final ResourceLocation key;
     private final T def;
 
@@ -13,12 +14,9 @@ public abstract class PropertyTypeBase<T> implements IPropertyType<T> {
     }
 
     @Override
-    public ResourceLocation getKey() {
-        return key;
-    }
+    public ResourceLocation getKey() { return key; }
 
     @Override
-    public T getDefault() {
-        return def;
-    }
+    public T getDefault() { return def; }
+
 }

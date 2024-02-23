@@ -1,10 +1,11 @@
 package betterquesting.api2.client.gui.resources.colors;
 
+import java.awt.Color;
+
 import net.minecraft.client.renderer.GlStateManager;
 
-import java.awt.*;
-
 public class GuiColorStatic implements IGuiColor {
+
     private final int argb;
 
     public GuiColorStatic(int color) {
@@ -24,32 +25,23 @@ public class GuiColorStatic implements IGuiColor {
     }
 
     @Override
-    public int getRGB() {
-        return argb;
-    }
+    public int getRGB() { return argb; }
 
     @Override
-    public float getRed() {
-        return (argb >> 16 & 255) / 255F;
-    }
+    public float getRed() { return (argb >> 16 & 255) / 255F; }
 
     @Override
-    public float getGreen() {
-        return (argb >> 8 & 255) / 255F;
-    }
+    public float getGreen() { return (argb >> 8 & 255) / 255F; }
 
     @Override
-    public float getBlue() {
-        return (argb & 255) / 255F;
-    }
+    public float getBlue() { return (argb & 255) / 255F; }
 
     @Override
-    public float getAlpha() {
-        return (argb >> 24 & 255) / 255F;
-    }
+    public float getAlpha() { return (argb >> 24 & 255) / 255F; }
 
     @Override
     public void applyGlColor() {
         GlStateManager.color(getRed(), getGreen(), getBlue(), getAlpha());
     }
+
 }

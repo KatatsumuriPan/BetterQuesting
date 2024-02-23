@@ -1,5 +1,12 @@
 package betterquesting.client.gui2.editors;
 
+import java.util.ArrayDeque;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+
+import org.lwjgl.util.vector.Vector4f;
+
 import betterquesting.api.client.gui.misc.INeedsRefresh;
 import betterquesting.api.client.gui.misc.IVolatileScreen;
 import betterquesting.api.questing.IQuest;
@@ -14,7 +21,11 @@ import betterquesting.api2.client.gui.events.IPEventListener;
 import betterquesting.api2.client.gui.events.PEventBroadcaster;
 import betterquesting.api2.client.gui.events.PanelEvent;
 import betterquesting.api2.client.gui.events.types.PEventButton;
-import betterquesting.api2.client.gui.misc.*;
+import betterquesting.api2.client.gui.misc.GuiAlign;
+import betterquesting.api2.client.gui.misc.GuiPadding;
+import betterquesting.api2.client.gui.misc.GuiRectangle;
+import betterquesting.api2.client.gui.misc.GuiTransform;
+import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.CanvasTextured;
 import betterquesting.api2.client.gui.panels.bars.PanelVScrollBar;
 import betterquesting.api2.client.gui.panels.content.PanelLine;
@@ -35,14 +46,9 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.TextFormatting;
-import org.lwjgl.util.vector.Vector4f;
-
-import java.util.ArrayDeque;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
 
 public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener, IVolatileScreen, INeedsRefresh {
+
     private CanvasScrolling qrList;
 
     private IQuest quest;
@@ -79,16 +85,24 @@ public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener,
         PEventBroadcaster.INSTANCE.register(this, PEventButton.class);
 
         // Background panel
-        CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0), PresetTexture.PANEL_MAIN.getTexture());
+        CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0),
+                                                         PresetTexture.PANEL_MAIN.getTexture());
         this.addPanel(cvBackground);
 
-        PanelTextBox panTxt = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0), QuestTranslation.translate("betterquesting.title.edit_rewards")).setAlignment(1);
+        PanelTextBox panTxt = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0),
+                                               QuestTranslation.translate("betterquesting.title.edit_rewards")).setAlignment(1);
         panTxt.setColor(PresetColor.TEXT_HEADER.getColor());
         cvBackground.addPanel(panTxt);
 
         cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), 0, QuestTranslation.translate("gui.back")));
 
-        CanvasSearch<IFactoryData<IReward, NBTTagCompound>, IFactoryData<IReward, NBTTagCompound>> cvRegSearch = new CanvasSearch<IFactoryData<IReward, NBTTagCompound>, IFactoryData<IReward, NBTTagCompound>>((new GuiTransform(GuiAlign.HALF_RIGHT, new GuiPadding(8, 48, 24, 32), 0))) {
+        CanvasSearch<IFactoryData<IReward, NBTTagCompound>, IFactoryData<IReward, NBTTagCompound>> cvRegSearch = new CanvasSearch<IFactoryData<IReward, NBTTagCompound>, IFactoryData<IReward, NBTTagCompound>>((new GuiTransform(GuiAlign.HALF_RIGHT,
+                                                                                                                                                                                                                                  new GuiPadding(8,
+                                                                                                                                                                                                                                                 48,
+                                                                                                                                                                                                                                                 24,
+                                                                                                                                                                                                                                                 32),
+                                                                                                                                                                                                                                  0))) {
+
             @Override
             protected Iterator<IFactoryData<IReward, NBTTagCompound>> getIterator() {
                 List<IFactoryData<IReward, NBTTagCompound>> list = RewardRegistry.INSTANCE.getAll();
@@ -98,7 +112,8 @@ public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener,
 
             @Override
             protected void queryMatches(IFactoryData<IReward, NBTTagCompound> value, String query, ArrayDeque<IFactoryData<IReward, NBTTagCompound>> results) {
-                if (value.getRegistryName().toString().toLowerCase().contains(query.toLowerCase())) results.add(value);
+                if (value.getRegistryName().toString().toLowerCase().contains(query.toLowerCase()))
+                    results.add(value);
             }
 
             @Override
@@ -106,6 +121,7 @@ public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener,
                 this.addPanel(new PanelButtonStorage<>(new GuiRectangle(0, index * 16, cachedWidth, 16, 0), 1, entry.getRegistryName().toString(), entry));
                 return true;
             }
+
         };
         cvBackground.addPanel(cvRegSearch);
 
@@ -113,7 +129,9 @@ public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener,
         cvBackground.addPanel(scReg);
         cvRegSearch.setScrollDriverY(scReg);
 
-        PanelTextField<String> tfSearch = new PanelTextField<>(new GuiTransform(new Vector4f(0.5F, 0F, 1F, 0F), new GuiPadding(8, 32, 16, -48), 0), "", FieldFilterString.INSTANCE);
+        PanelTextField<String> tfSearch = new PanelTextField<>(new GuiTransform(new Vector4f(0.5F, 0F, 1F, 0F), new GuiPadding(8, 32, 16, -48), 0),
+                                                               "",
+                                                               FieldFilterString.INSTANCE);
         tfSearch.setCallback(cvRegSearch::setSearchFilter);
         tfSearch.setWatermark("Search...");
         cvBackground.addPanel(tfSearch);
@@ -188,8 +206,14 @@ public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener,
 
         for (int i = 0; i < dbRew.size(); i++) {
             IReward reward = dbRew.get(i).getValue();
-            qrList.addPanel(new PanelButtonStorage<>(new GuiRectangle(0, i * 16, w - 16, 16, 0), 3, QuestTranslation.translate(reward.getUnlocalisedName()), reward));
-            qrList.addPanel(new PanelButtonStorage<>(new GuiRectangle(w - 16, i * 16, 16, 16, 0), 2, "" + TextFormatting.RED + TextFormatting.BOLD + "x", reward));
+            qrList.addPanel(new PanelButtonStorage<>(new GuiRectangle(0, i * 16, w - 16, 16, 0),
+                                                     3,
+                                                     QuestTranslation.translate(reward.getUnlocalisedName()),
+                                                     reward));
+            qrList.addPanel(new PanelButtonStorage<>(new GuiRectangle(w - 16, i * 16, 16, 16, 0),
+                                                     2,
+                                                     "" + TextFormatting.RED + TextFormatting.BOLD + "x",
+                                                     reward));
         }
     }
 
@@ -204,4 +228,5 @@ public class GuiRewardEditor extends GuiScreenCanvas implements IPEventListener,
         payload.setInteger("action", 0);
         NetQuestEdit.sendEdit(payload);
     }
+
 }

@@ -1,38 +1,44 @@
 package betterquesting.storage;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.storage.ILifeDatabase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.MathHelper;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.UUID;
-
 public final class LifeDatabase implements ILifeDatabase {
+
     public static final LifeDatabase INSTANCE = new LifeDatabase();
 
     private final HashMap<UUID, Integer> playerLives = new HashMap<>();
 
     @Override
-    public synchronized int getLives(@Nonnull UUID uuid) {
+    public synchronized int getLives(@Nonnull
+    UUID uuid) {
         return playerLives.computeIfAbsent(uuid, (k) -> QuestSettings.INSTANCE.getProperty(NativeProps.LIVES_DEF));
     }
 
     @Override
-    public synchronized void setLives(@Nonnull UUID uuid, int value) {
+    public synchronized void setLives(@Nonnull
+    UUID uuid, int value) {
         playerLives.put(uuid, MathHelper.clamp(value, 0, QuestSettings.INSTANCE.getProperty(NativeProps.LIVES_MAX)));
     }
 
     @Override
-    public synchronized NBTTagCompound writeToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
+    public synchronized NBTTagCompound writeToNBT(NBTTagCompound nbt, @Nullable
+    List<UUID> users) {
         NBTTagList jul = new NBTTagList();
         for (Entry<UUID, Integer> entry : playerLives.entrySet()) {
-            if (users != null && !users.contains(entry.getKey())) continue;
+            if (users != null && !users.contains(entry.getKey()))
+                continue;
             NBTTagCompound j = new NBTTagCompound();
             j.setString("uuid", entry.getKey().toString());
             j.setInteger("lives", entry.getValue());
@@ -45,7 +51,8 @@ public final class LifeDatabase implements ILifeDatabase {
 
     @Override
     public synchronized void readFromNBT(NBTTagCompound nbt, boolean merge) {
-        if (!merge) playerLives.clear();
+        if (!merge)
+            playerLives.clear();
         NBTTagList tagList = nbt.getTagList("playerLives", 10);
         for (int i = 0; i < tagList.tagCount(); i++) {
             NBTTagCompound j = tagList.getCompoundTagAt(i);
@@ -63,4 +70,5 @@ public final class LifeDatabase implements ILifeDatabase {
     public synchronized void reset() {
         playerLives.clear();
     }
+
 }

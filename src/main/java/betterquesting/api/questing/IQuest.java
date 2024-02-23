@@ -1,5 +1,10 @@
 package betterquesting.api.questing;
 
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import betterquesting.api.enums.EnumQuestState;
 import betterquesting.api.properties.IPropertyContainer;
 import betterquesting.api.questing.rewards.IReward;
@@ -12,10 +17,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.UUID;
-
 public interface IQuest extends INBTSaveLoad<NBTTagCompound>, INBTProgress<NBTTagCompound>, IPropertyContainer {
 
     EnumQuestState getState(EntityPlayer player);
@@ -23,7 +24,8 @@ public interface IQuest extends INBTSaveLoad<NBTTagCompound>, INBTProgress<NBTTa
     @Nullable
     NBTTagCompound getCompletionInfo(UUID uuid);
 
-    void setCompletionInfo(UUID uuid, @Nullable NBTTagCompound nbt);
+    void setCompletionInfo(UUID uuid, @Nullable
+    NBTTagCompound nbt);
 
     void update(EntityPlayer player);
 
@@ -53,7 +55,8 @@ public interface IQuest extends INBTSaveLoad<NBTTagCompound>, INBTProgress<NBTTa
 
     void setClaimed(UUID uuid, long timestamp);
 
-    void resetUser(@Nullable UUID uuid, boolean fullReset);
+    void resetUser(@Nullable
+    UUID uuid, boolean fullReset);
 
     IDatabaseNBT<ITask, NBTTagList, NBTTagList> getTasks();
 
@@ -62,15 +65,17 @@ public interface IQuest extends INBTSaveLoad<NBTTagCompound>, INBTProgress<NBTTa
     @Nonnull
     int[] getRequirements();
 
-    void setRequirements(@Nonnull int[] req);
+    void setRequirements(@Nonnull
+    int[] req);
 
     @Nonnull
     RequirementType getRequirementType(int req);
 
-    void setRequirementType(int req, @Nonnull RequirementType kind);
-
+    void setRequirementType(int req, @Nonnull
+    RequirementType kind);
 
     enum RequirementType {
+
         NORMAL(PresetIcon.ICON_VISIBILITY_NORMAL),
         IMPLICIT(PresetIcon.ICON_VISIBILITY_IMPLICIT),
         HIDDEN(PresetIcon.ICON_VISIBILITY_HIDDEN);
@@ -87,9 +92,7 @@ public interface IQuest extends INBTSaveLoad<NBTTagCompound>, INBTProgress<NBTTa
             return (byte) ordinal();
         }
 
-        public PresetIcon getIcon() {
-            return icon;
-        }
+        public PresetIcon getIcon() { return icon; }
 
         public RequirementType next() {
             return VALUES[(ordinal() + 1) % VALUES.length];
@@ -98,5 +101,7 @@ public interface IQuest extends INBTSaveLoad<NBTTagCompound>, INBTProgress<NBTTa
         public static RequirementType from(byte id) {
             return id >= 0 && id < VALUES.length ? VALUES[id] : NORMAL;
         }
+
     }
+
 }

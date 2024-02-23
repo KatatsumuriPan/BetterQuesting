@@ -1,5 +1,10 @@
 package betterquesting.api2.client.gui.controls;
 
+import java.util.List;
+import java.util.function.Consumer;
+
+import org.lwjgl.input.Mouse;
+
 import betterquesting.api.utils.RenderUtils;
 import betterquesting.api2.client.gui.events.PEventBroadcaster;
 import betterquesting.api2.client.gui.events.types.PEventButton;
@@ -18,18 +23,17 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.input.Mouse;
-
-import java.util.List;
-import java.util.function.Consumer;
 
 public class PanelButton implements IPanelButton, IGuiPanel, INBTSaveLoad<NBTTagCompound> {
+
     private final IGuiRect transform;
     private boolean enabled = true;
     private boolean hovered = false;
 
     private final IGuiTexture[] texStates = new IGuiTexture[3];
-    private IGuiColor[] colStates = new IGuiColor[]{new GuiColorStatic(128, 128, 128, 255), new GuiColorStatic(255, 255, 255, 255), new GuiColorStatic(16777120)};
+    private IGuiColor[] colStates = new IGuiColor[] {
+            new GuiColorStatic(128, 128, 128, 255), new GuiColorStatic(255, 255, 255, 255), new GuiColorStatic(16777120)
+    };
     private IGuiTexture texIcon = null;
     private IGuiColor colIcon = null;
     private int icoPadding = 0;
@@ -102,51 +106,31 @@ public class PanelButton implements IPanelButton, IGuiPanel, INBTSaveLoad<NBTTag
         return this;
     }
 
-    public void setText(String text) {
-        this.btnText = text;
-    }
+    public void setText(String text) { this.btnText = text; }
 
-    public String getText() {
-        return this.btnText;
-    }
+    public String getText() { return this.btnText; }
 
     @Override
-    public int getButtonID() {
-        return this.btnID;
-    }
+    public int getButtonID() { return this.btnID; }
 
     @Override
-    public boolean isActive() {
-        return this.isActive;
-    }
+    public boolean isActive() { return this.isActive; }
 
     @Override
-    public void setActive(boolean state) {
-        this.isActive = state;
-    }
+    public void setActive(boolean state) { this.isActive = state; }
 
     @Override
-    public boolean isEnabled() {
-        return this.enabled;
-    }
+    public boolean isEnabled() { return this.enabled; }
 
     @Override
-    public void setEnabled(boolean state) {
-        this.enabled = state;
-    }
+    public void setEnabled(boolean state) { this.enabled = state; }
 
-    public boolean isHovered() {
-        return this.hovered;
-    }
+    public boolean isHovered() { return this.hovered; }
 
-    public void setHovered(boolean state) {
-        this.hovered = state;
-    }
+    public void setHovered(boolean state) { this.hovered = state; }
 
     @Override
-    public IGuiRect getTransform() {
-        return transform;
-    }
+    public IGuiRect getTransform() { return transform; }
 
     @Override
     public void initPanel() {
@@ -176,15 +160,33 @@ public class PanelButton implements IPanelButton, IGuiPanel, INBTSaveLoad<NBTTag
 
             if (isz > 0) {
                 if (colIcon != null) {
-                    texIcon.drawTexture(bounds.getX() + (bounds.getWidth() / 2) - (isz / 2), bounds.getY() + (bounds.getHeight() / 2) - (isz / 2), isz, isz, 0F, partialTick, colIcon);
+                    texIcon.drawTexture(bounds.getX() + (bounds.getWidth() / 2) - (isz / 2),
+                                        bounds.getY() + (bounds.getHeight() / 2) - (isz / 2),
+                                        isz,
+                                        isz,
+                                        0F,
+                                        partialTick,
+                                        colIcon);
                 } else {
-                    texIcon.drawTexture(bounds.getX() + (bounds.getWidth() / 2) - (isz / 2), bounds.getY() + (bounds.getHeight() / 2) - (isz / 2), isz, isz, 0F, partialTick);
+                    texIcon.drawTexture(bounds.getX() + (bounds.getWidth() / 2) - (isz / 2),
+                                        bounds.getY() + (bounds.getHeight() / 2) - (isz / 2),
+                                        isz,
+                                        isz,
+                                        0F,
+                                        partialTick);
                 }
             }
         }
 
         if (btnText != null && btnText.length() > 0) {
-            drawCenteredString(Minecraft.getMinecraft().fontRenderer, btnText, bounds.getX(), bounds.getY() + bounds.getHeight() / 2 - 4, bounds.getWidth(), colStates[curState].getRGB(), txtShadow, textAlign);
+            drawCenteredString(Minecraft.getMinecraft().fontRenderer,
+                               btnText,
+                               bounds.getX(),
+                               bounds.getY() + bounds.getHeight() / 2 - 4,
+                               bounds.getWidth(),
+                               colStates[curState].getRGB(),
+                               txtShadow,
+                               textAlign);
         }
 
         GlStateManager.popMatrix();
@@ -225,8 +227,10 @@ public class PanelButton implements IPanelButton, IGuiPanel, INBTSaveLoad<NBTTag
 
         if (clicked) {
             Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-            if (click == 0) onButtonClick();
-            else if (click == 1) onRightButtonClick();
+            if (click == 0)
+                onButtonClick();
+            else if (click == 1)
+                onRightButtonClick();
         }
 
         return clicked;
@@ -253,7 +257,8 @@ public class PanelButton implements IPanelButton, IGuiPanel, INBTSaveLoad<NBTTag
 
     @Override
     public void onButtonClick() {
-        if (clickAction != null) clickAction.accept(this);
+        if (clickAction != null)
+            clickAction.accept(this);
     }
 
     public void onRightButtonClick() {
@@ -269,4 +274,5 @@ public class PanelButton implements IPanelButton, IGuiPanel, INBTSaveLoad<NBTTag
     public void readFromNBT(NBTTagCompound nbt) {
 
     }
+
 }

@@ -1,12 +1,13 @@
 package betterquesting.api.client.toolbox;
 
+import java.util.List;
+
 import betterquesting.api2.client.gui.controls.PanelButtonQuest;
 import betterquesting.api2.client.gui.panels.lists.CanvasQuestLine;
 import net.minecraft.util.NonNullList;
 
-import java.util.List;
-
 public interface IToolboxTool {
+
     /**
      * Starts up the tool in its initial starting state
      */
@@ -53,4 +54,5 @@ public interface IToolboxTool {
      * Allows the tool controller to intercept some interactions to perform multi-quest selections
      */
     boolean useSelection();
+
 }

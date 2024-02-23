@@ -1,5 +1,7 @@
 package betterquesting.network.handlers;
 
+import java.util.UUID;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.network.QuestingPacket;
 import betterquesting.api.questing.IQuest;
@@ -18,9 +20,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.UUID;
-
 public class NetStationEdit {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation(ModReference.MODID, "station_edit");
 
     public static void registerHandler() {
@@ -60,9 +61,11 @@ public class NetStationEdit {
                     UUID QID = QuestingAPI.getQuestingUUID(message.getSecond());
                     IQuest quest = QuestDatabase.INSTANCE.getValue(data.getInteger("questID"));
                     ITask task = quest == null ? null : quest.getTasks().getValue(data.getInteger("taskID"));
-                    if (quest != null && task != null) oss.setupTask(QID, quest, task);
+                    if (quest != null && task != null)
+                        oss.setupTask(QID, quest, task);
                 }
             }
         }
     }
+
 }

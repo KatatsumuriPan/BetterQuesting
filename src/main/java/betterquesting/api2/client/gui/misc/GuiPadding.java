@@ -1,6 +1,7 @@
 package betterquesting.api2.client.gui.misc;
 
 public class GuiPadding {
+
     public int l, t, r, b = 0;
 
     public GuiPadding() {
@@ -25,24 +26,17 @@ public class GuiPadding {
         return this;
     }
 
-    public int getLeft() {
-        return l;
-    }
+    public int getLeft() { return l; }
 
-    public int getTop() {
-        return t;
-    }
+    public int getTop() { return t; }
 
-    public int getRight() {
-        return r;
-    }
+    public int getRight() { return r; }
 
-    public int getBottom() {
-        return b;
-    }
+    public int getBottom() { return b; }
 
     @Override
     public String toString() {
         return getClass().getName() + "[left=" + l + ",top=" + t + ",right=" + r + ",bottom=" + b + "]";
     }
+
 }

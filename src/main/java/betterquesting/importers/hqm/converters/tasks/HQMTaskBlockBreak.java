@@ -1,21 +1,24 @@
 package betterquesting.importers.hqm.converters.tasks;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import betterquesting.NbtBlockType;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.importers.hqm.HQMUtilities;
 import betterquesting.questing.tasks.TaskBlockBreak;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import net.minecraft.item.ItemBlock;
 
 public class HQMTaskBlockBreak {
+
     public ITask[] convertTask(JsonObject json) {
         TaskBlockBreak taskBreak = new TaskBlockBreak();
 
         for (JsonElement je2 : JsonHelper.GetArray(json, "blocks")) {
-            if (!(je2 instanceof JsonObject)) continue;
+            if (!(je2 instanceof JsonObject))
+                continue;
             JsonObject jBlock = je2.getAsJsonObject();
             BigItemStack stack = HQMUtilities.HQMStackT1(JsonHelper.GetObject(jBlock, "item"));
             if (!(stack.getBaseStack().getItem() instanceof ItemBlock))
@@ -28,6 +31,9 @@ public class HQMTaskBlockBreak {
             taskBreak.blockTypes.add(blockType);
         }
 
-        return new ITask[]{taskBreak};
+        return new ITask[] {
+                taskBreak
+        };
     }
+
 }

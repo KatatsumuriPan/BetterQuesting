@@ -1,5 +1,17 @@
 package betterquesting.questing.tasks;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.XPHelper;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.client.gui.misc.IGuiRect;
@@ -14,13 +26,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
 
 public class TaskXP implements ITaskTickable {
+
     private final Set<UUID> completeUsers = new TreeSet<>();
     private final HashMap<UUID, Long> userProgress = new HashMap<>();
     public boolean levels = true;
@@ -28,9 +36,7 @@ public class TaskXP implements ITaskTickable {
     public boolean consume = true;
 
     @Override
-    public ResourceLocation getFactoryID() {
-        return FactoryTaskXP.INSTANCE.getRegistryName();
-    }
+    public ResourceLocation getFactoryID() { return FactoryTaskXP.INSTANCE.getRegistryName(); }
 
     @Override
     public boolean isComplete(UUID uuid) {
@@ -43,8 +49,10 @@ public class TaskXP implements ITaskTickable {
     }
 
     @Override
-    public void tickTask(@Nonnull ParticipantInfo pInfo, DBEntry<IQuest> quest) {
-        if (consume || pInfo.PLAYER.ticksExisted % 60 != 0) return; // Every 3 seconds
+    public void tickTask(@Nonnull
+    ParticipantInfo pInfo, DBEntry<IQuest> quest) {
+        if (consume || pInfo.PLAYER.ticksExisted % 60 != 0)
+            return; // Every 3 seconds
 
         long curProg = getUsersProgress(pInfo.UUID);
         long nxtProg = XPHelper.getPlayerXP(pInfo.PLAYER);
@@ -57,12 +65,14 @@ public class TaskXP implements ITaskTickable {
         long rawXP = levels ? XPHelper.getLevelXP(amount) : amount;
         long totalXP = getUsersProgress(pInfo.UUID);
 
-        if (totalXP >= rawXP) setComplete(pInfo.UUID);
+        if (totalXP >= rawXP)
+            setComplete(pInfo.UUID);
     }
 
     @Override
     public void detect(ParticipantInfo pInfo, DBEntry<IQuest> quest) {
-        if (isComplete(pInfo.UUID)) return;
+        if (isComplete(pInfo.UUID))
+            return;
 
         long progress = getUsersProgress(pInfo.UUID);
         long rawXP = levels ? XPHelper.getLevelXP(amount) : amount;
@@ -96,9 +106,7 @@ public class TaskXP implements ITaskTickable {
     }
 
     @Override
-    public String getUnlocalisedName() {
-        return "bq_standard.task.xp";
-    }
+    public String getUnlocalisedName() { return "bq_standard.task.xp"; }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound json) {
@@ -144,13 +152,15 @@ public class TaskXP implements ITaskTickable {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
+    List<UUID> users) {
         NBTTagList jArray = new NBTTagList();
         NBTTagList progArray = new NBTTagList();
 
         if (users != null) {
             users.forEach((uuid) -> {
-                if (completeUsers.contains(uuid)) jArray.appendTag(new NBTTagString(uuid.toString()));
+                if (completeUsers.contains(uuid))
+                    jArray.appendTag(new NBTTagString(uuid.toString()));
 
                 Long data = userProgress.get(uuid);
                 if (data != null) {
@@ -178,7 +188,8 @@ public class TaskXP implements ITaskTickable {
     }
 
     @Override
-    public void resetUser(@Nullable UUID uuid) {
+    public void resetUser(@Nullable
+    UUID uuid) {
         if (uuid == null) {
             completeUsers.clear();
             userProgress.clear();
@@ -211,4 +222,5 @@ public class TaskXP implements ITaskTickable {
     public boolean displaysCenteredAlone() {
         return true;
     }
+
 }

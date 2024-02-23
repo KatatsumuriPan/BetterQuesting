@@ -5,6 +5,7 @@ import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import net.minecraft.util.ResourceLocation;
 
 public class LayeredTexture implements IGuiTexture {
+
     private final IGuiTexture[] layers;
 
     public LayeredTexture(IGuiTexture... layers) {
@@ -13,7 +14,8 @@ public class LayeredTexture implements IGuiTexture {
 
     @Override
     public void drawTexture(int x, int y, int width, int height, float zDepth, float partialTick) {
-        if (width <= 0 || height <= 0) return;
+        if (width <= 0 || height <= 0)
+            return;
 
         for (IGuiTexture tex : layers) {
             tex.drawTexture(x, y, width, height, zDepth, partialTick);
@@ -22,7 +24,8 @@ public class LayeredTexture implements IGuiTexture {
 
     @Override
     public void drawTexture(int x, int y, int width, int height, float zDepth, float partialTick, IGuiColor color) {
-        if (width <= 0 || height <= 0) return;
+        if (width <= 0 || height <= 0)
+            return;
 
         for (IGuiTexture tex : layers) {
             tex.drawTexture(x, y, width, height, zDepth, partialTick, color);
@@ -30,12 +33,9 @@ public class LayeredTexture implements IGuiTexture {
     }
 
     @Override
-    public ResourceLocation getTexture() {
-        return layers.length <= 0 ? null : layers[0].getTexture();
-    }
+    public ResourceLocation getTexture() { return layers.length <= 0 ? null : layers[0].getTexture(); }
 
     @Override
-    public IGuiRect getBounds() {
-        return layers.length <= 0 ? null : layers[0].getBounds();
-    }
+    public IGuiRect getBounds() { return layers.length <= 0 ? null : layers[0].getBounds(); }
+
 }

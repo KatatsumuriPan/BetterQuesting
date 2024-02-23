@@ -21,6 +21,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class ApiReference // Note to self: Don't make these client side only. It'll just crash servers regardless of which are used
 {
+
     public static final ApiKey<IQuestDatabase> QUEST_DB = new ApiKey<>();
     public static final ApiKey<IQuestLineDatabase> LINE_DB = new ApiKey<>();
     public static final ApiKey<IPartyDatabase> PARTY_DB = new ApiKey<>();
@@ -41,4 +42,5 @@ public class ApiReference // Note to self: Don't make these client side only. It
     public static final ApiKey<IImportRegistry> IMPORT_REG = new ApiKey<>();
 
     public static final ApiKey<CreativeTabs> CREATIVE_TAB = new ApiKey<>();
+
 }

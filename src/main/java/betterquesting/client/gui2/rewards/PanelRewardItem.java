@@ -30,8 +30,10 @@ public class PanelRewardItem extends CanvasMinimum {
             PanelItemSlot is = new PanelItemSlot(new GuiRectangle(0, i * 18, 18, 18, 0), -1, stack, true);
             this.addPanel(is);
 
-            this.addPanel(new PanelTextBox(new GuiRectangle(22, i * 18 + 4, listWidth - 22, 14, 0), stack.stackSize + " " + stack.getBaseStack().getDisplayName()).setColor(PresetColor.TEXT_MAIN.getColor()));
+            this.addPanel(new PanelTextBox(new GuiRectangle(22, i * 18 + 4, listWidth - 22, 14, 0),
+                                           stack.stackSize + " " + stack.getBaseStack().getDisplayName()).setColor(PresetColor.TEXT_MAIN.getColor()));
         }
         recalculateSizes();
     }
+
 }

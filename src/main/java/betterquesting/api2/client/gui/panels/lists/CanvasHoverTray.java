@@ -9,6 +9,7 @@ import betterquesting.api2.client.gui.panels.IGuiCanvas;
 import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 
 public class CanvasHoverTray extends CanvasResizeable {
+
     private boolean manualOpen = false;
 
     private final IGuiRect rectClosed;
@@ -33,17 +34,11 @@ public class CanvasHoverTray extends CanvasResizeable {
         cvClosed = new CanvasEmpty(trans);
     }
 
-    public IGuiCanvas getCanvasOpen() {
-        return cvOpen;
-    }
+    public IGuiCanvas getCanvasOpen() { return cvOpen; }
 
-    public IGuiCanvas getCanvasClosed() {
-        return cvClosed;
-    }
+    public IGuiCanvas getCanvasClosed() { return cvClosed; }
 
-    public boolean isTrayOpen() {
-        return cvOpen.isEnabled();
-    }
+    public boolean isTrayOpen() { return cvOpen.isEnabled(); }
 
     public CanvasHoverTray setManualOpen(boolean state) {
         this.manualOpen = state;
@@ -65,12 +60,14 @@ public class CanvasHoverTray extends CanvasResizeable {
             this.lerpToRect(rectClosed, time, true);
             cvOpen.setEnabled(false);
             cvClosed.setEnabled(true);
-            if (actionClose != null) actionClose.run();
+            if (actionClose != null)
+                actionClose.run();
         } else if (open && !isTrayOpen()) {
             this.lerpToRect(rectOpen, time, true);
             cvOpen.setEnabled(true);
             cvClosed.setEnabled(false);
-            if (actionOpen != null) actionOpen.run();
+            if (actionOpen != null)
+                actionOpen.run();
         }
     }
 
@@ -112,4 +109,5 @@ public class CanvasHoverTray extends CanvasResizeable {
         // May cause some issues elsewhere but for now this is fine
         rectOpen.setParent(rectClosed.getParent());
     }
+
 }

@@ -1,5 +1,12 @@
 package betterquesting.client.ui_builder;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.lwjgl.util.vector.Vector4f;
+
 import betterquesting.api2.client.gui.misc.GuiAlign;
 import betterquesting.api2.client.gui.misc.GuiPadding;
 import betterquesting.api2.client.gui.misc.GuiTransform;
@@ -11,13 +18,9 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
-import org.lwjgl.util.vector.Vector4f;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ComponentPanel implements INBTSaveLoad<NBTTagCompound> {
+
     // Purely for organisational purposes
     public String refName = "New Panel";
     public String panelType = new ResourceLocation(ModReference.MODID, "canvas_empty").toString();
@@ -57,24 +60,26 @@ public class ComponentPanel implements INBTSaveLoad<NBTTagCompound> {
         transTag.setInteger("depth", transform.getDepth());
     }
 
-    public NBTTagCompound getTransformTag() {
-        return transTag;
-    }
+    public NBTTagCompound getTransformTag() { return transTag; }
 
-    public NBTTagCompound getPanelData() {
-        return panelData;
-    }
+    public NBTTagCompound getPanelData() { return panelData; }
 
-    public void setPanelData(@Nonnull NBTTagCompound tag) {
-        this.panelData = tag;
-    }
+    public void setPanelData(@Nonnull
+    NBTTagCompound tag) { this.panelData = tag; }
 
     public IGuiPanel build() {
-        Vector4f anchor = new Vector4f(transTag.getFloat("anchor_left"), transTag.getFloat("anchor_top"), transTag.getFloat("anchor_right"), transTag.getFloat("anchor_bottom"));
-        GuiPadding padding = new GuiPadding(transTag.getInteger("pad_left"), transTag.getInteger("pad_top"), transTag.getInteger("pad_right"), transTag.getInteger("pad_bottom"));
+        Vector4f anchor = new Vector4f(transTag.getFloat("anchor_left"),
+                                       transTag.getFloat("anchor_top"),
+                                       transTag.getFloat("anchor_right"),
+                                       transTag.getFloat("anchor_bottom"));
+        GuiPadding padding = new GuiPadding(transTag.getInteger("pad_left"),
+                                            transTag.getInteger("pad_top"),
+                                            transTag.getInteger("pad_right"),
+                                            transTag.getInteger("pad_bottom"));
         GuiTransform transform = new GuiTransform(anchor, padding, transTag.getInteger("depth"));
 
-        ResourceLocation res = StringUtils.isNullOrEmpty(panelType) ? new ResourceLocation(ModReference.MODID, "canvas_empty") : new ResourceLocation(panelType);
+        ResourceLocation res = StringUtils.isNullOrEmpty(panelType) ? new ResourceLocation(ModReference.MODID, "canvas_empty") : new ResourceLocation(
+                                                                                                                                                      panelType);
         return ComponentRegistry.INSTANCE.createNew(res, transform, panelData);
     }
 
@@ -114,4 +119,5 @@ public class ComponentPanel implements INBTSaveLoad<NBTTagCompound> {
             scripts.add(sList.getStringTagAt(i));
         }
     }
+
 }

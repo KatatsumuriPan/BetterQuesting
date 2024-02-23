@@ -1,5 +1,10 @@
 package betterquesting.api.questing.tasks;
 
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.IGuiPanel;
@@ -13,11 +18,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.UUID;
-
 public interface ITask extends INBTSaveLoad<NBTTagCompound>, INBTProgress<NBTTagCompound> {
+
     String getUnlocalisedName();
 
     ResourceLocation getFactoryID();
@@ -28,14 +30,13 @@ public interface ITask extends INBTSaveLoad<NBTTagCompound>, INBTProgress<NBTTag
 
     void setComplete(UUID uuid);
 
-    void resetUser(@Nullable UUID uuid);
+    void resetUser(@Nullable
+    UUID uuid);
 
-    @Nullable
-    @SideOnly(Side.CLIENT)
+    @Nullable @SideOnly(Side.CLIENT)
     IGuiPanel getTaskGui(IGuiRect rect, DBEntry<IQuest> quest);
 
-    @Nullable
-    @SideOnly(Side.CLIENT)
+    @Nullable @SideOnly(Side.CLIENT)
     GuiScreen getTaskEditor(GuiScreen parent, DBEntry<IQuest> quest);
 
     /**
@@ -49,7 +50,6 @@ public interface ITask extends INBTSaveLoad<NBTTagCompound>, INBTProgress<NBTTag
         return false;
     }
 
-    default List<String> getTextForSearch() {
-        return null;
-    }
+    default List<String> getTextForSearch() { return null; }
+
 }

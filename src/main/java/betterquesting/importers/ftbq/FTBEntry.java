@@ -1,6 +1,7 @@
 package betterquesting.importers.ftbq;
 
 public class FTBEntry {
+
     public final int id;
     public final Object obj;
     public final FTBEntryType type;
@@ -16,4 +17,5 @@ public class FTBEntry {
         LINE,
         VAR
     }
+
 }

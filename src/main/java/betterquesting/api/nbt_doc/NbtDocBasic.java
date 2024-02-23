@@ -4,6 +4,7 @@ import betterquesting.api.events.NbtDocEvent;
 import net.minecraftforge.common.MinecraftForge;
 
 public class NbtDocBasic implements INbtDoc {
+
     private final INbtDoc parent;
     private final String prefix;
 
@@ -13,9 +14,7 @@ public class NbtDocBasic implements INbtDoc {
     }
 
     @Override
-    public String getUnlocalisedTitle() {
-        return prefix + ".name";
-    }
+    public String getUnlocalisedTitle() { return prefix + ".name"; }
 
     @Override
     public String getUnlocalisedName(String key) {
@@ -28,9 +27,7 @@ public class NbtDocBasic implements INbtDoc {
     }
 
     @Override
-    public INbtDoc getParent() {
-        return parent;
-    }
+    public INbtDoc getParent() { return parent; }
 
     @Override
     public INbtDoc getChild(String child) {
@@ -38,4 +35,5 @@ public class NbtDocBasic implements INbtDoc {
         MinecraftForge.EVENT_BUS.post(event);
         return event.getNbtDocResult();
     }
+
 }

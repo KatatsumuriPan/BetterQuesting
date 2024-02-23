@@ -1,11 +1,12 @@
 package betterquesting.blocks;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
-import javax.annotation.Nonnull;
-
 public class SSItemHandler implements IItemHandlerModifiable {
+
     private final TileSubmitStation tile;
 
     public SSItemHandler(TileSubmitStation tile) {
@@ -13,13 +14,11 @@ public class SSItemHandler implements IItemHandlerModifiable {
     }
 
     @Override
-    public int getSlots() {
-        return tile.getSizeInventory();
-    }
+    public int getSlots() { return tile.getSizeInventory(); }
 
-    @Nonnull
-    @Override
-    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+    @Nonnull @Override
+    public ItemStack insertItem(int slot, @Nonnull
+    ItemStack stack, boolean simulate) {
         if (stack.isEmpty() || !tile.isItemValidForSlot(slot, stack)) {
             return stack;
         }
@@ -56,8 +55,7 @@ public class SSItemHandler implements IItemHandlerModifiable {
         return ItemStack.EMPTY;
     }
 
-    @Nonnull
-    @Override
+    @Nonnull @Override
     public ItemStack extractItem(int slot, int amount, boolean simulate) {
         if (slot != 1 || amount <= 0) {
             return ItemStack.EMPTY;
@@ -82,12 +80,12 @@ public class SSItemHandler implements IItemHandlerModifiable {
     }
 
     @Override
-    public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
+    public void setStackInSlot(int slot, @Nonnull
+    ItemStack stack) {
         tile.setInventorySlotContents(slot, stack);
     }
 
-    @Nonnull
-    @Override
+    @Nonnull @Override
     public ItemStack getStackInSlot(int idx) {
         return tile.getStackInSlot(idx);
     }
@@ -96,4 +94,5 @@ public class SSItemHandler implements IItemHandlerModifiable {
     public int getSlotLimit(int slot) {
         return 64;
     }
+
 }

@@ -1,13 +1,18 @@
 package betterquesting.api2.client.gui.panels.lists;
 
-import betterquesting.api2.client.gui.misc.IGuiRect;
-
 import java.io.File;
 import java.io.FileFilter;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+
+import betterquesting.api2.client.gui.misc.IGuiRect;
 
 @SuppressWarnings("WeakerAccess")
 public abstract class CanvasFileDirectory extends CanvasSearch<File, File> {
+
     private static final FileSort sorter = new FileSort();
     private final FileFilter filter;
     private File curDir;
@@ -17,7 +22,8 @@ public abstract class CanvasFileDirectory extends CanvasSearch<File, File> {
         this.filter = filter;
         this.curDir = dirStart;
 
-        if (curDir != null && !curDir.isDirectory()) curDir = curDir.getParentFile();
+        if (curDir != null && !curDir.isDirectory())
+            curDir = curDir.getParentFile();
     }
 
     public void setCurDirectory(File file) {
@@ -34,7 +40,8 @@ public abstract class CanvasFileDirectory extends CanvasSearch<File, File> {
         } else {
             files = !curDir.isDirectory() ? new File[0] : curDir.listFiles(filter);
         }
-        if (files == null) files = new File[0];
+        if (files == null)
+            files = new File[0];
         List<File> fList = Arrays.asList(files);
         fList.sort(sorter);
         return fList.iterator();
@@ -42,10 +49,12 @@ public abstract class CanvasFileDirectory extends CanvasSearch<File, File> {
 
     @Override
     protected void queryMatches(File value, String query, ArrayDeque<File> results) {
-        if (value.getName().toLowerCase().contains(query.toLowerCase())) results.add(value);
+        if (value.getName().toLowerCase().contains(query.toLowerCase()))
+            results.add(value);
     }
 
     private static class FileSort implements Comparator<File> {
+
         @Override
         public int compare(File f1, File f2) {
             if (f1 == null || f2 == null) {
@@ -61,5 +70,7 @@ public abstract class CanvasFileDirectory extends CanvasSearch<File, File> {
         public boolean equals(Object obj) {
             return obj == this;
         }
+
     }
+
 }

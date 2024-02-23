@@ -8,6 +8,7 @@ import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class FtbqTaskXP {
+
     /*
         Fun Fact:
         As of writing this, FTBQ doesn't care if the level you submit to its task is from level 30 or level 1. This means high level players get screwed over. GG
@@ -18,6 +19,9 @@ public class FtbqTaskXP {
         task.amount = (int) (tag.getLong("value") % Integer.MAX_VALUE); // Suuuure FTBQ. The vanilla int XP level can totally exceed 2.14B
         FTBQQuestImporter.provideQuestIcon(new BigItemStack(Items.EXPERIENCE_BOTTLE));
 
-        return new ITask[]{task};
+        return new ITask[] {
+                task
+        };
     }
+
 }

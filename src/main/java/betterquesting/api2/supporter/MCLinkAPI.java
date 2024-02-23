@@ -1,14 +1,5 @@
 package betterquesting.api2.supporter;
 
-import betterquesting.api.utils.JsonHelper;
-import betterquesting.api2.supporter.mc_link.McLinkEndpoint;
-import betterquesting.core.BetterQuesting;
-import betterquesting.core.ModReference;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,17 +10,28 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import betterquesting.api.utils.JsonHelper;
+import betterquesting.api2.supporter.mc_link.McLinkEndpoint;
+import betterquesting.core.BetterQuesting;
+import betterquesting.core.ModReference;
+
 public class MCLinkAPI {
+
     private static final String MCL_TOKEN = "Yo1nkbXn7uVptLoL3GpkAaT7HsU8QFGJ";
 
     private static String userAgent = null;
 
     @Nonnull
-    public JsonObject getApiStatus() {
-        return new JsonObject();
-    }
+    public JsonObject getApiStatus() { return new JsonObject(); }
 
-    public void updateSupporterInfo(@Nonnull Collection<UUID> playerIDs, Collection<String> tokens) {
+    public void updateSupporterInfo(@Nonnull
+    Collection<UUID> playerIDs, Collection<String> tokens) {
         JsonObject jsonBase = new JsonObject();
 
         JsonObject jsonTokens = new JsonObject();
@@ -55,7 +57,8 @@ public class MCLinkAPI {
     }
 
     private static JsonElement sendJsonPost(String endpoint, JsonElement json) throws IOException {
-        if (userAgent == null) setupMetadata();
+        if (userAgent == null)
+            setupMetadata();
 
         URL url = new URL(endpoint);
         String redirect = url.toString();
@@ -81,11 +84,13 @@ public class MCLinkAPI {
                 osw.flush();
                 redirect = con.getHeaderField("Location");
             }
-        } while (redirect != null && con.getResponseCode() / 100 == 3); // Continue following redirects
+        }
+        while (redirect != null && con.getResponseCode() / 100 == 3); // Continue following redirects
 
         //TODO: Flag the JSON response as an error when necessary so it can be handled as such
         InputStream is = con.getErrorStream();
-        if (is == null) is = con.getInputStream();
+        if (is == null)
+            is = con.getInputStream();
 
         try (InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8)) {
             JsonElement jsonOut = JsonHelper.GSON.fromJson(isr, JsonElement.class);
@@ -109,4 +114,5 @@ public class MCLinkAPI {
         sb.append(os.replaceAll("[;()\n\r]", ""));
         userAgent = sb.append(')').toString();
     }
+
 }

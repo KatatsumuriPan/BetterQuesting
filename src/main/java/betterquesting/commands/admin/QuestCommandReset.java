@@ -1,5 +1,10 @@
 package betterquesting.commands.admin;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.storage.DBEntry;
@@ -16,16 +21,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-
 public class QuestCommandReset extends QuestCommandBase {
+
     @Override
-    public String getUsageSuffix() {
-        return "[all|<quest_id>] [username|uuid]";
-    }
+    public String getUsageSuffix() { return "[all|<quest_id>] [username|uuid]"; }
 
     @Override
     public boolean validArgs(String[] args) {
@@ -51,9 +50,7 @@ public class QuestCommandReset extends QuestCommandBase {
     }
 
     @Override
-    public String getCommand() {
-        return "reset";
-    }
+    public String getCommand() { return "reset"; }
 
     @Override
     public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, String[] args) throws CommandException {
@@ -85,7 +82,8 @@ public class QuestCommandReset extends QuestCommandBase {
 
             if (uuid != null) {
                 sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.reset.player_all", pName));
-                if (player != null) NetQuestSync.sendSync(player, null, false, true);
+                if (player != null)
+                    NetQuestSync.sendSync(player, null, false, true);
             } else {
                 sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.reset.all_all"));
                 NetQuestSync.quickSync(-1, false, true);
@@ -99,12 +97,18 @@ public class QuestCommandReset extends QuestCommandBase {
                 if (uuid != null) {
                     quest.resetUser(uuid, true); // Clear progress and state
                     SaveLoadHandler.INSTANCE.markDirty();
-                    sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.reset.player_single", new TextComponentTranslation(quest.getProperty(NativeProps.NAME)), pName));
-                    if (player != null) NetQuestSync.sendSync(player, new int[]{id}, false, true);
+                    sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.reset.player_single",
+                                                                    new TextComponentTranslation(quest.getProperty(NativeProps.NAME)),
+                                                                    pName));
+                    if (player != null)
+                        NetQuestSync.sendSync(player, new int[] {
+                                id
+                        }, false, true);
                 } else {
                     quest.resetUser(null, true);
                     SaveLoadHandler.INSTANCE.markDirty();
-                    sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.reset.all_single", new TextComponentTranslation(quest.getProperty(NativeProps.NAME))));
+                    sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.reset.all_single",
+                                                                    new TextComponentTranslation(quest.getProperty(NativeProps.NAME))));
                     NetQuestSync.quickSync(id, false, true);
                 }
             } catch (Exception e) {
@@ -119,18 +123,12 @@ public class QuestCommandReset extends QuestCommandBase {
     }
 
     @Override
-    public String getPermissionNode() {
-        return "betterquesting.command.admin.reset";
-    }
+    public String getPermissionNode() { return "betterquesting.command.admin.reset"; }
 
     @Override
-    public DefaultPermissionLevel getPermissionLevel() {
-        return DefaultPermissionLevel.OP;
-    }
+    public DefaultPermissionLevel getPermissionLevel() { return DefaultPermissionLevel.OP; }
 
     @Override
-    public String getPermissionDescription() {
-        return "Permission to erases quest completion data for the given user";
-    }
+    public String getPermissionDescription() { return "Permission to erases quest completion data for the given user"; }
 
 }

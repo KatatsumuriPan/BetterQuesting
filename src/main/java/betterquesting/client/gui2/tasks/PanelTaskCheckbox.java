@@ -36,6 +36,7 @@ public class PanelTaskCheckbox extends CanvasMinimum {
         final int taskID = quest.getValue().getTasks().getID(task);
 
         PanelButton btnCheck = new PanelButton(new GuiTransform(GuiAlign.TOP_LEFT, (initialRect.getWidth() - 32) / 2, 0, 32, 32, 0), -1, "") {
+
             @Override
             public void onButtonClick() {
                 setIcon(PresetIcon.ICON_TICK.getTexture(), new GuiColorStatic(0xFF00FF00), 4);
@@ -43,10 +44,14 @@ public class PanelTaskCheckbox extends CanvasMinimum {
 
                 NetTaskCheckbox.requestClick(questID, taskID);
             }
+
         };
-        btnCheck.setIcon(isComplete ? PresetIcon.ICON_TICK.getTexture() : PresetIcon.ICON_CROSS.getTexture(), new GuiColorStatic(isComplete ? 0xFF00FF00 : 0xFFFF0000), 4);
+        btnCheck.setIcon(isComplete ? PresetIcon.ICON_TICK.getTexture() : PresetIcon.ICON_CROSS.getTexture(),
+                         new GuiColorStatic(isComplete ? 0xFF00FF00 : 0xFFFF0000),
+                         4);
         btnCheck.setActive(!isComplete);
         this.addPanel(btnCheck);
         recalculateSizes();
     }
+
 }

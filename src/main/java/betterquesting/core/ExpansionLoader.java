@@ -20,6 +20,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ExpansionLoader {
+
     public static final ExpansionLoader INSTANCE = new ExpansionLoader();
 
     public void initCommonAPIs() {
@@ -47,4 +48,5 @@ public class ExpansionLoader {
         QuestingAPI.registerAPI(ApiReference.TOOL_REG, ToolboxRegistry.INSTANCE);
         QuestingAPI.registerAPI(ApiReference.IMPORT_REG, ImporterRegistry.INSTANCE);
     }
+
 }

@@ -1,5 +1,11 @@
 package betterquesting.handlers;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.UUID;
+
 import betterquesting.advancement.AdvListenerManager;
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
@@ -28,11 +34,25 @@ import betterquesting.client.themes.ThemeRegistry;
 import betterquesting.commands.client.QuestCommandShow;
 import betterquesting.core.BetterQuesting;
 import betterquesting.core.ModReference;
-import betterquesting.network.handlers.*;
+import betterquesting.network.handlers.NetBulkSync;
+import betterquesting.network.handlers.NetLootSync;
+import betterquesting.network.handlers.NetNameSync;
+import betterquesting.network.handlers.NetNotices;
+import betterquesting.network.handlers.NetQuestSync;
+import betterquesting.network.handlers.NetTaskInteract;
 import betterquesting.questing.QuestDatabase;
 import betterquesting.questing.party.PartyInvitations;
 import betterquesting.questing.party.PartyManager;
-import betterquesting.questing.tasks.*;
+import betterquesting.questing.tasks.ITaskInventory;
+import betterquesting.questing.tasks.ITaskTickable;
+import betterquesting.questing.tasks.TaskAdvancement;
+import betterquesting.questing.tasks.TaskBlockBreak;
+import betterquesting.questing.tasks.TaskCrafting;
+import betterquesting.questing.tasks.TaskHunt;
+import betterquesting.questing.tasks.TaskInteractEntity;
+import betterquesting.questing.tasks.TaskInteractItem;
+import betterquesting.questing.tasks.TaskTame;
+import betterquesting.questing.tasks.TaskTrigger;
 import betterquesting.storage.LifeDatabase;
 import betterquesting.storage.NameCache;
 import betterquesting.storage.QuestSettings;
@@ -49,7 +69,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.text.*;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.HoverEvent;
 import net.minecraft.world.GameType;
@@ -83,22 +106,16 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
-
 /**
  * Event handling for standard quests and core BetterQuesting functionality
  */
 public class EventHandler {
+
     public static final EventHandler INSTANCE = new EventHandler();
 
     private static final String SPAWN_WITH_QUEST_BOOK = ModReference.MODID + ".questbook";
 
-    @SubscribeEvent
-    @SideOnly(Side.CLIENT)
+    @SubscribeEvent @SideOnly(Side.CLIENT)
     public void onKey(InputEvent.KeyInputEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
 
@@ -114,9 +131,7 @@ public class EventHandler {
         }
     }
 
-
-    @SideOnly(Side.CLIENT)
-    @SubscribeEvent
+    @SideOnly(Side.CLIENT) @SubscribeEvent
     public void onClientChatReceived(ClientChatReceivedEvent event) {
         if (event.getMessage() != null) {
             String text = event.getMessage().getFormattedText();
@@ -147,10 +162,12 @@ public class EventHandler {
                     QuestCommandShow.sentViaClick = true;
                     newMessageStyle = newMessage.getStyle()
                             .setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/bq_client show " + questId))
-                            .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentTranslation("betterquesting.msg.share_quest_hover_text_success")));
+                            .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                                                          new TextComponentTranslation("betterquesting.msg.share_quest_hover_text_success")));
                 } else {
                     newMessageStyle = newMessage.getStyle()
-                            .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentTranslation("betterquesting.msg.share_quest_hover_text_failure")));
+                            .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                                                          new TextComponentTranslation("betterquesting.msg.share_quest_hover_text_failure")));
                 }
                 event.setMessage(newMessage.setStyle(newMessageStyle));
             }
@@ -159,7 +176,8 @@ public class EventHandler {
 
     @SubscribeEvent
     public void onCapabilityPlayer(AttachCapabilitiesEvent<Entity> event) {
-        if (!(event.getObject() instanceof EntityPlayer)) return;
+        if (!(event.getObject() instanceof EntityPlayer))
+            return;
         event.addCapability(CapabilityProviderQuestCache.LOC_QUEST_CACHE, new CapabilityProviderQuestCache());
     }
 
@@ -168,20 +186,25 @@ public class EventHandler {
         betterquesting.api2.cache.QuestCache oCache = event.getOriginal().getCapability(CapabilityProviderQuestCache.CAP_QUEST_CACHE, null);
         betterquesting.api2.cache.QuestCache nCache = event.getEntityPlayer().getCapability(CapabilityProviderQuestCache.CAP_QUEST_CACHE, null);
 
-        if (oCache != null && nCache != null) nCache.deserializeNBT(oCache.serializeNBT());
+        if (oCache != null && nCache != null)
+            nCache.deserializeNBT(oCache.serializeNBT());
     }
 
     @SubscribeEvent
     public void onLivingUpdate(LivingUpdateEvent event) {
-        if (event.getEntityLiving().world.isRemote) return;
-        if (!(event.getEntityLiving() instanceof EntityPlayerMP)) return;
-        if (event.getEntityLiving().ticksExisted % 20 != 0) return; // Only triggers once per second
+        if (event.getEntityLiving().world.isRemote)
+            return;
+        if (!(event.getEntityLiving() instanceof EntityPlayerMP))
+            return;
+        if (event.getEntityLiving().ticksExisted % 20 != 0)
+            return; // Only triggers once per second
 
         EntityPlayerMP player = (EntityPlayerMP) event.getEntityLiving();
         betterquesting.api2.cache.QuestCache qc = player.getCapability(CapabilityProviderQuestCache.CAP_QUEST_CACHE, null);
         boolean editMode = QuestSettings.INSTANCE.getProperty(NativeProps.EDIT_MODE);
 
-        if (qc == null) return;
+        if (qc == null)
+            return;
 
         List<DBEntry<IQuest>> activeQuests = QuestDatabase.INSTANCE.bulkLookup(qc.getActiveQuests());
         List<DBEntry<IQuest>> pendingAutoClaims = QuestDatabase.INSTANCE.bulkLookup(qc.getPendingAutoClaims());
@@ -195,9 +218,11 @@ public class EventHandler {
             List<Integer> com = new ArrayList<>();
 
             for (DBEntry<IQuest> quest : activeQuests) {
-                if (!quest.getValue().isUnlocked(uuid)) continue; // Although it IS active, it cannot be completed yet
+                if (!quest.getValue().isUnlocked(uuid))
+                    continue; // Although it IS active, it cannot be completed yet
 
-                if (quest.getValue().canSubmit(player)) quest.getValue().update(player);
+                if (quest.getValue().canSubmit(player))
+                    quest.getValue().update(player);
 
                 if (quest.getValue().isComplete(uuid) && !quest.getValue().canSubmit(player)) {
                     refreshCache = true;
@@ -241,8 +266,10 @@ public class EventHandler {
                     refreshCache = true;
                     qc.markQuestDirty(rTime.questID);
                     res.add(rTime.questID);
-                    if (!entry.getProperty(NativeProps.SILENT)) postPresetNotice(entry, player, 1);
-                } else break; // Entries are sorted by time so we fail fast and skip checking the others
+                    if (!entry.getProperty(NativeProps.SILENT))
+                        postPresetNotice(entry, player, 1);
+                } else
+                    break; // Entries are sorted by time so we fail fast and skip checking the others
             }
 
             MinecraftForge.EVENT_BUS.post(new QuestEvent(Type.RESET, uuid, res));
@@ -265,13 +292,15 @@ public class EventHandler {
             qc.updateCache(player);
         }
 
-        if (qc.getDirtyQuests().length > 0) NetQuestSync.sendSync(player, qc.getDirtyQuests(), false, true);
+        if (qc.getDirtyQuests().length > 0)
+            NetQuestSync.sendSync(player, qc.getDirtyQuests(), false, true);
         qc.cleanAllQuests();
     }
 
     // TODO: Create a new message inbox system for these things. On screen popups aren't ideal in combat
     private static void postPresetNotice(IQuest quest, EntityPlayer player, int preset) {
-        if (!(player instanceof EntityPlayerMP)) return;
+        if (!(player instanceof EntityPlayerMP))
+            return;
         ItemStack icon = quest.getProperty(NativeProps.ICON).getBaseStack();
         String mainText = "";
         String subText = quest.getProperty(NativeProps.NAME);
@@ -295,7 +324,9 @@ public class EventHandler {
             }
         }
 
-        NetNotices.sendNotice(quest.getProperty(NativeProps.GLOBAL) ? null : new EntityPlayerMP[]{(EntityPlayerMP) player}, icon, mainText, subText, sound);
+        NetNotices.sendNotice(quest.getProperty(NativeProps.GLOBAL) ? null : new EntityPlayerMP[] {
+                (EntityPlayerMP) player
+        }, icon, mainText, subText, sound);
     }
 
     @SubscribeEvent
@@ -321,9 +352,10 @@ public class EventHandler {
     @SubscribeEvent
     public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
 
-        if(BQ_Settings.spawnWithQuestBook) {
+        if (BQ_Settings.spawnWithQuestBook) {
             NBTTagCompound playerData = event.player.getEntityData();
-            NBTTagCompound data = playerData.hasKey(EntityPlayer.PERSISTED_NBT_TAG) ? playerData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG) : new NBTTagCompound();
+            NBTTagCompound data = playerData.hasKey(EntityPlayer.PERSISTED_NBT_TAG) ? playerData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG) :
+                    new NBTTagCompound();
 
             if (!data.getBoolean(SPAWN_WITH_QUEST_BOOK)) {
                 ItemStack questBook = new ItemStack(BetterQuesting.questBook);
@@ -342,7 +374,9 @@ public class EventHandler {
 
         EntityPlayerMP mpPlayer = (EntityPlayerMP) event.player;
 
-        if (BetterQuesting.proxy.isClient() && !mpPlayer.getServer().isDedicatedServer() && event.player.getServer().getServerOwner().equals(mpPlayer.getGameProfile().getName())) {
+        if (BetterQuesting.proxy.isClient() && !mpPlayer.getServer().isDedicatedServer() && event.player.getServer()
+                .getServerOwner()
+                .equals(mpPlayer.getGameProfile().getName())) {
             NameCache.INSTANCE.updateName(mpPlayer);
             return;
         }
@@ -352,14 +386,16 @@ public class EventHandler {
 
     @SubscribeEvent
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        if (QuestSettings.INSTANCE.getProperty(NativeProps.HARDCORE) && event.player instanceof EntityPlayerMP && !((EntityPlayerMP) event.player).queuedEndExit) {
+        if (QuestSettings.INSTANCE.getProperty(NativeProps.HARDCORE) && event.player instanceof EntityPlayerMP &&
+                !((EntityPlayerMP) event.player).queuedEndExit) {
             EntityPlayerMP mpPlayer = (EntityPlayerMP) event.player;
 
             int lives = LifeDatabase.INSTANCE.getLives(QuestingAPI.getQuestingUUID(mpPlayer));
 
             if (lives <= 0) {
                 MinecraftServer server = mpPlayer.getServer();
-                if (server == null) return;
+                if (server == null)
+                    return;
 
                 mpPlayer.setGameType(GameType.SPECTATOR);
                 if (!server.isDedicatedServer())
@@ -388,16 +424,14 @@ public class EventHandler {
         }
     }
 
-    @SubscribeEvent
-    @SideOnly(Side.CLIENT)
+    @SubscribeEvent @SideOnly(Side.CLIENT)
     public void onTextureStitch(TextureStitchEvent.Pre event) {
         if (event.getMap() == Minecraft.getMinecraft().getTextureMapBlocks()) {
             event.getMap().registerSprite(FluidPlaceholder.fluidPlaceholder.getStill());
         }
     }
 
-    @SubscribeEvent
-    @SideOnly(Side.CLIENT)
+    @SubscribeEvent @SideOnly(Side.CLIENT)
     public void onDataUpdated(DatabaseEvent.Update event) {
         // TODO: Change this to a proper panel event. Also explain WHAT updated
         final GuiScreen screen = Minecraft.getMinecraft().currentScreen;
@@ -450,7 +484,8 @@ public class EventHandler {
 
                 for (DBEntry<IQuest> entry : QuestingAPI.getAPI(ApiReference.QUEST_DB).bulkLookup(pInfo.getSharedQuests())) {
                     for (DBEntry<ITask> task : entry.getValue().getTasks().getEntries()) {
-                        if (task.getValue() instanceof ITaskInventory) ((ITaskInventory)task.getValue()).onInventoryChange(entry, pInfo);
+                        if (task.getValue() instanceof ITaskInventory)
+                            ((ITaskInventory) task.getValue()).onInventoryChange(entry, pInfo);
                     }
                 }
             }
@@ -458,14 +493,16 @@ public class EventHandler {
             processingUpdates = false;
         }
 
-        if (event.phase != Phase.END) return;
+        if (event.phase != Phase.END)
+            return;
 
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 
         if (!server.isDedicatedServer()) {
             boolean tmp = openToLAN;
             openToLAN = server instanceof IntegratedServer && ((IntegratedServer) server).getPublic();
-            if (openToLAN && !tmp) opQueue.addAll(server.getPlayerList().getPlayers());
+            if (openToLAN && !tmp)
+                opQueue.addAll(server.getPlayerList().getPlayers());
         } else if (!openToLAN) {
             openToLAN = true;
         }
@@ -477,17 +514,23 @@ public class EventHandler {
                 if (party != null) {
                     NetNameSync.quickSync(null, party.getID());
                 } else {
-                    NetNameSync.sendNames(new EntityPlayerMP[]{playerMP}, new UUID[]{QuestingAPI.getQuestingUUID(playerMP)}, null);
+                    NetNameSync.sendNames(new EntityPlayerMP[] {
+                            playerMP
+                    }, new UUID[] {
+                            QuestingAPI.getQuestingUUID(playerMP)
+                    }, null);
                 }
             }
         }
 
-        if (server.getTickCounter() % 60 == 0) PartyInvitations.INSTANCE.cleanExpired();
+        if (server.getTickCounter() % 60 == 0)
+            PartyInvitations.INSTANCE.cleanExpired();
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
-        if (event.getEntityPlayer() == null || event.getEntityPlayer().world.isRemote || event.getEntityPlayer() instanceof FakePlayer || event.isCanceled()) return;
+        if (event.getEntityPlayer() == null || event.getEntityPlayer().world.isRemote || event.getEntityPlayer() instanceof FakePlayer || event.isCanceled())
+            return;
 
         EntityPlayer player = event.getEntityPlayer();
         ParticipantInfo pInfo = new ParticipantInfo(player);
@@ -497,14 +540,21 @@ public class EventHandler {
         for (DBEntry<IQuest> entry : actQuest) {
             for (DBEntry<ITask> task : entry.getValue().getTasks().getEntries()) {
                 if (task.getValue() instanceof TaskInteractItem)
-                    ((TaskInteractItem) task.getValue()).onInteract(pInfo, entry, event.getHand(), event.getItemStack(), Blocks.AIR.getDefaultState(), event.getPos(), false);
+                    ((TaskInteractItem) task.getValue()).onInteract(pInfo,
+                                                                    entry,
+                                                                    event.getHand(),
+                                                                    event.getItemStack(),
+                                                                    Blocks.AIR.getDefaultState(),
+                                                                    event.getPos(),
+                                                                    false);
             }
         }
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-        if (event.getEntityPlayer() == null || event.getEntityPlayer().world.isRemote || event.getEntityPlayer() instanceof FakePlayer || event.isCanceled()) return;
+        if (event.getEntityPlayer() == null || event.getEntityPlayer().world.isRemote || event.getEntityPlayer() instanceof FakePlayer || event.isCanceled())
+            return;
 
         EntityPlayer player = event.getEntityPlayer();
         ParticipantInfo pInfo = new ParticipantInfo(player);
@@ -523,7 +573,8 @@ public class EventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
-        if (event.getEntityPlayer() == null || event.getEntityPlayer().world.isRemote || event.getEntityPlayer() instanceof FakePlayer || event.isCanceled()) return;
+        if (event.getEntityPlayer() == null || event.getEntityPlayer().world.isRemote || event.getEntityPlayer() instanceof FakePlayer || event.isCanceled())
+            return;
 
         EntityPlayer player = event.getEntityPlayer();
         ParticipantInfo pInfo = new ParticipantInfo(player);
@@ -543,20 +594,23 @@ public class EventHandler {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onRightClickEmpty(PlayerInteractEvent.RightClickEmpty event) // CLIENT SIDE ONLY EVENT
     {
-        if (event.getEntityPlayer() == null || !event.getEntityPlayer().world.isRemote || event.getEntityPlayer() instanceof FakePlayer || event.isCanceled()) return;
+        if (event.getEntityPlayer() == null || !event.getEntityPlayer().world.isRemote || event.getEntityPlayer() instanceof FakePlayer || event.isCanceled())
+            return;
         NetTaskInteract.requestInteraction(false, event.getHand() == EnumHand.MAIN_HAND);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onLeftClickAir(PlayerInteractEvent.LeftClickEmpty event) // CLIENT SIDE ONLY EVENT
     {
-        if (event.getEntityPlayer() == null || !event.getEntityPlayer().world.isRemote || event.getEntityPlayer() instanceof FakePlayer || event.isCanceled()) return;
+        if (event.getEntityPlayer() == null || !event.getEntityPlayer().world.isRemote || event.getEntityPlayer() instanceof FakePlayer || event.isCanceled())
+            return;
         NetTaskInteract.requestInteraction(true, true);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onEntityAttack(AttackEntityEvent event) {
-        if (event.getEntityPlayer() == null || event.getEntityPlayer().world.isRemote || event.getEntityPlayer() instanceof FakePlayer || event.getTarget() == null || event.isCanceled())
+        if (event.getEntityPlayer() == null || event.getEntityPlayer().world.isRemote || event.getEntityPlayer() instanceof FakePlayer || event.getTarget() ==
+                null || event.isCanceled())
             return;
 
         EntityPlayer player = event.getEntityPlayer();
@@ -574,7 +628,8 @@ public class EventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
-        if (event.getEntityPlayer() == null || event.getEntityPlayer().world.isRemote || event.getEntityPlayer() instanceof FakePlayer || event.getTarget() == null || event.isCanceled())
+        if (event.getEntityPlayer() == null || event.getEntityPlayer().world.isRemote || event.getEntityPlayer() instanceof FakePlayer || event.getTarget() ==
+                null || event.isCanceled())
             return;
 
         EntityPlayer player = event.getEntityPlayer();
@@ -592,7 +647,8 @@ public class EventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onItemCrafted(PlayerEvent.ItemCraftedEvent event) {
-        if (event.player == null || event.player.world.isRemote || event.player instanceof FakePlayer) return;
+        if (event.player == null || event.player.world.isRemote || event.player instanceof FakePlayer)
+            return;
 
         ParticipantInfo pInfo = new ParticipantInfo(event.player);
 
@@ -608,7 +664,8 @@ public class EventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onItemSmelted(PlayerEvent.ItemSmeltedEvent event) {
-        if (event.player == null || event.player.world.isRemote || event.player instanceof FakePlayer) return;
+        if (event.player == null || event.player.world.isRemote || event.player instanceof FakePlayer)
+            return;
 
         ParticipantInfo pInfo = new ParticipantInfo(event.player);
 
@@ -624,7 +681,8 @@ public class EventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onItemAnvil(AnvilRepairEvent event) {
-        if (event.getEntityPlayer() == null || event.getEntityPlayer().world.isRemote || event.getEntityPlayer() instanceof FakePlayer) return;
+        if (event.getEntityPlayer() == null || event.getEntityPlayer().world.isRemote || event.getEntityPlayer() instanceof FakePlayer)
+            return;
 
         ParticipantInfo pInfo = new ParticipantInfo(event.getEntityPlayer());
         List<DBEntry<IQuest>> actQuest = QuestingAPI.getAPI(ApiReference.QUEST_DB).bulkLookup(pInfo.getSharedQuests());
@@ -639,7 +697,8 @@ public class EventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onEntityKilled(LivingDeathEvent event) {
-        if (event.getSource() == null || !(event.getSource().getTrueSource() instanceof EntityPlayer) || event.getSource().getTrueSource().world.isRemote || event.getSource().getTrueSource() instanceof FakePlayer || event.isCanceled())
+        if (event.getSource() == null || !(event.getSource().getTrueSource() instanceof EntityPlayer) || event.getSource().getTrueSource().world.isRemote ||
+                event.getSource().getTrueSource() instanceof FakePlayer || event.isCanceled())
             return;
 
         ParticipantInfo pInfo = new ParticipantInfo((EntityPlayer) event.getSource().getTrueSource());
@@ -655,7 +714,8 @@ public class EventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onEntityTamed(AnimalTameEvent event) {
-        if (event.getTamer() == null || event.getTamer().world.isRemote || event.isCanceled()) return;
+        if (event.getTamer() == null || event.getTamer().world.isRemote || event.isCanceled())
+            return;
 
         EntityPlayer player = event.getTamer();
         ParticipantInfo pInfo = new ParticipantInfo(player);
@@ -670,7 +730,8 @@ public class EventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onBlockBreak(BlockEvent.BreakEvent event) {
-        if (event.getPlayer() == null || event.getPlayer().world.isRemote || event.getPlayer() instanceof FakePlayer || event.isCanceled()) return;
+        if (event.getPlayer() == null || event.getPlayer().world.isRemote || event.getPlayer() instanceof FakePlayer || event.isCanceled())
+            return;
 
         ParticipantInfo pInfo = new ParticipantInfo(event.getPlayer());
 
@@ -684,7 +745,8 @@ public class EventHandler {
 
     @SubscribeEvent
     public void onEntityLiving(LivingUpdateEvent event) {
-        if (!(event.getEntityLiving() instanceof EntityPlayer) || event.getEntityLiving().world.isRemote || event.getEntityLiving().ticksExisted % 20 != 0 || QuestingAPI.getAPI(ApiReference.SETTINGS).getProperty(NativeProps.EDIT_MODE))
+        if (!(event.getEntityLiving() instanceof EntityPlayer) || event.getEntityLiving().world.isRemote || event.getEntityLiving().ticksExisted % 20 != 0 ||
+                QuestingAPI.getAPI(ApiReference.SETTINGS).getProperty(NativeProps.EDIT_MODE))
             return;
 
         EntityPlayer player = (EntityPlayer) event.getEntityLiving();
@@ -705,7 +767,8 @@ public class EventHandler {
 
     @SubscribeEvent
     public void onAdvancement(AdvancementEvent event) {
-        if (event.getEntityPlayer() == null || event.getEntity().world.isRemote) return;
+        if (event.getEntityPlayer() == null || event.getEntity().world.isRemote)
+            return;
 
         ParticipantInfo pInfo = new ParticipantInfo(event.getEntityPlayer());
 
@@ -719,7 +782,8 @@ public class EventHandler {
 
     @SubscribeEvent
     public void onEntityCreated(EntityJoinWorldEvent event) {
-        if (!(event.getEntity() instanceof EntityPlayer) || event.getEntity().world.isRemote) return;
+        if (!(event.getEntity() instanceof EntityPlayer) || event.getEntity().world.isRemote)
+            return;
 
         PlayerContainerListener.refreshListener((EntityPlayer) event.getEntity());
     }
@@ -728,4 +792,5 @@ public class EventHandler {
     public void onMarkDirtyPlayer(MarkDirtyPlayerEvent event) {
         SaveLoadHandler.INSTANCE.addDirtyPlayers(event.getDirtyPlayerIDs());
     }
+
 }

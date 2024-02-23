@@ -8,23 +8,28 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerSubmitStation extends Container {
+
     private TileSubmitStation tile;
 
     public ContainerSubmitStation(InventoryPlayer inventory, TileSubmitStation tile) {
         this.tile = tile;
 
         this.addSlotToContainer(new Slot(tile, 0, 0, 0) {
+
             @Override
             public boolean isItemValid(ItemStack stack) {
                 return inventory.isItemValidForSlot(0, stack);
             }
+
         });
 
         this.addSlotToContainer(new Slot(tile, 1, 0, 0) {
+
             @Override
             public boolean isItemValid(ItemStack stack) {
                 return false;
             }
+
         });
 
         for (int i = 0; i < 3; ++i) {
@@ -63,7 +68,8 @@ public class ContainerSubmitStation extends Container {
      */
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int idx) {
-        if (idx < 0) return ItemStack.EMPTY;
+        if (idx < 0)
+            return ItemStack.EMPTY;
 
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(idx);
@@ -126,4 +132,5 @@ public class ContainerSubmitStation extends Container {
     public boolean canInteractWith(EntityPlayer player) {
         return tile.isUsableByPlayer(player);
     }
+
 }

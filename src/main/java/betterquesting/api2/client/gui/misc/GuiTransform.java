@@ -4,6 +4,7 @@ import org.lwjgl.util.vector.ReadableVector4f;
 import org.lwjgl.util.vector.Vector4f;
 
 public final class GuiTransform implements IGuiRect {
+
     private IGuiRect parent;
     private final Vector4f anchor; // TODO: Change to one that accounts for min-max dimensions
     private final GuiPadding padding;
@@ -47,17 +48,11 @@ public final class GuiTransform implements IGuiRect {
         return trans;
     }
 
-    public GuiPadding getPadding() {
-        return this.padding;
-    }
+    public GuiPadding getPadding() { return this.padding; }
 
-    public Vector4f getAnchor() {
-        return this.anchor;
-    }
+    public Vector4f getAnchor() { return this.anchor; }
 
-    public void setDrawDepth(int order) {
-        this.drawOrder = order;
-    }
+    public void setDrawDepth(int order) { this.drawOrder = order; }
 
     @Override
     public int getX() {
@@ -84,19 +79,13 @@ public final class GuiTransform implements IGuiRect {
     }
 
     @Override
-    public int getDepth() {
-        return this.drawOrder;
-    }
+    public int getDepth() { return this.drawOrder; }
 
     @Override
-    public IGuiRect getParent() {
-        return parent;
-    }
+    public IGuiRect getParent() { return parent; }
 
     @Override
-    public void setParent(IGuiRect rect) {
-        this.parent = rect;
-    }
+    public void setParent(IGuiRect rect) { this.parent = rect; }
 
     @Override
     public boolean contains(int x3, int y3) {
@@ -108,15 +97,16 @@ public final class GuiTransform implements IGuiRect {
         int y2 = y1 + h;
         return x3 >= x1 && x3 < x2 && y3 >= y1 && y3 < y2;
     }
-	
-	/*@Override
-	public void translate(int x, int y)
-	{
-		this.padding.setPadding(padding.getLeft() + x, padding.getTop() + y, padding.getRight() - x, padding.getBottom() - y);
-	}*/
+
+    /*@Override
+    public void translate(int x, int y)
+    {
+        this.padding.setPadding(padding.getLeft() + x, padding.getTop() + y, padding.getRight() - x, padding.getBottom() - y);
+    }*/
 
     @Override
     public int compareTo(IGuiRect o) {
         return (int) Math.signum(o.getDepth() - drawOrder);
     }
+
 }

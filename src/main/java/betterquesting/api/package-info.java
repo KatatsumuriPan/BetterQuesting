@@ -3,4 +3,3 @@ package betterquesting.api;
 
 import betterquesting.core.ModReference;
 import net.minecraftforge.fml.common.API;
-

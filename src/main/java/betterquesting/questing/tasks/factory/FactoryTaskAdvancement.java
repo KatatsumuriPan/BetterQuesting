@@ -8,14 +8,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 public final class FactoryTaskAdvancement implements IFactoryData<ITask, NBTTagCompound> {
+
     public static final FactoryTaskAdvancement INSTANCE = new FactoryTaskAdvancement();
 
     private final ResourceLocation REG_ID = new ResourceLocation(BetterQuesting.MODID_STD, "advancement");
 
     @Override
-    public ResourceLocation getRegistryName() {
-        return REG_ID;
-    }
+    public ResourceLocation getRegistryName() { return REG_ID; }
 
     @Override
     public TaskAdvancement createNew() {
@@ -28,4 +27,5 @@ public final class FactoryTaskAdvancement implements IFactoryData<ITask, NBTTagC
         task.readFromNBT(nbt);
         return task;
     }
+
 }

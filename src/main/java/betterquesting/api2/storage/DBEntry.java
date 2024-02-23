@@ -3,6 +3,7 @@ package betterquesting.api2.storage;
 import javax.annotation.Nonnull;
 
 public final class DBEntry<T> implements Comparable<DBEntry<T>> {
+
     private final int id;
     @Nonnull
     private final T obj;
@@ -18,14 +19,10 @@ public final class DBEntry<T> implements Comparable<DBEntry<T>> {
         this.obj = obj;
     }
 
-    public final int getID() {
-        return this.id;
-    }
+    public final int getID() { return this.id; }
 
     @Nonnull
-    public final T getValue() {
-        return obj;
-    }
+    public final T getValue() { return obj; }
 
     @Override
     public int compareTo(DBEntry<T> o) {
@@ -42,4 +39,5 @@ public final class DBEntry<T> implements Comparable<DBEntry<T>> {
 
         return this.getID() == entry.getID() && this.getValue().equals(entry.getValue());
     }
+
 }

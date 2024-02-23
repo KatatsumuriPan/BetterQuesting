@@ -1,5 +1,12 @@
 package betterquesting.questing;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import betterquesting.api.questing.IQuestLine;
 import betterquesting.api.questing.IQuestLineDatabase;
 import betterquesting.api2.storage.DBEntry;
@@ -9,13 +16,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.MathHelper;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-
 public final class QuestLineDatabase extends SimpleDatabase<IQuestLine> implements IQuestLineDatabase {
+
     public static final QuestLineDatabase INSTANCE = new QuestLineDatabase();
 
     private final List<Integer> lineOrder = new ArrayList<>();
@@ -24,8 +26,10 @@ public final class QuestLineDatabase extends SimpleDatabase<IQuestLine> implemen
     @Override
     public synchronized int getOrderIndex(int lineID) {
         int order = lineOrder.indexOf(lineID);
-        if (order >= 0) return order;
-        if (getValue(lineID) == null) return -1;
+        if (order >= 0)
+            return order;
+        if (getValue(lineID) == null)
+            return -1;
 
         lineOrder.add(lineID);
         return lineOrder.size() - 1;
@@ -47,7 +51,8 @@ public final class QuestLineDatabase extends SimpleDatabase<IQuestLine> implemen
     @Override
     public synchronized IQuestLine createNew(int id) {
         IQuestLine ql = new QuestLine();
-        if (id >= 0) this.add(id, ql);
+        if (id >= 0)
+            this.add(id, ql);
         return ql;
     }
 
@@ -59,9 +64,11 @@ public final class QuestLineDatabase extends SimpleDatabase<IQuestLine> implemen
     }
 
     @Override
-    public synchronized NBTTagList writeToNBT(NBTTagList json, @Nullable List<Integer> subset) {
+    public synchronized NBTTagList writeToNBT(NBTTagList json, @Nullable
+    List<Integer> subset) {
         for (DBEntry<IQuestLine> entry : getEntries()) {
-            if (subset != null && !subset.contains(entry.getID())) continue;
+            if (subset != null && !subset.contains(entry.getID()))
+                continue;
             NBTTagCompound jObj = entry.getValue().writeToNBT(new NBTTagCompound(), null);
             jObj.setInteger("lineID", entry.getID());
             jObj.setInteger("order", getOrderIndex(entry.getID()));
@@ -73,7 +80,8 @@ public final class QuestLineDatabase extends SimpleDatabase<IQuestLine> implemen
 
     @Override
     public synchronized void readFromNBT(NBTTagList json, boolean merge) {
-        if (!merge) reset();
+        if (!merge)
+            reset();
 
         List<IQuestLine> unassigned = new ArrayList<>();
         HashMap<Integer, Integer> orderMap = new HashMap<>();
@@ -85,7 +93,8 @@ public final class QuestLineDatabase extends SimpleDatabase<IQuestLine> implemen
             int order = jql.hasKey("order", 99) ? jql.getInteger("order") : -1;
 
             IQuestLine line = getValue(id);
-            if (line == null) line = new QuestLine();
+            if (line == null)
+                line = new QuestLine();
             line.readFromNBT(jql, false);
 
             if (id >= 0) {
@@ -94,17 +103,20 @@ public final class QuestLineDatabase extends SimpleDatabase<IQuestLine> implemen
                 unassigned.add(line);
             }
 
-            if (order >= 0) orderMap.put(order, id);
+            if (order >= 0)
+                orderMap.put(order, id);
         }
 
         // Legacy support ONLY
-        for (IQuestLine q : unassigned) add(nextID(), q);
+        for (IQuestLine q : unassigned)
+            add(nextID(), q);
 
         List<Integer> orderKeys = new ArrayList<>(orderMap.keySet());
         Collections.sort(orderKeys);
 
         lineOrder.clear();
-        for (int o : orderKeys) lineOrder.add(orderMap.get(o));
+        for (int o : orderKeys)
+            lineOrder.add(orderMap.get(o));
     }
 
     @Override
@@ -112,4 +124,5 @@ public final class QuestLineDatabase extends SimpleDatabase<IQuestLine> implemen
         super.reset();
         lineOrder.clear();
     }
+
 }

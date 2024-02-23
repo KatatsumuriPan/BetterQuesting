@@ -1,11 +1,11 @@
 package betterquesting.api.events;
 
-import net.minecraftforge.fml.common.eventhandler.Event;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.TreeSet;
 import java.util.UUID;
+
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 public class MarkDirtyPlayerEvent extends Event {
 
@@ -27,7 +27,6 @@ public class MarkDirtyPlayerEvent extends Event {
         }
     }
 
-    public Collection<UUID> getDirtyPlayerIDs() {
-        return dirtyPlayerIDs;
-    }
+    public Collection<UUID> getDirtyPlayerIDs() { return dirtyPlayerIDs; }
+
 }

@@ -12,9 +12,7 @@ public class FactoryTaskOptionalRetrieval implements IFactoryData<ITask, NBTTagC
     public static final FactoryTaskOptionalRetrieval INSTANCE = new FactoryTaskOptionalRetrieval();
 
     @Override
-    public ResourceLocation getRegistryName() {
-        return new ResourceLocation(BetterQuesting.MODID_STD + ":optional_retrieval");
-    }
+    public ResourceLocation getRegistryName() { return new ResourceLocation(BetterQuesting.MODID_STD + ":optional_retrieval"); }
 
     @Override
     public TaskOptionalRetrieval createNew() {
@@ -27,4 +25,5 @@ public class FactoryTaskOptionalRetrieval implements IFactoryData<ITask, NBTTagC
         task.readFromNBT(json);
         return task;
     }
+
 }

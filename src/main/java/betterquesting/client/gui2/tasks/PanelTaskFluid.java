@@ -1,5 +1,7 @@
 package betterquesting.client.gui2.tasks;
 
+import java.util.UUID;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api2.client.gui.misc.GuiAlign;
 import betterquesting.api2.client.gui.misc.GuiRectangle;
@@ -19,8 +21,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Optional.Method;
-
-import java.util.UUID;
 
 public class PanelTaskFluid extends CanvasMinimum {
 
@@ -43,13 +43,15 @@ public class PanelTaskFluid extends CanvasMinimum {
         boolean isComplete = task.isComplete(uuid);
 
         String sCon = (task.consume ? TextFormatting.RED : TextFormatting.GREEN) + QuestTranslation.translate(task.consume ? "gui.yes" : "gui.no");
-        this.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, 0, 0, listW, 12, 0), QuestTranslation.translate("bq_standard.btn.consume", sCon)).setColor(PresetColor.TEXT_MAIN.getColor()));
+        this.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, 0, 0, listW, 12, 0), QuestTranslation.translate("bq_standard.btn.consume", sCon))
+                .setColor(PresetColor.TEXT_MAIN.getColor()));
 
         for (int i = 0; i < task.requiredFluids.size(); i++) {
             FluidStack stack = task.requiredFluids.get(i);
 
             PanelFluidSlot slot = new PanelFluidSlot(new GuiRectangle(0, i * 28 + 12, 28, 28, 0), -1, stack);
-            if (BetterQuesting.hasJEI) slot.setCallback(this::lookupRecipe);
+            if (BetterQuesting.hasJEI)
+                slot.setCallback(this::lookupRecipe);
             this.addPanel(slot);
 
             StringBuilder sb = new StringBuilder();
@@ -72,7 +74,9 @@ public class PanelTaskFluid extends CanvasMinimum {
 
     @Method(modid = "jei")
     private void lookupRecipe(FluidStack fluid) {
-        if (fluid == null || Internal.getRuntime() == null) return;
+        if (fluid == null || Internal.getRuntime() == null)
+            return;
         Internal.getRuntime().getRecipesGui().show(new Focus<>(Mode.OUTPUT, fluid));
     }
+
 }

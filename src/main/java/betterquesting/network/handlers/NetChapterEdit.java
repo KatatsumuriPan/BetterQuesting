@@ -1,5 +1,7 @@
 package betterquesting.network.handlers;
 
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.events.DatabaseEvent;
 import betterquesting.api.events.DatabaseEvent.DBType;
@@ -22,9 +24,9 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
 
 public class NetChapterEdit {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation(ModReference.MODID, "chapter_edit");
 
     public static void registerHandler() {
@@ -44,13 +46,16 @@ public class NetChapterEdit {
     private static void onServer(Tuple<NBTTagCompound, EntityPlayerMP> message) {
         EntityPlayerMP sender = message.getSecond();
         MinecraftServer server = sender.getServer();
-        if (server == null) return; // Here mostly just to keep intellisense happy
+        if (server == null)
+            return; // Here mostly just to keep intellisense happy
 
         boolean isOP = server.getPlayerList().canSendCommands(sender.getGameProfile());
 
         if (!isOP) // OP pre-check
         {
-            BetterQuesting.logger.log(Level.WARN, "Player " + sender.getName() + " (UUID:" + QuestingAPI.getQuestingUUID(sender) + ") tried to edit chapters without OP permissions!");
+            BetterQuesting.logger.log(Level.WARN,
+                                      "Player " + sender.getName() + " (UUID:" + QuestingAPI.getQuestingUUID(sender) +
+                                              ") tried to edit chapters without OP permissions!");
             sender.sendStatusMessage(new TextComponentString(TextFormatting.RED + "You need to be OP to edit quests!"), true);
             return; // Player is not operator. Do nothing
         }
@@ -89,7 +94,8 @@ public class NetChapterEdit {
             ids[i] = chapterID;
 
             IQuestLine chapter = QuestLineDatabase.INSTANCE.getValue(chapterID);
-            if (chapter != null) chapter.readFromNBT(entry.getCompoundTag("config"), false);
+            if (chapter != null)
+                chapter.readFromNBT(entry.getCompoundTag("config"), false);
         }
 
         SaveLoadHandler.INSTANCE.markDirty();
@@ -128,12 +134,15 @@ public class NetChapterEdit {
         for (int i = 0; i < data.tagCount(); i++) {
             NBTTagCompound entry = data.getCompoundTagAt(i);
             int chapterID = entry.hasKey("chapterID", 99) ? entry.getInteger("chapterID") : -1;
-            if (chapterID < 0) chapterID = QuestLineDatabase.INSTANCE.nextID();
+            if (chapterID < 0)
+                chapterID = QuestLineDatabase.INSTANCE.nextID();
             ids[i] = chapterID;
 
             IQuestLine chapter = QuestLineDatabase.INSTANCE.getValue(chapterID);
-            if (chapter == null) chapter = QuestLineDatabase.INSTANCE.createNew(chapterID);
-            if (entry.hasKey("config", 10)) chapter.readFromNBT(entry.getCompoundTag("config"), false);
+            if (chapter == null)
+                chapter = QuestLineDatabase.INSTANCE.createNew(chapterID);
+            if (entry.hasKey("config", 10))
+                chapter.readFromNBT(entry.getCompoundTag("config"), false);
         }
 
         SaveLoadHandler.INSTANCE.markDirty();
@@ -167,4 +176,5 @@ public class NetChapterEdit {
             }
         }
     }
+
 }

@@ -1,5 +1,11 @@
 package betterquesting.commands.admin;
 
+import java.io.File;
+import java.util.Collections;
+import java.util.List;
+
+import com.google.gson.JsonObject;
+
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api.utils.JsonHelper;
@@ -15,7 +21,6 @@ import betterquesting.network.handlers.NetSettingSync;
 import betterquesting.questing.QuestDatabase;
 import betterquesting.questing.QuestLineDatabase;
 import betterquesting.storage.QuestSettings;
-import com.google.gson.JsonObject;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -25,15 +30,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.List;
-
 public class QuestCommandDefaults extends QuestCommandBase {
+
     @Override
-    public String getUsageSuffix() {
-        return "[save|load|set] [file_name]";
-    }
+    public String getUsageSuffix() { return "[save|load|set] [file_name]"; }
 
     @Override
     public boolean validArgs(String[] args) {
@@ -52,9 +52,7 @@ public class QuestCommandDefaults extends QuestCommandBase {
     }
 
     @Override
-    public String getCommand() {
-        return "default";
-    }
+    public String getCommand() { return "default"; }
 
     @Override
     public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, String[] args) throws CommandException {
@@ -142,17 +140,12 @@ public class QuestCommandDefaults extends QuestCommandBase {
     }
 
     @Override
-    public String getPermissionNode() {
-        return "betterquesting.command.admin.default";
-    }
+    public String getPermissionNode() { return "betterquesting.command.admin.default"; }
 
     @Override
-    public DefaultPermissionLevel getPermissionLevel() {
-        return DefaultPermissionLevel.OP;
-    }
+    public DefaultPermissionLevel getPermissionLevel() { return DefaultPermissionLevel.OP; }
 
     @Override
-    public String getPermissionDescription() {
-        return "Permission to saves/loads the current quest database to/from the global default directory";
-    }
+    public String getPermissionDescription() { return "Permission to saves/loads the current quest database to/from the global default directory"; }
+
 }

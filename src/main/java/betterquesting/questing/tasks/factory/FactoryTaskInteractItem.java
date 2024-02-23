@@ -8,14 +8,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 public class FactoryTaskInteractItem implements IFactoryData<ITask, NBTTagCompound> {
+
     public static final FactoryTaskInteractItem INSTANCE = new FactoryTaskInteractItem();
 
     private final ResourceLocation REG_ID = new ResourceLocation(BetterQuesting.MODID_STD, "interact_item");
 
     @Override
-    public ResourceLocation getRegistryName() {
-        return REG_ID;
-    }
+    public ResourceLocation getRegistryName() { return REG_ID; }
 
     @Override
     public TaskInteractItem createNew() {
@@ -28,4 +27,5 @@ public class FactoryTaskInteractItem implements IFactoryData<ITask, NBTTagCompou
         task.readFromNBT(nbt);
         return task;
     }
+
 }

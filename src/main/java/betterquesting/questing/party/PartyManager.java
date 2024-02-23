@@ -1,5 +1,12 @@
 package betterquesting.questing.party;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import betterquesting.api.enums.EnumPartyStatus;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.party.IParty;
@@ -10,13 +17,8 @@ import betterquesting.storage.QuestSettings;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-
 public class PartyManager extends SimpleDatabase<IParty> implements IPartyDatabase {
+
     public static final PartyManager INSTANCE = new PartyManager();
 
     private final HashMap<UUID, Integer> partyCache = new HashMap<>();
@@ -24,13 +26,14 @@ public class PartyManager extends SimpleDatabase<IParty> implements IPartyDataba
     @Override
     public synchronized IParty createNew(int id) {
         IParty party = new PartyInstance();
-        if (id >= 0) this.add(id, party);
+        if (id >= 0)
+            this.add(id, party);
         return party;
     }
 
-    @Nullable
-    @Override
-    public synchronized DBEntry<IParty> getParty(@Nonnull UUID uuid) {
+    @Nullable @Override
+    public synchronized DBEntry<IParty> getParty(@Nonnull
+    UUID uuid) {
         if (!QuestSettings.INSTANCE.getProperty(NativeProps.PARTY_ENABLE))
             return null; // We're merely preventing access. Not erasing data
 
@@ -43,7 +46,8 @@ public class PartyManager extends SimpleDatabase<IParty> implements IPartyDataba
         } else if (cachedParty != null) // Active party. Check validity...
         {
             EnumPartyStatus status = cachedParty.getStatus(uuid);
-            if (status != null) return new DBEntry<>(cachedID, cachedParty);
+            if (status != null)
+                return new DBEntry<>(cachedID, cachedParty);
             partyCache.remove(uuid); // User isn't a party member anymore
         }
 
@@ -63,7 +67,8 @@ public class PartyManager extends SimpleDatabase<IParty> implements IPartyDataba
     @Override
     public synchronized NBTTagList writeToNBT(NBTTagList json, List<Integer> subset) {
         for (DBEntry<IParty> entry : getEntries()) {
-            if (subset != null && !subset.contains(entry.getID())) continue;
+            if (subset != null && !subset.contains(entry.getID()))
+                continue;
             NBTTagCompound jp = entry.getValue().writeToNBT(new NBTTagCompound());
             jp.setInteger("partyID", entry.getID());
             json.appendTag(jp);
@@ -74,13 +79,15 @@ public class PartyManager extends SimpleDatabase<IParty> implements IPartyDataba
 
     @Override
     public synchronized void readFromNBT(NBTTagList json, boolean merge) {
-        if (!merge) reset();
+        if (!merge)
+            reset();
 
         for (int i = 0; i < json.tagCount(); i++) {
             NBTTagCompound jp = json.getCompoundTagAt(i);
 
             int partyID = jp.hasKey("partyID", 99) ? jp.getInteger("partyID") : -1;
-            if (partyID < 0) continue;
+            if (partyID < 0)
+                continue;
 
             IParty party = new PartyInstance();
             party.readFromNBT(jp);
@@ -96,4 +103,5 @@ public class PartyManager extends SimpleDatabase<IParty> implements IPartyDataba
         super.reset();
         partyCache.clear();
     }
+
 }

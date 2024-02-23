@@ -1,5 +1,16 @@
 package betterquesting.questing.tasks;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.utils.ItemComparison;
 import betterquesting.api2.client.gui.misc.IGuiRect;
@@ -19,13 +30,9 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
 
 public class TaskMeeting implements ITaskTickable {
+
     private final Set<UUID> completeUsers = new TreeSet<>();
 
     public String idName = "minecraft:villager";
@@ -40,14 +47,10 @@ public class TaskMeeting implements ITaskTickable {
     public NBTTagCompound targetTags = new NBTTagCompound();
 
     @Override
-    public ResourceLocation getFactoryID() {
-        return FactoryTaskMeeting.INSTANCE.getRegistryName();
-    }
+    public ResourceLocation getFactoryID() { return FactoryTaskMeeting.INSTANCE.getRegistryName(); }
 
     @Override
-    public String getUnlocalisedName() {
-        return "bq_standard.task.meeting";
-    }
+    public String getUnlocalisedName() { return "bq_standard.task.meeting"; }
 
     @Override
     public boolean isComplete(UUID uuid) {
@@ -60,7 +63,8 @@ public class TaskMeeting implements ITaskTickable {
     }
 
     @Override
-    public void resetUser(@Nullable UUID uuid) {
+    public void resetUser(@Nullable
+    UUID uuid) {
         if (uuid == null) {
             completeUsers.clear();
         } else {
@@ -69,19 +73,25 @@ public class TaskMeeting implements ITaskTickable {
     }
 
     @Override
-    public void tickTask(@Nonnull ParticipantInfo pInfo, DBEntry<IQuest> quest) {
-        if (pInfo.PLAYER.ticksExisted % 60 == 0) detect(pInfo, quest);
+    public void tickTask(@Nonnull
+    ParticipantInfo pInfo, DBEntry<IQuest> quest) {
+        if (pInfo.PLAYER.ticksExisted % 60 == 0)
+            detect(pInfo, quest);
     }
 
     @Override
-    public void detect(@Nonnull ParticipantInfo pInfo, DBEntry<IQuest> quest) {
-        if (!pInfo.PLAYER.isEntityAlive()) return;
+    public void detect(@Nonnull
+    ParticipantInfo pInfo, DBEntry<IQuest> quest) {
+        if (!pInfo.PLAYER.isEntityAlive())
+            return;
 
         ResourceLocation targetID = new ResourceLocation(idName);
         Class<? extends Entity> target = EntityList.getClass(targetID);
-        if (target == null) return;
+        if (target == null)
+            return;
 
-        List<Entity> list = pInfo.PLAYER.world.getEntitiesWithinAABBExcludingEntity(pInfo.PLAYER, pInfo.PLAYER.getEntityBoundingBox().expand(range, range, range));
+        List<Entity> list = pInfo.PLAYER.world.getEntitiesWithinAABBExcludingEntity(pInfo.PLAYER,
+                                                                                    pInfo.PLAYER.getEntityBoundingBox().expand(range, range, range));
 
         int n = 0;
 
@@ -100,12 +110,14 @@ public class TaskMeeting implements ITaskTickable {
             if (!ignoreNBT) {
                 NBTTagCompound subjectTags = new NBTTagCompound();
                 entity.writeToNBTOptional(subjectTags);
-                if (!ItemComparison.CompareNBTTag(targetTags, subjectTags, true)) continue;
+                if (!ItemComparison.CompareNBTTag(targetTags, subjectTags, true))
+                    continue;
             }
 
             if (++n >= amount) {
                 pInfo.ALL_UUIDS.forEach((uuid) -> {
-                    if (!isComplete(uuid)) setComplete(uuid);
+                    if (!isComplete(uuid))
+                        setComplete(uuid);
                 });
                 pInfo.markDirtyParty(Collections.singletonList(quest.getID()));
                 return;
@@ -136,11 +148,13 @@ public class TaskMeeting implements ITaskTickable {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
+    List<UUID> users) {
         NBTTagList jArray = new NBTTagList();
 
         completeUsers.forEach((uuid) -> {
-            if (users == null || users.contains(uuid)) jArray.appendTag(new NBTTagString(uuid.toString()));
+            if (users == null || users.contains(uuid))
+                jArray.appendTag(new NBTTagString(uuid.toString()));
         });
 
         nbt.setTag("completeUsers", jArray);
@@ -150,7 +164,8 @@ public class TaskMeeting implements ITaskTickable {
 
     @Override
     public void readProgressFromNBT(NBTTagCompound nbt, boolean merge) {
-        if (!merge) completeUsers.clear();
+        if (!merge)
+            completeUsers.clear();
         NBTTagList cList = nbt.getTagList("completeUsers", 8);
         for (int i = 0; i < cList.tagCount(); i++) {
             try {
@@ -164,8 +179,7 @@ public class TaskMeeting implements ITaskTickable {
     /**
      * Returns a new editor screen for this Reward type to edit the given data
      */
-    @Override
-    @SideOnly(Side.CLIENT)
+    @Override @SideOnly(Side.CLIENT)
     public GuiScreen getTaskEditor(GuiScreen parent, DBEntry<IQuest> quest) {
         return new GuiEditTaskMeeting(parent, quest, this);
     }
@@ -176,7 +190,6 @@ public class TaskMeeting implements ITaskTickable {
     }
 
     @Override
-    public List<String> getTextForSearch() {
-        return Collections.singletonList(idName);
-    }
+    public List<String> getTextForSearch() { return Collections.singletonList(idName); }
+
 }

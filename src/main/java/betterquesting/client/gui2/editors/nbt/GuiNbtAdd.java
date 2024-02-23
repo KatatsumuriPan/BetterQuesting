@@ -1,5 +1,11 @@
 package betterquesting.client.gui2.editors.nbt;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Vector4f;
+
 import betterquesting.api.client.gui.misc.IVolatileScreen;
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.api.utils.JsonHelper;
@@ -26,17 +32,25 @@ import betterquesting.api2.utils.QuestTranslation;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.init.Blocks;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagByte;
+import net.minecraft.nbt.NBTTagByteArray;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagDouble;
+import net.minecraft.nbt.NBTTagFloat;
+import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.nbt.NBTTagIntArray;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagLong;
+import net.minecraft.nbt.NBTTagLongArray;
+import net.minecraft.nbt.NBTTagShort;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.util.vector.Vector4f;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GuiNbtAdd extends GuiScreenCanvas implements IPEventListener, IVolatileScreen {
+
     private final NBTBase nbt;
     private final int index;
 
@@ -66,7 +80,8 @@ public class GuiNbtAdd extends GuiScreenCanvas implements IPEventListener, IVola
         Keyboard.enableRepeatEvents(true);
 
         // Background panel
-        CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0), PresetTexture.PANEL_MAIN.getTexture());
+        CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0),
+                                                         PresetTexture.PANEL_MAIN.getTexture());
         this.addPanel(cvBackground);
 
         cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 100, 16, 0), 0, QuestTranslation.translate("gui.cancel")));
@@ -74,7 +89,8 @@ public class GuiNbtAdd extends GuiScreenCanvas implements IPEventListener, IVola
         btnConfirm = new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, 0, -16, 100, 16, 0), 1, QuestTranslation.translate("gui.done"));
         cvBackground.addPanel(btnConfirm);
 
-        PanelTextBox panTxt = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0), QuestTranslation.translate("betterquesting.title.json_add")).setAlignment(1);
+        PanelTextBox panTxt = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0),
+                                               QuestTranslation.translate("betterquesting.title.json_add")).setAlignment(1);
         panTxt.setColor(PresetColor.TEXT_HEADER.getColor());
         cvBackground.addPanel(panTxt);
 
@@ -82,7 +98,8 @@ public class GuiNbtAdd extends GuiScreenCanvas implements IPEventListener, IVola
         {
             btnConfirm.setActive(false);
 
-            PanelTextBox txKeyTitle = new PanelTextBox(new GuiTransform(GuiAlign.TOP_CENTER, -100, 36, 200, 12, 0), TextFormatting.RED + QuestTranslation.translate("betterquesting.gui.no_key"));
+            PanelTextBox txKeyTitle = new PanelTextBox(new GuiTransform(GuiAlign.TOP_CENTER, -100, 36, 200, 12, 0),
+                                                       TextFormatting.RED + QuestTranslation.translate("betterquesting.gui.no_key"));
             txKeyTitle.setColor(PresetColor.TEXT_MAIN.getColor());
             cvBackground.addPanel(txKeyTitle);
 
@@ -107,23 +124,68 @@ public class GuiNbtAdd extends GuiScreenCanvas implements IPEventListener, IVola
         int n = 0;
 
         // Standard Objects
-        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n * 16, 100, 16, 0), 2, QuestTranslation.translate("betterquesting.btn.item"), JsonHelper.ItemStackToJson(new BigItemStack(Blocks.STONE), new NBTTagCompound())));
-        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 100, n++ * 16, 92, 16, 0), 2, QuestTranslation.translate("betterquesting.btn.fluid"), JsonHelper.FluidStackToJson(new FluidStack(FluidRegistry.WATER, 1000), new NBTTagCompound())));
-        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0), 2, QuestTranslation.translate("betterquesting.btn.entity"), JsonHelper.EntityToJson(new EntityPig(mc.world), new NBTTagCompound())));
+        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n * 16, 100, 16, 0),
+                                             2,
+                                             QuestTranslation.translate("betterquesting.btn.item"),
+                                             JsonHelper.ItemStackToJson(new BigItemStack(Blocks.STONE), new NBTTagCompound())));
+        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 100, n++ * 16, 92, 16, 0),
+                                             2,
+                                             QuestTranslation.translate("betterquesting.btn.fluid"),
+                                             JsonHelper.FluidStackToJson(new FluidStack(FluidRegistry.WATER, 1000), new NBTTagCompound())));
+        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0),
+                                             2,
+                                             QuestTranslation.translate("betterquesting.btn.entity"),
+                                             JsonHelper.EntityToJson(new EntityPig(mc.world), new NBTTagCompound())));
 
         // NBT types
-        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0), 2, NBTTagString.class.getSimpleName(), new NBTTagString("")));
-        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0), 2, NBTTagCompound.class.getSimpleName(), new NBTTagCompound()));
-        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0), 2, NBTTagList.class.getSimpleName(), new NBTTagList()));
-        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0), 2, NBTTagByte.class.getSimpleName(), new NBTTagByte((byte) 0)));
-        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0), 2, NBTTagShort.class.getSimpleName(), new NBTTagShort((short) 0)));
-        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0), 2, NBTTagInt.class.getSimpleName(), new NBTTagInt(0)));
-        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0), 2, NBTTagLong.class.getSimpleName(), new NBTTagLong(0L)));
-        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0), 2, NBTTagFloat.class.getSimpleName(), new NBTTagFloat(0F)));
-        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0), 2, NBTTagDouble.class.getSimpleName(), new NBTTagDouble(0D)));
-        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0), 2, NBTTagByteArray.class.getSimpleName(), new NBTTagByteArray(new byte[0])));
-        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0), 2, NBTTagIntArray.class.getSimpleName(), new NBTTagIntArray(new int[0])));
-        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n * 16, 192, 16, 0), 2, NBTTagLongArray.class.getSimpleName(), new NBTTagLongArray(new long[0])));
+        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0),
+                                             2,
+                                             NBTTagString.class.getSimpleName(),
+                                             new NBTTagString("")));
+        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0),
+                                             2,
+                                             NBTTagCompound.class.getSimpleName(),
+                                             new NBTTagCompound()));
+        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0),
+                                             2,
+                                             NBTTagList.class.getSimpleName(),
+                                             new NBTTagList()));
+        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0),
+                                             2,
+                                             NBTTagByte.class.getSimpleName(),
+                                             new NBTTagByte((byte) 0)));
+        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0),
+                                             2,
+                                             NBTTagShort.class.getSimpleName(),
+                                             new NBTTagShort((short) 0)));
+        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0),
+                                             2,
+                                             NBTTagInt.class.getSimpleName(),
+                                             new NBTTagInt(0)));
+        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0),
+                                             2,
+                                             NBTTagLong.class.getSimpleName(),
+                                             new NBTTagLong(0L)));
+        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0),
+                                             2,
+                                             NBTTagFloat.class.getSimpleName(),
+                                             new NBTTagFloat(0F)));
+        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0),
+                                             2,
+                                             NBTTagDouble.class.getSimpleName(),
+                                             new NBTTagDouble(0D)));
+        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0),
+                                             2,
+                                             NBTTagByteArray.class.getSimpleName(),
+                                             new NBTTagByteArray(new byte[0])));
+        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n++ * 16, 192, 16, 0),
+                                             2,
+                                             NBTTagIntArray.class.getSimpleName(),
+                                             new NBTTagIntArray(new int[0])));
+        options.add(new PanelButtonStorage<>(new GuiTransform(GuiAlign.MID_CENTER, 0, n * 16, 192, 16, 0),
+                                             2,
+                                             NBTTagLongArray.class.getSimpleName(),
+                                             new NBTTagLongArray(new long[0])));
 
         CanvasScrolling cvOptions = new CanvasScrolling(new GuiTransform(new Vector4f(0.5F, 0F, 0.5F, 1F), new GuiPadding(-100, 64, -92, 32), 0));
         cvBackground.addPanel(cvOptions);
@@ -203,4 +265,5 @@ public class GuiNbtAdd extends GuiScreenCanvas implements IPEventListener, IVola
             btnConfirm.setActive(selected != null);
         }
     }
+
 }

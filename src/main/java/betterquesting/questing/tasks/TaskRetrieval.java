@@ -1,5 +1,20 @@
 package betterquesting.questing.tasks;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.UUID;
+import java.util.stream.IntStream;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.enums.EnumLogic;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.IItemTask;
@@ -28,14 +43,9 @@ import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.stream.IntStream;
 
 public class TaskRetrieval implements ITaskInventory, IItemTask {
+
     private final Set<UUID> completeUsers = new TreeSet<>();
     public final NonNullList<BigItemStack> requiredItems = NonNullList.create();
     private final TreeMap<UUID, int[]> userProgress = new TreeMap<>();
@@ -47,14 +57,10 @@ public class TaskRetrieval implements ITaskInventory, IItemTask {
     public EnumLogic entryLogic = EnumLogic.AND;
 
     @Override
-    public String getUnlocalisedName() {
-        return BetterQuesting.MODID_STD + ".task.retrieval";
-    }
+    public String getUnlocalisedName() { return BetterQuesting.MODID_STD + ".task.retrieval"; }
 
     @Override
-    public ResourceLocation getFactoryID() {
-        return FactoryTaskRetrieval.INSTANCE.getRegistryName();
-    }
+    public ResourceLocation getFactoryID() { return FactoryTaskRetrieval.INSTANCE.getRegistryName(); }
 
     @Override
     public boolean isComplete(UUID uuid) {
@@ -67,7 +73,9 @@ public class TaskRetrieval implements ITaskInventory, IItemTask {
     }
 
     @Override
-    public void onInventoryChange(@Nonnull DBEntry<IQuest> quest, @Nonnull ParticipantInfo pInfo) {
+    public void onInventoryChange(@Nonnull
+    DBEntry<IQuest> quest, @Nonnull
+    ParticipantInfo pInfo) {
         if (!consume || autoConsume) {
             detect(pInfo, quest);
         }
@@ -120,7 +128,8 @@ public class TaskRetrieval implements ITaskInventory, IItemTask {
                 for (int j = 0; j < requiredItems.size(); j++) {
                     BigItemStack rStack = requiredItems.get(j);
 
-                    if (!ItemComparison.StackMatch(rStack.getBaseStack(), stack, !ignoreNBT, partialMatch) && !ItemComparison.OreDictionaryMatch(rStack.getOreIngredient(), rStack.GetTagCompound(), stack, !ignoreNBT, partialMatch)) {
+                    if (!ItemComparison.StackMatch(rStack.getBaseStack(), stack, !ignoreNBT, partialMatch) && !ItemComparison.OreDictionaryMatch(rStack
+                            .getOreIngredient(), rStack.GetTagCompound(), stack, !ignoreNBT, partialMatch)) {
                         continue;
                     }
 
@@ -266,7 +275,8 @@ public class TaskRetrieval implements ITaskInventory, IItemTask {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
+    List<UUID> users) {
         NBTTagList jArray = new NBTTagList();
         NBTTagList progArray = new NBTTagList();
 
@@ -309,7 +319,8 @@ public class TaskRetrieval implements ITaskInventory, IItemTask {
     }
 
     @Override
-    public void resetUser(@Nullable UUID uuid) {
+    public void resetUser(@Nullable
+    UUID uuid) {
         if (uuid == null) {
             completeUsers.clear();
             userProgress.clear();
@@ -338,7 +349,8 @@ public class TaskRetrieval implements ITaskInventory, IItemTask {
             if (progress[j] >= rStack.stackSize)
                 continue;
 
-            if (ItemComparison.StackMatch(rStack.getBaseStack(), stack, !ignoreNBT, partialMatch) || ItemComparison.OreDictionaryMatch(rStack.getOreIngredient(), rStack.GetTagCompound(), stack, !ignoreNBT, partialMatch)) {
+            if (ItemComparison.StackMatch(rStack.getBaseStack(), stack, !ignoreNBT, partialMatch) || ItemComparison.OreDictionaryMatch(rStack
+                    .getOreIngredient(), rStack.GetTagCompound(), stack, !ignoreNBT, partialMatch)) {
                 return true;
             }
         }
@@ -367,7 +379,8 @@ public class TaskRetrieval implements ITaskInventory, IItemTask {
 
             int remaining = rStack.stackSize - progress[j];
 
-            if (ItemComparison.StackMatch(rStack.getBaseStack(), stack, !ignoreNBT, partialMatch) || ItemComparison.OreDictionaryMatch(rStack.getOreIngredient(), rStack.GetTagCompound(), stack, !ignoreNBT, partialMatch)) {
+            if (ItemComparison.StackMatch(rStack.getBaseStack(), stack, !ignoreNBT, partialMatch) || ItemComparison.OreDictionaryMatch(rStack
+                    .getOreIngredient(), rStack.GetTagCompound(), stack, !ignoreNBT, partialMatch)) {
                 int removed = Math.min(stack.getCount(), remaining);
                 stack.shrink(removed);
                 progress[j] += removed;
@@ -397,8 +410,7 @@ public class TaskRetrieval implements ITaskInventory, IItemTask {
         return stack.isEmpty() ? ItemStack.EMPTY : stack;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
+    @Override @SideOnly(Side.CLIENT)
     public GuiScreen getTaskEditor(GuiScreen parent, DBEntry<IQuest> quest) {
         return null;
     }
@@ -412,7 +424,8 @@ public class TaskRetrieval implements ITaskInventory, IItemTask {
         return progress == null || progress.length != requiredItems.size() ? new int[requiredItems.size()] : progress;
     }
 
-    private List<Tuple<UUID, int[]>> getBulkProgress(@Nonnull List<UUID> uuids) {
+    private List<Tuple<UUID, int[]>> getBulkProgress(@Nonnull
+    List<UUID> uuids) {
         if (uuids.size() <= 0)
             return Collections.emptyList();
         List<Tuple<UUID, int[]>> list = new ArrayList<>(uuids.size());
@@ -420,7 +433,8 @@ public class TaskRetrieval implements ITaskInventory, IItemTask {
         return list;
     }
 
-    private void setBulkProgress(@Nonnull List<Tuple<UUID, int[]>> list) {
+    private void setBulkProgress(@Nonnull
+    List<Tuple<UUID, int[]>> list) {
         list.forEach((entry) -> setUserProgress(entry.getFirst(), entry.getSecond()));
     }
 
@@ -436,4 +450,5 @@ public class TaskRetrieval implements ITaskInventory, IItemTask {
         }
         return texts;
     }
+
 }

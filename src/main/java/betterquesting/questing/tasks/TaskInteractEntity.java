@@ -1,5 +1,18 @@
 package betterquesting.questing.tasks;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api.utils.BigItemStack;
@@ -24,13 +37,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
 
 public class TaskInteractEntity implements ITask {
+
     private final Set<UUID> completeUsers = new TreeSet<>();
     private final TreeMap<UUID, Integer> userProgress = new TreeMap<>();
 
@@ -50,37 +59,43 @@ public class TaskInteractEntity implements ITask {
     public int required = 1;
 
     @Override
-    public String getUnlocalisedName() {
-        return BetterQuesting.MODID_STD + ".task.interact_entity";
-    }
+    public String getUnlocalisedName() { return BetterQuesting.MODID_STD + ".task.interact_entity"; }
 
     @Override
-    public ResourceLocation getFactoryID() {
-        return FactoryTaskInteractEntity.INSTANCE.getRegistryName();
-    }
+    public ResourceLocation getFactoryID() { return FactoryTaskInteractEntity.INSTANCE.getRegistryName(); }
 
     public void onInteract(ParticipantInfo pInfo, DBEntry<IQuest> quest, EnumHand hand, ItemStack item, Entity entity, boolean isHit) {
-        if ((!onHit && isHit) || (!onInteract && !isHit)) return;
-        if ((!useMainHand && hand == EnumHand.MAIN_HAND) || (!useOffHand && hand == EnumHand.OFF_HAND)) return;
+        if ((!onHit && isHit) || (!onInteract && !isHit))
+            return;
+        if ((!useMainHand && hand == EnumHand.MAIN_HAND) || (!useOffHand && hand == EnumHand.OFF_HAND))
+            return;
 
         ResourceLocation targetRes = new ResourceLocation(entityID);
         Class<? extends Entity> targetClass = EntityList.getClass(targetRes);
-        if (targetClass == null) return; // No idea what we're looking for
+        if (targetClass == null)
+            return; // No idea what we're looking for
 
         Class<? extends Entity> subjectClass = entity.getClass();
         ResourceLocation subjectRes = EntityList.getKey(entity);
-        if (subjectRes == null) return; // This isn't a registered entity!
+        if (subjectRes == null)
+            return; // This isn't a registered entity!
 
-        if (entitySubtypes ? !targetClass.isAssignableFrom(subjectClass) : !subjectRes.equals(targetRes)) return;
+        if (entitySubtypes ? !targetClass.isAssignableFrom(subjectClass) : !subjectRes.equals(targetRes))
+            return;
 
         if (!ignoreEntityNBT) {
             NBTTagCompound subjectTags = new NBTTagCompound();
             entity.writeToNBTOptional(subjectTags);
-            if (!ItemComparison.CompareNBTTag(entityTags, subjectTags, true)) return;
+            if (!ItemComparison.CompareNBTTag(entityTags, subjectTags, true))
+                return;
         }
 
         if (targetItem.getBaseStack().getItem() != Items.AIR) {
-            if (targetItem.hasOreDict() && !ItemComparison.OreDictionaryMatch(targetItem.getOreIngredient(), targetItem.GetTagCompound(), item, !ignoreItemNBT, partialItemMatch)) {
+            if (targetItem.hasOreDict() && !ItemComparison.OreDictionaryMatch(targetItem.getOreIngredient(),
+                                                                              targetItem.GetTagCompound(),
+                                                                              item,
+                                                                              !ignoreItemNBT,
+                                                                              partialItemMatch)) {
                 return;
             } else if (!ItemComparison.StackMatch(targetItem.getBaseStack(), item, !ignoreItemNBT, partialItemMatch)) {
                 return;
@@ -90,10 +105,12 @@ public class TaskInteractEntity implements ITask {
         final List<Tuple<UUID, Integer>> progress = getBulkProgress(pInfo.ALL_UUIDS);
 
         progress.forEach((value) -> {
-            if (isComplete(value.getFirst())) return;
+            if (isComplete(value.getFirst()))
+                return;
             int np = Math.min(required, value.getSecond() + 1);
             setUserProgress(value.getFirst(), np);
-            if (np >= required) setComplete(value.getFirst());
+            if (np >= required)
+                setComplete(value.getFirst());
         });
 
         pInfo.markDirtyParty(Collections.singletonList(quest.getID()));
@@ -104,7 +121,8 @@ public class TaskInteractEntity implements ITask {
         final List<Tuple<UUID, Integer>> progress = getBulkProgress(pInfo.ALL_UUIDS);
 
         progress.forEach((value) -> {
-            if (value.getSecond() >= required) setComplete(value.getFirst());
+            if (value.getSecond() >= required)
+                setComplete(value.getFirst());
         });
 
         pInfo.markDirtyParty(Collections.singletonList(quest.getID()));
@@ -121,7 +139,8 @@ public class TaskInteractEntity implements ITask {
     }
 
     @Override
-    public void resetUser(@Nullable UUID uuid) {
+    public void resetUser(@Nullable
+    UUID uuid) {
         if (uuid == null) {
             completeUsers.clear();
             userProgress.clear();
@@ -131,15 +150,12 @@ public class TaskInteractEntity implements ITask {
         }
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
+    @Override @SideOnly(Side.CLIENT)
     public IGuiPanel getTaskGui(IGuiRect rect, DBEntry<IQuest> quest) {
         return new PanelTaskInteractEntity(rect, this);
     }
 
-    @Override
-    @Nullable
-    @SideOnly(Side.CLIENT)
+    @Override @Nullable @SideOnly(Side.CLIENT)
     public GuiScreen getTaskEditor(GuiScreen parent, DBEntry<IQuest> quest) {
         return null;
     }
@@ -173,13 +189,15 @@ public class TaskInteractEntity implements ITask {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
+    List<UUID> users) {
         NBTTagList jArray = new NBTTagList();
         NBTTagList progArray = new NBTTagList();
 
         if (users != null) {
             users.forEach((uuid) -> {
-                if (completeUsers.contains(uuid)) jArray.appendTag(new NBTTagString(uuid.toString()));
+                if (completeUsers.contains(uuid))
+                    jArray.appendTag(new NBTTagString(uuid.toString()));
 
                 Integer data = userProgress.get(uuid);
                 if (data != null) {
@@ -252,8 +270,10 @@ public class TaskInteractEntity implements ITask {
         return n == null ? 0 : n;
     }
 
-    private List<Tuple<UUID, Integer>> getBulkProgress(@Nonnull List<UUID> uuids) {
-        if (uuids.size() <= 0) return Collections.emptyList();
+    private List<Tuple<UUID, Integer>> getBulkProgress(@Nonnull
+    List<UUID> uuids) {
+        if (uuids.size() <= 0)
+            return Collections.emptyList();
         List<Tuple<UUID, Integer>> list = new ArrayList<>();
         uuids.forEach((key) -> list.add(new Tuple<>(key, getUsersProgress(key))));
         return list;
@@ -268,4 +288,5 @@ public class TaskInteractEntity implements ITask {
         }
         return texts;
     }
+
 }

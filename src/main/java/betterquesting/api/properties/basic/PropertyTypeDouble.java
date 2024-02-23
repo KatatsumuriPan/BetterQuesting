@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagDouble;
 import net.minecraft.util.ResourceLocation;
 
 public class PropertyTypeDouble extends PropertyTypeBase<Double> {
+
     public PropertyTypeDouble(ResourceLocation key, Double def) {
         super(key, def);
     }
@@ -27,4 +28,5 @@ public class PropertyTypeDouble extends PropertyTypeBase<Double> {
 
         return new NBTTagDouble(value);
     }
+
 }

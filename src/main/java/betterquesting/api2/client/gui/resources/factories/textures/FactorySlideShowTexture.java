@@ -1,5 +1,12 @@
 package betterquesting.api2.client.gui.resources.factories.textures;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.utils.JsonHelper;
@@ -10,15 +17,10 @@ import betterquesting.api2.client.gui.resources.textures.SlideShowTexture;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import betterquesting.api2.registry.IFactoryData;
 import betterquesting.core.ModReference;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import net.minecraft.util.ResourceLocation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class FactorySlideShowTexture implements IFactoryData<IGuiTexture, JsonObject> {
+
     public static final FactorySlideShowTexture INSTANCE = new FactorySlideShowTexture();
 
     private static final ResourceLocation RES_ID = new ResourceLocation(ModReference.MODID, "texture_slides");
@@ -32,11 +34,14 @@ public class FactorySlideShowTexture implements IFactoryData<IGuiTexture, JsonOb
 
         JsonArray jAry = JsonHelper.GetArray(data, "slides");
         for (JsonElement je : jAry) {
-            if (!je.isJsonObject()) continue;
+            if (!je.isJsonObject())
+                continue;
             JsonObject jo = je.getAsJsonObject();
 
             try {
-                IGuiTexture tFact = QuestingAPI.getAPI(ApiReference.RESOURCE_REG).getTexReg().createNew(new ResourceLocation(JsonHelper.GetString(jo, "textureType", "null")), jo);
+                IGuiTexture tFact = QuestingAPI.getAPI(ApiReference.RESOURCE_REG)
+                        .getTexReg()
+                        .createNew(new ResourceLocation(JsonHelper.GetString(jo, "textureType", "null")), jo);
                 layers.add(tFact);
             } catch (Exception ignored) {
                 layers.add(NULL_TX);
@@ -47,12 +52,11 @@ public class FactorySlideShowTexture implements IFactoryData<IGuiTexture, JsonOb
     }
 
     @Override
-    public ResourceLocation getRegistryName() {
-        return RES_ID;
-    }
+    public ResourceLocation getRegistryName() { return RES_ID; }
 
     @Override
     public SlideShowTexture createNew() {
         return new SlideShowTexture(1F);
     }
+
 }

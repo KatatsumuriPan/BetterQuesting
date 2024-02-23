@@ -1,5 +1,9 @@
 package betterquesting.client.toolbox.tools;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import betterquesting.api.client.toolbox.IToolboxTool;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.client.gui.controls.PanelButtonQuest;
@@ -13,11 +17,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class ToolboxToolLink implements IToolboxTool {
+
     private CanvasQuestLine gui;
     private final NonNullList<PanelButtonQuest> linking = NonNullList.create();
     private final GuiRectangle mouseRect = new GuiRectangle(0, 0, 0, 0);
@@ -35,13 +36,15 @@ public class ToolboxToolLink implements IToolboxTool {
 
     @Override
     public void refresh(CanvasQuestLine gui) {
-        if (linking.size() <= 0) return;
+        if (linking.size() <= 0)
+            return;
 
         List<PanelButtonQuest> tmp = new ArrayList<>();
 
         for (PanelButtonQuest b1 : linking) {
             for (PanelButtonQuest b2 : gui.getQuestButtons())
-                if (b1.getStoredValue().getID() == b2.getStoredValue().getID()) tmp.add(b2);
+                if (b1.getStoredValue().getID() == b2.getStoredValue().getID())
+                    tmp.add(b2);
         }
 
         linking.clear();
@@ -50,7 +53,8 @@ public class ToolboxToolLink implements IToolboxTool {
 
     @Override
     public void drawCanvas(int mx, int my, float partialTick) {
-        if (linking.size() <= 0) return;
+        if (linking.size() <= 0)
+            return;
 
         mouseRect.x = mx;
         mouseRect.y = my;
@@ -80,10 +84,12 @@ public class ToolboxToolLink implements IToolboxTool {
 
         if (linking.size() <= 0) {
             PanelButtonQuest btn = gui.getButtonAt(mx, my);
-            if (btn == null) return false;
+            if (btn == null)
+                return false;
 
             if (PanelToolController.selected.size() > 0) {
-                if (!PanelToolController.selected.contains(btn)) return false;
+                if (!PanelToolController.selected.contains(btn))
+                    return false;
                 linking.addAll(PanelToolController.selected);
                 return true;
             }
@@ -93,7 +99,8 @@ public class ToolboxToolLink implements IToolboxTool {
         } else {
             PanelButtonQuest b2 = gui.getButtonAt(mx, my);
 
-            if (b2 == null) return false;
+            if (b2 == null)
+                return false;
             linking.remove(b2);
 
             if (linking.size() > 0) {
@@ -172,34 +179,41 @@ public class ToolboxToolLink implements IToolboxTool {
     }
 
     private boolean containsReq(IQuest quest, int id) {
-        for (int reqID : quest.getRequirements()) if (id == reqID) return true;
+        for (int reqID : quest.getRequirements())
+            if (id == reqID)
+                return true;
         return false;
     }
 
     private boolean removeReq(IQuest quest, int id) {
         int[] orig = quest.getRequirements();
-        if (orig.length <= 0) return false;
+        if (orig.length <= 0)
+            return false;
         boolean hasRemoved = false;
         int[] rem = new int[orig.length - 1];
         for (int i = 0; i < orig.length; i++) {
             if (!hasRemoved && orig[i] == id) {
                 hasRemoved = true;
                 continue;
-            } else if (!hasRemoved && i >= rem.length) break;
+            } else if (!hasRemoved && i >= rem.length)
+                break;
 
             rem[!hasRemoved ? i : (i - 1)] = orig[i];
         }
 
-        if (hasRemoved) quest.setRequirements(rem);
+        if (hasRemoved)
+            quest.setRequirements(rem);
         return hasRemoved;
     }
 
     private boolean addReq(IQuest quest, int id) {
-        if (containsReq(quest, id)) return false;
+        if (containsReq(quest, id))
+            return false;
         int[] orig = quest.getRequirements();
         int[] added = Arrays.copyOf(orig, orig.length + 1);
         added[orig.length] = id;
         quest.setRequirements(added);
         return true;
     }
+
 }

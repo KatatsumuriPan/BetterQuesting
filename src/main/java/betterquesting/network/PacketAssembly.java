@@ -1,5 +1,16 @@
 package betterquesting.network;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+import java.util.zip.GZIPInputStream;
+
 import betterquesting.core.BetterQuesting;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTSizeTracker;
@@ -7,14 +18,8 @@ import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.util.*;
-import java.util.zip.GZIPInputStream;
-
 public final class PacketAssembly {
+
     public static final PacketAssembly INSTANCE = new PacketAssembly();
 
     // TODO: Allow for simultaneous packet assembly (may not be necessary)
@@ -83,10 +88,10 @@ public final class PacketAssembly {
         }
 
         System.arraycopy(data, 0, tmp, index, data.length);
-		/*for(int i = 0; i < data.length && index + i < size; i++)
-		{
-			tmp[index + i] = data[i];
-		}*/
+        /*for(int i = 0; i < data.length && index + i < size; i++)
+        {
+            tmp[index + i] = data[i];
+        }*/
 
         if (end) {
             clearBuffer(owner);
@@ -137,4 +142,5 @@ public final class PacketAssembly {
             }
         }
     }
+
 }

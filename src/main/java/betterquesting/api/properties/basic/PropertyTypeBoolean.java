@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.util.ResourceLocation;
 
 public class PropertyTypeBoolean extends PropertyTypeBase<Boolean> {
+
     public PropertyTypeBoolean(ResourceLocation key, Boolean def) {
         super(key, def);
     }
@@ -31,4 +32,5 @@ public class PropertyTypeBoolean extends PropertyTypeBase<Boolean> {
 
         return new NBTTagByte(value ? (byte) 1 : (byte) 0);
     }
+
 }

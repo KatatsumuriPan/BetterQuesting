@@ -10,18 +10,43 @@ import betterquesting.core.BetterQuesting;
 import betterquesting.core.ExpansionLoader;
 import betterquesting.handlers.EventHandler;
 import betterquesting.handlers.GuiHandler;
-import betterquesting.network.handlers.*;
-import betterquesting.questing.rewards.factory.*;
+import betterquesting.network.handlers.NetLootClaim;
+import betterquesting.network.handlers.NetLootImport;
+import betterquesting.network.handlers.NetLootSync;
+import betterquesting.network.handlers.NetRewardChoice;
+import betterquesting.network.handlers.NetScoreSync;
+import betterquesting.network.handlers.NetTaskCheckbox;
+import betterquesting.network.handlers.NetTaskInteract;
+import betterquesting.questing.rewards.factory.FactoryRewardChoice;
+import betterquesting.questing.rewards.factory.FactoryRewardCommand;
+import betterquesting.questing.rewards.factory.FactoryRewardItem;
+import betterquesting.questing.rewards.factory.FactoryRewardRecipe;
+import betterquesting.questing.rewards.factory.FactoryRewardScoreboard;
+import betterquesting.questing.rewards.factory.FactoryRewardXP;
 import betterquesting.questing.rewards.loot.LootRegistry;
-import betterquesting.questing.tasks.factory.*;
+import betterquesting.questing.tasks.factory.FactoryTaskAdvancement;
+import betterquesting.questing.tasks.factory.FactoryTaskBlockBreak;
+import betterquesting.questing.tasks.factory.FactoryTaskCheckbox;
+import betterquesting.questing.tasks.factory.FactoryTaskCrafting;
+import betterquesting.questing.tasks.factory.FactoryTaskFluid;
+import betterquesting.questing.tasks.factory.FactoryTaskHunt;
+import betterquesting.questing.tasks.factory.FactoryTaskInteractEntity;
+import betterquesting.questing.tasks.factory.FactoryTaskInteractItem;
+import betterquesting.questing.tasks.factory.FactoryTaskLocation;
+import betterquesting.questing.tasks.factory.FactoryTaskMeeting;
+import betterquesting.questing.tasks.factory.FactoryTaskOptionalRetrieval;
+import betterquesting.questing.tasks.factory.FactoryTaskRetrieval;
+import betterquesting.questing.tasks.factory.FactoryTaskScoreboard;
+import betterquesting.questing.tasks.factory.FactoryTaskTame;
+import betterquesting.questing.tasks.factory.FactoryTaskTrigger;
+import betterquesting.questing.tasks.factory.FactoryTaskXP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 public class CommonProxy {
-    public boolean isClient() {
-        return false;
-    }
+
+    public boolean isClient() { return false; }
 
     public void registerHandlers() {
         ExpansionLoader.INSTANCE.initCommonAPIs();
@@ -73,4 +98,5 @@ public class CommonProxy {
 
         BetterQuesting.lootChest.setCreativeTab(QuestingAPI.getAPI(ApiReference.CREATIVE_TAB));
     }
+
 }

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ThemeCatalogue {
-    private static final List<String> catUrls = new ArrayList<>();
 
+    private static final List<String> catUrls = new ArrayList<>();
 
     // Download database of DLC themes
     public static void refreshCatalogue() {
@@ -16,4 +16,5 @@ public class ThemeCatalogue {
     public static void refreshManifests() {
 
     }
+
 }

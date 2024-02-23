@@ -1,12 +1,11 @@
 package betterquesting.handlers;
 
-import betterquesting.api.api.ApiReference;
+import java.util.HashMap;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
 import betterquesting.api.api.QuestingAPI;
-import betterquesting.api.questing.IQuest;
-import betterquesting.api.questing.tasks.ITask;
-import betterquesting.api2.storage.DBEntry;
-import betterquesting.api2.utils.ParticipantInfo;
-import betterquesting.questing.tasks.ITaskInventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
@@ -14,14 +13,12 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
-import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.UUID;
-
 public class PlayerContainerListener implements IContainerListener {
+
     private static final HashMap<UUID, PlayerContainerListener> LISTEN_MAP = new HashMap<>();
 
-    public static void refreshListener(@Nonnull EntityPlayer player) {
+    public static void refreshListener(@Nonnull
+    EntityPlayer player) {
         UUID uuid = QuestingAPI.getQuestingUUID(player);
         PlayerContainerListener listener = LISTEN_MAP.get(uuid);
         if (listener != null) {
@@ -39,17 +36,22 @@ public class PlayerContainerListener implements IContainerListener {
 
     private EntityPlayer player;
 
-    private PlayerContainerListener(@Nonnull EntityPlayer player) {
+    private PlayerContainerListener(@Nonnull
+    EntityPlayer player) {
         this.player = player;
     }
 
     @Override
-    public void sendAllContents(@Nonnull Container container, @Nonnull NonNullList<ItemStack> nonNullList) {
+    public void sendAllContents(@Nonnull
+    Container container, @Nonnull
+    NonNullList<ItemStack> nonNullList) {
         updateTasks();
     }
 
     @Override
-    public void sendSlotContents(@Nonnull Container container, int i, @Nonnull ItemStack itemStack) {
+    public void sendSlotContents(@Nonnull
+    Container container, int i, @Nonnull
+    ItemStack itemStack) {
         // Ignore changes outside of main inventory (e.g. crafting grid and armor)
         if (i >= 9 && i <= 44) {
             updateTasks();
@@ -57,14 +59,18 @@ public class PlayerContainerListener implements IContainerListener {
     }
 
     @Override
-    public void sendWindowProperty(@Nonnull Container container, int i, int i1) {
+    public void sendWindowProperty(@Nonnull
+    Container container, int i, int i1) {
     }
 
     @Override
-    public void sendAllWindowProperties(@Nonnull Container container, @Nonnull IInventory iInventory) {
+    public void sendAllWindowProperties(@Nonnull
+    Container container, @Nonnull
+    IInventory iInventory) {
     }
 
     private void updateTasks() {
         EventHandler.schedulePlayerInventoryCheck(player);
     }
+
 }

@@ -1,5 +1,9 @@
 package betterquesting.commands;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.storage.NameCache;
 import net.minecraft.command.CommandBase;
@@ -11,16 +15,11 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-
 public abstract class QuestCommandBase {
+
     public abstract String getCommand();
 
-    public String getUsageSuffix() {
-        return "";
-    }
+    public String getUsageSuffix() { return ""; }
 
     public QuestCommandBase() {
         this.registerPermission();
@@ -93,4 +92,5 @@ public abstract class QuestCommandBase {
     public boolean isArgUsername(String[] args, int index) {
         return false;
     }
+
 }

@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class BlockSubmitStation extends BlockContainer {
+
     public BlockSubmitStation() {
         super(Material.WOOD);
         this.setHardness(1);
@@ -38,7 +39,15 @@ public class BlockSubmitStation extends BlockContainer {
      * Called upon block activation (right click on the block.)
      */
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing heldItem, float side, float hitX, float hitY) {
+    public boolean onBlockActivated(World world,
+                                    BlockPos pos,
+                                    IBlockState state,
+                                    EntityPlayer player,
+                                    EnumHand hand,
+                                    EnumFacing heldItem,
+                                    float side,
+                                    float hitX,
+                                    float hitY) {
         if (!world.isRemote) {
             player.openGui(BetterQuesting.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
         }
@@ -54,4 +63,5 @@ public class BlockSubmitStation extends BlockContainer {
 
         super.breakBlock(world, pos, state);
     }
+
 }

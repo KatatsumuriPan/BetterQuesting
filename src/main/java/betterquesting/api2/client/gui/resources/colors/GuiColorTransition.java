@@ -5,6 +5,7 @@ import betterquesting.api2.client.gui.controls.IValueIO;
 import net.minecraft.client.renderer.GlStateManager;
 
 public class GuiColorTransition implements IGuiColor {
+
     private final IGuiColor cNorm;
     private final IGuiColor cLow;
 
@@ -42,24 +43,16 @@ public class GuiColorTransition implements IGuiColor {
     }
 
     @Override
-    public float getRed() {
-        return (getRGB() >> 16 & 255) / 255F;
-    }
+    public float getRed() { return (getRGB() >> 16 & 255) / 255F; }
 
     @Override
-    public float getGreen() {
-        return (getRGB() >> 8 & 255) / 255F;
-    }
+    public float getGreen() { return (getRGB() >> 8 & 255) / 255F; }
 
     @Override
-    public float getBlue() {
-        return (getRGB() & 255) / 255F;
-    }
+    public float getBlue() { return (getRGB() & 255) / 255F; }
 
     @Override
-    public float getAlpha() {
-        return (getRGB() >> 24 & 255) / 255F;
-    }
+    public float getAlpha() { return (getRGB() >> 24 & 255) / 255F; }
 
     @Override
     public void applyGlColor() {
@@ -71,4 +64,5 @@ public class GuiColorTransition implements IGuiColor {
 
         GlStateManager.color(r, g, b, a);
     }
+
 }

@@ -1,5 +1,14 @@
 package betterquesting.client.themes;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.function.Function;
+
+import javax.annotation.Nullable;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import betterquesting.api2.client.gui.resources.lines.IGuiLine;
@@ -7,17 +16,11 @@ import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import betterquesting.api2.client.gui.themes.GuiKey;
 import betterquesting.api2.client.gui.themes.IGuiTheme;
 import betterquesting.core.BetterQuesting;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map.Entry;
-import java.util.function.Function;
-
 public class ResourceTheme implements IGuiTheme {
+
     private final ResourceLocation ID;
     private final String dispName;
 
@@ -38,7 +41,8 @@ public class ResourceTheme implements IGuiTheme {
     public void loadFromJson(JsonObject jThm) {
         JsonObject jsonTextureRoot = JsonHelper.GetObject(jThm, "textures");
         for (Entry<String, JsonElement> entry : jsonTextureRoot.entrySet()) {
-            if (!entry.getValue().isJsonObject()) continue;
+            if (!entry.getValue().isJsonObject())
+                continue;
             JsonObject joTex = entry.getValue().getAsJsonObject();
 
             ResourceLocation typeID = new ResourceLocation(JsonHelper.GetString(joTex, "textureType", ""));
@@ -54,7 +58,8 @@ public class ResourceTheme implements IGuiTheme {
 
         JsonObject jsonColourRoot = JsonHelper.GetObject(jThm, "colors");
         for (Entry<String, JsonElement> entry : jsonColourRoot.entrySet()) {
-            if (!(entry.getValue() instanceof JsonObject)) continue;
+            if (!(entry.getValue() instanceof JsonObject))
+                continue;
             JsonObject joCol = entry.getValue().getAsJsonObject();
 
             ResourceLocation typeID = new ResourceLocation(JsonHelper.GetString(joCol, "colorType", ""));
@@ -70,7 +75,8 @@ public class ResourceTheme implements IGuiTheme {
 
         JsonObject jsonLinesRoot = JsonHelper.GetObject(jThm, "lines");
         for (Entry<String, JsonElement> entry : jsonLinesRoot.entrySet()) {
-            if (!(entry.getValue() instanceof JsonObject)) continue;
+            if (!(entry.getValue() instanceof JsonObject))
+                continue;
             JsonObject joLine = entry.getValue().getAsJsonObject();
 
             ResourceLocation typeID = new ResourceLocation(JsonHelper.GetString(joLine, "lineType", ""));
@@ -86,7 +92,8 @@ public class ResourceTheme implements IGuiTheme {
     }
 
     private IGuiTheme getParent() {
-        if (cached) return parentTheme;
+        if (cached)
+            return parentTheme;
 
         IGuiTheme parent = ThemeRegistry.INSTANCE.getTheme(parentID);
         IGuiTheme checking = parent;
@@ -111,57 +118,62 @@ public class ResourceTheme implements IGuiTheme {
     }
 
     public void setTexture(ResourceLocation key, IGuiTexture texture) {
-        if (key == null) return;
+        if (key == null)
+            return;
         TEX_MAP.put(key, texture); // Could actually use null here to override the parent
     }
 
     public void setColor(ResourceLocation key, IGuiColor color) {
-        if (key == null) return;
+        if (key == null)
+            return;
         COLOR_MAP.put(key, color); // Could actually use null here to override the parent
     }
 
     public void setLine(ResourceLocation key, IGuiLine line) {
-        if (key == null) return;
+        if (key == null)
+            return;
         LINE_MAP.put(key, line); // Could actually use null here to override the parent
     }
 
     @Override
-    public String getName() {
-        return dispName;
-    }
+    public String getName() { return dispName; }
 
     @Override
-    public ResourceLocation getID() {
-        return ID;
-    }
+    public ResourceLocation getID() { return ID; }
 
     @Override
     public IGuiTexture getTexture(ResourceLocation key) {
         IGuiTexture value = TEX_MAP.get(key);
-        if (value != null) return value;
-        if (getParent() != null) return getParent().getTexture(key);
+        if (value != null)
+            return value;
+        if (getParent() != null)
+            return getParent().getTexture(key);
         return null;
     }
 
     @Override
     public IGuiLine getLine(ResourceLocation key) {
         IGuiLine value = LINE_MAP.get(key);
-        if (value != null) return value;
-        if (getParent() != null) return getParent().getLine(key);
+        if (value != null)
+            return value;
+        if (getParent() != null)
+            return getParent().getLine(key);
         return null;
     }
 
     @Override
     public IGuiColor getColor(ResourceLocation key) {
         IGuiColor value = COLOR_MAP.get(key);
-        if (value != null) return value;
-        if (getParent() != null) return getParent().getColor(key);
+        if (value != null)
+            return value;
+        if (getParent() != null)
+            return getParent().getColor(key);
         return null;
     }
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public <T> Function<T, GuiScreen> getGui(GuiKey<T> key) {
         return null;
     }
+
 }

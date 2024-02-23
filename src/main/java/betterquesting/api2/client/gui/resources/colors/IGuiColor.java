@@ -1,6 +1,7 @@
 package betterquesting.api2.client.gui.resources.colors;
 
 public interface IGuiColor {
+
     int getRGB();
 
     float getRed();
@@ -12,4 +13,5 @@ public interface IGuiColor {
     float getAlpha();
 
     void applyGlColor();
+
 }

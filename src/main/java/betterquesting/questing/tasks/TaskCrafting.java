@@ -1,5 +1,18 @@
 package betterquesting.questing.tasks;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api.utils.BigItemStack;
@@ -23,13 +36,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
 
 public class TaskCrafting implements ITask {
+
     private final Set<UUID> completeUsers = new TreeSet<>();
     public final NonNullList<BigItemStack> requiredItems = NonNullList.create();
     public final TreeMap<UUID, int[]> userProgress = new TreeMap<>();
@@ -40,9 +49,7 @@ public class TaskCrafting implements ITask {
     public boolean allowCraft = true;
 
     @Override
-    public ResourceLocation getFactoryID() {
-        return FactoryTaskCrafting.INSTANCE.getRegistryName();
-    }
+    public ResourceLocation getFactoryID() { return FactoryTaskCrafting.INSTANCE.getRegistryName(); }
 
     @Override
     public boolean isComplete(UUID uuid) {
@@ -55,19 +62,19 @@ public class TaskCrafting implements ITask {
     }
 
     @Override
-    public String getUnlocalisedName() {
-        return "bq_standard.task.crafting";
-    }
+    public String getUnlocalisedName() { return "bq_standard.task.crafting"; }
 
     @Override
     public void detect(ParticipantInfo pInfo, DBEntry<IQuest> quest) {
         pInfo.ALL_UUIDS.forEach((uuid) -> {
-            if (isComplete(uuid)) return;
+            if (isComplete(uuid))
+                return;
 
             int[] tmp = getUsersProgress(uuid);
             for (int i = 0; i < requiredItems.size(); i++) {
                 BigItemStack rStack = requiredItems.get(i);
-                if (tmp[i] < rStack.stackSize) return;
+                if (tmp[i] < rStack.stackSize)
+                    return;
             }
             setComplete(uuid);
         });
@@ -76,22 +83,26 @@ public class TaskCrafting implements ITask {
     }
 
     public void onItemCraft(ParticipantInfo pInfo, DBEntry<IQuest> quest, ItemStack stack) {
-        if (!allowCraft) return;
+        if (!allowCraft)
+            return;
         onItemInternal(pInfo, quest, stack);
     }
 
     public void onItemSmelt(ParticipantInfo pInfo, DBEntry<IQuest> quest, ItemStack stack) {
-        if (!allowSmelt) return;
+        if (!allowSmelt)
+            return;
         onItemInternal(pInfo, quest, stack);
     }
 
     public void onItemAnvil(ParticipantInfo pInfo, DBEntry<IQuest> quest, ItemStack stack) {
-        if (!allowAnvil) return;
+        if (!allowAnvil)
+            return;
         onItemInternal(pInfo, quest, stack);
     }
 
     private void onItemInternal(ParticipantInfo pInfo, DBEntry<IQuest> quest, ItemStack stack) {
-        if (stack.isEmpty()) return;
+        if (stack.isEmpty())
+            return;
 
         final List<Tuple<UUID, int[]>> progress = getBulkProgress(pInfo.ALL_UUIDS);
         boolean changed = false;
@@ -100,9 +111,11 @@ public class TaskCrafting implements ITask {
             final BigItemStack rStack = requiredItems.get(i);
             final int index = i;
 
-            if (ItemComparison.StackMatch(rStack.getBaseStack(), stack, !ignoreNBT, partialMatch) || ItemComparison.OreDictionaryMatch(rStack.getOreIngredient(), rStack.GetTagCompound(), stack, !ignoreNBT, partialMatch)) {
+            if (ItemComparison.StackMatch(rStack.getBaseStack(), stack, !ignoreNBT, partialMatch) || ItemComparison.OreDictionaryMatch(rStack
+                    .getOreIngredient(), rStack.GetTagCompound(), stack, !ignoreNBT, partialMatch)) {
                 progress.forEach((entry) -> {
-                    if (entry.getSecond()[index] >= rStack.stackSize) return;
+                    if (entry.getSecond()[index] >= rStack.stackSize)
+                        return;
                     entry.getSecond()[index] = Math.min(entry.getSecond()[index] + stack.getCount(), rStack.stackSize);
                 });
                 changed = true;
@@ -136,9 +149,12 @@ public class TaskCrafting implements ITask {
     public void readFromNBT(NBTTagCompound nbt) {
         partialMatch = nbt.getBoolean("partialMatch");
         ignoreNBT = nbt.getBoolean("ignoreNBT");
-        if (nbt.hasKey("allowCraft")) allowCraft = nbt.getBoolean("allowCraft");
-        if (nbt.hasKey("allowSmelt")) allowSmelt = nbt.getBoolean("allowSmelt");
-        if (nbt.hasKey("allowAnvil")) allowAnvil = nbt.getBoolean("allowAnvil");
+        if (nbt.hasKey("allowCraft"))
+            allowCraft = nbt.getBoolean("allowCraft");
+        if (nbt.hasKey("allowSmelt"))
+            allowSmelt = nbt.getBoolean("allowSmelt");
+        if (nbt.hasKey("allowAnvil"))
+            allowAnvil = nbt.getBoolean("allowAnvil");
 
         requiredItems.clear();
         NBTTagList iList = nbt.getTagList("requiredItems", 10);
@@ -184,20 +200,23 @@ public class TaskCrafting implements ITask {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
+    List<UUID> users) {
         NBTTagList jArray = new NBTTagList();
         NBTTagList progArray = new NBTTagList();
 
         if (users != null) {
             users.forEach((uuid) -> {
-                if (completeUsers.contains(uuid)) jArray.appendTag(new NBTTagString(uuid.toString()));
+                if (completeUsers.contains(uuid))
+                    jArray.appendTag(new NBTTagString(uuid.toString()));
 
                 int[] data = userProgress.get(uuid);
                 if (data != null) {
                     NBTTagCompound pJson = new NBTTagCompound();
                     pJson.setString("uuid", uuid.toString());
                     NBTTagList pArray = new NBTTagList(); // TODO: Why the heck isn't this just an int array?!
-                    for (int i : data) pArray.appendTag(new NBTTagInt(i));
+                    for (int i : data)
+                        pArray.appendTag(new NBTTagInt(i));
                     pJson.setTag("data", pArray);
                     progArray.appendTag(pJson);
                 }
@@ -209,7 +228,8 @@ public class TaskCrafting implements ITask {
                 NBTTagCompound pJson = new NBTTagCompound();
                 pJson.setString("uuid", uuid.toString());
                 NBTTagList pArray = new NBTTagList(); // TODO: Why the heck isn't this just an int array?!
-                for (int i : data) pArray.appendTag(new NBTTagInt(i));
+                for (int i : data)
+                    pArray.appendTag(new NBTTagInt(i));
                 pJson.setTag("data", pArray);
                 progArray.appendTag(pJson);
             });
@@ -222,7 +242,8 @@ public class TaskCrafting implements ITask {
     }
 
     @Override
-    public void resetUser(@Nullable UUID uuid) {
+    public void resetUser(@Nullable
+    UUID uuid) {
         if (uuid == null) {
             completeUsers.clear();
             userProgress.clear();
@@ -237,8 +258,7 @@ public class TaskCrafting implements ITask {
         return new PanelTaskCrafting(rect, this);
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
+    @Override @SideOnly(Side.CLIENT)
     public GuiScreen getTaskEditor(GuiScreen parent, DBEntry<IQuest> quest) {
         return null;
     }
@@ -252,14 +272,17 @@ public class TaskCrafting implements ITask {
         return progress == null || progress.length != requiredItems.size() ? new int[requiredItems.size()] : progress;
     }
 
-    private List<Tuple<UUID, int[]>> getBulkProgress(@Nonnull List<UUID> uuids) {
-        if (uuids.size() <= 0) return Collections.emptyList();
+    private List<Tuple<UUID, int[]>> getBulkProgress(@Nonnull
+    List<UUID> uuids) {
+        if (uuids.size() <= 0)
+            return Collections.emptyList();
         List<Tuple<UUID, int[]>> list = new ArrayList<>();
         uuids.forEach((key) -> list.add(new Tuple<>(key, getUsersProgress(key))));
         return list;
     }
 
-    private void setBulkProgress(@Nonnull List<Tuple<UUID, int[]>> list) {
+    private void setBulkProgress(@Nonnull
+    List<Tuple<UUID, int[]>> list) {
         list.forEach((entry) -> setUserProgress(entry.getFirst(), entry.getSecond()));
     }
 
@@ -275,4 +298,5 @@ public class TaskCrafting implements ITask {
         }
         return texts;
     }
+
 }

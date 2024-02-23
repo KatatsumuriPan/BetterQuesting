@@ -1,5 +1,8 @@
 package betterquesting.client.gui2.editors.nbt;
 
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Vector4f;
+
 import betterquesting.api.client.gui.misc.IVolatileScreen;
 import betterquesting.api.misc.ICallback;
 import betterquesting.api.utils.BigItemStack;
@@ -36,11 +39,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.oredict.OreDictionary;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.util.vector.Vector4f;
 
 @SuppressWarnings("WeakerAccess")
 public class GuiItemSelection extends GuiScreenCanvas implements IPEventListener, IVolatileScreen {
+
     private final ICallback<BigItemStack> callback;
     private BigItemStack itemStack;
 
@@ -65,12 +67,14 @@ public class GuiItemSelection extends GuiScreenCanvas implements IPEventListener
         Keyboard.enableRepeatEvents(true);
 
         // Background panel
-        CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0), PresetTexture.PANEL_MAIN.getTexture());
+        CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0),
+                                                         PresetTexture.PANEL_MAIN.getTexture());
         this.addPanel(cvBackground);
 
         cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), 0, QuestTranslation.translate("gui.done")));
 
-        PanelTextBox txTitle = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0), QuestTranslation.translate("betterquesting.title.select_item")).setAlignment(1);
+        PanelTextBox txTitle = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0),
+                                                QuestTranslation.translate("betterquesting.title.select_item")).setAlignment(1);
         txTitle.setColor(PresetColor.TEXT_HEADER.getColor());
         cvBackground.addPanel(txTitle);
 
@@ -82,7 +86,9 @@ public class GuiItemSelection extends GuiScreenCanvas implements IPEventListener
         CanvasItemDatabase cvDatabase = new CanvasItemDatabase(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 16, 8, 0), 0), 1);
         cvRight.addPanel(cvDatabase);
 
-        PanelTextField<String> searchBox = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 8, -16), 0), "", FieldFilterString.INSTANCE);
+        PanelTextField<String> searchBox = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 8, -16), 0),
+                                                                "",
+                                                                FieldFilterString.INSTANCE);
         searchBox.setCallback(cvDatabase::setSearchFilter).setWatermark("Search...");
         cvRight.addPanel(searchBox);
 
@@ -95,7 +101,8 @@ public class GuiItemSelection extends GuiScreenCanvas implements IPEventListener
         CanvasEmpty cvTopLeft = new CanvasEmpty(new GuiTransform(new Vector4f(0F, 0F, 0.5F, 0.4F), new GuiPadding(16, 32, 8, 8), 0));
         cvBackground.addPanel(cvTopLeft);
 
-        PanelTextBox txSelection = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 0, -16), 0), QuestTranslation.translate("betterquesting.gui.selection"));
+        PanelTextBox txSelection = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 0, -16), 0),
+                                                    QuestTranslation.translate("betterquesting.gui.selection"));
         txSelection.setColor(PresetColor.TEXT_MAIN.getColor());
         cvTopLeft.addPanel(txSelection);
 
@@ -106,10 +113,13 @@ public class GuiItemSelection extends GuiScreenCanvas implements IPEventListener
         txMulti.setColor(PresetColor.TEXT_MAIN.getColor());
         cvTopLeft.addPanel(txMulti);
 
-        fieldSize = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(52, 16, 0, -32), 0), itemStack == null ? "1" : ("" + itemStack.stackSize), FieldFilterNumber.INT);
+        fieldSize = new PanelTextField<>(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(52, 16, 0, -32), 0),
+                                         itemStack == null ? "1" : ("" + itemStack.stackSize),
+                                         FieldFilterNumber.INT);
         cvTopLeft.addPanel(fieldSize);
         fieldSize.setCallback(value -> {
-            if (itemStack != null) itemStack.stackSize = value;
+            if (itemStack != null)
+                itemStack.stackSize = value;
         });
 
         String oreName = "NONE";
@@ -142,7 +152,8 @@ public class GuiItemSelection extends GuiScreenCanvas implements IPEventListener
         CanvasEmpty cvBottomLeft = new CanvasEmpty(new GuiTransform(new Vector4f(0F, 0.4F, 0.5F, 1F), new GuiPadding(16, 8, 8, 32), 0));
         cvBackground.addPanel(cvBottomLeft);
 
-        PanelTextBox txInvo = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 0, -16), 0), QuestTranslation.translate("container.inventory"));
+        PanelTextBox txInvo = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 0, 0, -16), 0),
+                                               QuestTranslation.translate("container.inventory"));
         txInvo.setColor(PresetColor.TEXT_MAIN.getColor());
         cvBottomLeft.addPanel(txInvo);
 
@@ -171,7 +182,8 @@ public class GuiItemSelection extends GuiScreenCanvas implements IPEventListener
             ItemStack tmp = inventory.getStackInSlot(i);
             BigItemStack invoStack = tmp.isEmpty() ? bigEmpty : new BigItemStack(tmp);
 
-            cvBottomLeft.addPanel(new PanelItemSlot(new GuiTransform(GuiAlign.TOP_LEFT, x, 20 + (3 * slotSize), slotSize, slotSize, 0), 1, invoStack, true).setCallback(c -> {}));
+            cvBottomLeft.addPanel(new PanelItemSlot(new GuiTransform(GuiAlign.TOP_LEFT, x, 20 + (3 * slotSize), slotSize, slotSize, 0), 1, invoStack, true)
+                    .setCallback(c -> {}));
         }
 
         // === DIVIDERS ===
@@ -227,4 +239,5 @@ public class GuiItemSelection extends GuiScreenCanvas implements IPEventListener
             }
         }
     }
+
 }

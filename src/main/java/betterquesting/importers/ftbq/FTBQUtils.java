@@ -12,6 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class FTBQUtils {
+
     public static BigItemStack convertItem(NBTBase tag) {
         if (tag instanceof NBTTagString) {
             return convertItemType1(((NBTTagString) tag).getString());
@@ -70,4 +71,5 @@ public class FTBQUtils {
             return def;
         }
     }
+
 }

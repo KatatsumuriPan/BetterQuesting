@@ -10,6 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class NbtBlockType // TODO: Make a version of this for the base mod and give it a dedicated editor
 {
+
     public Block b = Blocks.LOG;
     public int m = -1;
     public int n = 1;
@@ -62,4 +63,5 @@ public class NbtBlockType // TODO: Make a version of this for the base mod and g
         stack.setOreDict(oreDict);
         return stack;
     }
+
 }

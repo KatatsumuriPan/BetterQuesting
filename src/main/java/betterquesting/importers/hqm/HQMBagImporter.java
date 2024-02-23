@@ -1,20 +1,5 @@
 package betterquesting.importers.hqm;
 
-import betterquesting.api.client.importers.IImporter;
-import betterquesting.api.questing.IQuestDatabase;
-import betterquesting.api.questing.IQuestLineDatabase;
-import betterquesting.api.utils.FileExtensionFilter;
-import betterquesting.api.utils.JsonHelper;
-import betterquesting.network.handlers.NetLootImport;
-import betterquesting.questing.rewards.loot.LootGroup;
-import betterquesting.questing.rewards.loot.LootGroup.LootEntry;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
@@ -23,25 +8,36 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import betterquesting.api.client.importers.IImporter;
+import betterquesting.api.questing.IQuestDatabase;
+import betterquesting.api.questing.IQuestLineDatabase;
+import betterquesting.api.utils.FileExtensionFilter;
+import betterquesting.api.utils.JsonHelper;
+import betterquesting.network.handlers.NetLootImport;
+import betterquesting.questing.rewards.loot.LootGroup;
+import betterquesting.questing.rewards.loot.LootGroup.LootEntry;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+
 public class HQMBagImporter implements IImporter {
+
     public static final HQMBagImporter INSTANCE = new HQMBagImporter();
 
     private List<LootGroup> hqmLoot = new ArrayList<>();
 
     @Override
-    public String getUnlocalisedName() {
-        return "bq_standard.importer.hqm_bag.name";
-    }
+    public String getUnlocalisedName() { return "bq_standard.importer.hqm_bag.name"; }
 
     @Override
-    public String getUnlocalisedDescription() {
-        return "bq_standard.importer.hqm_bag.desc";
-    }
+    public String getUnlocalisedDescription() { return "bq_standard.importer.hqm_bag.desc"; }
 
     @Override
-    public FileFilter getFileFilter() {
-        return new FileExtensionFilter(".json");
-    }
+    public FileFilter getFileFilter() { return new FileExtensionFilter(".json"); }
 
     private void ImportJsonBags(JsonArray json) {
         for (JsonElement e : json) {
@@ -140,4 +136,5 @@ public class HQMBagImporter implements IImporter {
             return new JsonArray(); // Just a safety measure against NPEs
         }
     }
+
 }

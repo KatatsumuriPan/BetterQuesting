@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 
 public class NBTReplaceUtil {
+
     @SuppressWarnings("unchecked")
     public static <T extends NBTBase> T replaceStrings(T baseTag, String key, String replace) {
         if (baseTag == null) {
@@ -31,4 +32,5 @@ public class NBTReplaceUtil {
 
         return baseTag; // Either isn't a string or doesn't contain one
     }
+
 }

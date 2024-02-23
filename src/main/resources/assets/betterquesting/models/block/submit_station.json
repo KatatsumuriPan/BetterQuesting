@@ -1,12 +1,12 @@
 {
-  "parent": "block/cube",
-  "textures": {
-    "particle": "betterquesting:blocks/submit_station_side",
-    "down": "betterquesting:blocks/submit_station_top",
-    "up": "betterquesting:blocks/submit_station_top",
-    "north": "betterquesting:blocks/submit_station_side",
-    "east": "betterquesting:blocks/submit_station_side",
-    "south": "betterquesting:blocks/submit_station_side",
-    "west": "betterquesting:blocks/submit_station_side"
-  }
+    "parent": "block/cube",
+    "textures": {
+        "east": "betterquesting:blocks/submit_station_side",
+        "south": "betterquesting:blocks/submit_station_side",
+        "north": "betterquesting:blocks/submit_station_side",
+        "west": "betterquesting:blocks/submit_station_side",
+        "particle": "betterquesting:blocks/submit_station_side",
+        "up": "betterquesting:blocks/submit_station_top",
+        "down": "betterquesting:blocks/submit_station_top"
+    }
 }

@@ -27,7 +27,8 @@ public class SimpleDatabase<T> implements IDatabase<T> {
     private LookupLogic<T> logic = null;
 
     private LookupLogic<T> getLookupLogic() {
-        if (type != null) return logic;
+        if (type != null)
+            return logic;
         LookupLogicType newType = LookupLogicType.determine(this);
         type = newType;
         logic = newType.get(this);
@@ -35,7 +36,8 @@ public class SimpleDatabase<T> implements IDatabase<T> {
     }
 
     private void updateLookupLogic() {
-        if (type == null) return;
+        if (type == null)
+            return;
         LookupLogicType newType = LookupLogicType.determine(this);
         if (newType != type) {
             type = null;
@@ -69,7 +71,8 @@ public class SimpleDatabase<T> implements IDatabase<T> {
 
     @Override
     public synchronized boolean removeID(int key) {
-        if (key < 0) return false;
+        if (key < 0)
+            return false;
 
         if (mapDB.remove(key) != null) {
             idMap.clear(key);
@@ -86,10 +89,12 @@ public class SimpleDatabase<T> implements IDatabase<T> {
 
     @Override
     public synchronized int getID(T value) {
-        if (value == null) return -1;
+        if (value == null)
+            return -1;
 
         for (DBEntry<T> entry : getEntries()) {
-            if (entry.getValue() == value) return entry.getID();
+            if (entry.getValue() == value)
+                return entry.getID();
         }
 
         return -1;
@@ -97,7 +102,8 @@ public class SimpleDatabase<T> implements IDatabase<T> {
 
     @Override
     public synchronized T getValue(int id) {
-        if (id < 0 || mapDB.size() <= 0) return null;
+        if (id < 0 || mapDB.size() <= 0)
+            return null;
         return mapDB.get(id);
     }
 
@@ -115,9 +121,7 @@ public class SimpleDatabase<T> implements IDatabase<T> {
     }
 
     @Override
-    public synchronized List<DBEntry<T>> getEntries() {
-        return mapDB.isEmpty() ? Collections.emptyList() : getLookupLogic().getRefCache();
-    }
+    public synchronized List<DBEntry<T>> getEntries() { return mapDB.isEmpty() ? Collections.emptyList() : getLookupLogic().getRefCache(); }
 
     /**
      * First try to use array cache.
@@ -128,4 +132,5 @@ public class SimpleDatabase<T> implements IDatabase<T> {
     public synchronized List<DBEntry<T>> bulkLookup(int... keys) {
         return mapDB.isEmpty() || keys.length == 0 ? Collections.emptyList() : getLookupLogic().bulkLookup(keys);
     }
+
 }

@@ -1,5 +1,14 @@
 package betterquesting.api2.client.gui.panels.lists;
 
+import java.util.ArrayDeque;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.IQuest;
@@ -20,16 +29,9 @@ import betterquesting.misc.QuestSearchEntry;
 import betterquesting.questing.QuestDatabase;
 import betterquesting.questing.QuestLineDatabase;
 import net.minecraft.entity.player.EntityPlayer;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.ArrayDeque;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 public class CanvasQuestSearch extends CanvasSearch<QuestSearchEntry, QuestSearchEntry> {
+
     private List<QuestSearchEntry> questList;
     private Consumer<QuestSearchEntry> questOpenCallback;
     private Consumer<QuestSearchEntry> questHighlightCallback;
@@ -51,10 +53,13 @@ public class CanvasQuestSearch extends CanvasSearch<QuestSearchEntry, QuestSearc
     }
 
     private List<QuestSearchEntry> collectQuests() {
-        return QuestLineDatabase.INSTANCE.getEntries().stream().flatMap(iQuestLineDBEntry ->
-                iQuestLineDBEntry.getValue().getEntries().stream().map(iQuestLineEntryDBEntry ->
-                        createQuestSearchEntry(iQuestLineEntryDBEntry, iQuestLineDBEntry)
-                )).collect(Collectors.toList());
+        return QuestLineDatabase.INSTANCE.getEntries()
+                .stream()
+                .flatMap(iQuestLineDBEntry -> iQuestLineDBEntry.getValue()
+                        .getEntries()
+                        .stream()
+                        .map(iQuestLineEntryDBEntry -> createQuestSearchEntry(iQuestLineEntryDBEntry, iQuestLineDBEntry)))
+                .collect(Collectors.toList());
     }
 
     private QuestSearchEntry createQuestSearchEntry(DBEntry<IQuestLineEntry> iQuestLineEntryDBEntry, DBEntry<IQuestLine> iQuestLineDBEntry) {
@@ -72,22 +77,23 @@ public class CanvasQuestSearch extends CanvasSearch<QuestSearchEntry, QuestSearc
                 results.add(entry);
             }
         } else if (
-                // quest id
-                StringUtils.containsIgnoreCase(String.valueOf(entry.getQuest().getID()), query)
+        // quest id
+        StringUtils.containsIgnoreCase(String.valueOf(entry.getQuest().getID()), query)
 
-                // quest title
-                || StringUtils.containsIgnoreCase(value.getProperty(NativeProps.NAME), query)
-                || StringUtils.containsIgnoreCase(QuestTranslation.translate(value.getProperty(NativeProps.NAME)), query)
+        // quest title
+                || StringUtils.containsIgnoreCase(value.getProperty(NativeProps.NAME), query) || StringUtils.containsIgnoreCase(QuestTranslation.translate(value
+                        .getProperty(NativeProps.NAME)), query)
 
                 // quest description
-                || StringUtils.containsIgnoreCase(value.getProperty(NativeProps.DESC), query)
-                || StringUtils.containsIgnoreCase(QuestTranslation.translate(value.getProperty(NativeProps.DESC)), query)) {
+                || StringUtils.containsIgnoreCase(value.getProperty(NativeProps.DESC), query) || StringUtils.containsIgnoreCase(QuestTranslation.translate(value
+                        .getProperty(NativeProps.DESC)), query)) {
 
             results.add(entry);
         } else {
             // task-specific search text
             for (DBEntry<ITask> task : entry.getQuest().getValue().getTasks().getEntries()) {
-                if (task.getValue().getTextForSearch() == null) continue;
+                if (task.getValue().getTextForSearch() == null)
+                    continue;
                 for (String text : task.getValue().getTextForSearch()) {
                     if (StringUtils.containsIgnoreCase(text, query)) {
                         results.add(entry);
@@ -120,24 +126,13 @@ public class CanvasQuestSearch extends CanvasSearch<QuestSearchEntry, QuestSearc
 
         buttonContainer.addPanel(createQuestPanelButton(entry));
 
-        buttonContainer.addPanel(
-                new PanelGeneric(
-                        new GuiRectangle(36, 2, 14, 14, 0),
-                        new OreDictTexture(1F, entry.getQuestLineEntry().getValue().getProperty(NativeProps.ICON),
-                                false,
-                                true)
-                )
-        );
+        buttonContainer.addPanel(new PanelGeneric(new GuiRectangle(36, 2, 14, 14, 0),
+                                                  new OreDictTexture(1F, entry.getQuestLineEntry().getValue().getProperty(NativeProps.ICON), false, true)));
         return buttonContainer;
     }
 
     private PanelButtonQuest createQuestPanelButton(QuestSearchEntry entry) {
-        PanelButtonQuest questButton = new PanelButtonQuest(
-                new GuiRectangle(2, 2, 28, 28),
-                0,
-                "",
-                entry.getQuest()
-        );
+        PanelButtonQuest questButton = new PanelButtonQuest(new GuiRectangle(2, 2, 28, 28), 0, "", entry.getQuest());
 
         questButton.setCallback(value -> {
             if (!questButton.isActive())
@@ -153,11 +148,8 @@ public class CanvasQuestSearch extends CanvasSearch<QuestSearchEntry, QuestSearc
         buttonContainer.addPanel(questName);
     }
 
-    public void setQuestHighlightCallback(Consumer<QuestSearchEntry> questHighlightCallback) {
-        this.questHighlightCallback = questHighlightCallback;
-    }
+    public void setQuestHighlightCallback(Consumer<QuestSearchEntry> questHighlightCallback) { this.questHighlightCallback = questHighlightCallback; }
 
-    public void setQuestOpenCallback(Consumer<QuestSearchEntry> questOpenCallback) {
-        this.questOpenCallback = questOpenCallback;
-    }
+    public void setQuestOpenCallback(Consumer<QuestSearchEntry> questOpenCallback) { this.questOpenCallback = questOpenCallback; }
+
 }

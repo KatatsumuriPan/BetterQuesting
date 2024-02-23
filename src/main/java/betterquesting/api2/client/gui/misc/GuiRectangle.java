@@ -3,6 +3,7 @@ package betterquesting.api2.client.gui.misc;
 import javax.annotation.Nonnull;
 
 public class GuiRectangle implements IGuiRect {
+
     public int x, y, w, h, d;
     private IGuiRect parent = null;
 
@@ -24,39 +25,25 @@ public class GuiRectangle implements IGuiRect {
     }
 
     @Override
-    public int getX() {
-        return x + (parent == null ? 0 : parent.getX());
-    }
+    public int getX() { return x + (parent == null ? 0 : parent.getX()); }
 
     @Override
-    public int getY() {
-        return y + (parent == null ? 0 : parent.getY());
-    }
+    public int getY() { return y + (parent == null ? 0 : parent.getY()); }
 
     @Override
-    public int getWidth() {
-        return w;
-    }
+    public int getWidth() { return w; }
 
     @Override
-    public int getHeight() {
-        return h;
-    }
+    public int getHeight() { return h; }
 
     @Override
-    public int getDepth() {
-        return d;
-    }
+    public int getDepth() { return d; }
 
     @Override
-    public IGuiRect getParent() {
-        return this.parent;
-    }
+    public IGuiRect getParent() { return this.parent; }
 
     @Override
-    public void setParent(IGuiRect rect) {
-        this.parent = rect;
-    }
+    public void setParent(IGuiRect rect) { this.parent = rect; }
 
     @Override
     public boolean contains(int x, int y) {
@@ -66,16 +53,18 @@ public class GuiRectangle implements IGuiRect {
         int y2 = y1 + this.getHeight();
         return x >= x1 && x < x2 && y >= y1 && y < y2;
     }
-	
-	/*@Override
-	public void translate(int dx, int dy)
-	{
-		this.x += dx;
-		this.y += dy;
-	}*/
+
+    /*@Override
+    public void translate(int dx, int dy)
+    {
+        this.x += dx;
+        this.y += dy;
+    }*/
 
     @Override
-    public int compareTo(@Nonnull IGuiRect o) {
+    public int compareTo(@Nonnull
+    IGuiRect o) {
         return (int) Math.signum(o.getDepth() - d);
     }
+
 }

@@ -1,5 +1,9 @@
 package betterquesting.commands.client;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.cache.QuestCache;
@@ -20,10 +24,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class QuestCommandShow extends QuestCommandBase {
 
     public static boolean sentViaClick = false;
@@ -39,9 +39,7 @@ public class QuestCommandShow extends QuestCommandBase {
     }
 
     @Override
-    public String getCommand() {
-        return "show";
-    }
+    public String getCommand() { return "show"; }
 
     @Override
     public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, String[] args) throws CommandException {
@@ -71,9 +69,7 @@ public class QuestCommandShow extends QuestCommandBase {
     }
 
     @Override
-    public String getUsageSuffix() {
-        return "[<quest_id>]";
-    }
+    public String getUsageSuffix() { return "[<quest_id>]"; }
 
     @Override
     public boolean validArgs(String[] args) {
@@ -82,22 +78,17 @@ public class QuestCommandShow extends QuestCommandBase {
 
     @Override
     public List<String> autoComplete(MinecraftServer server, ICommandSender sender, String[] args) {
-        return args.length == 2 ? QuestDatabase.INSTANCE.getEntries().stream().map(DBEntry::getID).map(Object::toString).collect(Collectors.toList()) : Collections.emptyList();
+        return args.length == 2 ? QuestDatabase.INSTANCE.getEntries().stream().map(DBEntry::getID).map(Object::toString).collect(Collectors.toList()) :
+                Collections.emptyList();
     }
 
     @Override
-    public String getPermissionNode() {
-        return "betterquesting.command.user.show";
-    }
+    public String getPermissionNode() { return "betterquesting.command.user.show"; }
 
     @Override
-    public DefaultPermissionLevel getPermissionLevel() {
-        return DefaultPermissionLevel.ALL;
-    }
+    public DefaultPermissionLevel getPermissionLevel() { return DefaultPermissionLevel.ALL; }
 
     @Override
-    public String getPermissionDescription() {
-        return "Permission to execute command which shows the player a particular quest.";
-    }
+    public String getPermissionDescription() { return "Permission to execute command which shows the player a particular quest."; }
 
 }

@@ -1,5 +1,7 @@
 package betterquesting.client.gui2;
 
+import java.util.List;
+
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.api2.client.gui.GuiScreenCanvas;
 import betterquesting.api2.client.gui.misc.GuiAlign;
@@ -15,9 +17,8 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 
-import java.util.List;
-
 public class GuiLootChest extends GuiScreenCanvas {
+
     private final String title;
     private final List<BigItemStack> rewards;
 
@@ -54,4 +55,5 @@ public class GuiLootChest extends GuiScreenCanvas {
             this.addPanel(new PanelItemSlot(new GuiTransform(GuiAlign.MID_CENTER, rowX + 10, rowY + 10, 16, 16, -1), -1, stack).setTextures(null, null, null));
         }
     }
+
 }

@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 public class FtbqTaskItem {
+
     public ITask[] convertTask(NBTTagCompound nbt) {
         TaskRetrieval task = new TaskRetrieval();
         task.consume = nbt.getBoolean("consume_items"); // If the default were changed to true and this was redacted then too bad. I'm not going looking for the root file just for this task
@@ -59,6 +60,9 @@ public class FtbqTaskItem {
             BetterQuesting.logger.error("Unable read item tag!");
         }
 
-        return new ITask[]{task};
+        return new ITask[] {
+                task
+        };
     }
+
 }

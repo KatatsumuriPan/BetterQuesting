@@ -8,12 +8,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 public class FactoryRewardRecipe implements IFactoryData<IReward, NBTTagCompound> {
+
     public static final FactoryRewardRecipe INSTANCE = new FactoryRewardRecipe();
 
     @Override
-    public ResourceLocation getRegistryName() {
-        return new ResourceLocation(BetterQuesting.MODID_STD, "recipe");
-    }
+    public ResourceLocation getRegistryName() { return new ResourceLocation(BetterQuesting.MODID_STD, "recipe"); }
 
     @Override
     public RewardRecipe createNew() {

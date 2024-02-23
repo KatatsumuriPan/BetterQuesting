@@ -1,18 +1,20 @@
 package betterquesting.handlers;
 
+import java.io.File;
+
+import com.google.gson.JsonObject;
+
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.api.utils.NBTConverter;
 import betterquesting.core.BetterQuesting;
 import betterquesting.questing.rewards.loot.LootRegistry;
-import com.google.gson.JsonObject;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
-import java.io.File;
-
 @EventBusSubscriber
 public class LootSaveLoad {
+
     public static LootSaveLoad INSTANCE = new LootSaveLoad();
 
     public File worldDir;
@@ -41,7 +43,8 @@ public class LootSaveLoad {
     }
 
     public void SaveLoot() {
-        JsonHelper.WriteToFile(new File(worldDir, "QuestLoot.json"), NBTConverter.NBTtoJSON_Compound(LootRegistry.INSTANCE.writeToNBT(new NBTTagCompound(), null), new JsonObject(), true));
+        JsonHelper.WriteToFile(new File(worldDir, "QuestLoot.json"),
+                               NBTConverter.NBTtoJSON_Compound(LootRegistry.INSTANCE.writeToNBT(new NBTTagCompound(), null), new JsonObject(), true));
     }
 
     public void UnloadLoot() {
@@ -49,4 +52,5 @@ public class LootSaveLoad {
         LootRegistry.INSTANCE.updateUI = false;
         worldDir = null;
     }
+
 }

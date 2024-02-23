@@ -13,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 
 // Wrapper to allow embedding items into panels as IGuiTextures
 public class ItemTexture implements IGuiTexture {
+
     private static final IGuiColor defColor = new GuiColorStatic(255, 255, 255, 255);
 
     private final BigItemStack stack;
@@ -46,7 +47,8 @@ public class ItemTexture implements IGuiTexture {
 
     @Override
     public void drawTexture(int x, int y, int width, int height, float zLevel, float partialTick, IGuiColor color) {
-        if (width <= 0 || height <= 0) return;
+        if (width <= 0 || height <= 0)
+            return;
 
         float sx = width / 16F;
         float sy = height / 16F;
@@ -70,18 +72,21 @@ public class ItemTexture implements IGuiTexture {
         GlStateManager.scale(sx, sy, 1F);
         color.applyGlColor();
 
-        RenderUtils.RenderItemStack(Minecraft.getMinecraft(), stack.getBaseStack(), 0, 0, zDepth, (showCount && stack.stackSize > 1) ? ("" + stack.stackSize) : "", 0xFFFFFFFF);
+        RenderUtils.RenderItemStack(Minecraft.getMinecraft(),
+                                    stack.getBaseStack(),
+                                    0,
+                                    0,
+                                    zDepth,
+                                    (showCount && stack.stackSize > 1) ? ("" + stack.stackSize) : "",
+                                    0xFFFFFFFF);
 
         GlStateManager.popMatrix();
     }
 
     @Override
-    public ResourceLocation getTexture() {
-        return PresetTexture.TX_NULL;
-    }
+    public ResourceLocation getTexture() { return PresetTexture.TX_NULL; }
 
     @Override
-    public IGuiRect getBounds() {
-        return bounds;
-    }
+    public IGuiRect getBounds() { return bounds; }
+
 }

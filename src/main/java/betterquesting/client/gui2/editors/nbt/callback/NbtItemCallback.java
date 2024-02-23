@@ -7,6 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class NbtItemCallback implements ICallback<BigItemStack> {
+
     private final NBTTagCompound json;
 
     public NbtItemCallback(NBTTagCompound json) {
@@ -25,4 +26,5 @@ public class NbtItemCallback implements ICallback<BigItemStack> {
         JsonHelper.ClearCompoundTag(json);
         JsonHelper.ItemStackToJson(baseStack, json);
     }
+
 }

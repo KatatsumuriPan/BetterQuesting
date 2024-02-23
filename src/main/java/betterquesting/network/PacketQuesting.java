@@ -1,5 +1,9 @@
 package betterquesting.network;
 
+import java.util.function.Consumer;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.core.BetterQuesting;
 import io.netty.buffer.ByteBuf;
@@ -12,11 +16,9 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import org.apache.logging.log4j.Level;
-
-import java.util.function.Consumer;
 
 public class PacketQuesting implements IMessage {
+
     protected NBTTagCompound tags = new NBTTagCompound();
 
     @SuppressWarnings("unused")
@@ -40,10 +42,13 @@ public class PacketQuesting implements IMessage {
     }
 
     public static class HandleServer implements IMessageHandler<PacketQuesting, IMessage> {
+
         @Override
         public IMessage onMessage(PacketQuesting packet, MessageContext ctx) {
             if (packet == null || packet.tags == null || ctx.getServerHandler().player.getServer() == null) {
-                BetterQuesting.logger.log(Level.ERROR, "A critical NPE error occured during while handling a BetterQuesting packet server side", new NullPointerException());
+                BetterQuesting.logger.log(Level.ERROR,
+                                          "A critical NPE error occured during while handling a BetterQuesting packet server side",
+                                          new NullPointerException());
                 return null;
             }
 
@@ -57,7 +62,8 @@ public class PacketQuesting implements IMessage {
                 return null;
             }
 
-            final Consumer<Tuple<NBTTagCompound, EntityPlayerMP>> method = PacketTypeRegistry.INSTANCE.getServerHandler(new ResourceLocation(message.getString("ID")));
+            final Consumer<Tuple<NBTTagCompound, EntityPlayerMP>> method = PacketTypeRegistry.INSTANCE.getServerHandler(new ResourceLocation(message.getString(
+                                                                                                                                                               "ID")));
 
             if (method == null) {
                 BetterQuesting.logger.log(Level.WARN, "Recieved a packet server side with an invalid ID: " + message.getString("ID"));
@@ -68,13 +74,17 @@ public class PacketQuesting implements IMessage {
 
             return null;
         }
+
     }
 
     public static class HandleClient implements IMessageHandler<PacketQuesting, IMessage> {
+
         @Override
         public IMessage onMessage(PacketQuesting packet, MessageContext ctx) {
             if (packet == null || packet.tags == null) {
-                BetterQuesting.logger.log(Level.ERROR, "A critical NPE error occured during while handling a BetterQuesting packet client side", new NullPointerException());
+                BetterQuesting.logger.log(Level.ERROR,
+                                          "A critical NPE error occured during while handling a BetterQuesting packet client side",
+                                          new NullPointerException());
                 return null;
             }
 
@@ -98,5 +108,7 @@ public class PacketQuesting implements IMessage {
 
             return null;
         }
+
     }
+
 }

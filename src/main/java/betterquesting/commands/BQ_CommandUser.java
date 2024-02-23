@@ -1,5 +1,9 @@
 package betterquesting.commands;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import betterquesting.commands.user.QuestCommandHelp;
 import betterquesting.commands.user.QuestCommandRefresh;
 import betterquesting.commands.user.QuestCommandSPHardcore;
@@ -15,11 +19,8 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class BQ_CommandUser extends CommandBase {
+
     private final List<QuestCommandBase> coms = new ArrayList<>();
 
     public BQ_CommandUser() {
@@ -31,14 +32,10 @@ public class BQ_CommandUser extends CommandBase {
     }
 
     @Override
-    public String getName() {
-        return "bq_user";
-    }
+    public String getName() { return "bq_user"; }
 
     @Override
-    public int getRequiredPermissionLevel() {
-        return 0;
-    }
+    public int getRequiredPermissionLevel() { return 0; }
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
@@ -135,4 +132,5 @@ public class BQ_CommandUser extends CommandBase {
 
         return false;
     }
+
 }

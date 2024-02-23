@@ -1,7 +1,8 @@
 package betterquesting.api2.utils;
 
-import betterquesting.core.ModReference;
 import com.mojang.authlib.GameProfile;
+
+import betterquesting.core.ModReference;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.util.ResourceLocation;
@@ -12,6 +13,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityPlayerPreview extends EntityOtherPlayerMP {
+
     private final ResourceLocation resource;
 
     /**
@@ -28,14 +30,10 @@ public class EntityPlayerPreview extends EntityOtherPlayerMP {
     }
 
     @Override
-    public ResourceLocation getLocationSkin() {
-        return this.resource;
-    }
+    public ResourceLocation getLocationSkin() { return this.resource; }
 
     @Override
-    public ResourceLocation getLocationCape() {
-        return null;
-    }
+    public ResourceLocation getLocationCape() { return null; }
 
     @Override
     public boolean hasSkin() {
@@ -43,13 +41,11 @@ public class EntityPlayerPreview extends EntityOtherPlayerMP {
     }
 
     @Override
-    public ITextComponent getDisplayName() {
-        return new TextComponentString("");
-    }
+    public ITextComponent getDisplayName() { return new TextComponentString(""); }
 
-    @Override
-    @SideOnly(Side.CLIENT)
+    @Override @SideOnly(Side.CLIENT)
     public boolean isWearing(EnumPlayerModelParts part) {
         return true;
     }
+
 }

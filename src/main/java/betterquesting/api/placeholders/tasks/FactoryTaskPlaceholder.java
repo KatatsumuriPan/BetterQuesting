@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 public class FactoryTaskPlaceholder implements IFactoryData<TaskPlaceholder, NBTTagCompound> {
+
     public static final FactoryTaskPlaceholder INSTANCE = new FactoryTaskPlaceholder();
 
     private final ResourceLocation ID = new ResourceLocation(ModReference.MODID, "placeholder");
@@ -14,9 +15,7 @@ public class FactoryTaskPlaceholder implements IFactoryData<TaskPlaceholder, NBT
     }
 
     @Override
-    public ResourceLocation getRegistryName() {
-        return ID;
-    }
+    public ResourceLocation getRegistryName() { return ID; }
 
     @Override
     public TaskPlaceholder createNew() {
@@ -29,4 +28,5 @@ public class FactoryTaskPlaceholder implements IFactoryData<TaskPlaceholder, NBT
         task.readFromNBT(nbt);
         return task;
     }
+
 }

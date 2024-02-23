@@ -1,5 +1,18 @@
 package betterquesting.questing.tasks;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api.utils.ItemComparison;
@@ -22,13 +35,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
 
 public class TaskTame implements ITask {
+
     private final Set<UUID> completeUsers = new TreeSet<>();
     public final HashMap<UUID, Integer> userProgress = new HashMap<>();
     public String idName = "minecraft:wolf";
@@ -42,14 +51,10 @@ public class TaskTame implements ITask {
     public NBTTagCompound targetTags = new NBTTagCompound();
 
     @Override
-    public String getUnlocalisedName() {
-        return "bq_standard.task.tame";
-    }
+    public String getUnlocalisedName() { return "bq_standard.task.tame"; }
 
     @Override
-    public ResourceLocation getFactoryID() {
-        return FactoryTaskTame.INSTANCE.getRegistryName();
-    }
+    public ResourceLocation getFactoryID() { return FactoryTaskTame.INSTANCE.getRegistryName(); }
 
     @Override
     public void detect(ParticipantInfo pInfo, DBEntry<IQuest> quest) {
@@ -57,13 +62,16 @@ public class TaskTame implements ITask {
         int prev = completeUsers.size();
 
         progress.forEach((value) -> {
-            if (value.getSecond() >= required) setComplete(value.getFirst());
+            if (value.getSecond() >= required)
+                setComplete(value.getFirst());
         });
 
-        if (prev != completeUsers.size()) pInfo.markDirtyParty(Collections.singletonList(quest.getID()));
+        if (prev != completeUsers.size())
+            pInfo.markDirtyParty(Collections.singletonList(quest.getID()));
     }
 
-    public void onAnimalTamed(ParticipantInfo pInfo, DBEntry<IQuest> quest, @Nonnull EntityLivingBase entity) {
+    public void onAnimalTamed(ParticipantInfo pInfo, DBEntry<IQuest> quest, @Nonnull
+    EntityLivingBase entity) {
         Class<? extends Entity> subject = entity.getClass();
         ResourceLocation targetID = new ResourceLocation(idName);
         Class<? extends Entity> target = EntityList.getClass(targetID);
@@ -79,15 +87,18 @@ public class TaskTame implements ITask {
 
         NBTTagCompound subjectTags = new NBTTagCompound();
         entity.writeToNBTOptional(subjectTags);
-        if (!ignoreNBT && !ItemComparison.CompareNBTTag(targetTags, subjectTags, true)) return;
+        if (!ignoreNBT && !ItemComparison.CompareNBTTag(targetTags, subjectTags, true))
+            return;
 
         final List<Tuple<UUID, Integer>> progress = getBulkProgress(pInfo.ALL_UUIDS);
 
         progress.forEach((value) -> {
-            if (isComplete(value.getFirst())) return;
+            if (isComplete(value.getFirst()))
+                return;
             int np = Math.min(required, value.getSecond() + 1);
             setUserProgress(value.getFirst(), np);
-            if (np >= required) setComplete(value.getFirst());
+            if (np >= required)
+                setComplete(value.getFirst());
         });
 
         pInfo.markDirtyParty(Collections.singletonList(quest.getID()));
@@ -104,7 +115,8 @@ public class TaskTame implements ITask {
     }
 
     @Override
-    public void resetUser(@Nullable UUID uuid) {
+    public void resetUser(@Nullable
+    UUID uuid) {
         if (uuid == null) {
             completeUsers.clear();
             userProgress.clear();
@@ -114,16 +126,12 @@ public class TaskTame implements ITask {
         }
     }
 
-    @Nullable
-    @Override
-    @SideOnly(Side.CLIENT)
+    @Nullable @Override @SideOnly(Side.CLIENT)
     public IGuiPanel getTaskGui(IGuiRect rect, DBEntry<IQuest> quest) {
         return new PanelTaskTame(rect, this);
     }
 
-    @Nullable
-    @Override
-    @SideOnly(Side.CLIENT)
+    @Nullable @Override @SideOnly(Side.CLIENT)
     public GuiScreen getTaskEditor(GuiScreen parent, DBEntry<IQuest> quest) {
         return new GuiEditTaskTame(parent, quest, this);
     }
@@ -177,13 +185,15 @@ public class TaskTame implements ITask {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
+    List<UUID> users) {
         NBTTagList jArray = new NBTTagList();
         NBTTagList progArray = new NBTTagList();
 
         if (users != null) {
             users.forEach((uuid) -> {
-                if (completeUsers.contains(uuid)) jArray.appendTag(new NBTTagString(uuid.toString()));
+                if (completeUsers.contains(uuid))
+                    jArray.appendTag(new NBTTagString(uuid.toString()));
 
                 Integer data = userProgress.get(uuid);
                 if (data != null) {
@@ -219,15 +229,16 @@ public class TaskTame implements ITask {
         return n == null ? 0 : n;
     }
 
-    private List<Tuple<UUID, Integer>> getBulkProgress(@Nonnull List<UUID> uuids) {
-        if (uuids.size() <= 0) return Collections.emptyList();
+    private List<Tuple<UUID, Integer>> getBulkProgress(@Nonnull
+    List<UUID> uuids) {
+        if (uuids.size() <= 0)
+            return Collections.emptyList();
         List<Tuple<UUID, Integer>> list = new ArrayList<>();
         uuids.forEach((key) -> list.add(new Tuple<>(key, getUsersProgress(key))));
         return list;
     }
 
     @Override
-    public List<String> getTextForSearch() {
-        return Collections.singletonList(idName);
-    }
+    public List<String> getTextForSearch() { return Collections.singletonList(idName); }
+
 }

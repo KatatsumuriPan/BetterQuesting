@@ -1,5 +1,7 @@
 package betterquesting.client.gui2.tasks;
 
+import java.util.UUID;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.api2.client.gui.misc.GuiAlign;
@@ -14,8 +16,6 @@ import betterquesting.api2.utils.QuestTranslation;
 import betterquesting.questing.tasks.TaskRetrieval;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextFormatting;
-
-import java.util.UUID;
 
 public class PanelTaskRetrieval extends CanvasMinimum {
 
@@ -39,7 +39,8 @@ public class PanelTaskRetrieval extends CanvasMinimum {
 
         String sCon = (task.consume ? TextFormatting.RED : TextFormatting.GREEN) + QuestTranslation.translate(task.consume ? "gui.yes" : "gui.no");
 
-        this.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, 0, 0, listW, 16, 0), QuestTranslation.translate("bq_standard.btn.consume", sCon)).setColor(PresetColor.TEXT_MAIN.getColor()));
+        this.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, 0, 0, listW, 16, 0), QuestTranslation.translate("bq_standard.btn.consume", sCon))
+                .setColor(PresetColor.TEXT_MAIN.getColor()));
 
         for (int i = 0; i < task.requiredItems.size(); i++) {
             BigItemStack stack = task.requiredItems.get(i);
@@ -51,7 +52,8 @@ public class PanelTaskRetrieval extends CanvasMinimum {
 
             sb.append(stack.getBaseStack().getDisplayName());
 
-            if (stack.hasOreDict()) sb.append(" (").append(stack.getOreDict()).append(")");
+            if (stack.hasOreDict())
+                sb.append(" (").append(stack.getOreDict()).append(")");
 
             sb.append("\n").append(progress[i]).append("/").append(stack.stackSize).append("\n");
 
@@ -67,4 +69,5 @@ public class PanelTaskRetrieval extends CanvasMinimum {
         }
         recalculateSizes();
     }
+
 }

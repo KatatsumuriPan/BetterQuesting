@@ -1,5 +1,18 @@
 package betterquesting.questing.tasks;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.NbtBlockType;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.ITask;
@@ -27,13 +40,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
 
 public class TaskBlockBreak implements ITask {
+
     private final Set<UUID> completeUsers = new TreeSet<>();
     private final TreeMap<UUID, int[]> userProgress = new TreeMap<>();
     public final List<NbtBlockType> blockTypes = new ArrayList<>();
@@ -43,9 +52,7 @@ public class TaskBlockBreak implements ITask {
     }
 
     @Override
-    public ResourceLocation getFactoryID() {
-        return FactoryTaskBlockBreak.INSTANCE.getRegistryName();
-    }
+    public ResourceLocation getFactoryID() { return FactoryTaskBlockBreak.INSTANCE.getRegistryName(); }
 
     @Override
     public boolean isComplete(UUID uuid) {
@@ -58,19 +65,19 @@ public class TaskBlockBreak implements ITask {
     }
 
     @Override
-    public String getUnlocalisedName() {
-        return "bq_standard.task.block_break";
-    }
+    public String getUnlocalisedName() { return "bq_standard.task.block_break"; }
 
     @Override
     public void detect(ParticipantInfo pInfo, DBEntry<IQuest> quest) {
         pInfo.ALL_UUIDS.forEach((uuid) -> {
-            if (isComplete(uuid)) return;
+            if (isComplete(uuid))
+                return;
 
             int[] tmp = getUsersProgress(uuid);
             for (int i = 0; i < blockTypes.size(); i++) {
                 NbtBlockType block = blockTypes.get(i);
-                if (block != null && tmp[i] < block.n) return;
+                if (block != null && tmp[i] < block.n)
+                    return;
             }
             setComplete(uuid);
         });
@@ -88,13 +95,17 @@ public class TaskBlockBreak implements ITask {
         for (int i = 0; i < blockTypes.size(); i++) {
             NbtBlockType targetBlock = blockTypes.get(i);
 
-            int tmpMeta = (targetBlock.m < 0 || targetBlock.m == OreDictionary.WILDCARD_VALUE) ? OreDictionary.WILDCARD_VALUE : state.getBlock().getMetaFromState(state);
-            boolean oreMatch = targetBlock.oreDict.length() > 0 && OreDictionary.getOres(targetBlock.oreDict).contains(new ItemStack(state.getBlock(), 1, tmpMeta));
+            int tmpMeta = (targetBlock.m < 0 || targetBlock.m == OreDictionary.WILDCARD_VALUE) ? OreDictionary.WILDCARD_VALUE : state.getBlock()
+                    .getMetaFromState(state);
+            boolean oreMatch = targetBlock.oreDict.length() > 0 && OreDictionary.getOres(targetBlock.oreDict)
+                    .contains(new ItemStack(state.getBlock(), 1, tmpMeta));
             final int index = i;
 
-            if ((oreMatch || (state.getBlock() == targetBlock.b && (targetBlock.m < 0 || state.getBlock().getMetaFromState(state) == targetBlock.m))) && ItemComparison.CompareNBTTag(targetBlock.tags, tags, true)) {
+            if ((oreMatch || (state.getBlock() == targetBlock.b && (targetBlock.m < 0 || state.getBlock().getMetaFromState(state) == targetBlock.m))) &&
+                    ItemComparison.CompareNBTTag(targetBlock.tags, tags, true)) {
                 progress.forEach((entry) -> {
-                    if (entry.getSecond()[index] >= targetBlock.n) return;
+                    if (entry.getSecond()[index] >= targetBlock.n)
+                        return;
                     entry.getSecond()[index]++;
                 });
                 changed = true;
@@ -183,20 +194,23 @@ public class TaskBlockBreak implements ITask {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
+    List<UUID> users) {
         NBTTagList jArray = new NBTTagList();
         NBTTagList progArray = new NBTTagList();
 
         if (users != null) {
             users.forEach((uuid) -> {
-                if (completeUsers.contains(uuid)) jArray.appendTag(new NBTTagString(uuid.toString()));
+                if (completeUsers.contains(uuid))
+                    jArray.appendTag(new NBTTagString(uuid.toString()));
 
                 int[] data = userProgress.get(uuid);
                 if (data != null) {
                     NBTTagCompound pJson = new NBTTagCompound();
                     pJson.setString("uuid", uuid.toString());
                     NBTTagList pArray = new NBTTagList(); // TODO: Why the heck isn't this just an int array?!
-                    for (int i : data) pArray.appendTag(new NBTTagInt(i));
+                    for (int i : data)
+                        pArray.appendTag(new NBTTagInt(i));
                     pJson.setTag("data", pArray);
                     progArray.appendTag(pJson);
                 }
@@ -208,7 +222,8 @@ public class TaskBlockBreak implements ITask {
                 NBTTagCompound pJson = new NBTTagCompound();
                 pJson.setString("uuid", uuid.toString());
                 NBTTagList pArray = new NBTTagList(); // TODO: Why the heck isn't this just an int array?!
-                for (int i : data) pArray.appendTag(new NBTTagInt(i));
+                for (int i : data)
+                    pArray.appendTag(new NBTTagInt(i));
                 pJson.setTag("data", pArray);
                 progArray.appendTag(pJson);
             });
@@ -221,7 +236,8 @@ public class TaskBlockBreak implements ITask {
     }
 
     @Override
-    public void resetUser(@Nullable UUID uuid) {
+    public void resetUser(@Nullable
+    UUID uuid) {
         if (uuid == null) {
             completeUsers.clear();
             userProgress.clear();
@@ -231,14 +247,12 @@ public class TaskBlockBreak implements ITask {
         }
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
+    @Override @SideOnly(Side.CLIENT)
     public IGuiPanel getTaskGui(IGuiRect rect, DBEntry<IQuest> quest) {
         return new PanelTaskBlockBreak(rect, this);
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
+    @Override @SideOnly(Side.CLIENT)
     public GuiScreen getTaskEditor(GuiScreen screen, DBEntry<IQuest> context) {
         return null;
     }
@@ -252,14 +266,17 @@ public class TaskBlockBreak implements ITask {
         return progress == null || progress.length != blockTypes.size() ? new int[blockTypes.size()] : progress;
     }
 
-    private List<Tuple<UUID, int[]>> getBulkProgress(@Nonnull List<UUID> uuids) {
-        if (uuids.size() <= 0) return Collections.emptyList();
+    private List<Tuple<UUID, int[]>> getBulkProgress(@Nonnull
+    List<UUID> uuids) {
+        if (uuids.size() <= 0)
+            return Collections.emptyList();
         List<Tuple<UUID, int[]>> list = new ArrayList<>();
         uuids.forEach((key) -> list.add(new Tuple<>(key, getUsersProgress(key))));
         return list;
     }
 
-    private void setBulkProgress(@Nonnull List<Tuple<UUID, int[]>> list) {
+    private void setBulkProgress(@Nonnull
+    List<Tuple<UUID, int[]>> list) {
         list.forEach((entry) -> setUserProgress(entry.getFirst(), entry.getSecond()));
     }
 
@@ -273,4 +290,5 @@ public class TaskBlockBreak implements ITask {
         }
         return texts;
     }
+
 }

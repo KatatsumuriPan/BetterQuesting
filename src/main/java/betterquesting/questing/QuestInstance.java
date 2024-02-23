@@ -1,5 +1,17 @@
 package betterquesting.questing;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.enums.EnumLogic;
 import betterquesting.api.enums.EnumQuestState;
@@ -24,16 +36,16 @@ import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTPrimitive;
+import net.minecraft.nbt.NBTTagByteArray;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagIntArray;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.Map.Entry;
 
 public class QuestInstance implements IQuest {
+
     private final TaskStorage tasks = new TaskStorage();
     private final RewardStorage rewards = new RewardStorage();
 
@@ -107,7 +119,8 @@ public class QuestInstance implements IQuest {
     public void detect(EntityPlayer player) {
         UUID playerID = QuestingAPI.getQuestingUUID(player);
         QuestCache qc = player.getCapability(CapabilityProviderQuestCache.CAP_QUEST_CACHE, null);
-        if (qc == null) return;
+        if (qc == null)
+            return;
         int questID = QuestDatabase.INSTANCE.getID(this);
 
         if (isComplete(playerID) && (qInfo.getProperty(NativeProps.REPEAT_TIME) < 0 || rewards.size() <= 0)) {
@@ -152,13 +165,15 @@ public class QuestInstance implements IQuest {
 
     @Override
     public boolean hasClaimed(UUID uuid) {
-        if (rewards.size() <= 0) return true;
+        if (rewards.size() <= 0)
+            return true;
 
         synchronized (completeUsers) {
             if (qInfo.getProperty(NativeProps.GLOBAL) && !qInfo.getProperty(NativeProps.GLOBAL_SHARE)) {
                 // TODO: Figure out some replacement to track participation
                 for (NBTTagCompound entry : completeUsers.values()) {
-                    if (entry.getBoolean("claimed")) return true;
+                    if (entry.getBoolean("claimed"))
+                        return true;
                 }
 
                 return false;
@@ -179,7 +194,8 @@ public class QuestInstance implements IQuest {
 
     @Override
     public boolean canClaim(EntityPlayer player) {
-        if (!canClaimBasically(player)) return false;
+        if (!canClaimBasically(player))
+            return false;
         DBEntry<IQuest> dbe = new DBEntry<>(QuestDatabase.INSTANCE.getID(this), this);
         for (DBEntry<IReward> rew : rewards.getEntries()) {
             if (!rew.getValue().canClaim(player, dbe)) {
@@ -214,20 +230,24 @@ public class QuestInstance implements IQuest {
             DirtyPlayerMarker.markDirty(pID);
         }
 
-        if (qc != null) qc.markQuestDirty(questID);
+        if (qc != null)
+            qc.markQuestDirty(questID);
     }
 
     @Override
-    public boolean canSubmit(@Nonnull EntityPlayer player) {
+    public boolean canSubmit(@Nonnull
+    EntityPlayer player) {
         UUID playerID = QuestingAPI.getQuestingUUID(player);
 
         synchronized (completeUsers) {
             NBTTagCompound entry = this.getCompletionInfo(playerID);
-            if (entry == null) return true;
+            if (entry == null)
+                return true;
 
             if (!entry.getBoolean("claimed") && getProperty(NativeProps.REPEAT_TIME) >= 0) // Complete but repeatable
             {
-                if (tasks.size() <= 0) return true;
+                if (tasks.size() <= 0)
+                    return true;
 
                 int done = 0;
 
@@ -246,7 +266,8 @@ public class QuestInstance implements IQuest {
 
     @Override
     public boolean isUnlocked(UUID uuid) {
-        if (preRequisites.length <= 0) return true;
+        if (preRequisites.length <= 0)
+            return true;
 
         int A = 0;
         int B = preRequisites.length;
@@ -262,7 +283,8 @@ public class QuestInstance implements IQuest {
 
     @Override
     public void setComplete(UUID uuid, long timestamp) {
-        if (uuid == null) return;
+        if (uuid == null)
+            return;
 
         synchronized (completeUsers) {
             NBTTagCompound entry = this.getCompletionInfo(uuid);
@@ -316,7 +338,8 @@ public class QuestInstance implements IQuest {
 
     @Override
     public void setCompletionInfo(UUID uuid, NBTTagCompound nbt) {
-        if (uuid == null) return;
+        if (uuid == null)
+            return;
 
         synchronized (completeUsers) {
             if (nbt == null) {
@@ -332,7 +355,8 @@ public class QuestInstance implements IQuest {
      * Resets task progress and claim status. If performing a full reset, completion status will also be erased
      */
     @Override
-    public void resetUser(@Nullable UUID uuid, boolean fullReset) {
+    public void resetUser(@Nullable
+    UUID uuid, boolean fullReset) {
         synchronized (completeUsers) {
             HashSet<UUID> dirtyPlayers = new HashSet<>();
             if (uuid == null) {
@@ -368,35 +392,29 @@ public class QuestInstance implements IQuest {
     }
 
     @Override
-    public IDatabaseNBT<ITask, NBTTagList, NBTTagList> getTasks() {
-        return tasks;
-    }
+    public IDatabaseNBT<ITask, NBTTagList, NBTTagList> getTasks() { return tasks; }
 
     @Override
-    public IDatabaseNBT<IReward, NBTTagList, NBTTagList> getRewards() {
-        return rewards;
-    }
+    public IDatabaseNBT<IReward, NBTTagList, NBTTagList> getRewards() { return rewards; }
 
-    @Nonnull
-    @Override
-    public int[] getRequirements() {
-        return this.preRequisites;
-    }
+    @Nonnull @Override
+    public int[] getRequirements() { return this.preRequisites; }
 
-    public void setRequirements(@Nonnull int[] req) {
+    public void setRequirements(@Nonnull
+    int[] req) {
         prereqTypes.retainEntries((a, b) -> Arrays.stream(req).anyMatch(i -> i == a));
         this.preRequisites = req;
     }
 
-    @Nonnull
-    @Override
+    @Nonnull @Override
     public RequirementType getRequirementType(int req) {
         RequirementType type = prereqTypes.get(req);
         return type == null ? RequirementType.NORMAL : type;
     }
 
     @Override
-    public void setRequirementType(int req, @Nonnull RequirementType kind) {
+    public void setRequirementType(int req, @Nonnull
+    RequirementType kind) {
         if (kind == RequirementType.NORMAL)
             prereqTypes.remove(req);
         else
@@ -453,12 +471,15 @@ public class QuestInstance implements IQuest {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound json, @Nullable List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound json, @Nullable
+    List<UUID> users) {
         synchronized (completeUsers) {
             NBTTagList comJson = new NBTTagList();
             for (Entry<UUID, NBTTagCompound> entry : completeUsers.entrySet()) {
-                if (entry.getValue() == null || entry.getKey() == null) continue;
-                if (users != null && !users.contains(entry.getKey())) continue;
+                if (entry.getValue() == null || entry.getKey() == null)
+                    continue;
+                if (users != null && !users.contains(entry.getKey()))
+                    continue;
                 NBTTagCompound tags = entry.getValue().copy();
                 tags.setString("uuid", entry.getKey().toString());
                 comJson.appendTag(tags);
@@ -475,7 +496,8 @@ public class QuestInstance implements IQuest {
     @Override
     public void readProgressFromNBT(NBTTagCompound json, boolean merge) {
         synchronized (completeUsers) {
-            if (!merge) completeUsers.clear();
+            if (!merge)
+                completeUsers.clear();
             NBTTagList comList = json.getTagList("completed", 10);
             for (int i = 0; i < comList.tagCount(); i++) {
                 NBTTagCompound entry = comList.getCompoundTagAt(i).copy();
@@ -539,4 +561,5 @@ public class QuestInstance implements IQuest {
     public void removeAllProps() {
         qInfo.removeAllProps();
     }
+
 }

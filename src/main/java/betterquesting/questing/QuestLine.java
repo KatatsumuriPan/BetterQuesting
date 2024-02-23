@@ -1,5 +1,9 @@
 package betterquesting.questing;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import betterquesting.api.properties.IPropertyType;
 import betterquesting.api.properties.NativeProps;
 import betterquesting.api.questing.IQuestLine;
@@ -12,10 +16,8 @@ import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
 public class QuestLine extends SimpleDatabase<IQuestLineEntry> implements IQuestLine {
+
     private PropertyContainer info = new PropertyContainer();
 
     public QuestLine() {
@@ -87,13 +89,15 @@ public class QuestLine extends SimpleDatabase<IQuestLineEntry> implements IQuest
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound json, @Nullable List<Integer> subset) {
+    public NBTTagCompound writeToNBT(NBTTagCompound json, @Nullable
+    List<Integer> subset) {
         json.setTag("properties", info.writeToNBT(new NBTTagCompound()));
 
         NBTTagList jArr = new NBTTagList();
 
         for (DBEntry<IQuestLineEntry> entry : getEntries()) {
-            if (subset != null && !subset.contains(entry.getID())) continue;
+            if (subset != null && !subset.contains(entry.getID()))
+                continue;
             NBTTagCompound qle = entry.getValue().writeToNBT(new NBTTagCompound());
             qle.setInteger("id", entry.getID());
             jArr.appendTag(qle);
@@ -107,14 +111,16 @@ public class QuestLine extends SimpleDatabase<IQuestLineEntry> implements IQuest
     public void readFromNBT(NBTTagCompound json, boolean merge) {
         info.readFromNBT(json.getCompoundTag("properties"));
 
-        if (!merge) reset();
+        if (!merge)
+            reset();
 
         NBTTagList qList = json.getTagList("quests", 10);
         for (int i = 0; i < qList.tagCount(); i++) {
             NBTTagCompound qTag = qList.getCompoundTagAt(i);
 
             int id = qTag.hasKey("id", 99) ? qTag.getInteger("id") : -1;
-            if (id < 0) continue;
+            if (id < 0)
+                continue;
 
             add(id, new QuestLineEntry(qTag));
         }
@@ -151,4 +157,5 @@ public class QuestLine extends SimpleDatabase<IQuestLineEntry> implements IQuest
     public void removeAllProps() {
         info.removeAllProps();
     }
+
 }

@@ -12,6 +12,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemGuideBook extends Item {
+
     public ItemGuideBook() {
         this.setTranslationKey("betterquesting.guide");
         this.setCreativeTab(BetterQuesting.tabQuesting);
@@ -31,9 +32,9 @@ public class ItemGuideBook extends Item {
         return new ActionResult<>(EnumActionResult.PASS, stack);
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
+    @Override @SideOnly(Side.CLIENT)
     public boolean hasEffect(ItemStack stack) {
         return true;
     }
+
 }

@@ -1,10 +1,10 @@
 package betterquesting.api2.storage;
 
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import gnu.trove.map.TIntObjectMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 
 class NaiveLookupLogic<T> extends LookupLogic<T> {
 
@@ -37,4 +37,5 @@ class NaiveLookupLogic<T> extends LookupLogic<T> {
         }
         return list;
     }
+
 }

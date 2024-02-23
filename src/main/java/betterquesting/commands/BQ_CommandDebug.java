@@ -1,10 +1,15 @@
 package betterquesting.commands;
 
+import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.google.gson.JsonObject;
+
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.api2.supporter.SupporterAPI;
 import betterquesting.client.themes.ResourceTheme;
 import betterquesting.client.themes.ThemeRegistry;
-import com.google.gson.JsonObject;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -12,15 +17,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 
-import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
-
 public class BQ_CommandDebug extends CommandBase {
+
     @Override
-    public String getName() {
-        return "bq_debug";
-    }
+    public String getName() { return "bq_debug"; }
 
     @Override
     public String getUsage(ICommandSender sender) {
@@ -49,4 +49,5 @@ public class BQ_CommandDebug extends CommandBase {
             System.out.println("FAILED");
         }
     }
+
 }

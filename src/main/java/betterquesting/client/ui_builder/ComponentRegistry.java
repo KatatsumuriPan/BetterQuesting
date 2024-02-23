@@ -1,5 +1,13 @@
 package betterquesting.client.ui_builder;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.function.BiFunction;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import betterquesting.api2.client.gui.controls.PanelButton;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.CanvasTextured;
@@ -10,14 +18,8 @@ import betterquesting.core.ModReference;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.function.BiFunction;
-
 public class ComponentRegistry {
+
     public static final ComponentRegistry INSTANCE = new ComponentRegistry();
 
     private final HashMap<ResourceLocation, BiFunction<IGuiRect, NBTTagCompound, IGuiPanel>> REG_MAP = new HashMap<>();
@@ -27,7 +29,10 @@ public class ComponentRegistry {
         init();
     }
 
-    public void register(@Nonnull ResourceLocation idname, @Nonnull BiFunction<IGuiRect, NBTTagCompound, IGuiPanel> factory, @Nonnull NBTTagCompound template) {
+    public void register(@Nonnull
+    ResourceLocation idname, @Nonnull
+    BiFunction<IGuiRect, NBTTagCompound, IGuiPanel> factory, @Nonnull
+    NBTTagCompound template) {
         if (REG_MAP.containsKey(idname)) {
             throw new IllegalArgumentException("Tried to register duplicate GUI component ID");
         }
@@ -37,7 +42,10 @@ public class ComponentRegistry {
     }
 
     @Nonnull
-    public IGuiPanel createNew(@Nonnull ResourceLocation idName, @Nonnull IGuiRect rect, @Nullable NBTTagCompound tag) {
+    public IGuiPanel createNew(@Nonnull
+    ResourceLocation idName, @Nonnull
+    IGuiRect rect, @Nullable
+    NBTTagCompound tag) {
         BiFunction<IGuiRect, NBTTagCompound, IGuiPanel> factory = REG_MAP.get(idName);
         if (factory == null)
             return new CanvasTextured(rect, ThemeRegistry.INSTANCE.getTexture(null)); // TODO: Return placeholder panel
@@ -47,23 +55,25 @@ public class ComponentRegistry {
     }
 
     @Nonnull
-    public NBTTagCompound getTemplateTag(@Nonnull ResourceLocation idName) {
+    public NBTTagCompound getTemplateTag(@Nonnull
+    ResourceLocation idName) {
         NBTTagCompound tag = TEMPLATE_TAGS.get(idName);
         return tag == null ? new NBTTagCompound() : tag.copy();
     }
 
-    public List<ResourceLocation> getRegisteredIDs() {
-        return new ArrayList<>(REG_MAP.keySet());
-    }
+    public List<ResourceLocation> getRegisteredIDs() { return new ArrayList<>(REG_MAP.keySet()); }
 
     private void init() {
         //register(new ResourceLocation(ModReference.MODID, "canvas_empty"), CanvasEmpty::new, new NBTTagCompound());
 
         NBTTagCompound refTag = new NBTTagCompound();
         //refTag.setString("texture", PresetTexture.PANEL_MAIN.getKey().toString());
-        register(new ResourceLocation(ModReference.MODID, "canvas_textured"), (rect, tag) -> new CanvasTextured(rect, PresetTexture.PANEL_MAIN.getTexture()), refTag);
+        register(new ResourceLocation(ModReference.MODID, "canvas_textured"),
+                 (rect, tag) -> new CanvasTextured(rect, PresetTexture.PANEL_MAIN.getTexture()),
+                 refTag);
         register(new ResourceLocation(ModReference.MODID, "panel_button"), (rect, tag) -> {
             return new PanelButton(rect, -1, "New Button");
         }, refTag);
     }
+
 }

@@ -1,5 +1,11 @@
 package betterquesting.network.handlers;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.network.QuestingPacket;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.storage.DBEntry;
@@ -14,12 +20,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nonnull;
-import java.util.List;
 
 public class NetQuestAction {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation(ModReference.MODID, "quest_action");
 
     public static void registerHandler() {
@@ -27,8 +30,10 @@ public class NetQuestAction {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void requestClaim(@Nonnull int[] questIDs) {
-        if (questIDs.length <= 0) return;
+    public static void requestClaim(@Nonnull
+    int[] questIDs) {
+        if (questIDs.length <= 0)
+            return;
         NBTTagCompound payload = new NBTTagCompound();
         payload.setInteger("action", 0);
         payload.setIntArray("questIDs", questIDs);
@@ -36,8 +41,10 @@ public class NetQuestAction {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void requestDetect(@Nonnull int[] questIDs) {
-        if (questIDs.length <= 0) return;
+    public static void requestDetect(@Nonnull
+    int[] questIDs) {
+        if (questIDs.length <= 0)
+            return;
         NBTTagCompound payload = new NBTTagCompound();
         payload.setInteger("action", 1);
         payload.setIntArray("questIDs", questIDs);
@@ -66,7 +73,8 @@ public class NetQuestAction {
         List<DBEntry<IQuest>> qLists = QuestDatabase.INSTANCE.bulkLookup(questIDs);
 
         for (DBEntry<IQuest> entry : qLists) {
-            if (!entry.getValue().canClaim(player)) continue;
+            if (!entry.getValue().canClaim(player))
+                continue;
             entry.getValue().claimReward(player);
         }
     }
@@ -78,4 +86,5 @@ public class NetQuestAction {
             entry.getValue().detect(player);
         }
     }
+
 }

@@ -1,5 +1,9 @@
 package betterquesting.api2.client.gui.resources.textures;
 
+import javax.annotation.Nonnull;
+
+import org.lwjgl.opengl.GL11;
+
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
@@ -8,11 +12,9 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
-
-import javax.annotation.Nonnull;
 
 public class PolyTexture implements IGuiTexture {
+
     private final IGuiColor defColor;
     private final boolean shadow;
     private final double[] verts;
@@ -20,11 +22,13 @@ public class PolyTexture implements IGuiTexture {
     private int borderSize = 1;
     private IGuiColor borColor = new GuiColorStatic(0xFFFFFFFF);
 
-    public PolyTexture(int points, double rotation, boolean shadow, @Nonnull IGuiColor color) {
+    public PolyTexture(int points, double rotation, boolean shadow, @Nonnull
+    IGuiColor color) {
         this.defColor = color;
         this.shadow = shadow;
 
-        if (points <= 0) points = 32;
+        if (points <= 0)
+            points = 32;
         verts = new double[points * 2]; // XY positions of all outer verticies
         double min = 0.0001D;
 
@@ -47,7 +51,8 @@ public class PolyTexture implements IGuiTexture {
         }
     }
 
-    public PolyTexture(@Nonnull double[] verts, boolean shadow, IGuiColor color) {
+    public PolyTexture(@Nonnull
+    double[] verts, boolean shadow, IGuiColor color) {
         this.defColor = color;
         this.shadow = shadow;
         this.verts = new double[verts.length];
@@ -67,7 +72,8 @@ public class PolyTexture implements IGuiTexture {
 
     @Override
     public void drawTexture(int x, int y, int width, int height, float zDepth, float partialTick, IGuiColor color) {
-        if (width <= 0 || height <= 0) return;
+        if (width <= 0 || height <= 0)
+            return;
 
         GlStateManager.pushMatrix();
 
@@ -75,7 +81,10 @@ public class PolyTexture implements IGuiTexture {
         BufferBuilder vertexbuffer = tessellator.getBuffer();
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA,
+                                            GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
+                                            GlStateManager.SourceFactor.ONE,
+                                            GlStateManager.DestFactor.ZERO);
 
         int w = shadow ? width - 2 : width;
         int h = shadow ? height - 2 : height;
@@ -135,12 +144,9 @@ public class PolyTexture implements IGuiTexture {
     }
 
     @Override
-    public ResourceLocation getTexture() {
-        return null;
-    }
+    public ResourceLocation getTexture() { return null; }
 
     @Override
-    public IGuiRect getBounds() {
-        return null;
-    }
+    public IGuiRect getBounds() { return null; }
+
 }

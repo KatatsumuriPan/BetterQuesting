@@ -1,5 +1,11 @@
 package betterquesting.questing.rewards;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import betterquesting.api.placeholders.rewards.RewardPlaceholder;
 import betterquesting.api.questing.rewards.IReward;
 import betterquesting.api2.storage.DBEntry;
@@ -9,16 +15,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 public class RewardStorage extends SimpleDatabase<IReward> implements IDatabaseNBT<IReward, NBTTagList, NBTTagList> {
+
     @Override
-    public NBTTagList writeToNBT(NBTTagList json, @Nullable List<Integer> subset) {
+    public NBTTagList writeToNBT(NBTTagList json, @Nullable
+    List<Integer> subset) {
         for (DBEntry<IReward> rew : getEntries()) {
-            if (subset != null && !subset.contains(rew.getID())) continue;
+            if (subset != null && !subset.contains(rew.getID()))
+                continue;
             ResourceLocation rewardID = rew.getValue().getFactoryID();
             NBTTagCompound rJson = rew.getValue().writeToNBT(new NBTTagCompound());
             rJson.setString("rewardID", rewardID.toString());
@@ -31,7 +35,8 @@ public class RewardStorage extends SimpleDatabase<IReward> implements IDatabaseN
 
     @Override
     public void readFromNBT(NBTTagList json, boolean merge) {
-        if (!merge) reset();
+        if (!merge)
+            reset();
         List<IReward> unassigned = new ArrayList<>();
 
         for (int i = 0; i < json.tagCount(); i++) {
@@ -79,11 +84,13 @@ public class RewardStorage extends SimpleDatabase<IReward> implements IDatabaseN
     // === Future support ===
 
     @Override
-    public NBTTagList writeProgressToNBT(NBTTagList nbt, @Nullable List<UUID> user) {
+    public NBTTagList writeProgressToNBT(NBTTagList nbt, @Nullable
+    List<UUID> user) {
         return nbt;
     }
 
     @Override
     public void readProgressFromNBT(NBTTagList nbt, boolean merge) {
     }
+
 }

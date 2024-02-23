@@ -8,6 +8,7 @@ import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class FtbqTaskAdvancement {
+
     public ITask[] converTask(NBTTagCompound tag) {
         TaskTrigger task = new TaskTrigger();
 
@@ -16,6 +17,9 @@ public class FtbqTaskAdvancement {
 
         FTBQQuestImporter.provideQuestIcon(new BigItemStack(Items.WHEAT));
 
-        return new ITask[]{task};
+        return new ITask[] {
+                task
+        };
     }
+
 }

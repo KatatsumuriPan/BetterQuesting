@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 public class FtbqTaskEnergy {
+
     // With a little magic we're going to support this without having to reference RF Expansion nor even have it installed!
     public ITask[] converTask(NBTTagCompound tag) {
         NBTTagCompound rfTaskTag = new NBTTagCompound();
@@ -28,6 +29,9 @@ public class FtbqTaskEnergy {
 
         FTBQQuestImporter.provideQuestIcon(new BigItemStack(Blocks.REDSTONE_BLOCK));
 
-        return new ITask[]{task};
+        return new ITask[] {
+                task
+        };
     }
+
 }

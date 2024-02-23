@@ -4,6 +4,7 @@ import betterquesting.api.questing.IQuestLineEntry;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class QuestLineEntry implements IQuestLineEntry {
+
     private int sizeX = 0;
     private int sizeY = 0;
     private int posX = 0;
@@ -32,31 +33,20 @@ public class QuestLineEntry implements IQuestLineEntry {
         this.posY = y;
     }
 
-    @Override
-    @Deprecated
-    public int getSize() {
-        return Math.max(getSizeX(), getSizeY());
-    }
+    @Override @Deprecated
+    public int getSize() { return Math.max(getSizeX(), getSizeY()); }
 
     @Override
-    public int getSizeX() {
-        return this.sizeX;
-    }
+    public int getSizeX() { return this.sizeX; }
 
     @Override
-    public int getSizeY() {
-        return this.sizeY;
-    }
+    public int getSizeY() { return this.sizeY; }
 
     @Override
-    public int getPosX() {
-        return posX;
-    }
+    public int getPosX() { return posX; }
 
     @Override
-    public int getPosY() {
-        return posY;
-    }
+    public int getPosY() { return posY; }
 
     @Override
     public void setPosition(int posX, int posY) {
@@ -64,8 +54,7 @@ public class QuestLineEntry implements IQuestLineEntry {
         this.posY = posY;
     }
 
-    @Override
-    @Deprecated
+    @Override @Deprecated
     public void setSize(int size) {
         this.sizeX = size;
         this.sizeY = size;
@@ -101,11 +90,7 @@ public class QuestLineEntry implements IQuestLineEntry {
 
     @Override
     public String toString() {
-        return "QuestLineEntry{" +
-                "sizeX=" + sizeX +
-                ", sizeY=" + sizeY +
-                ", posX=" + posX +
-                ", posY=" + posY +
-                '}';
+        return "QuestLineEntry{" + "sizeX=" + sizeX + ", sizeY=" + sizeY + ", posX=" + posX + ", posY=" + posY + '}';
     }
+
 }

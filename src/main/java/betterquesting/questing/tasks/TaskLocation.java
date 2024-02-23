@@ -1,5 +1,16 @@
 package betterquesting.questing.tasks;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.IGuiPanel;
@@ -19,13 +30,9 @@ import net.minecraft.util.StringUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
 
 public class TaskLocation implements ITaskTickable {
+
     private final Set<UUID> completeUsers = new TreeSet<>();
     public String name = "New Location";
     public String structure = "";
@@ -41,14 +48,10 @@ public class TaskLocation implements ITaskTickable {
     public boolean taxiCab = false;
 
     @Override
-    public ResourceLocation getFactoryID() {
-        return FactoryTaskLocation.INSTANCE.getRegistryName();
-    }
+    public ResourceLocation getFactoryID() { return FactoryTaskLocation.INSTANCE.getRegistryName(); }
 
     @Override
-    public String getUnlocalisedName() {
-        return "bq_standard.task.location";
-    }
+    public String getUnlocalisedName() { return "bq_standard.task.location"; }
 
     @Override
     public boolean isComplete(UUID uuid) {
@@ -61,7 +64,8 @@ public class TaskLocation implements ITaskTickable {
     }
 
     @Override
-    public void resetUser(@Nullable UUID uuid) {
+    public void resetUser(@Nullable
+    UUID uuid) {
         if (uuid == null) {
             completeUsers.clear();
         } else {
@@ -70,27 +74,38 @@ public class TaskLocation implements ITaskTickable {
     }
 
     @Override
-    public void tickTask(@Nonnull ParticipantInfo pInfo, DBEntry<IQuest> quest) {
-        if (pInfo.PLAYER.ticksExisted % 100 == 0) internalDetect(pInfo, quest);
+    public void tickTask(@Nonnull
+    ParticipantInfo pInfo, DBEntry<IQuest> quest) {
+        if (pInfo.PLAYER.ticksExisted % 100 == 0)
+            internalDetect(pInfo, quest);
     }
 
     @Override
-    public void detect(@Nonnull ParticipantInfo pInfo, DBEntry<IQuest> quest) {
+    public void detect(@Nonnull
+    ParticipantInfo pInfo, DBEntry<IQuest> quest) {
         internalDetect(pInfo, quest);
     }
 
-    private void internalDetect(@Nonnull ParticipantInfo pInfo, DBEntry<IQuest> quest) {
-        if (!pInfo.PLAYER.isEntityAlive() || !(pInfo.PLAYER instanceof EntityPlayerMP)) return;
+    private void internalDetect(@Nonnull
+    ParticipantInfo pInfo, DBEntry<IQuest> quest) {
+        if (!pInfo.PLAYER.isEntityAlive() || !(pInfo.PLAYER instanceof EntityPlayerMP))
+            return;
 
         EntityPlayerMP playerMP = (EntityPlayerMP) pInfo.PLAYER;
 
         boolean flag = false;
 
         if (playerMP.dimension == dim && (range <= 0 || getDistance(playerMP) <= range)) {
-            if (!StringUtils.isNullOrEmpty(biome) && !new ResourceLocation(biome).equals(playerMP.getServerWorld().getBiome(playerMP.getPosition()).getRegistryName())) {
-                if (!invert) return;
-            } else if (!StringUtils.isNullOrEmpty(structure) && !playerMP.getServerWorld().getChunkProvider().isInsideStructure(playerMP.world, structure, playerMP.getPosition())) {
-                if (!invert) return;
+            if (!StringUtils.isNullOrEmpty(biome) && !new ResourceLocation(biome).equals(playerMP.getServerWorld()
+                    .getBiome(playerMP.getPosition())
+                    .getRegistryName())) {
+                if (!invert)
+                    return;
+            } else if (!StringUtils.isNullOrEmpty(structure) && !playerMP.getServerWorld()
+                    .getChunkProvider()
+                    .isInsideStructure(playerMP.world, structure, playerMP.getPosition())) {
+                if (!invert)
+                    return;
             } else if (visible && range > 0) // Do not do ray casting with infinite range!
             {
                 Vec3d pPos = new Vec3d(playerMP.posX, playerMP.posY + playerMP.getEyeHeight(), playerMP.posZ);
@@ -107,7 +122,8 @@ public class TaskLocation implements ITaskTickable {
 
         if (flag != invert) {
             pInfo.ALL_UUIDS.forEach((uuid) -> {
-                if (!isComplete(uuid)) setComplete(uuid);
+                if (!isComplete(uuid))
+                    setComplete(uuid);
             });
             pInfo.markDirtyParty(Collections.singletonList(quest.getID()));
         }
@@ -157,11 +173,13 @@ public class TaskLocation implements ITaskTickable {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
+    List<UUID> users) {
         NBTTagList jArray = new NBTTagList();
 
         completeUsers.forEach((uuid) -> {
-            if (users == null || users.contains(uuid)) jArray.appendTag(new NBTTagString(uuid.toString()));
+            if (users == null || users.contains(uuid))
+                jArray.appendTag(new NBTTagString(uuid.toString()));
         });
 
         nbt.setTag("completeUsers", jArray);
@@ -171,7 +189,8 @@ public class TaskLocation implements ITaskTickable {
 
     @Override
     public void readProgressFromNBT(NBTTagCompound nbt, boolean merge) {
-        if (!merge) completeUsers.clear();
+        if (!merge)
+            completeUsers.clear();
         NBTTagList cList = nbt.getTagList("completeUsers", 8);
         for (int i = 0; i < cList.tagCount(); i++) {
             try {
@@ -193,7 +212,6 @@ public class TaskLocation implements ITaskTickable {
     }
 
     @Override
-    public List<String> getTextForSearch() {
-        return Collections.singletonList(name);
-    }
+    public List<String> getTextForSearch() { return Collections.singletonList(name); }
+
 }

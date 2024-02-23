@@ -8,6 +8,7 @@ import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class NbtEntityCallback implements ICallback<Entity> {
+
     private final NBTTagCompound json;
 
     public NbtEntityCallback(NBTTagCompound json) {
@@ -26,4 +27,5 @@ public class NbtEntityCallback implements ICallback<Entity> {
         JsonHelper.ClearCompoundTag(json);
         JsonHelper.EntityToJson(baseEntity, json);
     }
+
 }

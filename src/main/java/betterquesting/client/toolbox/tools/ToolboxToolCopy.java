@@ -1,5 +1,11 @@
 package betterquesting.client.toolbox.tools;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+
 import betterquesting.api.client.toolbox.IToolboxTool;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.IQuestLine;
@@ -18,9 +24,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 
-import java.util.*;
-
 public class ToolboxToolCopy implements IToolboxTool {
+
     private CanvasQuestLine gui = null;
 
     private final NonNullList<GrabEntry> grabList = NonNullList.create();
@@ -38,7 +43,8 @@ public class ToolboxToolCopy implements IToolboxTool {
 
     @Override
     public void refresh(CanvasQuestLine gui) {
-        if (grabList.size() <= 0) return;
+        if (grabList.size() <= 0)
+            return;
 
         List<GrabEntry> tmp = new ArrayList<>();
 
@@ -57,7 +63,8 @@ public class ToolboxToolCopy implements IToolboxTool {
 
     @Override
     public void drawCanvas(int mx, int my, float partialTick) {
-        if (grabList.size() <= 0) return;
+        if (grabList.size() <= 0)
+            return;
 
         int snap = Math.max(1, ToolboxTabMain.INSTANCE.getSnapValue());
         int dx = mx;
@@ -76,7 +83,8 @@ public class ToolboxToolCopy implements IToolboxTool {
 
     @Override
     public void drawOverlay(int mx, int my, float partialTick) {
-        if (grabList.size() > 0) ToolboxTabMain.INSTANCE.drawGrid(gui);
+        if (grabList.size() > 0)
+            ToolboxTabMain.INSTANCE.drawGrid(gui);
     }
 
     @Override
@@ -99,11 +107,14 @@ public class ToolboxToolCopy implements IToolboxTool {
             if (btnClicked != null) // Pickup the group or the single one if none are selected
             {
                 if (PanelToolController.selected.size() > 0) {
-                    if (!PanelToolController.selected.contains(btnClicked)) return false;
+                    if (!PanelToolController.selected.contains(btnClicked))
+                        return false;
 
                     for (PanelButtonQuest btn : PanelToolController.selected) {
                         GuiRectangle rect = new GuiRectangle(btn.rect);
-                        grabList.add(new GrabEntry(new PanelButtonQuest(rect, -1, "", btn.getStoredValue()), rect.x - btnClicked.rect.x, rect.y - btnClicked.rect.y));
+                        grabList.add(new GrabEntry(new PanelButtonQuest(rect, -1, "", btn.getStoredValue()),
+                                                   rect.x - btnClicked.rect.x,
+                                                   rect.y - btnClicked.rect.y));
                     }
                 } else {
                     grabList.add(new GrabEntry(new PanelButtonQuest(new GuiRectangle(btnClicked.rect), -1, "", btnClicked.getStoredValue()), 0, 0));
@@ -181,7 +192,8 @@ public class ToolboxToolCopy implements IToolboxTool {
         int[] nxtIDs = new int[num];
 
         if (listDB.size() <= 0 || listDB.get(listDB.size() - 1).getID() == listDB.size() - 1) {
-            for (int i = 0; i < num; i++) nxtIDs[i] = listDB.size() + i;
+            for (int i = 0; i < num; i++)
+                nxtIDs[i] = listDB.size() + i;
             return nxtIDs;
         }
 
@@ -229,6 +241,7 @@ public class ToolboxToolCopy implements IToolboxTool {
     }
 
     private class GrabEntry {
+
         private final PanelButtonQuest btn;
         private final int offX;
         private final int offY;
@@ -238,5 +251,7 @@ public class ToolboxToolCopy implements IToolboxTool {
             this.offX = offX;
             this.offY = offY;
         }
+
     }
+
 }

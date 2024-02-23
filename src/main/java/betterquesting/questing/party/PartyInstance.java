@@ -1,5 +1,14 @@
 package betterquesting.questing.party;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
 import betterquesting.api.enums.EnumPartyStatus;
 import betterquesting.api.properties.IPropertyContainer;
 import betterquesting.api.properties.IPropertyType;
@@ -10,11 +19,8 @@ import betterquesting.storage.PropertyContainer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-import javax.annotation.Nonnull;
-import java.util.*;
-import java.util.Map.Entry;
-
 public class PartyInstance implements IParty {
+
     private final HashMap<UUID, EnumPartyStatus> members = new HashMap<>();
     private List<UUID> memCache = null;
 
@@ -41,25 +47,29 @@ public class PartyInstance implements IParty {
     }
 
     @Override
-    public IPropertyContainer getProperties() {
-        return pInfo;
-    }
+    public IPropertyContainer getProperties() { return pInfo; }
 
     @Override
-    public void kickUser(@Nonnull UUID uuid) {
-        if (!members.containsKey(uuid)) return;
+    public void kickUser(@Nonnull
+    UUID uuid) {
+        if (!members.containsKey(uuid))
+            return;
 
         EnumPartyStatus old = members.get(uuid);
         members.remove(uuid);
 
-        if (old == EnumPartyStatus.OWNER && members.size() > 0) hostMigrate();
+        if (old == EnumPartyStatus.OWNER && members.size() > 0)
+            hostMigrate();
         refreshCache();
     }
 
     @Override
-    public void setStatus(@Nonnull UUID uuid, @Nonnull EnumPartyStatus priv) {
+    public void setStatus(@Nonnull
+    UUID uuid, @Nonnull
+    EnumPartyStatus priv) {
         EnumPartyStatus old = members.get(uuid);
-        if (old == priv) return;
+        if (old == priv)
+            return;
 
         members.put(uuid, priv);
 
@@ -75,7 +85,8 @@ public class PartyInstance implements IParty {
 
             // Find new owner
             for (UUID mem : getMembers()) {
-                if (mem == uuid) continue;
+                if (mem == uuid)
+                    continue;
 
                 if (members.get(mem) == EnumPartyStatus.ADMIN) {
                     migrate = mem;
@@ -98,13 +109,15 @@ public class PartyInstance implements IParty {
     }
 
     @Override
-    public EnumPartyStatus getStatus(@Nonnull UUID uuid) {
+    public EnumPartyStatus getStatus(@Nonnull
+    UUID uuid) {
         return members.get(uuid);
     }
 
     @Override
     public List<UUID> getMembers() {
-        if (memCache == null) refreshCache();
+        if (memCache == null)
+            refreshCache();
         return memCache;
     }
 
@@ -167,7 +180,8 @@ public class PartyInstance implements IParty {
         for (int i = 0; i < memList.tagCount(); i++) {
             try {
                 NBTTagCompound jMem = memList.getCompoundTagAt(i);
-                if (!jMem.hasKey("uuid", 8) || !jMem.hasKey("status")) continue;
+                if (!jMem.hasKey("uuid", 8) || !jMem.hasKey("status"))
+                    continue;
                 UUID uuid = UUID.fromString(jMem.getString("uuid"));
                 EnumPartyStatus priv = EnumPartyStatus.valueOf(jMem.getString("status"));
                 members.put(uuid, priv);
@@ -188,4 +202,5 @@ public class PartyInstance implements IParty {
     public void readProperties(NBTTagCompound nbt) {
         pInfo.readFromNBT(nbt);
     }
+
 }

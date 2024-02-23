@@ -1,5 +1,7 @@
 package betterquesting.network.handlers;
 
+import javax.annotation.Nonnull;
+
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.events.DatabaseEvent;
@@ -19,9 +21,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-
 public class NetRewardChoice {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation("bq_standard:choice_reward");
 
     public static void registerHandler() {
@@ -41,7 +42,8 @@ public class NetRewardChoice {
         QuestingAPI.getAPI(ApiReference.PACKET_SENDER).sendToServer(new QuestingPacket(ID_NAME, payload));
     }
 
-    public static void sendChoice(@Nonnull EntityPlayerMP player, int questID, int rewardID, int index) {
+    public static void sendChoice(@Nonnull
+    EntityPlayerMP player, int questID, int rewardID, int index) {
         NBTTagCompound payload = new NBTTagCompound();
         payload.setInteger("questID", questID);
         payload.setInteger("rewardID", rewardID);
@@ -57,7 +59,8 @@ public class NetRewardChoice {
         int rID = tag.hasKey("rewardID") ? tag.getInteger("rewardID") : -1;
         int sel = tag.hasKey("selection") ? tag.getInteger("selection") : -1;
 
-        if (qID < 0 || rID < 0) return;
+        if (qID < 0 || rID < 0)
+            return;
 
         IQuest quest = QuestingAPI.getAPI(ApiReference.QUEST_DB).getValue(qID);
         IReward reward = quest == null ? null : quest.getRewards().getValue(rID);
@@ -77,7 +80,8 @@ public class NetRewardChoice {
         int rID = message.hasKey("rewardID", 99) ? message.getInteger("rewardID") : -1;
         int sel = message.hasKey("selection", 99) ? message.getInteger("selection") : -1;
 
-        if (qID < 0 || rID < 0) return;
+        if (qID < 0 || rID < 0)
+            return;
 
         IQuest quest = QuestingAPI.getAPI(ApiReference.QUEST_DB).getValue(qID);
         IReward reward = quest == null ? null : quest.getRewards().getValue(rID);
@@ -88,4 +92,5 @@ public class NetRewardChoice {
             //MinecraftForge.EVENT_BUS.post(new Update());
         }
     }
+
 }

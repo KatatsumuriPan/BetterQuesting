@@ -1,5 +1,20 @@
 package betterquesting.client.themes;
 
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.function.Function;
+
+import org.apache.logging.log4j.Level;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.api2.client.gui.misc.GuiPadding;
@@ -13,7 +28,11 @@ import betterquesting.api2.client.gui.resources.textures.SlicedTexture;
 import betterquesting.api2.client.gui.themes.GuiKey;
 import betterquesting.api2.client.gui.themes.IGuiTheme;
 import betterquesting.api2.client.gui.themes.IThemeRegistry;
-import betterquesting.api2.client.gui.themes.presets.*;
+import betterquesting.api2.client.gui.themes.presets.PresetColor;
+import betterquesting.api2.client.gui.themes.presets.PresetGUIs;
+import betterquesting.api2.client.gui.themes.presets.PresetIcon;
+import betterquesting.api2.client.gui.themes.presets.PresetLine;
+import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import betterquesting.client.gui2.GuiHome;
 import betterquesting.client.gui2.editors.GuiFileBrowser;
 import betterquesting.client.gui2.editors.GuiTextEditor;
@@ -23,7 +42,6 @@ import betterquesting.client.gui2.editors.nbt.GuiItemSelection;
 import betterquesting.client.gui2.editors.nbt.GuiNbtEditor;
 import betterquesting.core.BetterQuesting;
 import betterquesting.handlers.ConfigHandler;
-import com.google.gson.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.IResource;
@@ -32,16 +50,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
-import org.apache.logging.log4j.Level;
-
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.function.Function;
 
 public class ThemeRegistry implements IThemeRegistry {
+
     public static final ThemeRegistry INSTANCE = new ThemeRegistry();
 
     private static final IGuiTexture NULL_TEXTURE = new SlicedTexture(PresetTexture.TX_NULL, new GuiRectangle(0, 0, 32, 32), new GuiPadding(8, 8, 8, 8));
@@ -69,8 +80,7 @@ public class ThemeRegistry implements IThemeRegistry {
 
         setDefaultGui(PresetGUIs.HOME, arg -> new GuiHome(arg.parent));
 
-        setDefaultGui(PresetGUIs.EDIT_NBT, arg ->
-        {
+        setDefaultGui(PresetGUIs.EDIT_NBT, arg -> {
             if (arg.value instanceof NBTTagCompound) {
                 //noinspection unchecked
                 return new GuiNbtEditor(arg.parent, (NBTTagCompound) arg.value, arg.callback);
@@ -155,7 +165,8 @@ public class ThemeRegistry implements IThemeRegistry {
 
     @Override
     public IGuiTheme getTheme(ResourceLocation key) {
-        if (key == null) return null;
+        if (key == null)
+            return null;
         return themes.get(key);
     }
 
@@ -220,15 +231,19 @@ public class ThemeRegistry implements IThemeRegistry {
                             continue;
                         }
 
-                        ResourceLocation parentID = !jThm.has("themeParent") ? null : new ResourceLocation(JsonHelper.GetString(jThm, "themeParent", "minecraft:null"));
+                        ResourceLocation parentID = !jThm.has("themeParent") ? null : new ResourceLocation(JsonHelper.GetString(jThm,
+                                                                                                                                "themeParent",
+                                                                                                                                "minecraft:null"));
                         String themeName = JsonHelper.GetString(jThm, "themeName", "Unnamed Theme");
                         String idRaw = JsonHelper.GetString(jThm, "themeID", themeName);
                         idRaw = idRaw.toLowerCase().trim().replaceAll(" ", "_");
-                        if (!idRaw.contains(":")) idRaw = domain + ":" + idRaw;
+                        if (!idRaw.contains(":"))
+                            idRaw = domain + ":" + idRaw;
                         ResourceLocation themeId = new ResourceLocation(idRaw);
 
                         int n = 0;
-                        while (themes.containsKey(themeId)) themeId = new ResourceLocation(domain, idRaw + n++);
+                        while (themes.containsKey(themeId))
+                            themeId = new ResourceLocation(domain, idRaw + n++);
 
                         ResourceTheme resTheme;
 
@@ -252,72 +267,74 @@ public class ThemeRegistry implements IThemeRegistry {
 
     @Override
     public IGuiTexture getTexture(ResourceLocation key) {
-        if (key == null) return NULL_TEXTURE;
+        if (key == null)
+            return NULL_TEXTURE;
 
         IGuiTexture tex = null;
 
-        if (getCurrentTheme() != null) tex = activeTheme.getTexture(key);
-        if (tex == null) tex = defTextures.get(key);
+        if (getCurrentTheme() != null)
+            tex = activeTheme.getTexture(key);
+        if (tex == null)
+            tex = defTextures.get(key);
         return tex == null ? NULL_TEXTURE : tex;
     }
 
     @Override
     public IGuiLine getLine(ResourceLocation key) {
-        if (key == null) return NULL_LINE;
+        if (key == null)
+            return NULL_LINE;
 
         IGuiLine line = null;
 
-        if (getCurrentTheme() != null) line = activeTheme.getLine(key);
-        if (line == null) line = defLines.get(key);
+        if (getCurrentTheme() != null)
+            line = activeTheme.getLine(key);
+        if (line == null)
+            line = defLines.get(key);
         return line == null ? NULL_LINE : line;
     }
 
     @Override
     public IGuiColor getColor(ResourceLocation key) {
-        if (key == null) return NULL_COLOR;
+        if (key == null)
+            return NULL_COLOR;
 
         IGuiColor color = null;
 
-        if (getCurrentTheme() != null) color = activeTheme.getColor(key);
-        if (color == null) color = defColors.get(key);
+        if (getCurrentTheme() != null)
+            color = activeTheme.getColor(key);
+        if (color == null)
+            color = defColors.get(key);
         return color == null ? NULL_COLOR : color;
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
+    @Override @SuppressWarnings("unchecked")
     public <T> GuiScreen getGui(GuiKey<T> key, T args) {
-        if (key == null) return null;
+        if (key == null)
+            return null;
 
         Function<T, GuiScreen> func = null;
 
-        if (getCurrentTheme() != null) func = activeTheme.getGui(key);
-        if (func == null) func = (Function<T, GuiScreen>) defGuis.get(key);
+        if (getCurrentTheme() != null)
+            func = activeTheme.getGui(key);
+        if (func == null)
+            func = (Function<T, GuiScreen>) defGuis.get(key);
 
         return func == null ? null : func.apply(args);
     }
 
     @Override
-    public List<IGuiTheme> getAllThemes() {
-        return new ArrayList<>(themes.values());
-    }
+    public List<IGuiTheme> getAllThemes() { return new ArrayList<>(themes.values()); }
 
     @Override
-    public ResourceLocation[] getKnownTextures() {
-        return defTextures.keySet().toArray(new ResourceLocation[0]);
-    }
+    public ResourceLocation[] getKnownTextures() { return defTextures.keySet().toArray(new ResourceLocation[0]); }
 
     @Override
-    public ResourceLocation[] getKnownColors() {
-        return defColors.keySet().toArray(new ResourceLocation[0]);
-    }
+    public ResourceLocation[] getKnownColors() { return defColors.keySet().toArray(new ResourceLocation[0]); }
 
     @Override
-    public ResourceLocation[] getKnownLines() {
-        return defLines.keySet().toArray(new ResourceLocation[0]);
-    }
+    public ResourceLocation[] getKnownLines() { return defLines.keySet().toArray(new ResourceLocation[0]); }
 
     @Override
-    public GuiKey[] getKnownGuis() {
-        return defGuis.keySet().toArray(new GuiKey[0]);
-    }
+    public GuiKey[] getKnownGuis() { return defGuis.keySet().toArray(new GuiKey[0]); }
+
 }

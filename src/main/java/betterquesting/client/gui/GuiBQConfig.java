@@ -1,5 +1,8 @@
 package betterquesting.client.gui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import betterquesting.core.ModReference;
 import betterquesting.handlers.ConfigHandler;
 import net.minecraft.client.gui.GuiScreen;
@@ -10,11 +13,9 @@ import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @SideOnly(Side.CLIENT)
 public class GuiBQConfig extends GuiConfig {
+
     public GuiBQConfig(GuiScreen parent) {
         super(parent, getCategories(ConfigHandler.config), ModReference.MODID, false, false, ModReference.NAME);
     }
@@ -24,4 +25,5 @@ public class GuiBQConfig extends GuiConfig {
         config.getCategoryNames().forEach((s) -> cats.add(new ConfigElement(config.getCategory(s))));
         return cats;
     }
+
 }

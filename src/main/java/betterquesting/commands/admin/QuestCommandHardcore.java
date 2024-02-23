@@ -1,5 +1,8 @@
 package betterquesting.commands.admin;
 
+import java.util.Collections;
+import java.util.List;
+
 import betterquesting.api.properties.NativeProps;
 import betterquesting.commands.QuestCommandBase;
 import betterquesting.handlers.SaveLoadHandler;
@@ -12,19 +15,13 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 
-import java.util.Collections;
-import java.util.List;
-
 public class QuestCommandHardcore extends QuestCommandBase {
-    @Override
-    public String getCommand() {
-        return "hardcore";
-    }
 
     @Override
-    public String getUsageSuffix() {
-        return "[true|false]";
-    }
+    public String getCommand() { return "hardcore"; }
+
+    @Override
+    public String getUsageSuffix() { return "[true|false]"; }
 
     @Override
     public boolean validArgs(String[] args) {
@@ -57,22 +54,19 @@ public class QuestCommandHardcore extends QuestCommandBase {
         QuestSettings.INSTANCE.setProperty(NativeProps.HARDCORE, flag);
         SaveLoadHandler.INSTANCE.markDirty();
 
-        sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.hardcore", new TextComponentTranslation(QuestSettings.INSTANCE.getProperty(NativeProps.HARDCORE) ? "options.on" : "options.off")));
+        sender.sendMessage(new TextComponentTranslation("betterquesting.cmd.hardcore",
+                                                        new TextComponentTranslation(QuestSettings.INSTANCE.getProperty(NativeProps.HARDCORE) ? "options.on" :
+                                                                "options.off")));
         NetSettingSync.sendSync(null);
     }
 
     @Override
-    public String getPermissionNode() {
-        return "betterquesting.command.admin.hardcore";
-    }
+    public String getPermissionNode() { return "betterquesting.command.admin.hardcore"; }
 
     @Override
-    public DefaultPermissionLevel getPermissionLevel() {
-        return DefaultPermissionLevel.OP;
-    }
+    public DefaultPermissionLevel getPermissionLevel() { return DefaultPermissionLevel.OP; }
 
     @Override
-    public String getPermissionDescription() {
-        return "Permission to activate or not the use of hardcore lives";
-    }
+    public String getPermissionDescription() { return "Permission to activate or not the use of hardcore lives"; }
+
 }

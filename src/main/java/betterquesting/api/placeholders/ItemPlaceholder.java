@@ -1,5 +1,9 @@
 package betterquesting.api.placeholders;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,10 +15,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
 public class ItemPlaceholder extends Item {
+
     public static Item placeholder = new ItemPlaceholder();
 
     // Used solely for retaining info to missing items
@@ -25,9 +27,9 @@ public class ItemPlaceholder extends Item {
     /**
      * allows items to add custom lines of information to the mouseover description
      */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    @Override @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable
+    World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         if (!stack.hasTagCompound()) {
             tooltip.add("ERROR: Original information missing!");
             return;
@@ -60,4 +62,5 @@ public class ItemPlaceholder extends Item {
             player.inventory.setInventorySlotContents(slot, converted);
         }
     }
+
 }

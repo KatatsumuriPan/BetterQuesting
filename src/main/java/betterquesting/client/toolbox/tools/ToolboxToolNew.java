@@ -1,5 +1,8 @@
 package betterquesting.client.toolbox.tools;
 
+import java.util.Collections;
+import java.util.List;
+
 import betterquesting.api.client.toolbox.IToolboxTool;
 import betterquesting.api.questing.IQuestLine;
 import betterquesting.api.questing.IQuestLineEntry;
@@ -16,10 +19,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 
-import java.util.Collections;
-import java.util.List;
-
 public class ToolboxToolNew implements IToolboxTool {
+
     private CanvasQuestLine gui = null;
     private PanelButtonQuest nQuest;
 
@@ -63,7 +64,8 @@ public class ToolboxToolNew implements IToolboxTool {
 
     @Override
     public void disableTool() {
-        if (nQuest != null) nQuest = null;
+        if (nQuest != null)
+            nQuest = null;
     }
 
     @Override
@@ -77,7 +79,6 @@ public class ToolboxToolNew implements IToolboxTool {
         int qID = QuestDatabase.INSTANCE.nextID();
         int lID = QuestLineDatabase.INSTANCE.getID(qLine);
         IQuestLineEntry qe = qLine.getValue(qID);//new QuestLineEntry(mx, my, 24);
-
 
         if (qe == null) {
             qe = new QuestLineEntry(nQuest.rect.x, nQuest.rect.y, 24, 24);
@@ -139,4 +140,5 @@ public class ToolboxToolNew implements IToolboxTool {
     public boolean useSelection() {
         return false;
     }
+
 }

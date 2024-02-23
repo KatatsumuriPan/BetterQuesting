@@ -1,5 +1,12 @@
 package betterquesting.network.handlers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import betterquesting.api.events.DatabaseEvent;
 import betterquesting.api.events.DatabaseEvent.DBType;
 import betterquesting.api.network.QuestingPacket;
@@ -23,13 +30,8 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-
 public class NetNameSync {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation(ModReference.MODID, "name_sync");
 
     public static void registerHandler() {
@@ -41,13 +43,16 @@ public class NetNameSync {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void sendRequest(@Nullable UUID[] uuids, @Nullable String[] names) {
+    public static void sendRequest(@Nullable
+    UUID[] uuids, @Nullable
+    String[] names) {
         // NOTE: You can make an empty request if you want EVERYTHING (but I would not recommend it on large servers)
         NBTTagCompound payload = new NBTTagCompound();
         if (uuids != null) {
             NBTTagList uList = new NBTTagList();
             for (UUID id : uuids) {
-                if (id == null) continue;
+                if (id == null)
+                    continue;
                 uList.appendTag(new NBTTagString(id.toString()));
             }
             payload.setTag("uuids", uList);
@@ -55,7 +60,8 @@ public class NetNameSync {
         if (names != null) {
             NBTTagList nList = new NBTTagList();
             for (String s : names) {
-                if (StringUtils.isNullOrEmpty(s)) continue;
+                if (StringUtils.isNullOrEmpty(s))
+                    continue;
                 nList.appendTag(new NBTTagString(s));
             }
             payload.setTag("names", nList);
@@ -63,9 +69,11 @@ public class NetNameSync {
         PacketSender.INSTANCE.sendToServer(new QuestingPacket(ID_NAME, payload));
     }
 
-    public static void quickSync(@Nullable EntityPlayerMP player, int partyID) {
+    public static void quickSync(@Nullable
+    EntityPlayerMP player, int partyID) {
         IParty party = PartyManager.INSTANCE.getValue(partyID);
-        if (party == null) return;
+        if (party == null)
+            return;
 
         NBTTagCompound payload = new NBTTagCompound();
         payload.setTag("data", NameCache.INSTANCE.writeToNBT(new NBTTagList(), party.getMembers()));
@@ -79,19 +87,25 @@ public class NetNameSync {
             for (UUID playerID : party.getMembers()) {
                 EntityPlayerMP p = server.getPlayerList().getPlayerByUUID(playerID);
                 //noinspection ConstantConditions
-                if (p != null) playerList.add(p);
+                if (p != null)
+                    playerList.add(p);
             }
             PacketSender.INSTANCE.sendToPlayers(new QuestingPacket(ID_NAME, payload), playerList.toArray(new EntityPlayerMP[0]));
         }
     }
 
-    public static void sendNames(@Nullable EntityPlayerMP[] players, @Nullable UUID[] uuids, @Nullable String[] names) {
+    public static void sendNames(@Nullable
+    EntityPlayerMP[] players, @Nullable
+    UUID[] uuids, @Nullable
+    String[] names) {
         List<UUID> idList = (uuids == null && names == null) ? null : new ArrayList<>();
-        if (uuids != null) idList.addAll(Arrays.asList(uuids));
+        if (uuids != null)
+            idList.addAll(Arrays.asList(uuids));
         if (names != null) {
             for (String s : names) {
                 UUID id = NameCache.INSTANCE.getUUID(s);
-                if (id != null) idList.add(id);
+                if (id != null)
+                    idList.add(id);
             }
         }
 
@@ -127,7 +141,9 @@ public class NetNameSync {
                 names[i] = uList.getStringTagAt(i);
             }
         }
-        sendNames(new EntityPlayerMP[]{message.getSecond()}, uuids, names);
+        sendNames(new EntityPlayerMP[] {
+                message.getSecond()
+        }, uuids, names);
     }
 
     @SideOnly(Side.CLIENT)
@@ -135,4 +151,5 @@ public class NetNameSync {
         NameCache.INSTANCE.readFromNBT(message.getTagList("data", 10), message.getBoolean("merge"));
         MinecraftForge.EVENT_BUS.post(new DatabaseEvent.Update(DBType.NAMES));
     }
+
 }

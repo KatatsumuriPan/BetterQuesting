@@ -1,13 +1,14 @@
 package betterquesting.client.toolbox;
 
+import java.util.Collection;
+import java.util.HashMap;
+
 import betterquesting.api.client.toolbox.IToolRegistry;
 import betterquesting.api2.client.toolbox.IToolTab;
 import net.minecraft.util.ResourceLocation;
 
-import java.util.Collection;
-import java.util.HashMap;
-
 public class ToolboxRegistry implements IToolRegistry {
+
     public static final ToolboxRegistry INSTANCE = new ToolboxRegistry();
 
     private final HashMap<ResourceLocation, IToolTab> toolTabs = new HashMap<>();
@@ -29,7 +30,6 @@ public class ToolboxRegistry implements IToolRegistry {
     }
 
     @Override
-    public Collection<IToolTab> getAllTabs() {
-        return toolTabs.values();
-    }
+    public Collection<IToolTab> getAllTabs() { return toolTabs.values(); }
+
 }

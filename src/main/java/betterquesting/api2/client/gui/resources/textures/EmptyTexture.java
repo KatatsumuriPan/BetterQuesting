@@ -6,6 +6,7 @@ import net.minecraft.util.ResourceLocation;
 
 // Literally does nothing...
 public class EmptyTexture implements IGuiTexture {
+
     @Override
     public void drawTexture(int x, int y, int width, int height, float zDepth, float partialTick) {
     }
@@ -15,12 +16,9 @@ public class EmptyTexture implements IGuiTexture {
     }
 
     @Override
-    public ResourceLocation getTexture() {
-        return null;
-    }
+    public ResourceLocation getTexture() { return null; }
 
     @Override
-    public IGuiRect getBounds() {
-        return null;
-    }
+    public IGuiRect getBounds() { return null; }
+
 }

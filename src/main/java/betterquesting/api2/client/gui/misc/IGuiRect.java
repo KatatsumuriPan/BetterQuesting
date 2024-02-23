@@ -1,6 +1,7 @@
 package betterquesting.api2.client.gui.misc;
 
 public interface IGuiRect extends Comparable<IGuiRect> {
+
     int getX();
 
     int getY();
@@ -16,4 +17,5 @@ public interface IGuiRect extends Comparable<IGuiRect> {
     void setParent(IGuiRect rect);
 
     boolean contains(int x, int y);
+
 }

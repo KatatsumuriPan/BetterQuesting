@@ -9,6 +9,7 @@ import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class FtbqTaskStat {
+
     public ITask[] convertTask(NBTTagCompound tag) {
         TaskScoreboard task = new TaskScoreboard();
 
@@ -19,6 +20,9 @@ public class FtbqTaskStat {
 
         FTBQQuestImporter.provideQuestIcon(new BigItemStack(Items.PAPER));
 
-        return new ITask[]{task};
+        return new ITask[] {
+                task
+        };
     }
+
 }

@@ -1,5 +1,7 @@
 package betterquesting.core;
 
+import org.apache.logging.log4j.Logger;
+
 import betterquesting.api.placeholders.EntityPlaceholder;
 import betterquesting.api.placeholders.FluidPlaceholder;
 import betterquesting.api2.cache.CapabilityProviderQuestCache;
@@ -37,16 +39,20 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
-import org.apache.logging.log4j.Logger;
 
 @Mod(modid = ModReference.MODID, version = BetterQuesting.VERSION, name = ModReference.NAME, guiFactory = "betterquesting.handlers.ConfigGuiFactory")
 public class BetterQuesting {
+
     public static final String VERSION = "@VERSION@";
     public static final String FORMAT = "2.0.0";
 
@@ -99,7 +105,14 @@ public class BetterQuesting {
 
         GameRegistry.registerTileEntity(TileSubmitStation.class, new ResourceLocation(ModReference.MODID, "submit_station"));
 
-        EntityRegistry.registerModEntity(new ResourceLocation(ModReference.MODID, "placeholder"), EntityPlaceholder.class, "placeholder", 0, this, 16, 1, false);
+        EntityRegistry.registerModEntity(new ResourceLocation(ModReference.MODID, "placeholder"),
+                                         EntityPlaceholder.class,
+                                         "placeholder",
+                                         0,
+                                         this,
+                                         16,
+                                         1,
+                                         false);
     }
 
     @EventHandler
@@ -133,4 +146,5 @@ public class BetterQuesting {
         SaveLoadHandler.INSTANCE.unloadDatabases();
         LootSaveLoad.INSTANCE.UnloadLoot();
     }
+
 }

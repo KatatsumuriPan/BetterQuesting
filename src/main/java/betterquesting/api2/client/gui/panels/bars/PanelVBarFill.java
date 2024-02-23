@@ -1,5 +1,7 @@
 package betterquesting.api2.client.gui.panels.bars;
 
+import java.util.List;
+
 import betterquesting.api.utils.RenderUtils;
 import betterquesting.api2.client.gui.controls.IValueIO;
 import betterquesting.api2.client.gui.misc.GuiRectangle;
@@ -10,9 +12,8 @@ import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.math.MathHelper;
 
-import java.util.List;
-
 public class PanelVBarFill implements IBarFill {
+
     private final IGuiRect transform;
     private boolean enabled = true;
 
@@ -59,19 +60,13 @@ public class PanelVBarFill implements IBarFill {
     }
 
     @Override
-    public void setEnabled(boolean state) {
-        this.enabled = state;
-    }
+    public void setEnabled(boolean state) { this.enabled = state; }
 
     @Override
-    public boolean isEnabled() {
-        return this.enabled;
-    }
+    public boolean isEnabled() { return this.enabled; }
 
     @Override
-    public IGuiRect getTransform() {
-        return transform;
-    }
+    public IGuiRect getTransform() { return transform; }
 
     @Override
     public void drawPanel(int mx, int my, float partialTick) {
@@ -89,7 +84,11 @@ public class PanelVBarFill implements IBarFill {
         if (this.flipBar) {
             RenderUtils.startScissor(new GuiRectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), (int) (bounds.getHeight() * f), 0));
         } else {
-            RenderUtils.startScissor(new GuiRectangle(bounds.getX(), bounds.getY() + (int) (bounds.getHeight() - (bounds.getHeight() * f)), bounds.getWidth(), (int) (bounds.getHeight() * f), 0));
+            RenderUtils.startScissor(new GuiRectangle(bounds.getX(),
+                                                      bounds.getY() + (int) (bounds.getHeight() - (bounds.getHeight() * f)),
+                                                      bounds.getWidth(),
+                                                      (int) (bounds.getHeight() * f),
+                                                      0));
         }
 
         if (texFill != null) {
@@ -125,4 +124,5 @@ public class PanelVBarFill implements IBarFill {
     public List<String> getTooltip(int mx, int my) {
         return null;
     }
+
 }

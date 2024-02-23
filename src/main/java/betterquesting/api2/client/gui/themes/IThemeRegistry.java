@@ -1,15 +1,16 @@
 package betterquesting.api2.client.gui.themes;
 
+import java.util.List;
+import java.util.function.Function;
+
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 import betterquesting.api2.client.gui.resources.lines.IGuiLine;
 import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 
-import java.util.List;
-import java.util.function.Function;
-
 public interface IThemeRegistry {
+
     void registerTheme(IGuiTheme theme);
 
     IGuiTheme getCurrentTheme();
@@ -46,4 +47,5 @@ public interface IThemeRegistry {
     ResourceLocation[] getKnownLines();
 
     GuiKey[] getKnownGuis();
+
 }

@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 
 public class CallbackNBTTagString implements ICallback<String> {
+
     private final NBTBase tag;
     private final String sKey;
     private final int iKey;
@@ -31,4 +32,5 @@ public class CallbackNBTTagString implements ICallback<String> {
             ((NBTTagList) tag).set(iKey, new NBTTagString(value));
         }
     }
+
 }

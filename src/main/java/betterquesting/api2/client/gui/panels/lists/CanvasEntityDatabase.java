@@ -1,17 +1,18 @@
 package betterquesting.api2.client.gui.panels.lists;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import betterquesting.api2.client.gui.controls.PanelButtonStorage;
 import betterquesting.api2.client.gui.misc.GuiRectangle;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 public class CanvasEntityDatabase extends CanvasSearch<EntityEntry, EntityEntry> {
+
     private final int btnId;
 
     public CanvasEntityDatabase(IGuiRect rect, int buttonId) {
@@ -28,7 +29,8 @@ public class CanvasEntityDatabase extends CanvasSearch<EntityEntry, EntityEntry>
 
     @Override
     protected void queryMatches(EntityEntry ee, String query, final ArrayDeque<EntityEntry> results) {
-        if (ee == null || ee.getRegistryName() == null) return;
+        if (ee == null || ee.getRegistryName() == null)
+            return;
 
         String qlc = query.toLowerCase();
 
@@ -47,4 +49,5 @@ public class CanvasEntityDatabase extends CanvasSearch<EntityEntry, EntityEntry>
 
         return true;
     }
+
 }

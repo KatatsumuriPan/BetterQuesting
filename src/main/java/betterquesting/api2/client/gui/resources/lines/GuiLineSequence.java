@@ -4,6 +4,7 @@ import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.resources.colors.IGuiColor;
 
 public class GuiLineSequence implements IGuiLine {
+
     public final IGuiLine[] lines;
     private final float interval;
 
@@ -17,11 +18,8 @@ public class GuiLineSequence implements IGuiLine {
         getCurrentLine().drawLine(start, end, width, color, partialTick);
     }
 
-    public IGuiLine getCurrentLine() {
-        return lines[(int) Math.floor((System.currentTimeMillis() / 1000D) % (lines.length * interval) / interval)];
-    }
+    public IGuiLine getCurrentLine() { return lines[(int) Math.floor((System.currentTimeMillis() / 1000D) % (lines.length * interval) / interval)]; }
 
-    public IGuiLine[] getAllLines() {
-        return lines;
-    }
+    public IGuiLine[] getAllLines() { return lines; }
+
 }

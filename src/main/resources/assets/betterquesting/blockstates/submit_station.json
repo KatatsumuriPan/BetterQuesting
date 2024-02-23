@@ -1,7 +1,1 @@
-{
-  "variants": {
-    "normal": {
-      "model": "betterquesting:submit_station"
-    }
-  }
-}
+{"variants": {"normal": {"model": "betterquesting:submit_station"}}}

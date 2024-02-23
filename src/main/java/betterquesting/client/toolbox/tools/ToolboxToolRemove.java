@@ -1,5 +1,9 @@
 package betterquesting.client.toolbox.tools;
 
+import java.util.List;
+
+import org.lwjgl.input.Keyboard;
+
 import betterquesting.api.client.toolbox.IToolboxTool;
 import betterquesting.api.questing.IQuestLine;
 import betterquesting.api2.client.gui.controls.PanelButtonQuest;
@@ -10,11 +14,9 @@ import betterquesting.questing.QuestLineDatabase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
-import org.lwjgl.input.Keyboard;
-
-import java.util.List;
 
 public class ToolboxToolRemove implements IToolboxTool {
+
     private CanvasQuestLine gui;
 
     @Override
@@ -41,8 +43,10 @@ public class ToolboxToolRemove implements IToolboxTool {
 
         if (line != null && btn != null) {
             if (PanelToolController.selected.size() > 0) {
-                if (!PanelToolController.selected.contains(btn)) return false;
-                for (PanelButtonQuest b : PanelToolController.selected) line.removeID(b.getStoredValue().getID());
+                if (!PanelToolController.selected.contains(btn))
+                    return false;
+                for (PanelButtonQuest b : PanelToolController.selected)
+                    line.removeID(b.getStoredValue().getID());
             } else {
                 int qID = btn.getStoredValue().getID();
                 line.removeID(qID);
@@ -91,7 +95,8 @@ public class ToolboxToolRemove implements IToolboxTool {
     public boolean onKeyPressed(char c, int key) {
         if (PanelToolController.selected.size() > 0 && key == Keyboard.KEY_RETURN) {
             IQuestLine line = gui.getQuestLine();
-            for (PanelButtonQuest b : PanelToolController.selected) line.removeID(b.getStoredValue().getID());
+            for (PanelButtonQuest b : PanelToolController.selected)
+                line.removeID(b.getStoredValue().getID());
 
             // Sync Line
             NBTTagCompound chPayload = new NBTTagCompound();
@@ -122,4 +127,5 @@ public class ToolboxToolRemove implements IToolboxTool {
     public boolean useSelection() {
         return true;
     }
+
 }

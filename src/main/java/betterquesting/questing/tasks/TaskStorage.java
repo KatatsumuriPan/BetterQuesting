@@ -1,5 +1,11 @@
 package betterquesting.questing.tasks;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import betterquesting.api.placeholders.tasks.FactoryTaskPlaceholder;
 import betterquesting.api.placeholders.tasks.TaskPlaceholder;
 import betterquesting.api.questing.tasks.ITask;
@@ -10,16 +16,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 public class TaskStorage extends SimpleDatabase<ITask> implements IDatabaseNBT<ITask, NBTTagList, NBTTagList> {
+
     @Override
-    public NBTTagList writeToNBT(NBTTagList json, @Nullable List<Integer> subset) {
+    public NBTTagList writeToNBT(NBTTagList json, @Nullable
+    List<Integer> subset) {
         for (DBEntry<ITask> entry : getEntries()) {
-            if (subset != null && !subset.contains(entry.getID())) continue;
+            if (subset != null && !subset.contains(entry.getID()))
+                continue;
             ResourceLocation taskID = entry.getValue().getFactoryID();
             NBTTagCompound qJson = entry.getValue().writeToNBT(new NBTTagCompound());
             qJson.setString("taskID", taskID.toString());
@@ -31,7 +35,8 @@ public class TaskStorage extends SimpleDatabase<ITask> implements IDatabaseNBT<I
 
     @Override
     public void readFromNBT(NBTTagList json, boolean merge) {
-        if (!merge) reset();
+        if (!merge)
+            reset();
         List<ITask> unassigned = new ArrayList<>();
 
         for (int i = 0; i < json.tagCount(); i++) {
@@ -66,11 +71,13 @@ public class TaskStorage extends SimpleDatabase<ITask> implements IDatabaseNBT<I
             }
         }
 
-        for (ITask t : unassigned) add(nextID(), t);
+        for (ITask t : unassigned)
+            add(nextID(), t);
     }
 
     @Override
-    public NBTTagList writeProgressToNBT(NBTTagList json, @Nullable List<UUID> user) {
+    public NBTTagList writeProgressToNBT(NBTTagList json, @Nullable
+    List<UUID> user) {
         for (DBEntry<ITask> entry : getEntries()) {
             ResourceLocation taskID = entry.getValue().getFactoryID();
 
@@ -106,4 +113,5 @@ public class TaskStorage extends SimpleDatabase<ITask> implements IDatabaseNBT<I
             }
         }
     }
+
 }

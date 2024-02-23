@@ -1,5 +1,7 @@
 package betterquesting.client.gui3;
 
+import org.lwjgl.util.vector.Vector4f;
+
 import betterquesting.api2.client.gui.GuiScreenCanvas;
 import betterquesting.api2.client.gui.controls.PanelButton;
 import betterquesting.api2.client.gui.misc.GuiAlign;
@@ -14,9 +16,9 @@ import betterquesting.api2.client.gui.panels.lists.CanvasScrolling;
 import betterquesting.api2.client.gui.themes.presets.PresetIcon;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import net.minecraft.client.gui.GuiScreen;
-import org.lwjgl.util.vector.Vector4f;
 
 public class GuiStatus extends GuiScreenCanvas {
+
     public GuiStatus(GuiScreen parent) {
         super(parent);
     }
@@ -29,14 +31,17 @@ public class GuiStatus extends GuiScreenCanvas {
         CanvasTextured bgCan = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0), PresetTexture.PANEL_MAIN.getTexture());
         this.addPanel(bgCan);
 
-        CanvasHoverTray cvHover = new CanvasHoverTray(new GuiTransform(GuiAlign.MID_CENTER, 16, 16, 16, 16, 0), new GuiTransform(GuiAlign.MID_CENTER, 16, 16, 64, 64, 5), PresetTexture.PANEL_DARK.getTexture());
+        CanvasHoverTray cvHover = new CanvasHoverTray(new GuiTransform(GuiAlign.MID_CENTER, 16, 16, 16, 16, 0),
+                                                      new GuiTransform(GuiAlign.MID_CENTER, 16, 16, 64, 64, 5),
+                                                      PresetTexture.PANEL_DARK.getTexture());
         bgCan.addPanel(cvHover);
         cvHover.getCanvasClosed().addPanel(new PanelGeneric(new GuiTransform(), PresetIcon.ICON_CROSS.getTexture()));
         cvHover.getCanvasOpen().addPanel(new PanelGeneric(new GuiTransform(), PresetIcon.ICON_TICK.getTexture()));
 
         // === SIDE BAR ===
 
-        CanvasTextured bgSideBar = new CanvasTextured(new GuiTransform(new Vector4f(0F, 0F, 0.2F, 1F), new GuiPadding(8, 24, 4, 24), 0), PresetTexture.PANEL_INNER.getTexture());
+        CanvasTextured bgSideBar = new CanvasTextured(new GuiTransform(new Vector4f(0F, 0F, 0.2F, 1F), new GuiPadding(8, 24, 4, 24), 0),
+                                                      PresetTexture.PANEL_INNER.getTexture());
         bgCan.addPanel(bgSideBar);
 
         CanvasScrolling cvBtnList = new CanvasScrolling(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 8, 0), 0));
@@ -66,7 +71,8 @@ public class GuiStatus extends GuiScreenCanvas {
 
         // === QUICK BAR === (Settings, Party, Inbox, Theme)
 
-        CanvasTextured bgQuickBar = new CanvasTextured(new GuiTransform(new Vector4f(0F, 1F, 0.2F, 1F), new GuiPadding(8, -24, 4, 8), 0), PresetTexture.PANEL_INNER.getTexture());
+        CanvasTextured bgQuickBar = new CanvasTextured(new GuiTransform(new Vector4f(0F, 1F, 0.2F, 1F), new GuiPadding(8, -24, 4, 8), 0),
+                                                       PresetTexture.PANEL_INNER.getTexture());
         bgCan.addPanel(bgQuickBar);
 
         PanelButton btnSettings = new PanelButton(new GuiTransform(new Vector4f(0F, 0F, 0.25F, 1F), new GuiPadding(0, 0, 0, 0), 0), 0, "");
@@ -102,4 +108,5 @@ public class GuiStatus extends GuiScreenCanvas {
 
         // === STAT LIST ===
     }
+
 }

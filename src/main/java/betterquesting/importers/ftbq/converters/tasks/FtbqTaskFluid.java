@@ -15,6 +15,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 public class FtbqTaskFluid {
+
     public ITask[] convertTask(NBTTagCompound nbt) {
         String fName = nbt.getString("fluid");
         Fluid fluid = FluidRegistry.getFluid(fName);
@@ -43,6 +44,9 @@ public class FtbqTaskFluid {
         else
             FTBQQuestImporter.provideQuestIcon(new BigItemStack(Items.BUCKET));
 
-        return new ITask[]{task};
+        return new ITask[] {
+                task
+        };
     }
+
 }

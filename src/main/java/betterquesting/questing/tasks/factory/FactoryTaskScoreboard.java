@@ -8,12 +8,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 public class FactoryTaskScoreboard implements IFactoryData<ITask, NBTTagCompound> {
+
     public static final FactoryTaskScoreboard INSTANCE = new FactoryTaskScoreboard();
 
     @Override
-    public ResourceLocation getRegistryName() {
-        return new ResourceLocation(BetterQuesting.MODID_STD + ":scoreboard");
-    }
+    public ResourceLocation getRegistryName() { return new ResourceLocation(BetterQuesting.MODID_STD + ":scoreboard"); }
 
     @Override
     public TaskScoreboard createNew() {

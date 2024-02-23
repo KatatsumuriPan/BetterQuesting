@@ -1,5 +1,7 @@
 package betterquesting;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.command.CommandResultStats.Type;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
@@ -10,29 +12,22 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-
 /**
  * Elevates the player's privileges to OP level for use in command rewards
  */
 public class AdminExecute implements ICommandSender {
+
     private final EntityPlayer player;
 
     public AdminExecute(EntityPlayer player) {
         this.player = player;
     }
 
-    @Nonnull
-    @Override
-    public String getName() {
-        return player.getName();
-    }
+    @Nonnull @Override
+    public String getName() { return player.getName(); }
 
-    @Nonnull
-    @Override
-    public ITextComponent getDisplayName() {
-        return player.getDisplayName();
-    }
+    @Nonnull @Override
+    public ITextComponent getDisplayName() { return player.getDisplayName(); }
 
     @Override
     public void sendMessage(ITextComponent p_145747_1_) {
@@ -40,32 +35,22 @@ public class AdminExecute implements ICommandSender {
     }
 
     @Override
-    public boolean canUseCommand(int p_70003_1_, @Nonnull String p_70003_2_) {
+    public boolean canUseCommand(int p_70003_1_, @Nonnull
+    String p_70003_2_) {
         return true;
     }
 
-    @Nonnull
-    @Override
-    public BlockPos getPosition() {
-        return player.getPosition();
-    }
+    @Nonnull @Override
+    public BlockPos getPosition() { return player.getPosition(); }
 
-    @Nonnull
-    @Override
-    public World getEntityWorld() {
-        return player.getEntityWorld();
-    }
+    @Nonnull @Override
+    public World getEntityWorld() { return player.getEntityWorld(); }
 
-    @Nonnull
-    @Override
-    public Vec3d getPositionVector() {
-        return player.getPositionVector();
-    }
+    @Nonnull @Override
+    public Vec3d getPositionVector() { return player.getPositionVector(); }
 
     @Override
-    public Entity getCommandSenderEntity() {
-        return player.getCommandSenderEntity();
-    }
+    public Entity getCommandSenderEntity() { return player.getCommandSenderEntity(); }
 
     @Override
     public boolean sendCommandFeedback() {
@@ -78,7 +63,6 @@ public class AdminExecute implements ICommandSender {
     }
 
     @Override
-    public MinecraftServer getServer() {
-        return player.getServer();
-    }
+    public MinecraftServer getServer() { return player.getServer(); }
+
 }

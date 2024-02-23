@@ -7,6 +7,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.ResourceLocation;
 
 public class EntityPlaceholderRenderer extends Render<EntityPlaceholder> {
+
     protected EntityPlaceholderRenderer(RenderManager renderManager) {
         super(renderManager);
     }

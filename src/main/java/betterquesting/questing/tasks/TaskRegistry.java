@@ -1,5 +1,11 @@
 package betterquesting.questing.tasks;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.placeholders.tasks.FactoryTaskPlaceholder;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api2.registry.IFactoryData;
@@ -7,16 +13,12 @@ import betterquesting.api2.registry.IRegistry;
 import betterquesting.core.BetterQuesting;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import org.apache.logging.log4j.Level;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Registry for all known task types. Questing packs should register their custom types here for proper saving/loading
  */
 public class TaskRegistry implements IRegistry<IFactoryData<ITask, NBTTagCompound>, ITask> {
+
     public static final TaskRegistry INSTANCE = new TaskRegistry();
 
     private final HashMap<ResourceLocation, IFactoryData<ITask, NBTTagCompound>> taskRegistry = new HashMap<>();
@@ -42,9 +44,7 @@ public class TaskRegistry implements IRegistry<IFactoryData<ITask, NBTTagCompoun
     }
 
     @Override
-    public List<IFactoryData<ITask, NBTTagCompound>> getAll() {
-        return new ArrayList<>(taskRegistry.values());
-    }
+    public List<IFactoryData<ITask, NBTTagCompound>> getAll() { return new ArrayList<>(taskRegistry.values()); }
 
     @Override
     public ITask createNew(ResourceLocation registryName) {
@@ -68,4 +68,5 @@ public class TaskRegistry implements IRegistry<IFactoryData<ITask, NBTTagCompoun
             return null;
         }
     }
+
 }

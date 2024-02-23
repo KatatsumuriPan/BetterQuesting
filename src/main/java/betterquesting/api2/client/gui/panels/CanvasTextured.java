@@ -1,12 +1,13 @@
 package betterquesting.api2.client.gui.panels;
 
+import javax.annotation.Nullable;
+
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import net.minecraft.client.renderer.GlStateManager;
 
-import javax.annotation.Nullable;
-
 public class CanvasTextured extends CanvasEmpty {
+
     private IGuiTexture bgTexture;
 
     public CanvasTextured(IGuiRect rect, IGuiTexture texture) {
@@ -15,7 +16,8 @@ public class CanvasTextured extends CanvasEmpty {
         this.bgTexture = texture;
     }
 
-    public void changeBG(@Nullable IGuiTexture texture) {
+    public void changeBG(@Nullable
+    IGuiTexture texture) {
         this.bgTexture = texture;
     }
 
@@ -31,4 +33,5 @@ public class CanvasTextured extends CanvasEmpty {
 
         super.drawPanel(mx, my, partialTick);
     }
+
 }

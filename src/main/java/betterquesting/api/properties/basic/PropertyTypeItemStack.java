@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 public class PropertyTypeItemStack extends PropertyTypeBase<BigItemStack> {
+
     public PropertyTypeItemStack(ResourceLocation key, BigItemStack def) {
         super(key, def);
     }
@@ -32,4 +33,5 @@ public class PropertyTypeItemStack extends PropertyTypeBase<BigItemStack> {
 
         return nbt;
     }
+
 }

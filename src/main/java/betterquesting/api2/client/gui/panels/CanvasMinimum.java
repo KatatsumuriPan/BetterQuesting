@@ -1,12 +1,13 @@
 package betterquesting.api2.client.gui.panels;
 
-import betterquesting.api2.client.gui.misc.ComparatorGuiDepth;
-import betterquesting.api2.client.gui.misc.IGuiRect;
-
-import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import javax.annotation.Nonnull;
+
+import betterquesting.api2.client.gui.misc.ComparatorGuiDepth;
+import betterquesting.api2.client.gui.misc.IGuiRect;
 
 public class CanvasMinimum implements IGuiCanvas {
 
@@ -23,35 +24,24 @@ public class CanvasMinimum implements IGuiCanvas {
     @Override
     public IGuiRect getTransform() {
         return new IGuiRect() {
-            @Override
-            public int getX() {
-                return internalTransform.getX();
-            }
 
             @Override
-            public int getY() {
-                return internalTransform.getY();
-            }
+            public int getX() { return internalTransform.getX(); }
 
             @Override
-            public int getWidth() {
-                return finalWidth;
-            }
+            public int getY() { return internalTransform.getY(); }
 
             @Override
-            public int getHeight() {
-                return finalHeight;
-            }
+            public int getWidth() { return finalWidth; }
 
             @Override
-            public int getDepth() {
-                return internalTransform.getDepth();
-            }
+            public int getHeight() { return finalHeight; }
 
             @Override
-            public IGuiRect getParent() {
-                return internalTransform.getParent();
-            }
+            public int getDepth() { return internalTransform.getDepth(); }
+
+            @Override
+            public IGuiRect getParent() { return internalTransform.getParent(); }
 
             @Override
             public void setParent(IGuiRect rect) {
@@ -64,9 +54,11 @@ public class CanvasMinimum implements IGuiCanvas {
             }
 
             @Override
-            public int compareTo(@Nonnull IGuiRect o) {
+            public int compareTo(@Nonnull
+            IGuiRect o) {
                 return internalTransform.compareTo(o);
             }
+
         };
     }
 
@@ -76,14 +68,10 @@ public class CanvasMinimum implements IGuiCanvas {
     }
 
     @Override
-    public void setEnabled(boolean state) {
-        this.enabled = state;
-    }
+    public void setEnabled(boolean state) { this.enabled = state; }
 
     @Override
-    public boolean isEnabled() {
-        return this.enabled;
-    }
+    public boolean isEnabled() { return this.enabled; }
 
     @Override
     public void drawPanel(int mx, int my, float partialTick) {
@@ -170,7 +158,8 @@ public class CanvasMinimum implements IGuiCanvas {
         while (panelListIterator.hasPrevious()) {
             IGuiPanel entry = panelListIterator.previous();
 
-            if (!entry.isEnabled()) continue;
+            if (!entry.isEnabled())
+                continue;
 
             tooltip = entry.getTooltip(mx, my);
 
@@ -201,11 +190,8 @@ public class CanvasMinimum implements IGuiCanvas {
         return result;
     }
 
-    @Nonnull
-    @Override
-    public List<IGuiPanel> getChildren() {
-        return guiPanels;
-    }
+    @Nonnull @Override
+    public List<IGuiPanel> getChildren() { return guiPanels; }
 
     @Override
     public void resetCanvas() {
@@ -223,4 +209,5 @@ public class CanvasMinimum implements IGuiCanvas {
         finalWidth = width;
         finalHeight = height;
     }
+
 }

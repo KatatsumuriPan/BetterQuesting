@@ -12,15 +12,16 @@ import betterquesting.api2.client.toolbox.IToolTab;
 import betterquesting.client.gui2.editors.designer.PanelToolController;
 
 public class ToolboxTabMain implements IToolTab {
+
     public static final ToolboxTabMain INSTANCE = new ToolboxTabMain();
 
     private int dragSnap = 4;
-    private int[] snaps = new int[]{1, 4, 6, 8, 12, 16, 24, 32};
+    private int[] snaps = new int[] {
+            1, 4, 6, 8, 12, 16, 24, 32
+    };
 
     @Override
-    public String getUnlocalisedName() {
-        return "betterquesting.toolbox.tab.main";
-    }
+    public String getUnlocalisedName() { return "betterquesting.toolbox.tab.main"; }
 
     @Override
     public IGuiPanel getTabGui(IGuiRect rect, CanvasQuestLine cvQuestLine, PanelToolController toolController) {
@@ -31,16 +32,13 @@ public class ToolboxTabMain implements IToolTab {
         dragSnap = (dragSnap + 1) % snaps.length;
     }
 
-    public int getSnapValue() {
-        return snaps[dragSnap % snaps.length];
-    }
+    public int getSnapValue() { return snaps[dragSnap % snaps.length]; }
 
-    public int getSnapIndex() {
-        return dragSnap;
-    }
+    public int getSnapIndex() { return dragSnap; }
 
     public void drawGrid(CanvasQuestLine ui) {
-        if (getSnapValue() <= 1) return;
+        if (getSnapValue() <= 1)
+            return;
 
         float zs = ui.getZoom();
         int snap = getSnapValue();
@@ -96,4 +94,5 @@ public class ToolboxTabMain implements IToolTab {
             }
         }
     }
+
 }

@@ -11,15 +11,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 public class RewardPlaceholder implements IReward {
+
     private NBTTagCompound nbtSaved = new NBTTagCompound();
 
-    public void setRewardConfigData(NBTTagCompound nbt) {
-        nbtSaved = nbt;
-    }
+    public void setRewardConfigData(NBTTagCompound nbt) { nbtSaved = nbt; }
 
-    public NBTTagCompound getRewardConfigData() {
-        return nbtSaved;
-    }
+    public NBTTagCompound getRewardConfigData() { return nbtSaved; }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
@@ -34,14 +31,10 @@ public class RewardPlaceholder implements IReward {
     }
 
     @Override
-    public String getUnlocalisedName() {
-        return "betterquesting.placeholder";
-    }
+    public String getUnlocalisedName() { return "betterquesting.placeholder"; }
 
     @Override
-    public ResourceLocation getFactoryID() {
-        return FactoryRewardPlaceholder.INSTANCE.getRegistryName();
-    }
+    public ResourceLocation getFactoryID() { return FactoryRewardPlaceholder.INSTANCE.getRegistryName(); }
 
     @Override
     public boolean canClaim(EntityPlayer player, DBEntry<IQuest> quest) {
@@ -61,4 +54,5 @@ public class RewardPlaceholder implements IReward {
     public GuiScreen getRewardEditor(GuiScreen parent, DBEntry<IQuest> quest) {
         return null;
     }
+
 }

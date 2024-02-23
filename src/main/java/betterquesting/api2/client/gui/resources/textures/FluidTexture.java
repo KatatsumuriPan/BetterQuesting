@@ -1,5 +1,7 @@
 package betterquesting.api2.client.gui.resources.textures;
 
+import org.lwjgl.opengl.GL11;
+
 import betterquesting.api2.client.gui.misc.GuiRectangle;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
@@ -14,9 +16,9 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.opengl.GL11;
 
 public class FluidTexture implements IGuiTexture {
+
     private static final IGuiColor defColor = new GuiColorStatic(255, 255, 255, 255);
 
     private final FluidStack fluid;
@@ -43,7 +45,8 @@ public class FluidTexture implements IGuiTexture {
 
     @Override
     public void drawTexture(int x, int y, int width, int height, float zDepth, float partialTick, IGuiColor color) {
-        if (width <= 0 || height <= 0) return;
+        if (width <= 0 || height <= 0)
+            return;
 
         float sx = width / 16F;
         float sy = height / 16F;
@@ -87,14 +90,10 @@ public class FluidTexture implements IGuiTexture {
     }
 
     @Override
-    public ResourceLocation getTexture() {
-        return PresetTexture.TX_NULL;
-    }
+    public ResourceLocation getTexture() { return PresetTexture.TX_NULL; }
 
     @Override
-    public IGuiRect getBounds() {
-        return bounds;
-    }
+    public IGuiRect getBounds() { return bounds; }
 
     private void drawTexturedModalRect(double xCoord, double yCoord, double zDepth, TextureAtlasSprite textureSprite, double widthIn, double heightIn) {
         Tessellator tessellator = Tessellator.getInstance();
@@ -106,4 +105,5 @@ public class FluidTexture implements IGuiTexture {
         bufferbuilder.pos(xCoord, yCoord, zDepth).tex(textureSprite.getMinU(), textureSprite.getMinV()).endVertex();
         tessellator.draw();
     }
+
 }

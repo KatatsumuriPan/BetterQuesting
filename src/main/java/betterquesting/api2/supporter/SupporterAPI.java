@@ -1,29 +1,45 @@
 package betterquesting.api2.supporter;
 
+import java.awt.image.BufferedImage;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.imageio.ImageIO;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.client.themes.ResourceTheme;
 import betterquesting.core.ModReference;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-
 public class SupporterAPI {
+
     private static Gson GSON = new GsonBuilder().create(); // No pretty print
     private static final String charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuv0123456789";
     private static final Random rand = new Random();
@@ -49,7 +65,9 @@ public class SupporterAPI {
 
             int format = JsonHelper.GetNumber(manifest, "format", 0).intValue();
             ResourceLocation parID = manifest.has("parentID") ? new ResourceLocation(JsonHelper.GetString(manifest, "parentID", "minecraft:null")) : null;
-            ResourceLocation thmID = new ResourceLocation(JsonHelper.GetString(manifest, "themeID", new ResourceLocation(ModReference.MODID, "untitled").toString()));
+            ResourceLocation thmID = new ResourceLocation(JsonHelper.GetString(manifest,
+                                                                               "themeID",
+                                                                               new ResourceLocation(ModReference.MODID, "untitled").toString()));
             String thmName = JsonHelper.GetString(manifest, "themeName", "Untitled Theme");
 
             ResourceTheme theme = new ResourceTheme(parID, thmID, thmName);
@@ -86,7 +104,13 @@ public class SupporterAPI {
         return null;
     }
 
-    public static void buildCompressedFile(File fileOut, JsonObject jsonDetails, JsonObject jsonTheme, Collection<Tuple<ResourceLocation, File>> textures, String token, String service, int tier) {
+    public static void buildCompressedFile(File fileOut,
+                                           JsonObject jsonDetails,
+                                           JsonObject jsonTheme,
+                                           Collection<Tuple<ResourceLocation, File>> textures,
+                                           String token,
+                                           String service,
+                                           int tier) {
         if (fileOut.exists()) {
             try {
                 fileOut.delete();
@@ -132,40 +156,51 @@ public class SupporterAPI {
         return new String(flipBytes(Base64.getDecoder().decode(s), key), StandardCharsets.UTF_8);
     }
 
-    private static byte[] flipBytes(@Nonnull byte[] input, @Nonnull byte[] key) {
+    private static byte[] flipBytes(@Nonnull
+    byte[] input, @Nonnull
+    byte[] key) {
         byte[] output = new byte[input.length];
-        for (int i = 0; i < input.length; i++) output[i] = (byte) (input[i] ^ key[i % key.length]);
+        for (int i = 0; i < input.length; i++)
+            output[i] = (byte) (input[i] ^ key[i % key.length]);
         return output;
     }
 
-    private static byte[] makeFormat_0(@Nonnull DataOutputStream dos, long seed) throws IOException {
+    private static byte[] makeFormat_0(@Nonnull
+    DataOutputStream dos, long seed) throws IOException {
         byte[] b = new byte[16];
         new Random(seed).nextBytes(b);
         dos.writeLong(seed);
         return b;
     }
 
-    private static byte[] makeFormat_1(@Nonnull DataOutputStream dos, @Nonnull String token, int salts, String service, int threshold) throws IOException {
+    private static byte[] makeFormat_1(@Nonnull
+    DataOutputStream dos, @Nonnull
+    String token, int salts, String service, int threshold) throws IOException {
         List<Tuple<Boolean, String>> list = new ArrayList<>();
         list.add(new Tuple<>(true, token));
         for (int i = 0; i < salts; i++) {
             StringBuilder sb = new StringBuilder();
-            for (int j = rand.nextInt(9) + 16; j >= 0; j--) sb.append(charSet.charAt(rand.nextInt(charSet.length())));
+            for (int j = rand.nextInt(9) + 16; j >= 0; j--)
+                sb.append(charSet.charAt(rand.nextInt(charSet.length())));
             list.add(new Tuple<>(false, sb.toString()));
         }
         Collections.shuffle(list, rand);
         return makeFormat_1(dos, list, service, threshold);
     }
 
-    private static byte[] makeFormat_1(@Nonnull DataOutputStream dos, @Nonnull Collection<Tuple<Boolean, String>> tokens, String service, int threshold) throws IOException {
+    private static byte[] makeFormat_1(@Nonnull
+    DataOutputStream dos, @Nonnull
+    Collection<Tuple<Boolean, String>> tokens, String service, int threshold) throws IOException {
         dos.writeInt(tokens.size());
         int s = 0;
         Set<byte[]> l = new HashSet<>();
         for (Tuple<Boolean, String> t : tokens) {
             byte[] b = t.getFirst() ? t.getSecond().getBytes(StandardCharsets.UTF_8) : new byte[16];
-            if (!t.getFirst()) new Random(t.getSecond().hashCode()).nextBytes(b);
+            if (!t.getFirst())
+                new Random(t.getSecond().hashCode()).nextBytes(b);
             l.add(b);
-            if (s < b.length) s = b.length;
+            if (s < b.length)
+                s = b.length;
             dos.writeUTF(Base64.getEncoder().encodeToString(t.getSecond().getBytes(StandardCharsets.UTF_8)));
         }
 
@@ -173,40 +208,52 @@ public class SupporterAPI {
         dos.writeInt(threshold);
 
         byte[] k = new byte[s];
-        for (int i = 0; i < s; i++) for (byte[] e : l) k[i] ^= e[i % e.length];
+        for (int i = 0; i < s; i++)
+            for (byte[] e : l)
+                k[i] ^= e[i % e.length];
         return k;
     }
 
     @SideOnly(Side.CLIENT)
-    private static byte[] readFileKey(@Nonnull DataInputStream dis, int format) {
+    private static byte[] readFileKey(@Nonnull
+    DataInputStream dis, int format) {
         switch (format) {
             case -1:
-                return new byte[]{127};
+                return new byte[] {
+                        127
+                };
             case 0:
                 return readFormat_0(dis);
             case 1:
                 return readFormat_1(dis);
             default:
-                return new byte[]{127};
+                return new byte[] {
+                        127
+                };
         }
     }
 
-    private static byte[] readFormat_0(@Nonnull DataInputStream dis) {
+    private static byte[] readFormat_0(@Nonnull
+    DataInputStream dis) {
         try {
             byte[] b = new byte[16];
             long seed = dis.readLong();
             new Random(seed).nextBytes(b);
             return b;
         } catch (Exception ignored) {
-            return new byte[]{127};
+            return new byte[] {
+                    127
+            };
         }
     }
 
     @SideOnly(Side.CLIENT)
-    private static byte[] readFormat_1(@Nonnull DataInputStream dis) {
+    private static byte[] readFormat_1(@Nonnull
+    DataInputStream dis) {
         try {
             String[] tokens = new String[dis.readInt()];
-            for (int n = 0; n < tokens.length; n++) tokens[n] = new String(Base64.getDecoder().decode(dis.readUTF()));
+            for (int n = 0; n < tokens.length; n++)
+                tokens[n] = new String(Base64.getDecoder().decode(dis.readUTF()));
             String service = new String(Base64.getDecoder().decode(dis.readUTF()));
             int threshold = dis.readInt();
 
@@ -218,16 +265,23 @@ public class SupporterAPI {
             for (String k : tokens) {
                 boolean c = entry != null && entry.getServices(k).entrySet().stream().anyMatch((v) -> v.getKey().equals(service) && v.getValue() >= threshold);
                 byte[] b = c ? k.getBytes(StandardCharsets.UTF_8) : new byte[16];
-                if (c) new Random(k.hashCode()).nextBytes(b);
+                if (c)
+                    new Random(k.hashCode()).nextBytes(b);
                 encoded.add(b);
-                if (b.length > m) m = b.length;
+                if (b.length > m)
+                    m = b.length;
             }
 
             byte[] merged = new byte[m];
-            for (int i = 0; i < m; i++) for (byte[] e : encoded) merged[i] ^= e[i % e.length];
+            for (int i = 0; i < m; i++)
+                for (byte[] e : encoded)
+                    merged[i] ^= e[i % e.length];
             return merged;
         } catch (Exception ignored) {
-            return new byte[]{127};
+            return new byte[] {
+                    127
+            };
         }
     }
+
 }

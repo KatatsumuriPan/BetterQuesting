@@ -1,5 +1,12 @@
 package betterquesting.legacy.v0;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import betterquesting.api.enums.EnumLogic;
 import betterquesting.api.placeholders.rewards.RewardPlaceholder;
 import betterquesting.api.placeholders.tasks.TaskPlaceholder;
@@ -13,21 +20,20 @@ import betterquesting.api.utils.JsonHelper;
 import betterquesting.api.utils.NBTConverter;
 import betterquesting.api2.storage.IDatabaseNBT;
 import betterquesting.legacy.ILegacyLoader;
-import betterquesting.questing.*;
+import betterquesting.questing.QuestDatabase;
+import betterquesting.questing.QuestInstance;
+import betterquesting.questing.QuestLine;
+import betterquesting.questing.QuestLineDatabase;
+import betterquesting.questing.QuestLineEntry;
 import betterquesting.questing.rewards.RewardRegistry;
 import betterquesting.questing.tasks.TaskRegistry;
 import betterquesting.storage.QuestSettings;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public final class LegacyLoader_v0 implements ILegacyLoader {
+
     public static final LegacyLoader_v0 INSTANCE = new LegacyLoader_v0();
 
     private LegacyLoader_v0() {
@@ -78,8 +84,10 @@ public final class LegacyLoader_v0 implements ILegacyLoader {
 
     @Override
     public void readProgressFromJson(JsonElement json) {
-        if (!json.isJsonObject()) return;
-        QuestDatabase.INSTANCE.readProgressFromNBT(NBTConverter.JSONtoNBT_Object(json.getAsJsonObject(), new NBTTagCompound(), true).getTagList("questProgress", 10), false);
+        if (!json.isJsonObject())
+            return;
+        QuestDatabase.INSTANCE.readProgressFromNBT(NBTConverter.JSONtoNBT_Object(json.getAsJsonObject(), new NBTTagCompound(), true)
+                .getTagList("questProgress", 10), false);
     }
 
     public void readLineDatabase(JsonArray jAry) {
@@ -110,7 +118,8 @@ public final class LegacyLoader_v0 implements ILegacyLoader {
         quest.setProperty(NativeProps.REPEAT_TIME, JsonHelper.GetNumber(json, "repeatTime", 2000).intValue());
         quest.setProperty(NativeProps.LOGIC_QUEST, EnumLogic.valueOf(JsonHelper.GetString(json, "logic", "AND")));
         quest.setProperty(NativeProps.LOGIC_TASK, EnumLogic.valueOf(JsonHelper.GetString(json, "taskLogic", "AND")));
-        quest.setProperty(NativeProps.ICON, JsonHelper.JsonToItemStack(NBTConverter.JSONtoNBT_Object(JsonHelper.GetObject(json, "icon"), new NBTTagCompound(), true)));
+        quest.setProperty(NativeProps.ICON,
+                          JsonHelper.JsonToItemStack(NBTConverter.JSONtoNBT_Object(JsonHelper.GetObject(json, "icon"), new NBTTagCompound(), true)));
 
         JsonArray reqAry = JsonHelper.GetArray(json, "preRequisites");
         int[] req = new int[reqAry.size()];
@@ -245,4 +254,5 @@ public final class LegacyLoader_v0 implements ILegacyLoader {
             }
         }
     }
+
 }

@@ -1,5 +1,9 @@
 package betterquesting.commands;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import betterquesting.commands.client.QuestCommandShow;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -8,11 +12,8 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class BQ_CommandClient extends CommandBase {
+
     private final List<QuestCommandBase> coms = new ArrayList<>();
 
     public BQ_CommandClient() {
@@ -20,14 +21,10 @@ public class BQ_CommandClient extends CommandBase {
     }
 
     @Override
-    public String getName() {
-        return "bq_client";
-    }
+    public String getName() { return "bq_client"; }
 
     @Override
-    public int getRequiredPermissionLevel() {
-        return 0;
-    }
+    public int getRequiredPermissionLevel() { return 0; }
 
     @Override
     public String getUsage(ICommandSender sender) {

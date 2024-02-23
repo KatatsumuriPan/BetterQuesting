@@ -1,5 +1,8 @@
 package betterquesting.api2.client.gui.resources.factories.textures;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.utils.JsonHelper;
@@ -10,21 +13,23 @@ import betterquesting.api2.client.gui.resources.textures.ColorTexture;
 import betterquesting.api2.client.gui.resources.textures.IGuiTexture;
 import betterquesting.api2.registry.IFactoryData;
 import betterquesting.core.ModReference;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import net.minecraft.util.ResourceLocation;
 
 public class FactoryColorTexture implements IFactoryData<IGuiTexture, JsonObject> {
+
     public static final FactoryColorTexture INSTANCE = new FactoryColorTexture();
 
     private static final ResourceLocation RES_ID = new ResourceLocation(ModReference.MODID, "texture_color");
 
     @Override
     public ColorTexture loadFromData(JsonObject data) {
-        int[] bounds = new int[]{0, 0, 0, 0};
+        int[] bounds = new int[] {
+                0, 0, 0, 0
+        };
         JsonArray jAry = JsonHelper.GetArray(data, "padding");
         for (int i = 0; i < jAry.size() && i < bounds.length; i++) {
-            if (!(jAry.get(i).isJsonPrimitive())) continue;
+            if (!(jAry.get(i).isJsonPrimitive()))
+                continue;
             try {
                 bounds[i] = jAry.get(i).getAsInt();
             } catch (Exception ignored) {
@@ -34,8 +39,11 @@ public class FactoryColorTexture implements IFactoryData<IGuiTexture, JsonObject
         IGuiColor color;
         JsonObject jCol = JsonHelper.GetObject(data, "color");
         try {
-            color = QuestingAPI.getAPI(ApiReference.RESOURCE_REG).getColorReg().createNew(new ResourceLocation(JsonHelper.GetString(jCol, "colorType", "null")), jCol);
-            if (color == null) color = new GuiColorStatic(0xFFFFFFFF);
+            color = QuestingAPI.getAPI(ApiReference.RESOURCE_REG)
+                    .getColorReg()
+                    .createNew(new ResourceLocation(JsonHelper.GetString(jCol, "colorType", "null")), jCol);
+            if (color == null)
+                color = new GuiColorStatic(0xFFFFFFFF);
         } catch (Exception ignored) {
             color = new GuiColorStatic(0xFFFFFFFF);
         }
@@ -44,12 +52,11 @@ public class FactoryColorTexture implements IFactoryData<IGuiTexture, JsonObject
     }
 
     @Override
-    public ResourceLocation getRegistryName() {
-        return RES_ID;
-    }
+    public ResourceLocation getRegistryName() { return RES_ID; }
 
     @Override
     public ColorTexture createNew() {
         return new ColorTexture(new GuiColorStatic(0xFFFFFFFF), new GuiPadding(0, 0, 0, 0));
     }
+
 }

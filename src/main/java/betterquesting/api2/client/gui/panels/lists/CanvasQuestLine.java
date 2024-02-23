@@ -1,5 +1,13 @@
 package betterquesting.api2.client.gui.panels.lists;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.UUID;
+
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.enums.EnumQuestState;
@@ -24,13 +32,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 
-import java.util.*;
-import java.util.Map.Entry;
-
 /**
  * My class for lazy quest line setup on a scrolling canvas
  */
 public class CanvasQuestLine extends CanvasScrolling {
+
     private final List<PanelButtonQuest> btnList = new ArrayList<>();
 
     private final int buttonId;
@@ -45,9 +51,7 @@ public class CanvasQuestLine extends CanvasScrolling {
         this.buttonId = buttonId;
     }
 
-    public Collection<PanelButtonQuest> getQuestButtons() {
-        return Collections.unmodifiableCollection(this.btnList);
-    }
+    public Collection<PanelButtonQuest> getQuestButtons() { return Collections.unmodifiableCollection(this.btnList); }
 
     public PanelButtonQuest getButtonAt(int mx, int my) {
         float zs = zoomScale.readValue();
@@ -57,15 +61,14 @@ public class CanvasQuestLine extends CanvasScrolling {
         int smy = (int) ((my - ty) / zs) + lsy;
 
         for (PanelButtonQuest btn : btnList) {
-            if (btn.rect.contains(smx, smy)) return btn;
+            if (btn.rect.contains(smx, smy))
+                return btn;
         }
 
         return null;
     }
 
-    public IQuestLine getQuestLine() {
-        return lastQL;
-    }
+    public IQuestLine getQuestLine() { return lastQL; }
 
     public void refreshQuestLine() {
         setQuestLine(lastQL);
@@ -82,7 +85,8 @@ public class CanvasQuestLine extends CanvasScrolling {
         this.btnList.clear();
         lastQL = line;
 
-        if (line == null) return;
+        if (line == null)
+            return;
 
         EntityPlayer player = Minecraft.getMinecraft().player;
         UUID pid = QuestingAPI.getQuestingUUID(player);
@@ -91,7 +95,8 @@ public class CanvasQuestLine extends CanvasScrolling {
 
         if (!StringUtils.isNullOrEmpty(bgString)) {
             int bgSize = line.getProperty(NativeProps.BG_SIZE);
-            this.addPanel(new PanelGeneric(new GuiRectangle(0, 0, bgSize, bgSize, 1), new SimpleTexture(new ResourceLocation(bgString), new GuiRectangle(0, 0, 256, 256))));
+            this.addPanel(new PanelGeneric(new GuiRectangle(0, 0, bgSize, bgSize, 1),
+                                           new SimpleTexture(new ResourceLocation(bgString), new GuiRectangle(0, 0, 256, 256))));
         }
 
         HashMap<Integer, PanelButtonQuest> questBtns = new HashMap<>();
@@ -99,7 +104,8 @@ public class CanvasQuestLine extends CanvasScrolling {
         for (DBEntry<IQuestLineEntry> qle : line.getEntries()) {
             IQuest quest = QuestingAPI.getAPI(ApiReference.QUEST_DB).getValue(qle.getID());
 
-            if (!QuestCache.isQuestShown(quest, pid, player)) continue;
+            if (!QuestCache.isQuestShown(quest, pid, player))
+                continue;
 
             GuiRectangle rect = new GuiRectangle(qle.getValue().getPosX(), qle.getValue().getPosY(), qle.getValue().getSizeX(), qle.getValue().getSizeY());
             PanelButtonQuest paBtn = new PanelButtonQuest(rect, buttonId, "", new DBEntry<>(qle.getID(), quest));
@@ -114,7 +120,8 @@ public class CanvasQuestLine extends CanvasScrolling {
 
             List<DBEntry<IQuest>> reqList = QuestingAPI.getAPI(ApiReference.QUEST_DB).bulkLookup(quest.getValue().getRequirements());
 
-            if (reqList.size() <= 0) continue;
+            if (reqList.size() <= 0)
+                continue;
 
             boolean main = quest.getValue().getProperty(NativeProps.MAIN);
             EnumQuestState qState = quest.getValue().getState(player);
@@ -155,7 +162,8 @@ public class CanvasQuestLine extends CanvasScrolling {
                             predicate = null;
                             break;
                         case IMPLICIT:
-                            predicate = (mx, my, partialTicks) -> questBtns.get(req.getID()).rect.contains(mx, my) || questBtns.get(quest.getID()).rect.contains(mx, my);
+                            predicate = (mx, my, partialTicks) -> questBtns.get(req.getID()).rect.contains(mx, my) || questBtns.get(quest.getID()).rect
+                                    .contains(mx, my);
                             break;
                         default:
                             // bail early
@@ -207,4 +215,5 @@ public class CanvasQuestLine extends CanvasScrolling {
         this.setScrollY(bounds.getY() + bounds.getHeight() / 2);
         this.updatePanelScroll();
     }
+
 }

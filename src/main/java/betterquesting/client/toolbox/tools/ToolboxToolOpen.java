@@ -1,5 +1,7 @@
 package betterquesting.client.toolbox.tools;
 
+import java.util.List;
+
 import betterquesting.api.client.toolbox.IToolboxTool;
 import betterquesting.api2.client.gui.controls.PanelButtonQuest;
 import betterquesting.api2.client.gui.panels.lists.CanvasQuestLine;
@@ -7,9 +9,8 @@ import betterquesting.client.gui2.GuiQuest;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.NonNullList;
 
-import java.util.List;
-
 public class ToolboxToolOpen implements IToolboxTool {
+
     private CanvasQuestLine gui;
 
     public void initTool(CanvasQuestLine gui) {
@@ -84,4 +85,5 @@ public class ToolboxToolOpen implements IToolboxTool {
     public boolean useSelection() {
         return false;
     }
+
 }

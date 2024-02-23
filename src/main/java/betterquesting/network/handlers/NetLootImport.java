@@ -1,5 +1,7 @@
 package betterquesting.network.handlers;
 
+import org.apache.logging.log4j.Level;
+
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.network.QuestingPacket;
@@ -13,9 +15,9 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
 
 public class NetLootImport {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation("bq_standard:loot_import");
 
     public static void registerHandler() {
@@ -35,10 +37,13 @@ public class NetLootImport {
         EntityPlayerMP sender = message.getSecond();
         NBTTagCompound tag = message.getFirst();
 
-        if (sender.getServer() == null) return;
+        if (sender.getServer() == null)
+            return;
 
         if (!sender.getServer().getPlayerList().canSendCommands(sender.getGameProfile())) {
-            BetterQuesting.logger.log(Level.WARN, "Player " + sender.getName() + " (UUID:" + QuestingAPI.getQuestingUUID(sender) + ") tried to import loot without OP permissions!");
+            BetterQuesting.logger.log(Level.WARN,
+                                      "Player " + sender.getName() + " (UUID:" + QuestingAPI.getQuestingUUID(sender) +
+                                              ") tried to import loot without OP permissions!");
             sender.sendMessage(new TextComponentString(TextFormatting.RED + "You need to be OP to edit loot!"));
             return; // Player is not operator. Do nothing
         }
@@ -46,4 +51,5 @@ public class NetLootImport {
         LootRegistry.INSTANCE.readFromNBT(tag.getCompoundTag("data"), false);
         NetLootSync.sendSync(null);
     }
+
 }

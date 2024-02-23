@@ -34,7 +34,8 @@ public class PanelTaskXP extends CanvasMinimum {
         super.initPanel();
         int width = initialRect.getWidth();
 
-        this.addPanel(new PanelGeneric(new GuiTransform(GuiAlign.TOP_LEFT, (width - 32) / 2, 0, 32, 32, 0), new ItemTexture(new BigItemStack(Items.EXPERIENCE_BOTTLE))));
+        this.addPanel(new PanelGeneric(new GuiTransform(GuiAlign.TOP_LEFT, (width - 32) / 2, 0, 32, 32, 0),
+                                       new ItemTexture(new BigItemStack(Items.EXPERIENCE_BOTTLE))));
 
         long xp = task.getUsersProgress(QuestingAPI.getQuestingUUID(Minecraft.getMinecraft().player));
         xp = !task.levels ? xp : XPHelper.getXPLevel(xp);
@@ -46,7 +47,9 @@ public class PanelTaskXP extends CanvasMinimum {
         fillBar.setFillDriver(new ValueFuncIO<>(() -> xpPercent));
         this.addPanel(fillBar);
 
-        this.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_LEFT, 0, 36, width, 16, -1), TextFormatting.BOLD + "" + xp + "/" + task.amount + (task.levels ? "L" : "XP")).setAlignment(1));
+        this.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_LEFT, 0, 36, width, 16, -1),
+                                       TextFormatting.BOLD + "" + xp + "/" + task.amount + (task.levels ? "L" : "XP")).setAlignment(1));
         recalculateSizes();
     }
+
 }

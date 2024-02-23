@@ -1,5 +1,13 @@
 package betterquesting.api2.client.gui.panels.lists;
 
+import java.util.List;
+import java.util.ListIterator;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import javax.annotation.Nonnull;
+
+import org.lwjgl.input.Mouse;
+
 import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api.utils.RenderUtils;
 import betterquesting.api2.client.gui.controls.IValueIO;
@@ -10,14 +18,9 @@ import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.IGuiCanvas;
 import betterquesting.api2.client.gui.panels.IGuiPanel;
 import net.minecraft.client.renderer.GlStateManager;
-import org.lwjgl.input.Mouse;
-
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CanvasScrolling implements IGuiCanvas {
+
     private final List<IGuiPanel> guiPanels = new CopyOnWriteArrayList<>();
     private final IGuiRect transform;
     private boolean enabled = true;
@@ -94,30 +97,24 @@ public class CanvasScrolling implements IGuiCanvas {
         return this;
     }
 
-    public IGuiRect getScrollBounds() {
-        return this.scrollBounds;
-    }
+    public IGuiRect getScrollBounds() { return this.scrollBounds; }
 
-    public int getScrollX() {
-        return Math.round(scrollBounds.getX() + scrollBounds.getWidth() * scrollX.readValue());
-    }
+    public int getScrollX() { return Math.round(scrollBounds.getX() + scrollBounds.getWidth() * scrollX.readValue()); }
 
-    public int getScrollY() {
-        return Math.round(scrollBounds.getY() + scrollBounds.getHeight() * scrollY.readValue());
-    }
+    public int getScrollY() { return Math.round(scrollBounds.getY() + scrollBounds.getHeight() * scrollY.readValue()); }
 
-    public float getZoom() {
-        return zoomScale.readValue();
-    }
+    public float getZoom() { return zoomScale.readValue(); }
 
     public void setScrollX(int sx) {
-        if (scrollBounds.getWidth() <= 0) return;
+        if (scrollBounds.getWidth() <= 0)
+            return;
         scrollX.writeValueRaw((sx - scrollBounds.getX()) / (float) scrollBounds.getWidth());
         lsx = this.getScrollX();
     }
 
     public void setScrollY(int sy) {
-        if (scrollBounds.getHeight() <= 0) return;
+        if (scrollBounds.getHeight() <= 0)
+            return;
         scrollY.writeValueRaw((sy - scrollBounds.getY()) / (float) scrollBounds.getHeight());
         lsy = this.getScrollY();
     }
@@ -135,29 +132,21 @@ public class CanvasScrolling implements IGuiCanvas {
     }
 
     @Override
-    public void setEnabled(boolean state) {
-        this.enabled = state;
-    }
+    public void setEnabled(boolean state) { this.enabled = state; }
 
     @Override
-    public boolean isEnabled() {
-        return this.enabled;
-    }
+    public boolean isEnabled() { return this.enabled; }
 
     @Override
-    public IGuiRect getTransform() {
-        return transform;
-    }
+    public IGuiRect getTransform() { return transform; }
 
-    @Nonnull
-    @Override
-    public List<IGuiPanel> getChildren() {
-        return this.guiPanels;
-    }
+    @Nonnull @Override
+    public List<IGuiPanel> getChildren() { return this.guiPanels; }
 
     @Override
     public void drawPanel(int mx, int my, float partialTick) {
-        if (!isRectEqual(refRect, transform)) refreshScrollBounds();
+        if (!isRectEqual(refRect, transform))
+            refreshScrollBounds();
 
         float zs = zoomScale.readValue();
 
@@ -308,7 +297,8 @@ public class CanvasScrolling implements IGuiCanvas {
         boolean used = false;
 
         if (!hasDragged) {
-            if (!transform.contains(mx, my)) return false;
+            if (!transform.contains(mx, my))
+                return false;
 
             float zs = zoomScale.readValue();
             int tx = transform.getX();
@@ -327,7 +317,8 @@ public class CanvasScrolling implements IGuiCanvas {
         }
 
         if (isDragging) {
-            if (!Mouse.isButtonDown(0) && !Mouse.isButtonDown(2)) isDragging = false;
+            if (!Mouse.isButtonDown(0) && !Mouse.isButtonDown(2))
+                isDragging = false;
             return true;
         }
 
@@ -336,7 +327,8 @@ public class CanvasScrolling implements IGuiCanvas {
 
     @Override
     public boolean onMouseScroll(int mx, int my, int scroll) {
-        if (scroll == 0 || !transform.contains(mx, my)) return false;
+        if (scroll == 0 || !transform.contains(mx, my))
+            return false;
 
         float zs = zoomScale.readValue();
         int tx = transform.getX();
@@ -410,8 +402,8 @@ public class CanvasScrolling implements IGuiCanvas {
                 break;
             }
         }
-		
-		/*if(!used && c == 'c')
+
+        /*if(!used && c == 'c')
         {
             setScrollX(0);
             setScrollY(0);
@@ -422,7 +414,8 @@ public class CanvasScrolling implements IGuiCanvas {
 
     @Override
     public List<String> getTooltip(int mx, int my) {
-        if (!transform.contains(mx, my) || isDragging) return null;
+        if (!transform.contains(mx, my) || isDragging)
+            return null;
 
         float zs = zoomScale.readValue();
         int tx = transform.getX();
@@ -457,7 +450,8 @@ public class CanvasScrolling implements IGuiCanvas {
     }
 
     public void addCulledPanel(IGuiPanel panel, boolean useCulling) {
-        if (panel == null || guiPanels.contains(panel)) return;
+        if (panel == null || guiPanels.contains(panel))
+            return;
 
         guiPanels.add(panel);
         guiPanels.sort(ComparatorGuiDepth.INSTANCE);
@@ -554,11 +548,10 @@ public class CanvasScrolling implements IGuiCanvas {
         refreshScrollBounds();
     }
 
-    private List<IGuiPanel> getVisiblePanels() {
-        return useBlocking ? cullingManager.getVisiblePanels() : guiPanels;
-    }
+    private List<IGuiPanel> getVisiblePanels() { return useBlocking ? cullingManager.getVisiblePanels() : guiPanels; }
 
     private boolean isRectEqual(IGuiRect r1, IGuiRect r2) {
         return r1.getX() == r2.getX() && r1.getY() == r2.getY() && r1.getWidth() == r2.getWidth() && r1.getHeight() == r2.getHeight();
     }
+
 }

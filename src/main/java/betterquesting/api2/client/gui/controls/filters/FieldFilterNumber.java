@@ -4,7 +4,9 @@ import betterquesting.api2.client.gui.controls.IFieldFilter;
 
 // Generic number filter
 public abstract class FieldFilterNumber<T extends Number> implements IFieldFilter<T> {
+
     public static final FieldFilterNumber<Double> DOUBLE = new FieldFilterNumber<Double>(true) {
+
         @Override
         public Double parseValue(String input) {
             try {
@@ -13,8 +15,10 @@ public abstract class FieldFilterNumber<T extends Number> implements IFieldFilte
                 return 0D;
             }
         }
+
     };
     public static final FieldFilterNumber<Float> FLOAT = new FieldFilterNumber<Float>(true) {
+
         @Override
         public Float parseValue(String input) {
             try {
@@ -23,9 +27,11 @@ public abstract class FieldFilterNumber<T extends Number> implements IFieldFilte
                 return 0F;
             }
         }
+
     };
 
     public static final FieldFilterNumber<Long> LONG = new FieldFilterNumber<Long>(false) {
+
         @Override
         public Long parseValue(String input) {
             try {
@@ -34,8 +40,10 @@ public abstract class FieldFilterNumber<T extends Number> implements IFieldFilte
                 return 0L;
             }
         }
+
     };
     public static final FieldFilterNumber<Integer> INT = new FieldFilterNumber<Integer>(false) {
+
         @Override
         public Integer parseValue(String input) {
             try {
@@ -44,8 +52,10 @@ public abstract class FieldFilterNumber<T extends Number> implements IFieldFilte
                 return 0;
             }
         }
+
     };
     public static final FieldFilterNumber<Short> SHORT = new FieldFilterNumber<Short>(false) {
+
         @Override
         public Short parseValue(String input) {
             try {
@@ -54,8 +64,10 @@ public abstract class FieldFilterNumber<T extends Number> implements IFieldFilte
                 return 0;
             }
         }
+
     };
     public static final FieldFilterNumber<Byte> BYTE = new FieldFilterNumber<Byte>(false) {
+
         @Override
         public Byte parseValue(String input) {
             try {
@@ -64,6 +76,7 @@ public abstract class FieldFilterNumber<T extends Number> implements IFieldFilte
                 return 0;
             }
         }
+
     };
 
     // === CLASS START ===
@@ -83,4 +96,5 @@ public abstract class FieldFilterNumber<T extends Number> implements IFieldFilte
     public String filterText(String input) {
         return floating ? input.replaceAll("[^.0123456789-]", "") : input.replaceAll("[^0123456789-]", "");
     }
+
 }

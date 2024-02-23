@@ -1,16 +1,17 @@
 package betterquesting.api2.client.gui.resources.textures;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import betterquesting.api.utils.BigItemStack;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 public class OreDictTexture extends SlideShowTexture {
+
     public OreDictTexture(float interval, BigItemStack stack, boolean showCount, boolean keepAspect) {
         super(interval, splitOreTextures(stack, showCount, keepAspect).toArray(new ItemTexture[0]));
     }
@@ -29,7 +30,7 @@ public class OreDictTexture extends SlideShowTexture {
     /*private static Collection<BigItemStack> splitVariants(BigItemStack stack)
     {
         Set<BigItemStack> list = new HashSet<>();
-        
+    
         if(!stack.hasOreDict())
         {
             if(stack.getBaseStack().getItemDamage() == OreDictionary.WILDCARD_VALUE)
@@ -47,7 +48,7 @@ public class OreDictTexture extends SlideShowTexture {
             }
             return list;
         }
-        
+    
         for(ItemStack iStack : stack.getOreIngredient().getMatchingStacks())
         {
             if(iStack.getItemDamage() == OreDictionary.WILDCARD_VALUE)
@@ -66,7 +67,7 @@ public class OreDictTexture extends SlideShowTexture {
                 list.add(bStack);
             }
         }
-        
+    
         return list;
     }*/
 
@@ -107,4 +108,5 @@ public class OreDictTexture extends SlideShowTexture {
 
         return list;
     }
+
 }

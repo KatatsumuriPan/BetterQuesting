@@ -1,5 +1,11 @@
 package betterquesting.items;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.properties.NativeProps;
@@ -18,19 +24,19 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-
 public class ItemLootChest extends Item {
+
     public ItemLootChest() {
         this.setMaxStackSize(1);
         this.setTranslationKey("bq_standard.loot_chest");
@@ -40,21 +46,24 @@ public class ItemLootChest extends Item {
     /**
      * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
      */
-    @Nonnull
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
+    @Nonnull @Override
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull
+    EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
 
-        if (hand != EnumHand.MAIN_HAND) return new ActionResult<>(EnumActionResult.PASS, stack);
+        if (hand != EnumHand.MAIN_HAND)
+            return new ActionResult<>(EnumActionResult.PASS, stack);
 
         if (stack.getItemDamage() == 104) {
             if (world.isRemote || !(player instanceof EntityPlayerMP)) {
-                if (!player.capabilities.isCreativeMode) stack.shrink(1);
+                if (!player.capabilities.isCreativeMode)
+                    stack.shrink(1);
                 return new ActionResult<>(EnumActionResult.PASS, stack);
             }
 
             NBTTagCompound tag = stack.getTagCompound();
-            if (tag == null) tag = new NBTTagCompound();
+            if (tag == null)
+                tag = new NBTTagCompound();
 
             List<BigItemStack> lootItems = new ArrayList<>();
             String lootName = tag.getString("fixedLootName");
@@ -83,15 +92,22 @@ public class ItemLootChest extends Item {
             NetLootClaim.sendReward((EntityPlayerMP) player, lootName, lootItems.toArray(new BigItemStack[0]));
         } else if (stack.getItemDamage() == 103) {
             if (world.isRemote || !(player instanceof EntityPlayerMP)) {
-                if (!player.capabilities.isCreativeMode) stack.shrink(1);
+                if (!player.capabilities.isCreativeMode)
+                    stack.shrink(1);
                 return new ActionResult<>(EnumActionResult.PASS, stack);
             }
 
-            LootContext lootcontext = (new LootContext.Builder(((EntityPlayerMP) player).getServerWorld())).withLootedEntity(player).withPlayer(player).withLuck(player.getLuck()).build();
-            String loottable = (stack.getTagCompound() != null && stack.getTagCompound().hasKey("loottable", 8)) ? stack.getTagCompound().getString("loottable") : "minecraft:chests/simple_dungeon";
+            LootContext lootcontext = (new LootContext.Builder(((EntityPlayerMP) player).getServerWorld())).withLootedEntity(player)
+                    .withPlayer(player)
+                    .withLuck(player.getLuck())
+                    .build();
+            String loottable = (stack.getTagCompound() != null && stack.getTagCompound().hasKey("loottable", 8)) ? stack.getTagCompound()
+                    .getString("loottable") : "minecraft:chests/simple_dungeon";
 
             List<BigItemStack> loot = new ArrayList<>();
-            for (ItemStack itemstack : player.world.getLootTableManager().getLootTableFromLocation(new ResourceLocation(loottable)).generateLootForPools(player.getRNG(), lootcontext)) {
+            for (ItemStack itemstack : player.world.getLootTableManager()
+                    .getLootTableFromLocation(new ResourceLocation(loottable))
+                    .generateLootForPools(player.getRNG(), lootcontext)) {
                 loot.add(new BigItemStack(itemstack));
             }
 
@@ -126,7 +142,8 @@ public class ItemLootChest extends Item {
             if (group != null) {
                 title = group.name;
                 List<BigItemStack> tmp = group.getRandomReward(itemRand);
-                if (tmp != null) loot.addAll(tmp);
+                if (tmp != null)
+                    loot.addAll(tmp);
             }
 
             boolean invoChanged = false;
@@ -150,7 +167,8 @@ public class ItemLootChest extends Item {
             }
         }
 
-        if (!player.capabilities.isCreativeMode) stack.shrink(1);
+        if (!player.capabilities.isCreativeMode)
+            stack.shrink(1);
 
         return new ActionResult<>(EnumActionResult.PASS, stack);
     }
@@ -160,11 +178,12 @@ public class ItemLootChest extends Item {
     /**
      * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
      */
-    @Override
-    @SideOnly(Side.CLIENT)
-    @SuppressWarnings("rawtypes")
-    public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
-        if (tab != CreativeTabs.SEARCH && tab != this.getCreativeTab()) return;
+    @Override @SideOnly(Side.CLIENT) @SuppressWarnings("rawtypes")
+    public void getSubItems(@Nonnull
+    CreativeTabs tab, @Nonnull
+    NonNullList<ItemStack> list) {
+        if (tab != CreativeTabs.SEARCH && tab != this.getCreativeTab())
+            return;
         if (subItems != null) // CACHED ITEMS
         {
             list.addAll(subItems);
@@ -212,8 +231,7 @@ public class ItemLootChest extends Item {
         list.addAll(subItems);
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
+    @Override @SideOnly(Side.CLIENT)
     public boolean hasEffect(ItemStack stack) {
         return stack.getItemDamage() == 102;
     }
@@ -221,21 +239,24 @@ public class ItemLootChest extends Item {
     /**
      * allows items to add custom lines of information to the mouseover description
      */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    @Override @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable
+    World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
 
         NBTTagCompound tag = stack.getTagCompound();
         boolean hideTooltip = tag == null || !tag.getBoolean("hideLootInfo");
-        if (hideTooltip && !QuestingAPI.getAPI(ApiReference.SETTINGS).getProperty(NativeProps.EDIT_MODE)) return;
+        if (hideTooltip && !QuestingAPI.getAPI(ApiReference.SETTINGS).getProperty(NativeProps.EDIT_MODE))
+            return;
 
         if (stack.getItemDamage() == 104) {
-            if (tag == null) return;
+            if (tag == null)
+                return;
             tooltip.add(QuestTranslation.translate("bq_standard.tooltip.fixed_loot", tag.getString("fixedLootName")));
             tooltip.add(QuestTranslation.translate("bq_standard.tooltip.fixed_loot_size", tag.getTagList("fixedLootList", 10).tagCount()));
         } else if (stack.getItemDamage() == 103) {
-            if (tag == null) return;
+            if (tag == null)
+                return;
             tooltip.add(QuestTranslation.translate("bq_standard.tooltip.loot_table", tag.getString("loottable")));
         } else if (stack.getItemDamage() > 101) {
             tooltip.add(QuestTranslation.translate("betterquesting.btn.edit"));
@@ -247,4 +268,5 @@ public class ItemLootChest extends Item {
             }
         }
     }
+
 }

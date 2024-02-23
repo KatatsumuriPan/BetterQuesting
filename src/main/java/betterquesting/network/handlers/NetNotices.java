@@ -1,5 +1,7 @@
 package betterquesting.network.handlers;
 
+import javax.annotation.Nullable;
+
 import betterquesting.api.network.QuestingPacket;
 import betterquesting.client.QuestNotification;
 import betterquesting.core.BetterQuesting;
@@ -13,9 +15,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-
 public class NetNotices {
+
     // TODO: Convert over to inbox system in future
     private static final ResourceLocation ID_NAME = new ResourceLocation(ModReference.MODID, "notification");
 
@@ -25,12 +26,16 @@ public class NetNotices {
         }
     }
 
-    public static void sendNotice(@Nullable EntityPlayerMP[] players, ItemStack icon, String mainText, String subText, String sound) {
+    public static void sendNotice(@Nullable
+    EntityPlayerMP[] players, ItemStack icon, String mainText, String subText, String sound) {
         NBTTagCompound payload = new NBTTagCompound();
         payload.setTag("icon", (icon != null ? icon : ItemStack.EMPTY).writeToNBT(new NBTTagCompound()));
-        if (mainText != null) payload.setString("mainText", mainText);
-        if (subText != null) payload.setString("subText", subText);
-        if (sound != null) payload.setString("sound", sound);
+        if (mainText != null)
+            payload.setString("mainText", mainText);
+        if (subText != null)
+            payload.setString("subText", subText);
+        if (sound != null)
+            payload.setString("sound", sound);
 
         if (players != null) {
             PacketSender.INSTANCE.sendToPlayers(new QuestingPacket(ID_NAME, payload), players);
@@ -47,4 +52,5 @@ public class NetNotices {
         String sound = message.getString("sound");
         QuestNotification.ScheduleNotice(mainTxt, subTxt, stack, sound);
     }
+
 }
