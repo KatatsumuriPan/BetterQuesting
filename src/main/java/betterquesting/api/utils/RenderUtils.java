@@ -727,8 +727,14 @@ public class RenderUtils {
     /**
      * Modified version of Forge's tooltip rendering that doesn't adjust Z depth
      */
-    public static void drawHoveringText(@Nonnull
-    final ItemStack stack, List<String> textLines, int mouseX, int mouseY, int screenWidth, int screenHeight, int maxTextWidth, FontRenderer font) {
+    public static void drawHoveringText(@Nonnull final ItemStack stack,
+                                        List<String> textLines,
+                                        int mouseX,
+                                        int mouseY,
+                                        int screenWidth,
+                                        int screenHeight,
+                                        int maxTextWidth,
+                                        FontRenderer font) {
         if (textLines == null || textLines.isEmpty())
             return;
 

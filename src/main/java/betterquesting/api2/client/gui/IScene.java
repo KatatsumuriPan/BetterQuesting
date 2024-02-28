@@ -16,8 +16,7 @@ public interface IScene extends IGuiCanvas {
     //void resetFocus();
 
     // Opens a top level canvas off the root canvas
-    void openPopup(@Nonnull
-    IGuiPanel panel);
+    void openPopup(@Nonnull IGuiPanel panel);
 
     void closePopup();
 

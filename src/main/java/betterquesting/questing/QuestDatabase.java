@@ -66,8 +66,7 @@ public final class QuestDatabase extends SimpleDatabase<IQuest> implements IQues
     }
 
     @Override
-    public synchronized NBTTagList writeToNBT(NBTTagList json, @Nullable
-    List<Integer> subset) {
+    public synchronized NBTTagList writeToNBT(NBTTagList json, @Nullable List<Integer> subset) {
         for (DBEntry<IQuest> entry : this.getEntries()) {
             if (subset != null && !subset.contains(entry.getID()))
                 continue;
@@ -101,8 +100,7 @@ public final class QuestDatabase extends SimpleDatabase<IQuest> implements IQues
     }
 
     @Override
-    public synchronized NBTTagList writeProgressToNBT(NBTTagList json, @Nullable
-    List<UUID> users) {
+    public synchronized NBTTagList writeProgressToNBT(NBTTagList json, @Nullable List<UUID> users) {
         for (DBEntry<IQuest> entry : this.getEntries()) {
             NBTTagCompound jq = entry.getValue().writeProgressToNBT(new NBTTagCompound(), users);
             jq.setInteger("questID", entry.getID());

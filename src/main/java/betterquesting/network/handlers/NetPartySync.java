@@ -60,9 +60,7 @@ public class NetPartySync {
         });
     }
 
-    public static void sendSync(@Nullable
-    EntityPlayerMP[] players, @Nullable
-    int[] partyIDs) {
+    public static void sendSync(@Nullable EntityPlayerMP[] players, @Nullable int[] partyIDs) {
         if (partyIDs != null && partyIDs.length <= 0)
             return;
         if (players != null && players.length <= 0)
@@ -89,8 +87,7 @@ public class NetPartySync {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void requestSync(@Nullable
-    int[] partyIDs) {
+    public static void requestSync(@Nullable int[] partyIDs) {
         NBTTagCompound payload = new NBTTagCompound();
         if (partyIDs != null)
             payload.setIntArray("partyIDs", partyIDs);

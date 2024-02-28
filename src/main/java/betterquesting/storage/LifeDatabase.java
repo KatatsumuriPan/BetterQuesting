@@ -21,20 +21,17 @@ public final class LifeDatabase implements ILifeDatabase {
     private final HashMap<UUID, Integer> playerLives = new HashMap<>();
 
     @Override
-    public synchronized int getLives(@Nonnull
-    UUID uuid) {
+    public synchronized int getLives(@Nonnull UUID uuid) {
         return playerLives.computeIfAbsent(uuid, (k) -> QuestSettings.INSTANCE.getProperty(NativeProps.LIVES_DEF));
     }
 
     @Override
-    public synchronized void setLives(@Nonnull
-    UUID uuid, int value) {
+    public synchronized void setLives(@Nonnull UUID uuid, int value) {
         playerLives.put(uuid, MathHelper.clamp(value, 0, QuestSettings.INSTANCE.getProperty(NativeProps.LIVES_MAX)));
     }
 
     @Override
-    public synchronized NBTTagCompound writeToNBT(NBTTagCompound nbt, @Nullable
-    List<UUID> users) {
+    public synchronized NBTTagCompound writeToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
         NBTTagList jul = new NBTTagList();
         for (Entry<UUID, Integer> entry : playerLives.entrySet()) {
             if (users != null && !users.contains(entry.getKey()))

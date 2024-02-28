@@ -18,8 +18,7 @@ public interface INBTProgress<T extends NBTBase> {
      * @param users the users to write to the nbt tag, if null all users should be written
      * @return the nbt tag written
      */
-    T writeProgressToNBT(T nbt, @Nullable
-    List<UUID> users);
+    T writeProgressToNBT(T nbt, @Nullable List<UUID> users);
 
     /**
      * @param nbt   the nbt tag to read from

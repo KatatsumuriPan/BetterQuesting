@@ -37,10 +37,7 @@ public class CatalogueEntry {
         this.subLink = subLink;
     }
 
-    public CatalogueEntry setRequirement(@Nonnull
-    String token, @Nonnull
-    String service, int amount, @Nonnull
-    String subLink) {
+    public CatalogueEntry setRequirement(@Nonnull String token, @Nonnull String service, int amount, @Nonnull String subLink) {
         this.token = token;
         this.service = service;
         this.subTier = amount;
@@ -48,8 +45,7 @@ public class CatalogueEntry {
         return this;
     }
 
-    public CatalogueEntry(@Nonnull
-    JsonObject json) {
+    public CatalogueEntry(@Nonnull JsonObject json) {
         this.author = JsonHelper.GetString(json, "author", "Unknown");
         this.name = JsonHelper.GetString(json, "themeName", "Untitled");
         this.themeID = new ResourceLocation(JsonHelper.GetString(json, "themeID", "minecraft:untitled"));

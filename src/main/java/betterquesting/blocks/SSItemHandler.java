@@ -17,8 +17,7 @@ public class SSItemHandler implements IItemHandlerModifiable {
     public int getSlots() { return tile.getSizeInventory(); }
 
     @Nonnull @Override
-    public ItemStack insertItem(int slot, @Nonnull
-    ItemStack stack, boolean simulate) {
+    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
         if (stack.isEmpty() || !tile.isItemValidForSlot(slot, stack)) {
             return stack;
         }
@@ -80,8 +79,7 @@ public class SSItemHandler implements IItemHandlerModifiable {
     }
 
     @Override
-    public void setStackInSlot(int slot, @Nonnull
-    ItemStack stack) {
+    public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
         tile.setInventorySlotContents(slot, stack);
     }
 

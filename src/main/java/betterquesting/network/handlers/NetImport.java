@@ -46,9 +46,7 @@ public class NetImport {
         PacketTypeRegistry.INSTANCE.registerServerHandler(ID_NAME, NetImport::onServer);
     }
 
-    public static void sendImport(@Nonnull
-    IQuestDatabase questDB, @Nonnull
-    IQuestLineDatabase chapterDB) {
+    public static void sendImport(@Nonnull IQuestDatabase questDB, @Nonnull IQuestLineDatabase chapterDB) {
         NBTTagCompound payload = new NBTTagCompound();
         payload.setTag("quests", questDB.writeToNBT(new NBTTagList(), null));
         payload.setTag("chapters", chapterDB.writeToNBT(new NBTTagList(), null));

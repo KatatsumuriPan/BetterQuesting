@@ -156,26 +156,21 @@ public class SupporterAPI {
         return new String(flipBytes(Base64.getDecoder().decode(s), key), StandardCharsets.UTF_8);
     }
 
-    private static byte[] flipBytes(@Nonnull
-    byte[] input, @Nonnull
-    byte[] key) {
+    private static byte[] flipBytes(@Nonnull byte[] input, @Nonnull byte[] key) {
         byte[] output = new byte[input.length];
         for (int i = 0; i < input.length; i++)
             output[i] = (byte) (input[i] ^ key[i % key.length]);
         return output;
     }
 
-    private static byte[] makeFormat_0(@Nonnull
-    DataOutputStream dos, long seed) throws IOException {
+    private static byte[] makeFormat_0(@Nonnull DataOutputStream dos, long seed) throws IOException {
         byte[] b = new byte[16];
         new Random(seed).nextBytes(b);
         dos.writeLong(seed);
         return b;
     }
 
-    private static byte[] makeFormat_1(@Nonnull
-    DataOutputStream dos, @Nonnull
-    String token, int salts, String service, int threshold) throws IOException {
+    private static byte[] makeFormat_1(@Nonnull DataOutputStream dos, @Nonnull String token, int salts, String service, int threshold) throws IOException {
         List<Tuple<Boolean, String>> list = new ArrayList<>();
         list.add(new Tuple<>(true, token));
         for (int i = 0; i < salts; i++) {
@@ -188,9 +183,8 @@ public class SupporterAPI {
         return makeFormat_1(dos, list, service, threshold);
     }
 
-    private static byte[] makeFormat_1(@Nonnull
-    DataOutputStream dos, @Nonnull
-    Collection<Tuple<Boolean, String>> tokens, String service, int threshold) throws IOException {
+    private static byte[] makeFormat_1(@Nonnull DataOutputStream dos, @Nonnull Collection<Tuple<Boolean, String>> tokens, String service, int threshold)
+            throws IOException {
         dos.writeInt(tokens.size());
         int s = 0;
         Set<byte[]> l = new HashSet<>();
@@ -215,8 +209,7 @@ public class SupporterAPI {
     }
 
     @SideOnly(Side.CLIENT)
-    private static byte[] readFileKey(@Nonnull
-    DataInputStream dis, int format) {
+    private static byte[] readFileKey(@Nonnull DataInputStream dis, int format) {
         switch (format) {
             case -1:
                 return new byte[] {
@@ -233,8 +226,7 @@ public class SupporterAPI {
         }
     }
 
-    private static byte[] readFormat_0(@Nonnull
-    DataInputStream dis) {
+    private static byte[] readFormat_0(@Nonnull DataInputStream dis) {
         try {
             byte[] b = new byte[16];
             long seed = dis.readLong();
@@ -248,8 +240,7 @@ public class SupporterAPI {
     }
 
     @SideOnly(Side.CLIENT)
-    private static byte[] readFormat_1(@Nonnull
-    DataInputStream dis) {
+    private static byte[] readFormat_1(@Nonnull DataInputStream dis) {
         try {
             String[] tokens = new String[dis.readInt()];
             for (int n = 0; n < tokens.length; n++)

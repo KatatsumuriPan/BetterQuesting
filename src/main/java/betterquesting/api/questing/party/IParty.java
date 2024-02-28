@@ -15,16 +15,12 @@ public interface IParty extends INBTSaveLoad<NBTTagCompound> {
 
     IPropertyContainer getProperties();
 
-    void kickUser(@Nonnull
-    UUID uuid);
+    void kickUser(@Nonnull UUID uuid);
 
-    void setStatus(@Nonnull
-    UUID uuid, @Nonnull
-    EnumPartyStatus priv);
+    void setStatus(@Nonnull UUID uuid, @Nonnull EnumPartyStatus priv);
 
     @Nullable
-    EnumPartyStatus getStatus(@Nonnull
-    UUID uuid);
+    EnumPartyStatus getStatus(@Nonnull UUID uuid);
 
     List<UUID> getMembers();
 

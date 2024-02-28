@@ -113,9 +113,7 @@ public class TaskTrigger implements ITask {
             qc.markQuestDirty(questID);
     }
 
-    public void checkSetup(@Nonnull
-    EntityPlayer player, @Nonnull
-    DBEntry<IQuest> quest) {
+    public void checkSetup(@Nonnull EntityPlayer player, @Nonnull DBEntry<IQuest> quest) {
         if (!needsSetup)
             return;
         setupListener(quest);
@@ -142,8 +140,7 @@ public class TaskTrigger implements ITask {
     }
 
     @Override
-    public void resetUser(@Nullable
-    UUID uuid) {
+    public void resetUser(@Nullable UUID uuid) {
         if (uuid == null) {
             completeUsers.clear();
         } else {
@@ -162,8 +159,7 @@ public class TaskTrigger implements ITask {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
-    List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
         NBTTagList jArray = new NBTTagList();
 
         completeUsers.forEach((uuid) -> {

@@ -30,8 +30,7 @@ public interface ITask extends INBTSaveLoad<NBTTagCompound>, INBTProgress<NBTTag
 
     void setComplete(UUID uuid);
 
-    void resetUser(@Nullable
-    UUID uuid);
+    void resetUser(@Nullable UUID uuid);
 
     @Nullable @SideOnly(Side.CLIENT)
     IGuiPanel getTaskGui(IGuiRect rect, DBEntry<IQuest> quest);

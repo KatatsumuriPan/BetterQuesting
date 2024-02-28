@@ -11,20 +11,16 @@ import net.minecraft.nbt.NBTTagList;
 
 public interface INameCache extends INBTPartial<NBTTagList, UUID> {
 
-    boolean updateName(@Nonnull
-    EntityPlayerMP player);
+    boolean updateName(@Nonnull EntityPlayerMP player);
 
-    String getName(@Nonnull
-    UUID uuid);
+    String getName(@Nonnull UUID uuid);
 
-    UUID getUUID(@Nonnull
-    String name);
+    UUID getUUID(@Nonnull String name);
 
     List<String> getAllNames();
 
     // Primarily used client side for GUIs
-    boolean isOP(@Nonnull
-    UUID uuid);
+    boolean isOP(@Nonnull UUID uuid);
 
     int size();
 

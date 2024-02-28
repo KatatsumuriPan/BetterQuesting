@@ -9,11 +9,9 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public interface ILifeDatabase extends INBTPartial<NBTTagCompound, UUID> {
 
-    int getLives(@Nonnull
-    UUID uuid);
+    int getLives(@Nonnull UUID uuid);
 
-    void setLives(@Nonnull
-    UUID uuid, int value);
+    void setLives(@Nonnull UUID uuid, int value);
 
     void reset();
 

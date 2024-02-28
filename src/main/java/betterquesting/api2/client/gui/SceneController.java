@@ -16,8 +16,7 @@ public class SceneController {
     @Nullable
     public static IScene getActiveScene() { return curScene; }
 
-    public static void setActiveScene(@Nullable
-    IScene scene) { curScene = scene; }
+    public static void setActiveScene(@Nullable IScene scene) { curScene = scene; }
 
     @SubscribeEvent @SideOnly(Side.CLIENT)
     public static void onGuiOpened(GuiOpenEvent event) {

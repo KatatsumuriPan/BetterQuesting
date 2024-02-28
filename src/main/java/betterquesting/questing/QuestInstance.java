@@ -235,8 +235,7 @@ public class QuestInstance implements IQuest {
     }
 
     @Override
-    public boolean canSubmit(@Nonnull
-    EntityPlayer player) {
+    public boolean canSubmit(@Nonnull EntityPlayer player) {
         UUID playerID = QuestingAPI.getQuestingUUID(player);
 
         synchronized (completeUsers) {
@@ -355,8 +354,7 @@ public class QuestInstance implements IQuest {
      * Resets task progress and claim status. If performing a full reset, completion status will also be erased
      */
     @Override
-    public void resetUser(@Nullable
-    UUID uuid, boolean fullReset) {
+    public void resetUser(@Nullable UUID uuid, boolean fullReset) {
         synchronized (completeUsers) {
             HashSet<UUID> dirtyPlayers = new HashSet<>();
             if (uuid == null) {
@@ -400,8 +398,7 @@ public class QuestInstance implements IQuest {
     @Nonnull @Override
     public int[] getRequirements() { return this.preRequisites; }
 
-    public void setRequirements(@Nonnull
-    int[] req) {
+    public void setRequirements(@Nonnull int[] req) {
         prereqTypes.retainEntries((a, b) -> Arrays.stream(req).anyMatch(i -> i == a));
         this.preRequisites = req;
     }
@@ -413,8 +410,7 @@ public class QuestInstance implements IQuest {
     }
 
     @Override
-    public void setRequirementType(int req, @Nonnull
-    RequirementType kind) {
+    public void setRequirementType(int req, @Nonnull RequirementType kind) {
         if (kind == RequirementType.NORMAL)
             prereqTypes.remove(req);
         else
@@ -471,8 +467,7 @@ public class QuestInstance implements IQuest {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound json, @Nullable
-    List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound json, @Nullable List<UUID> users) {
         synchronized (completeUsers) {
             NBTTagList comJson = new NBTTagList();
             for (Entry<UUID, NBTTagCompound> entry : completeUsers.entrySet()) {

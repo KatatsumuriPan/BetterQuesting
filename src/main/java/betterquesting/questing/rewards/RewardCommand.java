@@ -112,8 +112,7 @@ public class RewardCommand implements IReward {
 
         private final Entity entity;
 
-        private RewardCommandSender(@Nonnull
-        Entity entity) {
+        private RewardCommandSender(@Nonnull Entity entity) {
             this.entity = entity;
         }
 
@@ -137,8 +136,7 @@ public class RewardCommand implements IReward {
         public int getCommandBlockType() { return 0; }
 
         @Override
-        public void fillInInfo(@Nonnull
-        ByteBuf p_145757_1_) {
+        public void fillInInfo(@Nonnull ByteBuf p_145757_1_) {
         }
 
         @Nonnull @Override

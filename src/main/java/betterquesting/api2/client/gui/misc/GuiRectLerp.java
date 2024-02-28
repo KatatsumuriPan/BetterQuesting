@@ -13,16 +13,14 @@ public class GuiRectLerp implements IGuiRect {
 
     private final ProxyRect pxRect;
 
-    public GuiRectLerp(@Nonnull
-    IGuiRect start) {
+    public GuiRectLerp(@Nonnull IGuiRect start) {
         this.startRect = start;
         this.targetRect = start;
         this.pxRect = new ProxyRect(start);
         this.et = System.currentTimeMillis();
     }
 
-    public void lerpTo(@Nonnull
-    IGuiRect target, long time) {
+    public void lerpTo(@Nonnull IGuiRect target, long time) {
         if (time <= 0)
             return;
 
@@ -32,8 +30,7 @@ public class GuiRectLerp implements IGuiRect {
         this.pxRect.changeReference(target);
     }
 
-    public void snapTo(@Nonnull
-    IGuiRect target) {
+    public void snapTo(@Nonnull IGuiRect target) {
         this.startRect = target;
         this.targetRect = target;
         this.et = System.currentTimeMillis();
@@ -98,8 +95,7 @@ public class GuiRectLerp implements IGuiRect {
     }
 
     @Override
-    public int compareTo(@Nonnull
-    IGuiRect o) {
+    public int compareTo(@Nonnull IGuiRect o) {
         return targetRect.compareTo(o);
     }
 

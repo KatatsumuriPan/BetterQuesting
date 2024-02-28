@@ -24,8 +24,7 @@ public class RgbTexture extends AbstractTexture {
     }
 
     @Override
-    public void loadTexture(@Nonnull
-    IResourceManager resourceManager) throws IOException {
+    public void loadTexture(@Nonnull IResourceManager resourceManager) throws IOException {
         this.deleteGlTexture();
 
         BufferedImage bufImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);

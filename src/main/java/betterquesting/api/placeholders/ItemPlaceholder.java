@@ -28,8 +28,7 @@ public class ItemPlaceholder extends Item {
      * allows items to add custom lines of information to the mouseover description
      */
     @Override @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable
-    World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         if (!stack.hasTagCompound()) {
             tooltip.add("ERROR: Original information missing!");
             return;

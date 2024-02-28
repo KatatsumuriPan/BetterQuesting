@@ -31,8 +31,7 @@ public class QuestResourcesFolder implements IResourcePack {
     private BufferedImage bufferedImage = null;
 
     @Nonnull @Override
-    public InputStream getInputStream(@Nonnull
-    ResourceLocation location) throws IOException {
+    public InputStream getInputStream(@Nonnull ResourceLocation location) throws IOException {
         if (!resourceExists(location)) {
             throw new ResourcePackFileNotFoundException(rootFolder, location.toString());
         }
@@ -42,8 +41,7 @@ public class QuestResourcesFolder implements IResourcePack {
     }
 
     @Override
-    public boolean resourceExists(@Nonnull
-    ResourceLocation location) {
+    public boolean resourceExists(@Nonnull ResourceLocation location) {
         File res = new File(rootFolder.getPath() + "/" + location.getNamespace(), location.getPath());
         return res.exists();
     }
@@ -75,9 +73,7 @@ public class QuestResourcesFolder implements IResourcePack {
     }
 
     @Override
-    public <T extends IMetadataSection> T getPackMetadata(@Nonnull
-    MetadataSerializer meta, @Nonnull
-    String s) {
+    public <T extends IMetadataSection> T getPackMetadata(@Nonnull MetadataSerializer meta, @Nonnull String s) {
         return null;
     }
 

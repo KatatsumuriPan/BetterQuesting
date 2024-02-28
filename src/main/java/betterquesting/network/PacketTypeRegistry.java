@@ -61,9 +61,7 @@ public class PacketTypeRegistry implements IPacketRegistry {
     }
 
     @Override
-    public void registerServerHandler(@Nonnull
-    ResourceLocation idName, @Nonnull
-    Consumer<Tuple<NBTTagCompound, EntityPlayerMP>> method) {
+    public void registerServerHandler(@Nonnull ResourceLocation idName, @Nonnull Consumer<Tuple<NBTTagCompound, EntityPlayerMP>> method) {
         if (serverHandlers.containsKey(idName)) {
             throw new IllegalArgumentException("Cannot register dupliate packet handler: " + idName);
         }
@@ -72,9 +70,7 @@ public class PacketTypeRegistry implements IPacketRegistry {
     }
 
     @Override @SideOnly(Side.CLIENT)
-    public void registerClientHandler(@Nonnull
-    ResourceLocation idName, @Nonnull
-    Consumer<NBTTagCompound> method) {
+    public void registerClientHandler(@Nonnull ResourceLocation idName, @Nonnull Consumer<NBTTagCompound> method) {
         if (clientHandlers.containsKey(idName)) {
             throw new IllegalArgumentException("Cannot register dupliate packet handler: " + idName);
         }
@@ -83,14 +79,12 @@ public class PacketTypeRegistry implements IPacketRegistry {
     }
 
     @Nullable
-    public Consumer<Tuple<NBTTagCompound, EntityPlayerMP>> getServerHandler(@Nonnull
-    ResourceLocation idName) {
+    public Consumer<Tuple<NBTTagCompound, EntityPlayerMP>> getServerHandler(@Nonnull ResourceLocation idName) {
         return serverHandlers.get(idName);
     }
 
     @Nullable @SideOnly(Side.CLIENT)
-    public Consumer<NBTTagCompound> getClientHandler(@Nonnull
-    ResourceLocation idName) {
+    public Consumer<NBTTagCompound> getClientHandler(@Nonnull ResourceLocation idName) {
         return clientHandlers.get(idName);
     }
 

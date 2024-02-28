@@ -89,8 +89,7 @@ public class QuestLine extends SimpleDatabase<IQuestLineEntry> implements IQuest
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound json, @Nullable
-    List<Integer> subset) {
+    public NBTTagCompound writeToNBT(NBTTagCompound json, @Nullable List<Integer> subset) {
         json.setTag("properties", info.writeToNBT(new NBTTagCompound()));
 
         NBTTagList jArr = new NBTTagList();

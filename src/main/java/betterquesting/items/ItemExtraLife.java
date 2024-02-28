@@ -38,8 +38,7 @@ public class ItemExtraLife extends Item {
      * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
      */
     @Nonnull @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull
-    EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
 
         if (stack.getItemDamage() != 0 || hand != EnumHand.MAIN_HAND) {
@@ -102,9 +101,7 @@ public class ItemExtraLife extends Item {
      * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
      */
     @Override @SideOnly(Side.CLIENT)
-    public void getSubItems(@Nonnull
-    CreativeTabs tab, @Nonnull
-    NonNullList<ItemStack> list) {
+    public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
         if (this.isInCreativeTab(tab)) {
             list.add(new ItemStack(this, 1, 0));
             list.add(new ItemStack(this, 1, 1));

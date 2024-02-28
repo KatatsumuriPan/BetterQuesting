@@ -70,8 +70,7 @@ public class TaskTame implements ITask {
             pInfo.markDirtyParty(Collections.singletonList(quest.getID()));
     }
 
-    public void onAnimalTamed(ParticipantInfo pInfo, DBEntry<IQuest> quest, @Nonnull
-    EntityLivingBase entity) {
+    public void onAnimalTamed(ParticipantInfo pInfo, DBEntry<IQuest> quest, @Nonnull EntityLivingBase entity) {
         Class<? extends Entity> subject = entity.getClass();
         ResourceLocation targetID = new ResourceLocation(idName);
         Class<? extends Entity> target = EntityList.getClass(targetID);
@@ -115,8 +114,7 @@ public class TaskTame implements ITask {
     }
 
     @Override
-    public void resetUser(@Nullable
-    UUID uuid) {
+    public void resetUser(@Nullable UUID uuid) {
         if (uuid == null) {
             completeUsers.clear();
             userProgress.clear();
@@ -185,8 +183,7 @@ public class TaskTame implements ITask {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
-    List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
         NBTTagList jArray = new NBTTagList();
         NBTTagList progArray = new NBTTagList();
 
@@ -229,8 +226,7 @@ public class TaskTame implements ITask {
         return n == null ? 0 : n;
     }
 
-    private List<Tuple<UUID, Integer>> getBulkProgress(@Nonnull
-    List<UUID> uuids) {
+    private List<Tuple<UUID, Integer>> getBulkProgress(@Nonnull List<UUID> uuids) {
         if (uuids.size() <= 0)
             return Collections.emptyList();
         List<Tuple<UUID, Integer>> list = new ArrayList<>();

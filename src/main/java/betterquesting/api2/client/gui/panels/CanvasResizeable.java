@@ -34,8 +34,7 @@ public class CanvasResizeable implements IGuiCanvas {
         this.crop = crop;
     }
 
-    public void changeBG(@Nullable
-    IGuiTexture texture) {
+    public void changeBG(@Nullable IGuiTexture texture) {
         this.bgTexture = texture;
     }
 
@@ -58,15 +57,13 @@ public class CanvasResizeable implements IGuiCanvas {
     @Override
     public boolean isEnabled() { return this.enabled; }
 
-    public void lerpToRect(@Nonnull
-    IGuiRect rect, long time, boolean inheritParent) {
+    public void lerpToRect(@Nonnull IGuiRect rect, long time, boolean inheritParent) {
         if (inheritParent)
             rect.setParent(rectLerp.getParent());
         rectLerp.lerpTo(rect, time);
     }
 
-    public void snapToRect(@Nonnull
-    IGuiRect rect, boolean inheritParent) {
+    public void snapToRect(@Nonnull IGuiRect rect, boolean inheritParent) {
         if (inheritParent)
             rect.setParent(rectLerp.getParent());
         rectLerp.snapTo(rect);

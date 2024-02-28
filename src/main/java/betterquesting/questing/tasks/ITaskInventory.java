@@ -9,8 +9,6 @@ import betterquesting.api2.utils.ParticipantInfo;
 
 public interface ITaskInventory extends ITask {
 
-    void onInventoryChange(@Nonnull
-    DBEntry<IQuest> quest, @Nonnull
-    ParticipantInfo pInfo);
+    void onInventoryChange(@Nonnull DBEntry<IQuest> quest, @Nonnull ParticipantInfo pInfo);
 
 }

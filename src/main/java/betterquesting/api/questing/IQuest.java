@@ -24,8 +24,7 @@ public interface IQuest extends INBTSaveLoad<NBTTagCompound>, INBTProgress<NBTTa
     @Nullable
     NBTTagCompound getCompletionInfo(UUID uuid);
 
-    void setCompletionInfo(UUID uuid, @Nullable
-    NBTTagCompound nbt);
+    void setCompletionInfo(UUID uuid, @Nullable NBTTagCompound nbt);
 
     void update(EntityPlayer player);
 
@@ -55,8 +54,7 @@ public interface IQuest extends INBTSaveLoad<NBTTagCompound>, INBTProgress<NBTTa
 
     void setClaimed(UUID uuid, long timestamp);
 
-    void resetUser(@Nullable
-    UUID uuid, boolean fullReset);
+    void resetUser(@Nullable UUID uuid, boolean fullReset);
 
     IDatabaseNBT<ITask, NBTTagList, NBTTagList> getTasks();
 
@@ -65,14 +63,12 @@ public interface IQuest extends INBTSaveLoad<NBTTagCompound>, INBTProgress<NBTTa
     @Nonnull
     int[] getRequirements();
 
-    void setRequirements(@Nonnull
-    int[] req);
+    void setRequirements(@Nonnull int[] req);
 
     @Nonnull
     RequirementType getRequirementType(int req);
 
-    void setRequirementType(int req, @Nonnull
-    RequirementType kind);
+    void setRequirementType(int req, @Nonnull RequirementType kind);
 
     enum RequirementType {
 

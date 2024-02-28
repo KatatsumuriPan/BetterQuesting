@@ -36,14 +36,12 @@ public class QuestCommandCheckCompletion extends QuestCommandBase {
     public String getPermissionDescription() { return "Permission to check the completion of quests of a given user"; }
 
     @Override
-    public boolean validArgs(@Nonnull
-    String[] args) {
+    public boolean validArgs(@Nonnull String[] args) {
         return args.length == 3;
     }
 
     @Override
-    public List<String> autoComplete(MinecraftServer server, ICommandSender sender, @Nonnull
-    String[] args) {
+    public List<String> autoComplete(MinecraftServer server, ICommandSender sender, @Nonnull String[] args) {
         ArrayList<String> list = new ArrayList<>();
 
         if (args.length == 2) {
@@ -61,8 +59,7 @@ public class QuestCommandCheckCompletion extends QuestCommandBase {
     public String getCommand() { return "check"; }
 
     @Override
-    public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, @Nonnull
-    String[] args) throws CommandException {
+    public void runCommand(MinecraftServer server, CommandBase command, ICommandSender sender, @Nonnull String[] args) throws CommandException {
         UUID uuid;
 
         uuid = this.findPlayerID(server, sender, args[1]);

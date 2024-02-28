@@ -34,16 +34,12 @@ public class CapabilityProviderQuestCache implements ICapabilityProvider, ICapab
     }
 
     @Override
-    public boolean hasCapability(@Nonnull
-    Capability<?> capability, @Nullable
-    EnumFacing facing) {
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
         return capability == CAP_QUEST_CACHE;
     }
 
     @Nullable @Override
-    public <T> T getCapability(@Nonnull
-    Capability<T> capability, @Nullable
-    EnumFacing facing) {
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
         return capability == CAP_QUEST_CACHE ? CAP_QUEST_CACHE.cast(cache) : null;
     }
 

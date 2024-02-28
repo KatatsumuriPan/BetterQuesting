@@ -24,8 +24,7 @@ public class NetScoreSync {
         }
     }
 
-    public static void sendScore(@Nullable
-    EntityPlayerMP player) {
+    public static void sendScore(@Nullable EntityPlayerMP player) {
         NBTTagCompound payload = new NBTTagCompound();
         payload.setTag("data",
                        ScoreboardBQ.INSTANCE.writeToNBT(new NBTTagList(),

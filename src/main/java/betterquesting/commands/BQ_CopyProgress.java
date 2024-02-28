@@ -35,8 +35,7 @@ public class BQ_CopyProgress extends CommandBase {
     public String getName() { return COMMAND_NAME; }
 
     @Nonnull @Override
-    public String getUsage(@Nonnull
-    ICommandSender sender) {
+    public String getUsage(@Nonnull ICommandSender sender) {
         return COMMAND_USAGE;
     }
 
@@ -44,10 +43,7 @@ public class BQ_CopyProgress extends CommandBase {
     public List<String> getAliases() { return Collections.singletonList(getName()); }
 
     @Override
-    public void execute(@Nonnull
-    MinecraftServer server, @Nonnull
-    ICommandSender sender, @Nonnull
-    String[] args) throws CommandException {
+    public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException {
         if (sender instanceof EntityPlayer) {
             if (args.length == 0 || args.length > 2) {
                 throw new CommandException(COMMAND_USAGE);

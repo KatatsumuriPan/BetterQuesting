@@ -9,9 +9,7 @@ public class HelpTopic {
     private final String title;
     private final String description;
 
-    public HelpTopic(@Nonnull
-    String title, @Nonnull
-    String description) {
+    public HelpTopic(@Nonnull String title, @Nonnull String description) {
         this.title = title;
         this.description = description;
     }

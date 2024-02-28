@@ -75,8 +75,7 @@ public class TaskAdvancement implements ITask {
     }
 
     @Override
-    public void resetUser(@Nullable
-    UUID uuid) {
+    public void resetUser(@Nullable UUID uuid) {
         if (uuid == null) {
             completeUsers.clear();
         } else {
@@ -95,8 +94,7 @@ public class TaskAdvancement implements ITask {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
-    List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
         NBTTagList jArray = new NBTTagList();
 
         completeUsers.forEach((uuid) -> {

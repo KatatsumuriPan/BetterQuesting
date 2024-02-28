@@ -64,8 +64,7 @@ public class TaskLocation implements ITaskTickable {
     }
 
     @Override
-    public void resetUser(@Nullable
-    UUID uuid) {
+    public void resetUser(@Nullable UUID uuid) {
         if (uuid == null) {
             completeUsers.clear();
         } else {
@@ -74,20 +73,17 @@ public class TaskLocation implements ITaskTickable {
     }
 
     @Override
-    public void tickTask(@Nonnull
-    ParticipantInfo pInfo, DBEntry<IQuest> quest) {
+    public void tickTask(@Nonnull ParticipantInfo pInfo, DBEntry<IQuest> quest) {
         if (pInfo.PLAYER.ticksExisted % 100 == 0)
             internalDetect(pInfo, quest);
     }
 
     @Override
-    public void detect(@Nonnull
-    ParticipantInfo pInfo, DBEntry<IQuest> quest) {
+    public void detect(@Nonnull ParticipantInfo pInfo, DBEntry<IQuest> quest) {
         internalDetect(pInfo, quest);
     }
 
-    private void internalDetect(@Nonnull
-    ParticipantInfo pInfo, DBEntry<IQuest> quest) {
+    private void internalDetect(@Nonnull ParticipantInfo pInfo, DBEntry<IQuest> quest) {
         if (!pInfo.PLAYER.isEntityAlive() || !(pInfo.PLAYER instanceof EntityPlayerMP))
             return;
 
@@ -173,8 +169,7 @@ public class TaskLocation implements ITaskTickable {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
-    List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
         NBTTagList jArray = new NBTTagList();
 
         completeUsers.forEach((uuid) -> {

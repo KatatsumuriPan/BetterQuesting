@@ -15,7 +15,6 @@ public interface IPartyDatabase extends IDatabase<IParty>, INBTPartial<NBTTagLis
     IParty createNew(int id);
 
     @Nullable
-    DBEntry<IParty> getParty(@Nonnull
-    UUID uuid);
+    DBEntry<IParty> getParty(@Nonnull UUID uuid);
 
 }

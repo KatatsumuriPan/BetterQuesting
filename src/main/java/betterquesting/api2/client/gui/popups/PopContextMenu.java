@@ -35,20 +35,15 @@ public class PopContextMenu extends CanvasEmpty {
 
     public ContextCategory getRootCategory() { return this.catRoot; }
 
-    public void addButton(@Nonnull
-    String text, @Nullable
-    IGuiTexture icon, @Nullable
-    Runnable action) {
+    public void addButton(@Nonnull String text, @Nullable IGuiTexture icon, @Nullable Runnable action) {
         catRoot.addButton(text, icon, action);
     }
 
-    public ContextCategory addCateogry(@Nonnull
-    String text) {
+    public ContextCategory addCateogry(@Nonnull String text) {
         return catRoot.addCateogry(text);
     }
 
-    public void openCategory(@Nonnull
-    ContextCategory category) {
+    public void openCategory(@Nonnull ContextCategory category) {
         this.resetCanvas();
 
         int listH = Math.min(category.entries.size() * 16, rect.getHeight());
@@ -121,9 +116,7 @@ public class PopContextMenu extends CanvasEmpty {
         private final ContextCategory parent;
         private final List<ContextEntry> entries = new ArrayList<>();
 
-        private ContextCategory(@Nullable
-        ContextCategory parent, @Nonnull
-        String name) {
+        private ContextCategory(@Nullable ContextCategory parent, @Nonnull String name) {
             this.parent = parent;
             this.name = name;
 
@@ -131,15 +124,11 @@ public class PopContextMenu extends CanvasEmpty {
                 addButton("<", null, () -> openCategory(this.parent));
         }
 
-        public void addButton(@Nonnull
-        String text, @Nullable
-        IGuiTexture icon, @Nullable
-        Runnable action) {
+        public void addButton(@Nonnull String text, @Nullable IGuiTexture icon, @Nullable Runnable action) {
             entries.add(new ContextEntry(text, icon, action));
         }
 
-        public ContextCategory addCateogry(@Nonnull
-        String text) {
+        public ContextCategory addCateogry(@Nonnull String text) {
             ContextCategory cat = new ContextCategory(this, text);
             addButton(QuestTranslation.translate(text) + " >", null, () -> openCategory(cat));
             return cat;
@@ -153,10 +142,7 @@ public class PopContextMenu extends CanvasEmpty {
         private final IGuiTexture icon;
         private final Runnable action;
 
-        public ContextEntry(@Nonnull
-        String text, @Nullable
-        IGuiTexture icon, @Nullable
-        Runnable action) {
+        public ContextEntry(@Nonnull String text, @Nullable IGuiTexture icon, @Nullable Runnable action) {
             this.text = text;
             this.icon = icon;
             this.action = action;

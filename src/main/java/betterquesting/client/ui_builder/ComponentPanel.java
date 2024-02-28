@@ -64,8 +64,7 @@ public class ComponentPanel implements INBTSaveLoad<NBTTagCompound> {
 
     public NBTTagCompound getPanelData() { return panelData; }
 
-    public void setPanelData(@Nonnull
-    NBTTagCompound tag) { this.panelData = tag; }
+    public void setPanelData(@Nonnull NBTTagCompound tag) { this.panelData = tag; }
 
     public IGuiPanel build() {
         Vector4f anchor = new Vector4f(transTag.getFloat("anchor_left"),

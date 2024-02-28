@@ -35,8 +35,7 @@ public class AdminExecute implements ICommandSender {
     }
 
     @Override
-    public boolean canUseCommand(int p_70003_1_, @Nonnull
-    String p_70003_2_) {
+    public boolean canUseCommand(int p_70003_1_, @Nonnull String p_70003_2_) {
         return true;
     }
 

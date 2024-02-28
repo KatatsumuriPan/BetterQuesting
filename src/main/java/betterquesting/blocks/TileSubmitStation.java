@@ -110,8 +110,7 @@ public class TileSubmitStation extends TileEntity implements IFluidHandler, ISid
     }
 
     @Override
-    public void setInventorySlotContents(int idx, @Nonnull
-    ItemStack stack) {
+    public void setInventorySlotContents(int idx, @Nonnull ItemStack stack) {
         if (idx < 0 || idx >= itemStack.size())
             return;
         itemStack.set(idx, stack);
@@ -129,24 +128,20 @@ public class TileSubmitStation extends TileEntity implements IFluidHandler, ISid
     public int getInventoryStackLimit() { return 64; }
 
     @Override
-    public boolean isUsableByPlayer(@Nonnull
-    EntityPlayer player) {
+    public boolean isUsableByPlayer(@Nonnull EntityPlayer player) {
         return (owner == null || player.getUniqueID().equals(owner)) && player.getDistanceSq(this.pos) < 256;
     }
 
     @Override
-    public void openInventory(@Nonnull
-    EntityPlayer player) {
+    public void openInventory(@Nonnull EntityPlayer player) {
     }
 
     @Override
-    public void closeInventory(@Nonnull
-    EntityPlayer player) {
+    public void closeInventory(@Nonnull EntityPlayer player) {
     }
 
     @Override
-    public boolean isItemValidForSlot(int idx, @Nonnull
-    ItemStack stack) {
+    public boolean isItemValidForSlot(int idx, @Nonnull ItemStack stack) {
         if (idx != 0 || !isSetup())
             return false;
 
@@ -368,22 +363,17 @@ public class TileSubmitStation extends TileEntity implements IFluidHandler, ISid
     };
 
     @Override @Nonnull
-    public int[] getSlotsForFace(@Nullable
-    EnumFacing side) {
+    public int[] getSlotsForFace(@Nullable EnumFacing side) {
         return slotsForFace;
     }
 
     @Override
-    public boolean canInsertItem(int slot, @Nonnull
-    ItemStack stack, @Nullable
-    EnumFacing side) {
+    public boolean canInsertItem(int slot, @Nonnull ItemStack stack, @Nullable EnumFacing side) {
         return isItemValidForSlot(slot, stack);
     }
 
     @Override
-    public boolean canExtractItem(int slot, @Nonnull
-    ItemStack stack, @Nullable
-    EnumFacing side) {
+    public boolean canExtractItem(int slot, @Nonnull ItemStack stack, @Nullable EnumFacing side) {
         return slot == 1;
     }
 
@@ -413,9 +403,7 @@ public class TileSubmitStation extends TileEntity implements IFluidHandler, ISid
     public ITextComponent getDisplayName() { return new TextComponentString(BetterQuesting.submitStation.getLocalizedName()); }
 
     @Override
-    public boolean hasCapability(@Nonnull
-    Capability<?> capability, @Nullable
-    EnumFacing facing) {
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return true;
         } else if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
@@ -426,9 +414,7 @@ public class TileSubmitStation extends TileEntity implements IFluidHandler, ISid
     }
 
     @Override @Nullable
-    public <T> T getCapability(@Nonnull
-    Capability<T> capability, @Nullable
-    EnumFacing facing) {
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler);
         } else if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {

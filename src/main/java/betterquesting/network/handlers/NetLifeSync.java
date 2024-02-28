@@ -27,9 +27,7 @@ public class NetLifeSync {
         }
     }
 
-    public static void sendSync(@Nullable
-    EntityPlayerMP[] players, @Nullable
-    UUID[] playerIDs) {
+    public static void sendSync(@Nullable EntityPlayerMP[] players, @Nullable UUID[] playerIDs) {
         NBTTagCompound payload = new NBTTagCompound();
         payload.setTag("data", LifeDatabase.INSTANCE.writeToNBT(new NBTTagCompound(), playerIDs == null ? null : Arrays.asList(playerIDs)));
         payload.setBoolean("merge", playerIDs != null);

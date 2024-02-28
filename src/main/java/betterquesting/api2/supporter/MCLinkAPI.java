@@ -30,8 +30,7 @@ public class MCLinkAPI {
     @Nonnull
     public JsonObject getApiStatus() { return new JsonObject(); }
 
-    public void updateSupporterInfo(@Nonnull
-    Collection<UUID> playerIDs, Collection<String> tokens) {
+    public void updateSupporterInfo(@Nonnull Collection<UUID> playerIDs, Collection<String> tokens) {
         JsonObject jsonBase = new JsonObject();
 
         JsonObject jsonTokens = new JsonObject();

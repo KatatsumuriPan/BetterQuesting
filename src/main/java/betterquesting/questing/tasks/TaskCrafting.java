@@ -200,8 +200,7 @@ public class TaskCrafting implements ITask {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
-    List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
         NBTTagList jArray = new NBTTagList();
         NBTTagList progArray = new NBTTagList();
 
@@ -242,8 +241,7 @@ public class TaskCrafting implements ITask {
     }
 
     @Override
-    public void resetUser(@Nullable
-    UUID uuid) {
+    public void resetUser(@Nullable UUID uuid) {
         if (uuid == null) {
             completeUsers.clear();
             userProgress.clear();
@@ -272,8 +270,7 @@ public class TaskCrafting implements ITask {
         return progress == null || progress.length != requiredItems.size() ? new int[requiredItems.size()] : progress;
     }
 
-    private List<Tuple<UUID, int[]>> getBulkProgress(@Nonnull
-    List<UUID> uuids) {
+    private List<Tuple<UUID, int[]>> getBulkProgress(@Nonnull List<UUID> uuids) {
         if (uuids.size() <= 0)
             return Collections.emptyList();
         List<Tuple<UUID, int[]>> list = new ArrayList<>();
@@ -281,8 +278,7 @@ public class TaskCrafting implements ITask {
         return list;
     }
 
-    private void setBulkProgress(@Nonnull
-    List<Tuple<UUID, int[]>> list) {
+    private void setBulkProgress(@Nonnull List<Tuple<UUID, int[]>> list) {
         list.forEach((entry) -> setUserProgress(entry.getFirst(), entry.getSecond()));
     }
 

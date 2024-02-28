@@ -17,8 +17,7 @@ public class ThemeRepository {
 
     private final List<CatalogueEntry> entries = new ArrayList<>();
 
-    public ThemeRepository(@Nonnull
-    String address) {
+    public ThemeRepository(@Nonnull String address) {
         repoAddress = address;
     }
 
@@ -26,8 +25,7 @@ public class ThemeRepository {
 
     public List<CatalogueEntry> getEntries() { return Collections.unmodifiableList(entries); }
 
-    public void loadRepository(@Nonnull
-    JsonObject json) {
+    public void loadRepository(@Nonnull JsonObject json) {
         repoName = JsonHelper.GetString(json, "repoName", "Unknown Repository");
     }
 

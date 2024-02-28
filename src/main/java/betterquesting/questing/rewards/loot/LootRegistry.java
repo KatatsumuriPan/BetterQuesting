@@ -67,8 +67,7 @@ public class LootRegistry extends SimpleDatabase<LootGroup> implements INBTParti
     }
 
     @Override
-    public synchronized NBTTagCompound writeToNBT(NBTTagCompound tag, @Nullable
-    List<Integer> subset) {
+    public synchronized NBTTagCompound writeToNBT(NBTTagCompound tag, @Nullable List<Integer> subset) {
         NBTTagList jRew = new NBTTagList();
         for (DBEntry<LootGroup> entry : getEntries()) {
             if (subset != null && !subset.contains(entry.getID()))

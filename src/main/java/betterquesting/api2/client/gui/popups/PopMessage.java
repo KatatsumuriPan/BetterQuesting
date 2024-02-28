@@ -25,14 +25,11 @@ public class PopMessage extends CanvasEmpty {
     private final String message;
     private final IGuiTexture icon;
 
-    public PopMessage(@Nonnull
-    String message) {
+    public PopMessage(@Nonnull String message) {
         this(message, null);
     }
 
-    public PopMessage(@Nonnull
-    String message, @Nullable
-    IGuiTexture icon) {
+    public PopMessage(@Nonnull String message, @Nullable IGuiTexture icon) {
         super(new GuiTransform(GuiAlign.FULL_BOX));
         this.message = message;
         this.icon = icon;

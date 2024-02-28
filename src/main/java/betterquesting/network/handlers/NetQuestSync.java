@@ -66,16 +66,11 @@ public class NetQuestSync {
     }
 
     @Deprecated
-    public static void sendSync(@Nullable
-    EntityPlayerMP player, @Nullable
-    int[] questIDs, boolean config, boolean progress) {
+    public static void sendSync(@Nullable EntityPlayerMP player, @Nullable int[] questIDs, boolean config, boolean progress) {
         sendSync(player, questIDs, null, config, progress);
     }
 
-    public static void sendSync(@Nullable
-    EntityPlayerMP player, @Nullable
-    int[] questIDs, @Nullable
-    int[] resetIDs, boolean config, boolean progress) {
+    public static void sendSync(@Nullable EntityPlayerMP player, @Nullable int[] questIDs, @Nullable int[] resetIDs, boolean config, boolean progress) {
         if ((!config && !progress) || (questIDs != null && questIDs.length <= 0))
             return;
 
@@ -112,8 +107,7 @@ public class NetQuestSync {
 
     // Asks the server to send specific quest data over
     @SideOnly(Side.CLIENT)
-    public static void requestSync(@Nullable
-    int[] questIDs, boolean configs, boolean progress) {
+    public static void requestSync(@Nullable int[] questIDs, boolean configs, boolean progress) {
         NBTTagCompound payload = new NBTTagCompound();
         if (questIDs != null)
             payload.setIntArray("requestIDs", questIDs);

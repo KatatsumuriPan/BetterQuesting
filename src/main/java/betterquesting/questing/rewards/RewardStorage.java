@@ -18,8 +18,7 @@ import net.minecraft.util.ResourceLocation;
 public class RewardStorage extends SimpleDatabase<IReward> implements IDatabaseNBT<IReward, NBTTagList, NBTTagList> {
 
     @Override
-    public NBTTagList writeToNBT(NBTTagList json, @Nullable
-    List<Integer> subset) {
+    public NBTTagList writeToNBT(NBTTagList json, @Nullable List<Integer> subset) {
         for (DBEntry<IReward> rew : getEntries()) {
             if (subset != null && !subset.contains(rew.getID()))
                 continue;
@@ -84,8 +83,7 @@ public class RewardStorage extends SimpleDatabase<IReward> implements IDatabaseN
     // === Future support ===
 
     @Override
-    public NBTTagList writeProgressToNBT(NBTTagList nbt, @Nullable
-    List<UUID> user) {
+    public NBTTagList writeProgressToNBT(NBTTagList nbt, @Nullable List<UUID> user) {
         return nbt;
     }
 

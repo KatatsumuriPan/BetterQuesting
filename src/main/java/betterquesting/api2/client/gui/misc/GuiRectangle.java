@@ -62,8 +62,7 @@ public class GuiRectangle implements IGuiRect {
     }*/
 
     @Override
-    public int compareTo(@Nonnull
-    IGuiRect o) {
+    public int compareTo(@Nonnull IGuiRect o) {
         return (int) Math.signum(o.getDepth() - d);
     }
 

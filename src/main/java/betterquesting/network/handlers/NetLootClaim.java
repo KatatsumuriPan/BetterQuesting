@@ -29,9 +29,7 @@ public class NetLootClaim {
         }
     }
 
-    public static void sendReward(@Nonnull
-    EntityPlayerMP player, @Nonnull
-    String title, BigItemStack... items) {
+    public static void sendReward(@Nonnull EntityPlayerMP player, @Nonnull String title, BigItemStack... items) {
         NBTTagCompound payload = new NBTTagCompound();
         NBTTagList list = new NBTTagList();
         for (BigItemStack stack : items) {

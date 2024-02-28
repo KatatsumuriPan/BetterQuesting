@@ -16,8 +16,7 @@ public class CanvasTextured extends CanvasEmpty {
         this.bgTexture = texture;
     }
 
-    public void changeBG(@Nullable
-    IGuiTexture texture) {
+    public void changeBG(@Nullable IGuiTexture texture) {
         this.bgTexture = texture;
     }
 

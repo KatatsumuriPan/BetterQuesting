@@ -56,8 +56,7 @@ public class GuiContainerCanvas extends GuiContainer implements IScene {
     }
 
     @Override
-    public void openPopup(@Nonnull
-    IGuiPanel panel) {
+    public void openPopup(@Nonnull IGuiPanel panel) {
         this.popup = panel;
     }
 

@@ -11,8 +11,7 @@ public class GArgsNone {
     @Nullable
     public final GuiScreen parent;
 
-    public GArgsNone(@Nullable
-    GuiScreen parent) {
+    public GArgsNone(@Nullable GuiScreen parent) {
         this.parent = parent;
     }
 

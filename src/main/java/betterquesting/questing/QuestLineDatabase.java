@@ -64,8 +64,7 @@ public final class QuestLineDatabase extends SimpleDatabase<IQuestLine> implemen
     }
 
     @Override
-    public synchronized NBTTagList writeToNBT(NBTTagList json, @Nullable
-    List<Integer> subset) {
+    public synchronized NBTTagList writeToNBT(NBTTagList json, @Nullable List<Integer> subset) {
         for (DBEntry<IQuestLine> entry : getEntries()) {
             if (subset != null && !subset.contains(entry.getID()))
                 continue;

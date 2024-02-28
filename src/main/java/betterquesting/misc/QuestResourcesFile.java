@@ -42,8 +42,7 @@ public class QuestResourcesFile implements IResourcePack, Closeable {
     private BufferedImage bufferedImage = null;
 
     @Nonnull @Override
-    public InputStream getInputStream(@Nonnull
-    ResourceLocation loc) throws IOException {
+    public InputStream getInputStream(@Nonnull ResourceLocation loc) throws IOException {
         String locName = locationToName(loc);
 
         for (ZipFile zipfile : getZipFiles()) {
@@ -58,8 +57,7 @@ public class QuestResourcesFile implements IResourcePack, Closeable {
     }
 
     @Override
-    public boolean resourceExists(@Nonnull
-    ResourceLocation loc) {
+    public boolean resourceExists(@Nonnull ResourceLocation loc) {
         String locName = locationToName(loc);
 
         try {
@@ -117,9 +115,7 @@ public class QuestResourcesFile implements IResourcePack, Closeable {
     }
 
     @Override
-    public <T extends IMetadataSection> T getPackMetadata(@Nonnull
-    MetadataSerializer meta, @Nonnull
-    String s) {
+    public <T extends IMetadataSection> T getPackMetadata(@Nonnull MetadataSerializer meta, @Nonnull String s) {
         return null;
     }
 

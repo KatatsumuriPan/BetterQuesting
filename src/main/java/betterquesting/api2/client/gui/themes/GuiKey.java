@@ -9,8 +9,7 @@ public class GuiKey<T> {
 
     private final ResourceLocation ID;
 
-    public GuiKey(@Nonnull
-    ResourceLocation id) {
+    public GuiKey(@Nonnull ResourceLocation id) {
         this.ID = id;
     }
 

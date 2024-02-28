@@ -19,8 +19,7 @@ import net.minecraft.util.ResourceLocation;
 public class TaskStorage extends SimpleDatabase<ITask> implements IDatabaseNBT<ITask, NBTTagList, NBTTagList> {
 
     @Override
-    public NBTTagList writeToNBT(NBTTagList json, @Nullable
-    List<Integer> subset) {
+    public NBTTagList writeToNBT(NBTTagList json, @Nullable List<Integer> subset) {
         for (DBEntry<ITask> entry : getEntries()) {
             if (subset != null && !subset.contains(entry.getID()))
                 continue;
@@ -76,8 +75,7 @@ public class TaskStorage extends SimpleDatabase<ITask> implements IDatabaseNBT<I
     }
 
     @Override
-    public NBTTagList writeProgressToNBT(NBTTagList json, @Nullable
-    List<UUID> user) {
+    public NBTTagList writeProgressToNBT(NBTTagList json, @Nullable List<UUID> user) {
         for (DBEntry<ITask> entry : getEntries()) {
             ResourceLocation taskID = entry.getValue().getFactoryID();
 

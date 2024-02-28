@@ -26,8 +26,7 @@ public class NetNotices {
         }
     }
 
-    public static void sendNotice(@Nullable
-    EntityPlayerMP[] players, ItemStack icon, String mainText, String subText, String sound) {
+    public static void sendNotice(@Nullable EntityPlayerMP[] players, ItemStack icon, String mainText, String subText, String sound) {
         NBTTagCompound payload = new NBTTagCompound();
         payload.setTag("icon", (icon != null ? icon : ItemStack.EMPTY).writeToNBT(new NBTTagCompound()));
         if (mainText != null)

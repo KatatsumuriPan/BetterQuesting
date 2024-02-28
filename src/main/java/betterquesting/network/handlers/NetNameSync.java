@@ -43,9 +43,7 @@ public class NetNameSync {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void sendRequest(@Nullable
-    UUID[] uuids, @Nullable
-    String[] names) {
+    public static void sendRequest(@Nullable UUID[] uuids, @Nullable String[] names) {
         // NOTE: You can make an empty request if you want EVERYTHING (but I would not recommend it on large servers)
         NBTTagCompound payload = new NBTTagCompound();
         if (uuids != null) {
@@ -69,8 +67,7 @@ public class NetNameSync {
         PacketSender.INSTANCE.sendToServer(new QuestingPacket(ID_NAME, payload));
     }
 
-    public static void quickSync(@Nullable
-    EntityPlayerMP player, int partyID) {
+    public static void quickSync(@Nullable EntityPlayerMP player, int partyID) {
         IParty party = PartyManager.INSTANCE.getValue(partyID);
         if (party == null)
             return;
@@ -94,10 +91,7 @@ public class NetNameSync {
         }
     }
 
-    public static void sendNames(@Nullable
-    EntityPlayerMP[] players, @Nullable
-    UUID[] uuids, @Nullable
-    String[] names) {
+    public static void sendNames(@Nullable EntityPlayerMP[] players, @Nullable UUID[] uuids, @Nullable String[] names) {
         List<UUID> idList = (uuids == null && names == null) ? null : new ArrayList<>();
         if (uuids != null)
             idList.addAll(Arrays.asList(uuids));

@@ -31,33 +31,27 @@ public class BigItemStack {
         baseStack.setCount(1);
     }
 
-    public BigItemStack(@Nonnull
-    Block block) {
+    public BigItemStack(@Nonnull Block block) {
         this(block, 1);
     }
 
-    public BigItemStack(@Nonnull
-    Block block, int amount) {
+    public BigItemStack(@Nonnull Block block, int amount) {
         this(block, amount, 0);
     }
 
-    public BigItemStack(@Nonnull
-    Block block, int amount, int damage) {
+    public BigItemStack(@Nonnull Block block, int amount, int damage) {
         this(Item.getItemFromBlock(block), amount, damage);
     }
 
-    public BigItemStack(@Nonnull
-    Item item) {
+    public BigItemStack(@Nonnull Item item) {
         this(item, 1);
     }
 
-    public BigItemStack(@Nonnull
-    Item item, int amount) {
+    public BigItemStack(@Nonnull Item item, int amount) {
         this(item, amount, 0);
     }
 
-    public BigItemStack(@Nonnull
-    Item item, int amount, int damage) {
+    public BigItemStack(@Nonnull Item item, int amount, int damage) {
         baseStack = new ItemStack(item, 1, damage);
         this.stackSize = amount;
     }
@@ -77,8 +71,7 @@ public class BigItemStack {
     @Nonnull
     public OreIngredient getOreIngredient() { return this.oreIng; }
 
-    public BigItemStack setOreDict(@Nonnull
-    String ore) {
+    public BigItemStack setOreDict(@Nonnull String ore) {
         this.oreDict = ore;
         this.oreIng = ore.length() <= 0 ? NO_ORE : new OreIngredient(ore);
         return this;
@@ -140,8 +133,7 @@ public class BigItemStack {
         }
     }
 
-    public BigItemStack(@Nonnull
-    NBTTagCompound tags) // Can load normal ItemStack NBTs. Does NOT deal with placeholders
+    public BigItemStack(@Nonnull NBTTagCompound tags) // Can load normal ItemStack NBTs. Does NOT deal with placeholders
     {
         NBTTagCompound itemNBT = tags.copy();
         itemNBT.setInteger("Count", 1);

@@ -36,9 +36,7 @@ public class NetChapterSync {
         }
     }
 
-    public static void sendSync(@Nullable
-    EntityPlayerMP player, @Nullable
-    int[] chapterIDs) {
+    public static void sendSync(@Nullable EntityPlayerMP player, @Nullable int[] chapterIDs) {
         if (chapterIDs != null && chapterIDs.length <= 0)
             return;
 
@@ -75,8 +73,7 @@ public class NetChapterSync {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void requestSync(@Nullable
-    int[] chapterIDs) {
+    public static void requestSync(@Nullable int[] chapterIDs) {
         NBTTagCompound payload = new NBTTagCompound();
         if (chapterIDs != null)
             payload.setIntArray("requestIDs", chapterIDs);

@@ -17,8 +17,7 @@ public class PlayerContainerListener implements IContainerListener {
 
     private static final HashMap<UUID, PlayerContainerListener> LISTEN_MAP = new HashMap<>();
 
-    public static void refreshListener(@Nonnull
-    EntityPlayer player) {
+    public static void refreshListener(@Nonnull EntityPlayer player) {
         UUID uuid = QuestingAPI.getQuestingUUID(player);
         PlayerContainerListener listener = LISTEN_MAP.get(uuid);
         if (listener != null) {
@@ -36,22 +35,17 @@ public class PlayerContainerListener implements IContainerListener {
 
     private EntityPlayer player;
 
-    private PlayerContainerListener(@Nonnull
-    EntityPlayer player) {
+    private PlayerContainerListener(@Nonnull EntityPlayer player) {
         this.player = player;
     }
 
     @Override
-    public void sendAllContents(@Nonnull
-    Container container, @Nonnull
-    NonNullList<ItemStack> nonNullList) {
+    public void sendAllContents(@Nonnull Container container, @Nonnull NonNullList<ItemStack> nonNullList) {
         updateTasks();
     }
 
     @Override
-    public void sendSlotContents(@Nonnull
-    Container container, int i, @Nonnull
-    ItemStack itemStack) {
+    public void sendSlotContents(@Nonnull Container container, int i, @Nonnull ItemStack itemStack) {
         // Ignore changes outside of main inventory (e.g. crafting grid and armor)
         if (i >= 9 && i <= 44) {
             updateTasks();
@@ -59,14 +53,11 @@ public class PlayerContainerListener implements IContainerListener {
     }
 
     @Override
-    public void sendWindowProperty(@Nonnull
-    Container container, int i, int i1) {
+    public void sendWindowProperty(@Nonnull Container container, int i, int i1) {
     }
 
     @Override
-    public void sendAllWindowProperties(@Nonnull
-    Container container, @Nonnull
-    IInventory iInventory) {
+    public void sendAllWindowProperties(@Nonnull Container container, @Nonnull IInventory iInventory) {
     }
 
     private void updateTasks() {

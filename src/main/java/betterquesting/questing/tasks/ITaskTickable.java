@@ -9,7 +9,6 @@ import betterquesting.api2.utils.ParticipantInfo;
 
 public interface ITaskTickable extends ITask {
 
-    void tickTask(@Nonnull
-    ParticipantInfo pInfo, DBEntry<IQuest> quest);
+    void tickTask(@Nonnull ParticipantInfo pInfo, DBEntry<IQuest> quest);
 
 }

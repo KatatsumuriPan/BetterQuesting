@@ -91,8 +91,7 @@ public class PanelToolController implements IGuiPanel {
 
     public IToolboxTool getActiveTool() { return this.activeTool; }
 
-    public void changeCanvas(@Nonnull
-    CanvasQuestLine canvas) {
+    public void changeCanvas(@Nonnull CanvasQuestLine canvas) {
         this.questLine = canvas;
         refreshCanvas();
         setActiveTool(getActiveTool());

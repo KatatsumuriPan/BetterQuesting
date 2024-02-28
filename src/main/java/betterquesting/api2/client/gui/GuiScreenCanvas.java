@@ -51,8 +51,7 @@ public class GuiScreenCanvas extends GuiScreen implements IScene {
     }
 
     @Override
-    public void openPopup(@Nonnull
-    IGuiPanel panel) {
+    public void openPopup(@Nonnull IGuiPanel panel) {
         panel.getTransform().setParent(rootTransform);
         popup = panel;
         panel.initPanel();
@@ -413,8 +412,7 @@ public class GuiScreenCanvas extends GuiScreen implements IScene {
     }
 
     @Override
-    protected void drawHoveringText(List<String> textLines, int x, int y, @Nonnull
-    FontRenderer font) {
+    protected void drawHoveringText(List<String> textLines, int x, int y, @Nonnull FontRenderer font) {
         RenderUtils.drawHoveringText(textLines, x, y, width, height, -1, font);
     }
 

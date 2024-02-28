@@ -50,8 +50,7 @@ public class PartyInstance implements IParty {
     public IPropertyContainer getProperties() { return pInfo; }
 
     @Override
-    public void kickUser(@Nonnull
-    UUID uuid) {
+    public void kickUser(@Nonnull UUID uuid) {
         if (!members.containsKey(uuid))
             return;
 
@@ -64,9 +63,7 @@ public class PartyInstance implements IParty {
     }
 
     @Override
-    public void setStatus(@Nonnull
-    UUID uuid, @Nonnull
-    EnumPartyStatus priv) {
+    public void setStatus(@Nonnull UUID uuid, @Nonnull EnumPartyStatus priv) {
         EnumPartyStatus old = members.get(uuid);
         if (old == priv)
             return;
@@ -109,8 +106,7 @@ public class PartyInstance implements IParty {
     }
 
     @Override
-    public EnumPartyStatus getStatus(@Nonnull
-    UUID uuid) {
+    public EnumPartyStatus getStatus(@Nonnull UUID uuid) {
         return members.get(uuid);
     }
 

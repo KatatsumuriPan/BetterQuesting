@@ -406,8 +406,7 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
     private IGuiColor ancCol = new GuiColorStatic(0xFFFFFF00);
     private IGuiColor boundsCol = new GuiColorStatic(0xFF0000FF);
 
-    private void drawTransformBounds(@Nonnull
-    IGuiRect rect, boolean showNumbers) {
+    private void drawTransformBounds(@Nonnull IGuiRect rect, boolean showNumbers) {
         if (rect.getParent() != null)
             boxLine.drawLine(rect.getParent(), rect.getParent(), 2, parCol, 1F);
         boxLine.drawLine(rect, rect, 2, boundsCol, 1F);

@@ -25,8 +25,7 @@ public final class NameCache implements INameCache {
     private final HashMap<UUID, NBTTagCompound> cache = new HashMap<>();
 
     @Override
-    public synchronized boolean updateName(@Nonnull
-    EntityPlayerMP player) {
+    public synchronized boolean updateName(@Nonnull EntityPlayerMP player) {
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
         NBTTagCompound tag = cache.computeIfAbsent(player.getGameProfile().getId(), (key) -> new NBTTagCompound());
 
@@ -43,15 +42,13 @@ public final class NameCache implements INameCache {
     }
 
     @Override
-    public synchronized String getName(@Nonnull
-    UUID uuid) {
+    public synchronized String getName(@Nonnull UUID uuid) {
         NBTTagCompound tag = cache.get(uuid);
         return tag == null ? uuid.toString() : tag.getString("name");
     }
 
     @Override
-    public synchronized UUID getUUID(@Nonnull
-    String name) {
+    public synchronized UUID getUUID(@Nonnull String name) {
         for (Entry<UUID, NBTTagCompound> entry : cache.entrySet()) {
             if (entry.getValue().getString("name").equalsIgnoreCase(name)) {
                 return entry.getKey();
@@ -62,8 +59,7 @@ public final class NameCache implements INameCache {
     }
 
     @Override
-    public synchronized boolean isOP(@Nonnull
-    UUID uuid) {
+    public synchronized boolean isOP(@Nonnull UUID uuid) {
         NBTTagCompound tag = cache.get(uuid);
         return tag != null && tag.getBoolean("isOP");
     }
@@ -74,8 +70,7 @@ public final class NameCache implements INameCache {
     }
 
     @Override
-    public synchronized NBTTagList writeToNBT(NBTTagList nbt, @Nullable
-    List<UUID> users) {
+    public synchronized NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<UUID> users) {
         for (Entry<UUID, NBTTagCompound> entry : cache.entrySet()) {
             if (users != null && !users.contains(entry.getKey()))
                 continue;

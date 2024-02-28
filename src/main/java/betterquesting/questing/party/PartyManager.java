@@ -32,8 +32,7 @@ public class PartyManager extends SimpleDatabase<IParty> implements IPartyDataba
     }
 
     @Nullable @Override
-    public synchronized DBEntry<IParty> getParty(@Nonnull
-    UUID uuid) {
+    public synchronized DBEntry<IParty> getParty(@Nonnull UUID uuid) {
         if (!QuestSettings.INSTANCE.getProperty(NativeProps.PARTY_ENABLE))
             return null; // We're merely preventing access. Not erasing data
 

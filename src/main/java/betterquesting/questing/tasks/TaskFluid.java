@@ -73,9 +73,7 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
     }
 
     @Override
-    public void onInventoryChange(@Nonnull
-    DBEntry<IQuest> quest, @Nonnull
-    ParticipantInfo pInfo) {
+    public void onInventoryChange(@Nonnull DBEntry<IQuest> quest, @Nonnull ParticipantInfo pInfo) {
         if (!consume || autoConsume) {
             detect(pInfo, quest);
         }
@@ -273,8 +271,7 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
-    List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
         NBTTagList jArray = new NBTTagList();
         NBTTagList progArray = new NBTTagList();
 
@@ -315,8 +312,7 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
     }
 
     @Override
-    public void resetUser(@Nullable
-    UUID uuid) {
+    public void resetUser(@Nullable UUID uuid) {
         if (uuid == null) {
             completeUsers.clear();
             userProgress.clear();
@@ -482,8 +478,7 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
         return progress == null || progress.length != requiredFluids.size() ? new int[requiredFluids.size()] : progress;
     }
 
-    private List<Tuple<UUID, int[]>> getBulkProgress(@Nonnull
-    List<UUID> uuids) {
+    private List<Tuple<UUID, int[]>> getBulkProgress(@Nonnull List<UUID> uuids) {
         if (uuids.size() <= 0)
             return Collections.emptyList();
         List<Tuple<UUID, int[]>> list = new ArrayList<>();
@@ -491,8 +486,7 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
         return list;
     }
 
-    private void setBulkProgress(@Nonnull
-    List<Tuple<UUID, int[]>> list) {
+    private void setBulkProgress(@Nonnull List<Tuple<UUID, int[]>> list) {
         list.forEach((entry) -> setUserProgress(entry.getFirst(), entry.getSecond()));
     }
 

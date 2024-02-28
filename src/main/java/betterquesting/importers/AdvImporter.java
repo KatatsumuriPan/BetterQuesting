@@ -449,8 +449,7 @@ public class AdvImporter implements IImporter {
 
         private int getQuestID() { return this.questID; }
 
-        private void addChild(@Nonnull
-        AdvTreeNode node) {
+        private void addChild(@Nonnull AdvTreeNode node) {
             if (children.contains(node))
                 return;
 
@@ -459,8 +458,7 @@ public class AdvImporter implements IImporter {
             node.depth = this.depth + 1;
         }
 
-        private void setAboveNode(@Nullable
-        AdvTreeNode node) { this.aboveNode = node; }
+        private void setAboveNode(@Nullable AdvTreeNode node) { this.aboveNode = node; }
 
     }
 

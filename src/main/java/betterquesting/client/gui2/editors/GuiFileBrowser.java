@@ -53,8 +53,7 @@ public class GuiFileBrowser extends GuiScreenCanvas implements IPEventListener {
     private CanvasFileDirectory cvDirectory;
     private boolean multiSelect = true;
 
-    public GuiFileBrowser(GuiScreen parent, ICallback<File[]> callback, File directory, @Nullable
-    FileFilter filter) {
+    public GuiFileBrowser(GuiScreen parent, ICallback<File[]> callback, File directory, @Nullable FileFilter filter) {
         super(parent);
         this.callback = callback;
         this.curDirectory = directory == null ? null : directory.getAbsoluteFile();

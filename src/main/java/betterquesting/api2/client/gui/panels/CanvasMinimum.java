@@ -54,8 +54,7 @@ public class CanvasMinimum implements IGuiCanvas {
             }
 
             @Override
-            public int compareTo(@Nonnull
-            IGuiRect o) {
+            public int compareTo(@Nonnull IGuiRect o) {
                 return internalTransform.compareTo(o);
             }
 

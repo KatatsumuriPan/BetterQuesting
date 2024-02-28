@@ -40,8 +40,7 @@ public class NetSettingSync {
         PacketSender.INSTANCE.sendToServer(new QuestingPacket(ID_NAME, payload));
     }
 
-    public static void sendSync(@Nullable
-    EntityPlayerMP player) {
+    public static void sendSync(@Nullable EntityPlayerMP player) {
         NBTTagCompound payload = new NBTTagCompound();
         payload.setTag("data", QuestSettings.INSTANCE.writeToNBT(new NBTTagCompound()));
         if (player != null) {

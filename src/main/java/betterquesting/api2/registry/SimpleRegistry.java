@@ -15,9 +15,7 @@ public class SimpleRegistry<T> {
 
     private final HashMap<ResourceLocation, Callable<T>> factories = new HashMap<>();
 
-    public void register(@Nonnull
-    ResourceLocation idname, @Nonnull
-    Callable<T> factory) {
+    public void register(@Nonnull ResourceLocation idname, @Nonnull Callable<T> factory) {
         if (factories.containsKey(idname)) {
             throw new IllegalArgumentException("Cannot register duplicate factory or registry name");
         }
@@ -26,8 +24,7 @@ public class SimpleRegistry<T> {
     }
 
     @Nullable
-    public T createNew(@Nonnull
-    ResourceLocation idName) {
+    public T createNew(@Nonnull ResourceLocation idName) {
         Callable<T> fact = factories.get(idName);
         try {
             return fact == null ? null : fact.call();

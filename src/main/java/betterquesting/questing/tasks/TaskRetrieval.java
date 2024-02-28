@@ -73,9 +73,7 @@ public class TaskRetrieval implements ITaskInventory, IItemTask {
     }
 
     @Override
-    public void onInventoryChange(@Nonnull
-    DBEntry<IQuest> quest, @Nonnull
-    ParticipantInfo pInfo) {
+    public void onInventoryChange(@Nonnull DBEntry<IQuest> quest, @Nonnull ParticipantInfo pInfo) {
         if (!consume || autoConsume) {
             detect(pInfo, quest);
         }
@@ -275,8 +273,7 @@ public class TaskRetrieval implements ITaskInventory, IItemTask {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
-    List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
         NBTTagList jArray = new NBTTagList();
         NBTTagList progArray = new NBTTagList();
 
@@ -319,8 +316,7 @@ public class TaskRetrieval implements ITaskInventory, IItemTask {
     }
 
     @Override
-    public void resetUser(@Nullable
-    UUID uuid) {
+    public void resetUser(@Nullable UUID uuid) {
         if (uuid == null) {
             completeUsers.clear();
             userProgress.clear();
@@ -424,8 +420,7 @@ public class TaskRetrieval implements ITaskInventory, IItemTask {
         return progress == null || progress.length != requiredItems.size() ? new int[requiredItems.size()] : progress;
     }
 
-    private List<Tuple<UUID, int[]>> getBulkProgress(@Nonnull
-    List<UUID> uuids) {
+    private List<Tuple<UUID, int[]>> getBulkProgress(@Nonnull List<UUID> uuids) {
         if (uuids.size() <= 0)
             return Collections.emptyList();
         List<Tuple<UUID, int[]>> list = new ArrayList<>(uuids.size());
@@ -433,8 +428,7 @@ public class TaskRetrieval implements ITaskInventory, IItemTask {
         return list;
     }
 
-    private void setBulkProgress(@Nonnull
-    List<Tuple<UUID, int[]>> list) {
+    private void setBulkProgress(@Nonnull List<Tuple<UUID, int[]>> list) {
         list.forEach((entry) -> setUserProgress(entry.getFirst(), entry.getSecond()));
     }
 

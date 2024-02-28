@@ -30,8 +30,7 @@ public class NetQuestAction {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void requestClaim(@Nonnull
-    int[] questIDs) {
+    public static void requestClaim(@Nonnull int[] questIDs) {
         if (questIDs.length <= 0)
             return;
         NBTTagCompound payload = new NBTTagCompound();
@@ -41,8 +40,7 @@ public class NetQuestAction {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void requestDetect(@Nonnull
-    int[] questIDs) {
+    public static void requestDetect(@Nonnull int[] questIDs) {
         if (questIDs.length <= 0)
             return;
         NBTTagCompound payload = new NBTTagCompound();

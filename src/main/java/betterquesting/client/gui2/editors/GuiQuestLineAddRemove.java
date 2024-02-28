@@ -59,8 +59,7 @@ public class GuiQuestLineAddRemove extends GuiScreenCanvas implements IPEventLis
     private CanvasQuestDatabase canvasDB;
     private CanvasScrolling canvasQL;
 
-    public GuiQuestLineAddRemove(GuiScreen parent, @Nullable
-    IQuestLine questLine) {
+    public GuiQuestLineAddRemove(GuiScreen parent, @Nullable IQuestLine questLine) {
         super(parent);
         this.questLine = questLine;
         this.lineID = QuestLineDatabase.INSTANCE.getID(questLine);

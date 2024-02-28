@@ -42,8 +42,7 @@ public class NetRewardChoice {
         QuestingAPI.getAPI(ApiReference.PACKET_SENDER).sendToServer(new QuestingPacket(ID_NAME, payload));
     }
 
-    public static void sendChoice(@Nonnull
-    EntityPlayerMP player, int questID, int rewardID, int index) {
+    public static void sendChoice(@Nonnull EntityPlayerMP player, int questID, int rewardID, int index) {
         NBTTagCompound payload = new NBTTagCompound();
         payload.setInteger("questID", questID);
         payload.setInteger("rewardID", rewardID);

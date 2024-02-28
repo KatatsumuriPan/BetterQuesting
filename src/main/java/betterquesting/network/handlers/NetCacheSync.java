@@ -27,8 +27,7 @@ public class NetCacheSync {
         }
     }
 
-    public static void sendSync(@Nonnull
-    EntityPlayerMP player) {
+    public static void sendSync(@Nonnull EntityPlayerMP player) {
         QuestCache qc = player.getCapability(CapabilityProviderQuestCache.CAP_QUEST_CACHE, null);
         if (qc == null)
             return;

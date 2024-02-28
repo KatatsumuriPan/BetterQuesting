@@ -47,8 +47,7 @@ public class ItemLootChest extends Item {
      * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
      */
     @Nonnull @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull
-    EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
 
         if (hand != EnumHand.MAIN_HAND)
@@ -179,9 +178,7 @@ public class ItemLootChest extends Item {
      * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
      */
     @Override @SideOnly(Side.CLIENT) @SuppressWarnings("rawtypes")
-    public void getSubItems(@Nonnull
-    CreativeTabs tab, @Nonnull
-    NonNullList<ItemStack> list) {
+    public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
         if (tab != CreativeTabs.SEARCH && tab != this.getCreativeTab())
             return;
         if (subItems != null) // CACHED ITEMS
@@ -240,8 +237,7 @@ public class ItemLootChest extends Item {
      * allows items to add custom lines of information to the mouseover description
      */
     @Override @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable
-    World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
 
         NBTTagCompound tag = stack.getTagCompound();

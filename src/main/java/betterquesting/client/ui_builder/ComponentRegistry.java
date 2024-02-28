@@ -29,10 +29,7 @@ public class ComponentRegistry {
         init();
     }
 
-    public void register(@Nonnull
-    ResourceLocation idname, @Nonnull
-    BiFunction<IGuiRect, NBTTagCompound, IGuiPanel> factory, @Nonnull
-    NBTTagCompound template) {
+    public void register(@Nonnull ResourceLocation idname, @Nonnull BiFunction<IGuiRect, NBTTagCompound, IGuiPanel> factory, @Nonnull NBTTagCompound template) {
         if (REG_MAP.containsKey(idname)) {
             throw new IllegalArgumentException("Tried to register duplicate GUI component ID");
         }
@@ -42,10 +39,7 @@ public class ComponentRegistry {
     }
 
     @Nonnull
-    public IGuiPanel createNew(@Nonnull
-    ResourceLocation idName, @Nonnull
-    IGuiRect rect, @Nullable
-    NBTTagCompound tag) {
+    public IGuiPanel createNew(@Nonnull ResourceLocation idName, @Nonnull IGuiRect rect, @Nullable NBTTagCompound tag) {
         BiFunction<IGuiRect, NBTTagCompound, IGuiPanel> factory = REG_MAP.get(idName);
         if (factory == null)
             return new CanvasTextured(rect, ThemeRegistry.INSTANCE.getTexture(null)); // TODO: Return placeholder panel
@@ -55,8 +49,7 @@ public class ComponentRegistry {
     }
 
     @Nonnull
-    public NBTTagCompound getTemplateTag(@Nonnull
-    ResourceLocation idName) {
+    public NBTTagCompound getTemplateTag(@Nonnull ResourceLocation idName) {
         NBTTagCompound tag = TEMPLATE_TAGS.get(idName);
         return tag == null ? new NBTTagCompound() : tag.copy();
     }

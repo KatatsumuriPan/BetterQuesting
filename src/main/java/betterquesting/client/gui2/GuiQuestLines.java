@@ -550,8 +550,7 @@ public class GuiQuestLines extends GuiScreenCanvas implements IPEventListener, I
             buildChapterList();
     }
 
-    private boolean isQuestCompletedForQuestline(UUID playerID, @Nonnull
-    IQuest q) {
+    private boolean isQuestCompletedForQuestline(UUID playerID, @Nonnull IQuest q) {
         if (q.isComplete(playerID))
             return true; // Completed quest
         if (q.getProperty(NativeProps.VISIBILITY) == EnumQuestVisibility.HIDDEN)

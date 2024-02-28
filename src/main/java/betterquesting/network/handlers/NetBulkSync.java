@@ -40,8 +40,7 @@ public class NetBulkSync // Clears local data and negotiates a full resync with 
         }
     }
 
-    public static void sendReset(@Nullable
-    EntityPlayerMP player, boolean reset, boolean respond) {
+    public static void sendReset(@Nullable EntityPlayerMP player, boolean reset, boolean respond) {
         NBTTagCompound payload = new NBTTagCompound();
         payload.setBoolean("reset", reset);
         payload.setBoolean("respond", respond);
@@ -54,8 +53,7 @@ public class NetBulkSync // Clears local data and negotiates a full resync with 
         }
     }
 
-    public static void sendSync(@Nonnull
-    EntityPlayerMP player) {
+    public static void sendSync(@Nonnull EntityPlayerMP player) {
         boolean nameChanged = NameCache.INSTANCE.updateName(player);
         UUID playerID = QuestingAPI.getQuestingUUID(player);
 

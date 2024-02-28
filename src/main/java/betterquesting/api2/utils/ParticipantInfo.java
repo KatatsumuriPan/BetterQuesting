@@ -30,8 +30,7 @@ public class ParticipantInfo {
 
     public final DBEntry<IParty> PARTY_INSTANCE;
 
-    public ParticipantInfo(@Nonnull
-    EntityPlayer player) {
+    public ParticipantInfo(@Nonnull EntityPlayer player) {
         this.PLAYER = player;
         this.UUID = QuestingAPI.getQuestingUUID(player);
         this.PARTY_INSTANCE = PartyManager.INSTANCE.getParty(this.UUID);
@@ -65,16 +64,14 @@ public class ParticipantInfo {
         this.ALL_UUIDS = Collections.unmodifiableList(allID);
     }
 
-    public void markDirty(@Nonnull
-    List<Integer> questIDs) // Only marks quests dirty for the immediate participating player
+    public void markDirty(@Nonnull List<Integer> questIDs) // Only marks quests dirty for the immediate participating player
     {
         QuestCache qc = PLAYER.getCapability(CapabilityProviderQuestCache.CAP_QUEST_CACHE, null);
         if (qc != null)
             questIDs.forEach(qc::markQuestDirty);
     }
 
-    public void markDirtyParty(@Nonnull
-    List<Integer> questIDs) // Marks quests as dirty for the entire (active) party
+    public void markDirtyParty(@Nonnull List<Integer> questIDs) // Marks quests as dirty for the entire (active) party
     {
         if (ACTIVE_PLAYERS.size() <= 0 || questIDs.size() <= 0)
             return;

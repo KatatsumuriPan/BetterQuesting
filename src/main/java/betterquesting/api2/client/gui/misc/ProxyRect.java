@@ -45,8 +45,7 @@ public class ProxyRect implements IGuiRect {
     }
 
     @Override
-    public int compareTo(@Nonnull
-    IGuiRect o) {
+    public int compareTo(@Nonnull IGuiRect o) {
         return ref != null ? ref.compareTo(o) : 0;
     }
 

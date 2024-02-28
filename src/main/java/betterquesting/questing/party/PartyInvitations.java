@@ -31,8 +31,7 @@ public class PartyInvitations implements INBTPartial<NBTTagList, UUID> {
 
     private final HashMap<UUID, HashMap<Integer, Long>> invites = new HashMap<>();
 
-    public synchronized void postInvite(@Nonnull
-    UUID uuid, int id, long expiryTime) {
+    public synchronized void postInvite(@Nonnull UUID uuid, int id, long expiryTime) {
         if (expiryTime <= 0) {
             BetterQuesting.logger.error("Received an invite that has already expired!");
             return; // Can't expire before being issued
@@ -46,8 +45,7 @@ public class PartyInvitations implements INBTPartial<NBTTagList, UUID> {
         list.put(id, System.currentTimeMillis() + expiryTime);
     }
 
-    public synchronized boolean acceptInvite(@Nonnull
-    UUID uuid, int id) {
+    public synchronized boolean acceptInvite(@Nonnull UUID uuid, int id) {
         HashMap<Integer, Long> userInvites = invites.get(uuid);
         if (userInvites == null || userInvites.size() <= 0)
             return false;
@@ -66,8 +64,7 @@ public class PartyInvitations implements INBTPartial<NBTTagList, UUID> {
         return valid;
     }
 
-    public synchronized void revokeInvites(@Nonnull
-    UUID uuid, int... ids) {
+    public synchronized void revokeInvites(@Nonnull UUID uuid, int... ids) {
         HashMap<Integer, Long> userInvites = invites.get(uuid);
         if (userInvites == null || userInvites.size() <= 0)
             return;
@@ -77,8 +74,7 @@ public class PartyInvitations implements INBTPartial<NBTTagList, UUID> {
             invites.remove(uuid);
     }
 
-    public synchronized List<Entry<Integer, Long>> getPartyInvites(@Nonnull
-    UUID uuid) {
+    public synchronized List<Entry<Integer, Long>> getPartyInvites(@Nonnull UUID uuid) {
         HashMap<Integer, Long> userInvites = invites.get(uuid);
         if (userInvites == null || userInvites.size() <= 0)
             return Collections.emptyList();
@@ -126,8 +122,7 @@ public class PartyInvitations implements INBTPartial<NBTTagList, UUID> {
     }
 
     @Override
-    public synchronized NBTTagList writeToNBT(NBTTagList nbt, @Nullable
-    List<UUID> subset) // Don't bother saving this to disk. We do need to send packets though
+    public synchronized NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<UUID> subset) // Don't bother saving this to disk. We do need to send packets though
     {
         if (subset != null) {
             subset.forEach((uuid) -> {

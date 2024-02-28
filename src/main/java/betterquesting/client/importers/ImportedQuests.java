@@ -73,8 +73,7 @@ public class ImportedQuests extends SimpleDatabase<IQuest> implements IQuestData
     }
 
     @Override
-    public NBTTagList writeProgressToNBT(NBTTagList nbt, @Nullable
-    List<UUID> users) {
+    public NBTTagList writeProgressToNBT(NBTTagList nbt, @Nullable List<UUID> users) {
         return nbt;
     }
 

@@ -29,18 +29,11 @@ public class PopChoice extends CanvasEmpty {
     private final Consumer<Integer> callback;
     private final String[] options;
 
-    public PopChoice(@Nonnull
-    String message, @Nonnull
-    Consumer<Integer> callback, @Nonnull
-    String... options) {
+    public PopChoice(@Nonnull String message, @Nonnull Consumer<Integer> callback, @Nonnull String... options) {
         this(message, null, callback, options);
     }
 
-    public PopChoice(@Nonnull
-    String message, @Nullable
-    IGuiTexture icon, @Nonnull
-    Consumer<Integer> callback, @Nonnull
-    String... options) {
+    public PopChoice(@Nonnull String message, @Nullable IGuiTexture icon, @Nonnull Consumer<Integer> callback, @Nonnull String... options) {
         super(new GuiTransform(GuiAlign.FULL_BOX));
         this.message = message;
         this.icon = icon;

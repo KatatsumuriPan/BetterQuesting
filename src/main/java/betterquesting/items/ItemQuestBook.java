@@ -20,10 +20,7 @@ public class ItemQuestBook extends Item {
     }
 
     @Nonnull @Override
-    public ActionResult<ItemStack> onItemRightClick(@Nonnull
-    World world, @Nonnull
-    EntityPlayer player, @Nonnull
-    EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
 
         ItemStack stack = player.getHeldItem(hand);
 

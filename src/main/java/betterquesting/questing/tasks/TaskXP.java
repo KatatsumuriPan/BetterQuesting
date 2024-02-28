@@ -49,8 +49,7 @@ public class TaskXP implements ITaskTickable {
     }
 
     @Override
-    public void tickTask(@Nonnull
-    ParticipantInfo pInfo, DBEntry<IQuest> quest) {
+    public void tickTask(@Nonnull ParticipantInfo pInfo, DBEntry<IQuest> quest) {
         if (consume || pInfo.PLAYER.ticksExisted % 60 != 0)
             return; // Every 3 seconds
 
@@ -152,8 +151,7 @@ public class TaskXP implements ITaskTickable {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
-    List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
         NBTTagList jArray = new NBTTagList();
         NBTTagList progArray = new NBTTagList();
 
@@ -188,8 +186,7 @@ public class TaskXP implements ITaskTickable {
     }
 
     @Override
-    public void resetUser(@Nullable
-    UUID uuid) {
+    public void resetUser(@Nullable UUID uuid) {
         if (uuid == null) {
             completeUsers.clear();
             userProgress.clear();

@@ -14,21 +14,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public interface IPacketRegistry {
 
-    void registerServerHandler(@Nonnull
-    ResourceLocation idName, @Nonnull
-    Consumer<Tuple<NBTTagCompound, EntityPlayerMP>> method);
+    void registerServerHandler(@Nonnull ResourceLocation idName, @Nonnull Consumer<Tuple<NBTTagCompound, EntityPlayerMP>> method);
 
     @SideOnly(Side.CLIENT)
-    void registerClientHandler(@Nonnull
-    ResourceLocation idName, @Nonnull
-    Consumer<NBTTagCompound> method);
+    void registerClientHandler(@Nonnull ResourceLocation idName, @Nonnull Consumer<NBTTagCompound> method);
 
     @Nullable
-    Consumer<Tuple<NBTTagCompound, EntityPlayerMP>> getServerHandler(@Nonnull
-    ResourceLocation idName);
+    Consumer<Tuple<NBTTagCompound, EntityPlayerMP>> getServerHandler(@Nonnull ResourceLocation idName);
 
     @Nullable @SideOnly(Side.CLIENT)
-    Consumer<NBTTagCompound> getClientHandler(@Nonnull
-    ResourceLocation idName);
+    Consumer<NBTTagCompound> getClientHandler(@Nonnull ResourceLocation idName);
 
 }

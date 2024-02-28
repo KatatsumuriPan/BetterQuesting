@@ -23,9 +23,7 @@ public class BqsAdvListener<T extends ICriterionInstance> extends ICriterionTrig
     private final Tuple<Integer, Integer> mappedIDs;
 
     @SuppressWarnings("ConstantConditions")
-    public BqsAdvListener(@Nonnull
-    ICriterionTrigger<T> trigType, @Nonnull
-    T critereon, int questID, int taskID) {
+    public BqsAdvListener(@Nonnull ICriterionTrigger<T> trigType, @Nonnull T critereon, int questID, int taskID) {
         super(critereon, null, "BQ_PROXY");
         this.trigType = trigType;
         this.mappedIDs = new Tuple<>(questID, taskID);

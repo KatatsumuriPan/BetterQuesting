@@ -53,9 +53,7 @@ public class JsonHelper {
 
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-    public static JsonArray GetArray(@Nonnull
-    JsonObject json, @Nonnull
-    String id) {
+    public static JsonArray GetArray(@Nonnull JsonObject json, @Nonnull String id) {
         if (json.get(id) instanceof JsonArray) {
             return json.get(id).getAsJsonArray();
         } else {
@@ -63,9 +61,7 @@ public class JsonHelper {
         }
     }
 
-    public static JsonObject GetObject(@Nonnull
-    JsonObject json, @Nonnull
-    String id) {
+    public static JsonObject GetObject(@Nonnull JsonObject json, @Nonnull String id) {
         if (json.get(id) instanceof JsonObject) {
             return json.get(id).getAsJsonObject();
         } else {
@@ -73,9 +69,7 @@ public class JsonHelper {
         }
     }
 
-    public static String GetString(@Nonnull
-    JsonObject json, @Nonnull
-    String id, String def) {
+    public static String GetString(@Nonnull JsonObject json, @Nonnull String id, String def) {
         if (json.get(id) instanceof JsonPrimitive && json.get(id).getAsJsonPrimitive().isString()) {
             return json.get(id).getAsString();
         } else {
@@ -83,9 +77,7 @@ public class JsonHelper {
         }
     }
 
-    public static Number GetNumber(@Nonnull
-    JsonObject json, @Nonnull
-    String id, Number def) {
+    public static Number GetNumber(@Nonnull JsonObject json, @Nonnull String id, Number def) {
         if (json.get(id) instanceof JsonPrimitive) {
             try {
                 return json.get(id).getAsNumber();
@@ -97,9 +89,7 @@ public class JsonHelper {
         }
     }
 
-    public static boolean GetBoolean(@Nonnull
-    JsonObject json, @Nonnull
-    String id, boolean def) {
+    public static boolean GetBoolean(@Nonnull JsonObject json, @Nonnull String id, boolean def) {
         if (json.get(id) instanceof JsonPrimitive) {
             try {
                 return json.get(id).getAsBoolean();
@@ -125,8 +115,7 @@ public class JsonHelper {
         return null;
     }
 
-    public static void ClearCompoundTag(@Nonnull
-    NBTTagCompound tag) {
+    public static void ClearCompoundTag(@Nonnull NBTTagCompound tag) {
         ArrayList<String> list = new ArrayList<>(tag.getKeySet());
         list.forEach(tag::removeTag);
     }

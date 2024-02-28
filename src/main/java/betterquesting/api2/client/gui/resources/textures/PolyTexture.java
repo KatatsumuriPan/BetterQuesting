@@ -22,8 +22,7 @@ public class PolyTexture implements IGuiTexture {
     private int borderSize = 1;
     private IGuiColor borColor = new GuiColorStatic(0xFFFFFFFF);
 
-    public PolyTexture(int points, double rotation, boolean shadow, @Nonnull
-    IGuiColor color) {
+    public PolyTexture(int points, double rotation, boolean shadow, @Nonnull IGuiColor color) {
         this.defColor = color;
         this.shadow = shadow;
 
@@ -51,8 +50,7 @@ public class PolyTexture implements IGuiTexture {
         }
     }
 
-    public PolyTexture(@Nonnull
-    double[] verts, boolean shadow, IGuiColor color) {
+    public PolyTexture(@Nonnull double[] verts, boolean shadow, IGuiColor color) {
         this.defColor = color;
         this.shadow = shadow;
         this.verts = new double[verts.length];

@@ -63,8 +63,7 @@ public class TaskMeeting implements ITaskTickable {
     }
 
     @Override
-    public void resetUser(@Nullable
-    UUID uuid) {
+    public void resetUser(@Nullable UUID uuid) {
         if (uuid == null) {
             completeUsers.clear();
         } else {
@@ -73,15 +72,13 @@ public class TaskMeeting implements ITaskTickable {
     }
 
     @Override
-    public void tickTask(@Nonnull
-    ParticipantInfo pInfo, DBEntry<IQuest> quest) {
+    public void tickTask(@Nonnull ParticipantInfo pInfo, DBEntry<IQuest> quest) {
         if (pInfo.PLAYER.ticksExisted % 60 == 0)
             detect(pInfo, quest);
     }
 
     @Override
-    public void detect(@Nonnull
-    ParticipantInfo pInfo, DBEntry<IQuest> quest) {
+    public void detect(@Nonnull ParticipantInfo pInfo, DBEntry<IQuest> quest) {
         if (!pInfo.PLAYER.isEntityAlive())
             return;
 
@@ -148,8 +145,7 @@ public class TaskMeeting implements ITaskTickable {
     }
 
     @Override
-    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable
-    List<UUID> users) {
+    public NBTTagCompound writeProgressToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
         NBTTagList jArray = new NBTTagList();
 
         completeUsers.forEach((uuid) -> {

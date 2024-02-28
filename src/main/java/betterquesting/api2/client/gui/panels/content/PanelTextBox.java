@@ -213,8 +213,7 @@ public class PanelTextBox implements IGuiPanel {
         }
 
         @Override
-        public int compareTo(@Nonnull
-        IGuiRect o) {
+        public int compareTo(@Nonnull IGuiRect o) {
             return proxy.compareTo(o);
         }
 
