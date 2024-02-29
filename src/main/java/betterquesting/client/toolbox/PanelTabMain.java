@@ -29,6 +29,7 @@ import betterquesting.client.toolbox.tools.ToolboxToolOpen;
 import betterquesting.client.toolbox.tools.ToolboxToolRemove;
 import betterquesting.client.toolbox.tools.ToolboxToolReset;
 import betterquesting.client.toolbox.tools.ToolboxToolScale;
+import betterquesting.client.toolbox.tools.ToolboxToolSetMain;
 import betterquesting.network.handlers.NetChapterEdit;
 import betterquesting.questing.QuestLineDatabase;
 import net.minecraft.client.Minecraft;
@@ -194,8 +195,12 @@ public class PanelTabMain extends CanvasEmpty {
                                       PresetIcon.ICON_ITEM.getTexture(),
                                       makeToolTip(QuestTranslation.translate("betterquesting.toolbox.tool.icon.name"),
                                                   QuestTranslation.translate("betterquesting.toolbox.tool.icon.desc"))));
-        toolEntries.add(new ToolEntry(new ToolboxToolFrame(),
+        toolEntries.add(new ToolEntry(new ToolboxToolSetMain(),
                                       PresetIcon.ICON_NOTICE.getTexture(),
+                                      makeToolTip(QuestTranslation.translate("betterquesting.toolbox.tool.set_main.name"),
+                                                  QuestTranslation.translate("betterquesting.toolbox.tool.set_main.desc"))));
+        toolEntries.add(new ToolEntry(new ToolboxToolFrame(),
+                                      PresetIcon.ICON_CHANGE_FRAME.getTexture(),
                                       makeToolTip(QuestTranslation.translate("betterquesting.toolbox.tool.frame.name"),
                                                   QuestTranslation.translate("betterquesting.toolbox.tool.frame.desc"))));
     }

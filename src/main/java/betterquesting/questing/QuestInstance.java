@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 import org.apache.logging.log4j.Level;
 
 import betterquesting.api.api.QuestingAPI;
+import betterquesting.api.enums.EnumFrameType;
 import betterquesting.api.enums.EnumLogic;
 import betterquesting.api.enums.EnumQuestState;
 import betterquesting.api.properties.IPropertyType;
@@ -64,6 +65,8 @@ public class QuestInstance implements IQuest {
         setupValue(NativeProps.DESC, "No Description");
 
         setupValue(NativeProps.ICON, new BigItemStack(Items.NETHER_STAR));
+
+        setupValue(NativeProps.FRAME, EnumFrameType.DEFAULT);
 
         setupValue(NativeProps.SOUND_COMPLETE);
         setupValue(NativeProps.SOUND_UPDATE);

@@ -1,5 +1,6 @@
 package betterquesting.api.properties;
 
+import betterquesting.api.enums.EnumFrameType;
 import betterquesting.api.enums.EnumLogic;
 import betterquesting.api.enums.EnumQuestVisibility;
 import betterquesting.api.properties.basic.PropertyTypeBoolean;
@@ -51,7 +52,7 @@ public class NativeProps {
 
     public static final IPropertyType<BigItemStack> ICON = new PropertyTypeItemStack(new ResourceLocation(ModReference.MODID, "icon"),
                                                                                      new BigItemStack(Items.NETHER_STAR));
-    //public static final IPropertyType<String> FRAME =                       new PropertyTypeString(new ResourceLocation(ModReference.MODID,"frame"), "");
+    public static final IPropertyType<EnumFrameType> FRAME = new PropertyTypeEnum<>(new ResourceLocation(ModReference.MODID, "frame"), EnumFrameType.DEFAULT);
 
     public static final IPropertyType<String> BG_IMAGE = new PropertyTypeString(new ResourceLocation(ModReference.MODID, "bg_image"), "");
     public static final IPropertyType<Integer> BG_SIZE = new PropertyTypeInteger(new ResourceLocation(ModReference.MODID, "bg_size"), 256);

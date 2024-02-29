@@ -137,8 +137,7 @@ public class GuiThemes extends GuiScreenCanvas {
                                                      new GuiTextureColored(PresetTexture.QUEST_MAIN_2.getTexture(), PresetColor.QUEST_ICON_PENDING.getColor()),
                                                      new GuiTextureColored(PresetTexture.QUEST_MAIN_3.getTexture(), PresetColor.QUEST_ICON_COMPLETE.getColor()),
                                                      new GuiTextureColored(PresetTexture.QUEST_MAIN_4.getTexture(),
-                                                                           PresetColor.QUEST_ICON_REPEATABLE.getColor())
-        );
+                                                                           PresetColor.QUEST_ICON_REPEATABLE.getColor()));
         PanelGeneric pqp = new PanelGeneric(new GuiTransform(new Vector4f(0.25F, 0.5F, 0.25F, 0.5F), -12, -12, 24, 24, 0), icoSlides);
         preCanIn2.addPanel(pqp);
 
