@@ -4,9 +4,11 @@ import org.lwjgl.input.Keyboard;
 
 import betterquesting.api.client.gui.misc.IVolatileScreen;
 import betterquesting.api.misc.ICallback;
+import betterquesting.api.utils.JsonHelper;
 import betterquesting.api2.client.gui.GuiScreenCanvas;
 import betterquesting.api2.client.gui.controls.IPanelButton;
 import betterquesting.api2.client.gui.controls.PanelButton;
+import betterquesting.api2.client.gui.controls.callbacks.CallbackNBTTagString;
 import betterquesting.api2.client.gui.events.IPEventListener;
 import betterquesting.api2.client.gui.events.PEventBroadcaster;
 import betterquesting.api2.client.gui.events.PanelEvent;
@@ -23,12 +25,86 @@ import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.client.gui.themes.presets.PresetLine;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import betterquesting.api2.utils.QuestTranslation;
+import betterquesting.client.gui2.editors.GuiTextEditor;
+import betterquesting.client.gui2.editors.nbt.callback.NbtEntityCallback;
+import betterquesting.client.gui2.editors.nbt.callback.NbtFluidCallback;
+import betterquesting.client.gui2.editors.nbt.callback.NbtItemCallback;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 
 public class GuiNbtEditor extends GuiScreenCanvas implements IPEventListener, IVolatileScreen {
+
+    public static GuiScreen createEditorGui(GuiScreen parent, NBTTagCompound nbt, String targetKey) {
+        NBTBase entry;
+        if (nbt.getId() == 10) {
+            entry = nbt.getTag(targetKey);
+        } else {
+            throw new RuntimeException("Invalid NBT tag type!");
+        }
+
+        if (entry.getId() == 10) // Object editor
+        {
+            NBTTagCompound tag = (NBTTagCompound) entry;
+
+            if (JsonHelper.isItem(tag)) {
+                return new GuiItemSelection(parent, tag, new NbtItemCallback(tag));
+            } else if (JsonHelper.isFluid(tag)) {
+                return new GuiFluidSelection(parent, tag, new NbtFluidCallback(tag));
+            } else if (JsonHelper.isEntity(tag)) {
+                return new GuiEntitySelection(parent, tag, new NbtEntityCallback(tag));
+            } else {
+                return new GuiNbtEditor(parent, tag, null);
+            }
+        } else if (entry.getId() == 9) // List editor
+        {
+            return new GuiNbtEditor(parent, (NBTTagList) entry, null);
+        } else if (entry.getId() == 8) // Text editor
+        {
+            return new GuiTextEditor(parent, ((NBTTagString) entry).getString(), new CallbackNBTTagString(nbt, targetKey));
+        } else if (entry.getId() == 7 || entry.getId() == 11 || entry.getId() == 12) // Byte/Integer/Long array
+        {
+            // TODO: Add supportted editors for Byte, Integer and Long Arrays
+            throw new UnsupportedOperationException("NBTTagByteArray, NBTTagIntArray and NBTTagLongArray are not currently supported yet");
+        } else {
+            throw new RuntimeException("Invalid NBT tag type!");
+        }
+    }
+
+    public static GuiScreen createEditorGui(GuiScreen parent, NBTTagList nbt, int targetIndex) {
+        if (nbt.getId() != 9)
+            throw new RuntimeException("Invalid NBT tag type!");
+
+        NBTBase entry = nbt.get(targetIndex);
+        if (entry.getId() == 10) // Object editor
+        {
+            NBTTagCompound tag = (NBTTagCompound) entry;
+
+            if (JsonHelper.isItem(tag)) {
+                return new GuiItemSelection(parent, tag, new NbtItemCallback(tag));
+            } else if (JsonHelper.isFluid(tag)) {
+                return new GuiFluidSelection(parent, tag, new NbtFluidCallback(tag));
+            } else if (JsonHelper.isEntity(tag)) {
+                return new GuiEntitySelection(parent, tag, new NbtEntityCallback(tag));
+            } else {
+                return new GuiNbtEditor(parent, tag, null);
+            }
+        } else if (entry.getId() == 9) // List editor
+        {
+            return new GuiNbtEditor(parent, (NBTTagList) entry, null);
+        } else if (entry.getId() == 8) // Text editor
+        {
+            return new GuiTextEditor(parent, ((NBTTagString) entry).getString(), new CallbackNBTTagString(nbt, targetIndex));
+        } else if (entry.getId() == 7 || entry.getId() == 11 || entry.getId() == 12) // Byte/Integer/Long array
+        {
+            // TODO: Add supportted editors for Byte, Integer and Long Arrays
+            throw new UnsupportedOperationException("NBTTagByteArray, NBTTagIntArray and NBTTagLongArray are not currently supported yet");
+        } else {
+            throw new RuntimeException("Invalid NBT tag type!");
+        }
+    }
 
     private final NBTBase nbt;
     private final ICallback<NBTTagCompound> comCallback;

@@ -1,5 +1,6 @@
 package betterquesting.client.gui2.editors.nbt;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -32,18 +33,17 @@ import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
 import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.client.gui.themes.presets.PresetIcon;
 import betterquesting.api2.utils.QuestTranslation;
-import betterquesting.client.gui2.editors.GuiTextEditor;
-import betterquesting.client.gui2.editors.nbt.callback.NbtEntityCallback;
-import betterquesting.client.gui2.editors.nbt.callback.NbtFluidCallback;
-import betterquesting.client.gui2.editors.nbt.callback.NbtItemCallback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTPrimitive;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 // Self contained editing panel
@@ -462,37 +462,12 @@ public class PanelScrollingNBT extends CanvasScrolling implements IPEventListene
 
         if (btn.getButtonID() == btnEdit) // Context dependent action/toggle
         {
-            if (entry.getId() == 10) // Object editor
-            {
-                NBTTagCompound tag = (NBTTagCompound) entry;
-
-                if (JsonHelper.isItem(tag)) {
-                    mc.displayGuiScreen(new GuiItemSelection(mc.currentScreen, tag, new NbtItemCallback(tag)));
-                } else if (JsonHelper.isFluid(tag)) {
-                    mc.displayGuiScreen(new GuiFluidSelection(mc.currentScreen, tag, new NbtFluidCallback(tag)));
-                } else if (JsonHelper.isEntity(tag)) {
-                    mc.displayGuiScreen(new GuiEntitySelection(mc.currentScreen, tag, new NbtEntityCallback(tag)));
-                } else {
-                    mc.displayGuiScreen(new GuiNbtEditor(mc.currentScreen, tag, null));
-                }
-            } else if (entry.getId() == 9) // List editor
-            {
-                mc.displayGuiScreen(new GuiNbtEditor(mc.currentScreen, (NBTTagList) entry, null));
-            } else if (entry.getId() == 8) // Text editor
-            {
-                if (nbt.getId() == 10) {
-                    mc.displayGuiScreen(new GuiTextEditor(mc.currentScreen,
-                                                          ((NBTTagString) entry).getString(),
-                                                          new CallbackNBTTagString((NBTTagCompound) nbt, ((PanelButtonStorage<String>) btn).getStoredValue())));
-                } else if (nbt.getId() == 9) {
-                    mc.displayGuiScreen(new GuiTextEditor(mc.currentScreen,
-                                                          ((NBTTagString) entry).getString(),
-                                                          new CallbackNBTTagString((NBTTagList) nbt, ((PanelButtonStorage<Integer>) btn).getStoredValue())));
-                }
-            } else if (entry.getId() == 7 || entry.getId() == 11 || entry.getId() == 12) // Byte/Integer/Long array
-            {
-                // TODO: Add supportted editors for Byte, Integer and Long Arrays
-                throw new UnsupportedOperationException("NBTTagByteArray, NBTTagIntArray and NBTTagLongArray are not currently supported yet");
+            if (nbt.getId() == 10) {
+                mc.displayGuiScreen(GuiNbtEditor.createEditorGui(mc.currentScreen, (NBTTagCompound) nbt, ((PanelButtonStorage<String>) btn).getStoredValue()));
+            } else if (nbt.getId() == 9) {
+                mc.displayGuiScreen(GuiNbtEditor.createEditorGui(mc.currentScreen, (NBTTagList) nbt, ((PanelButtonStorage<Integer>) btn).getStoredValue()));
+            } else {
+                throw new RuntimeException("Invalid NBT tag type!");
             }
         } else if (btn.getButtonID() == btnAdv) // Open advanced editor (on supported types)
         {
@@ -529,7 +504,22 @@ public class PanelScrollingNBT extends CanvasScrolling implements IPEventListene
             if (nbt.getId() == 10) {
                 mc.displayGuiScreen(new GuiNbtAdd(mc.currentScreen, (NBTTagCompound) nbt));
             } else if (nbt.getId() == 9) {
-                mc.displayGuiScreen(new GuiNbtAdd(mc.currentScreen, (NBTTagList) nbt, ((PanelButtonStorage<Integer>) btn).getStoredValue()));
+                NBTTagList tagList = (NBTTagList) nbt;
+                int index = ((PanelButtonStorage<Integer>) btn).getStoredValue();
+                if (tagList.tagCount() > 0) {
+                    if (index == tagList.tagCount()) {
+                        tagList.appendTag(createDefaultNbtTag(tagList.get(0)));
+                    } else {
+                        // Shift entries up manually
+                        for (int n = tagList.tagCount() - 1; n >= index; n--) {
+                            tagList.set(n + 1, tagList.get(n));
+                        }
+                        tagList.set(index, createDefaultNbtTag(tagList.get(0)));
+                    }
+                    mc.displayGuiScreen(GuiNbtEditor.createEditorGui(mc.currentScreen, tagList, index));
+                } else {
+                    mc.displayGuiScreen(new GuiNbtListAdd(mc.currentScreen, tagList, index));
+                }
             }
         } else if (btn.getButtonID() == btnDelete) {
             if (nbt.getId() == 10) {
@@ -557,6 +547,28 @@ public class PanelScrollingNBT extends CanvasScrolling implements IPEventListene
         }
 
         return "Object...";
+    }
+
+    private static NBTBase createDefaultNbtTag(NBTBase base) {
+        if (base.getId() == 10) {
+            NBTTagCompound tag = (NBTTagCompound) base;
+
+            if (JsonHelper.isItem(tag)) {
+                return JsonHelper.ItemStackToJson(new BigItemStack(Blocks.STONE), new NBTTagCompound());
+            } else if (JsonHelper.isFluid(tag)) {
+                return JsonHelper.FluidStackToJson(new FluidStack(FluidRegistry.WATER, 1000), new NBTTagCompound());
+            } else if (JsonHelper.isEntity(tag)) {
+                return JsonHelper.EntityToJson(new EntityPig(Minecraft.getMinecraft().world), new NBTTagCompound());
+            } else {
+                return new NBTTagCompound();
+            }
+        } else {
+            try {
+                return base.getClass().getConstructor().newInstance();
+            } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
 }
