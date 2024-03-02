@@ -6,6 +6,7 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector4f;
 
+import betterquesting.NBTUtil;
 import betterquesting.api.client.gui.misc.IVolatileScreen;
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.api.utils.JsonHelper;
@@ -194,15 +195,7 @@ public class GuiNbtListAdd extends GuiScreenCanvas implements IPEventListener, I
                 if (selected == null)
                     return;
 
-                if (index == nbt.tagCount()) {
-                    nbt.appendTag(selected);
-                } else {
-                    // Shift entries up manually
-                    for (int n = nbt.tagCount() - 1; n >= index; n--) {
-                        nbt.set(n + 1, nbt.get(n));
-                    }
-                    nbt.set(index, selected);
-                }
+                NBTUtil.insertTag(nbt, index, selected);
                 mc.displayGuiScreen(GuiNbtEditor.createEditorGui(this.parent, nbt, index));
                 break;
             }

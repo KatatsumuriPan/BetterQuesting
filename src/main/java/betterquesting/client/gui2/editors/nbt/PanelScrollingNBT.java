@@ -9,6 +9,7 @@ import java.util.Stack;
 
 import org.lwjgl.input.Keyboard;
 
+import betterquesting.NBTUtil;
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.api2.client.gui.controls.IPanelButton;
@@ -507,15 +508,7 @@ public class PanelScrollingNBT extends CanvasScrolling implements IPEventListene
                 NBTTagList tagList = (NBTTagList) nbt;
                 int index = ((PanelButtonStorage<Integer>) btn).getStoredValue();
                 if (tagList.tagCount() > 0) {
-                    if (index == tagList.tagCount()) {
-                        tagList.appendTag(createDefaultNbtTag(tagList.get(0)));
-                    } else {
-                        // Shift entries up manually
-                        for (int n = tagList.tagCount() - 1; n >= index; n--) {
-                            tagList.set(n + 1, tagList.get(n));
-                        }
-                        tagList.set(index, createDefaultNbtTag(tagList.get(0)));
-                    }
+                    NBTUtil.insertTag(tagList, index, createDefaultNbtTag(tagList.get(0)));
                     mc.displayGuiScreen(GuiNbtEditor.createEditorGui(mc.currentScreen, tagList, index));
                 } else {
                     mc.displayGuiScreen(new GuiNbtListAdd(mc.currentScreen, tagList, index));
