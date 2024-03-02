@@ -5,7 +5,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 
-public class NBTReplaceUtil {
+public class NBTUtil {
+
     @SuppressWarnings("unchecked")
     public static <T extends NBTBase> T replaceStrings(T baseTag, String key, String replace) {
         if (baseTag == null) {
@@ -31,4 +32,18 @@ public class NBTReplaceUtil {
 
         return baseTag; // Either isn't a string or doesn't contain one
     }
+
+    public static void insertTag(NBTTagList tagList, int index, NBTBase nbt) {
+        if (index == tagList.tagCount()) {
+            tagList.appendTag(nbt);
+        } else {
+            tagList.appendTag(tagList.get(tagList.tagCount() - 1));
+            // Shift entries up manually
+            for (int n = tagList.tagCount() - 2; n >= index; n--) {
+                tagList.set(n + 1, tagList.get(n));
+            }
+            tagList.set(index, nbt);
+        }
+    }
+
 }
