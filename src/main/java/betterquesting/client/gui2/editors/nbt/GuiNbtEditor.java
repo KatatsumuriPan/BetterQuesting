@@ -66,9 +66,9 @@ public class GuiNbtEditor extends GuiScreenCanvas implements IPEventListener, IV
 
         PanelScrollingNBT pnEdit;
         if (nbt.getId() == 10) {
-            pnEdit = new PanelScrollingNBT(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(16, 32, 24, 32), 0), (NBTTagCompound) nbt, 1, 2, 3, 4);
+            pnEdit = new PanelScrollingNBT(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(16, 32, 24, 32), 0), (NBTTagCompound) nbt, 1, 2, 3, 4, 5, 6);
         } else {
-            pnEdit = new PanelScrollingNBT(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(16, 32, 24, 32), 0), (NBTTagList) nbt, 1, 2, 3, 4);
+            pnEdit = new PanelScrollingNBT(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(16, 32, 24, 32), 0), (NBTTagList) nbt, 1, 2, 3, 4, 5, 6);
         }
         cvBackground.addPanel(pnEdit);
 
