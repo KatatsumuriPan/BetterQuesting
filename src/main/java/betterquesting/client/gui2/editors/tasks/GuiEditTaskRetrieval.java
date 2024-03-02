@@ -1,5 +1,7 @@
 package betterquesting.client.gui2.editors.tasks;
 
+import org.lwjgl.input.Keyboard;
+
 import betterquesting.EnumUtil;
 import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
@@ -29,7 +31,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.input.Keyboard;
 
 public class GuiEditTaskRetrieval extends GuiScreenCanvas implements IVolatileScreen {
 
@@ -53,7 +54,7 @@ public class GuiEditTaskRetrieval extends GuiScreenCanvas implements IVolatileSc
         this.addPanel(cvBackground);
 
         cvBackground.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(16, 16, 16, -32), 0),
-                QuestTranslation.translate("bq_standard.title.edit_retrieval_task")).setAlignment(1)
+                                               QuestTranslation.translate("bq_standard.title.edit_retrieval_task")).setAlignment(1)
                 .setColor(PresetColor.TEXT_HEADER.getColor()));
 
         CanvasScrollingNameValue cvList = new CanvasScrollingNameValue(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(16, 32, 24, 48), 0));
@@ -65,8 +66,8 @@ public class GuiEditTaskRetrieval extends GuiScreenCanvas implements IVolatileSc
         cvList.setScrollDriverY(scList);
 
         PanelButton btnEditNBT = new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -36, 200, 16, 0),
-                -1,
-                QuestTranslation.translate("bq_standard.btn.edit_nbt"));
+                                                 -1,
+                                                 QuestTranslation.translate("bq_standard.btn.edit_nbt"));
         btnEditNBT.setClickAction(btn -> {
             mc.displayGuiScreen(new GuiNbtEditor(GuiEditTaskRetrieval.this, current, value -> current = value));
         });
@@ -87,7 +88,9 @@ public class GuiEditTaskRetrieval extends GuiScreenCanvas implements IVolatileSc
     private void initItems(CanvasScrollingNameValue cvList) {
         addBoolean("autoConsume", cvList);
         addBoolean("consume", cvList);
-        cvList.addPanel("entryLogic", rect -> new PanelButtonEnum<>(rect, -1, EnumUtil.getEnum(current.getString("entryLogic"), EnumLogic.AND)).setCallback(value -> current.setString("entryLogic", value.name())));
+        cvList.addPanel("entryLogic",
+                        rect -> new PanelButtonEnum<>(rect, -1, EnumUtil.getEnum(current.getString("entryLogic"), EnumLogic.AND)).setCallback(value -> current
+                                .setString("entryLogic", value.name())));
         addBoolean("groupDetect", cvList);
         addBoolean("ignoreNBT", cvList);
         addBoolean("partialMatch", cvList);

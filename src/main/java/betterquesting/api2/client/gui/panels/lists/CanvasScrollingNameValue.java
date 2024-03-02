@@ -1,11 +1,12 @@
 package betterquesting.api2.client.gui.panels.lists;
 
+import java.util.function.Function;
+
 import betterquesting.api2.client.gui.misc.GuiRectangle;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.IGuiPanel;
 import betterquesting.api2.client.gui.panels.content.PanelTextBox;
 import betterquesting.api2.client.gui.themes.presets.PresetColor;
-import java.util.function.Function;
 
 public class CanvasScrollingNameValue extends CanvasScrolling {
 
@@ -26,4 +27,5 @@ public class CanvasScrollingNameValue extends CanvasScrolling {
         addPanel(panelFactory.apply(rect));
         rowNum++;
     }
+
 }
