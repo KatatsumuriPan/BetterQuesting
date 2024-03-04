@@ -190,7 +190,7 @@ public class GuiQuest extends GuiScreenCanvas implements IPEventListener, INeeds
         btnDetect.setActive(false);
         cvInner.addPanel(btnDetect);
 
-        rectTask = new GuiTransform(GuiAlign.HALF_RIGHT, new GuiPadding(8, 0, 0, 16), 0);
+        rectTask = new GuiTransform(GuiAlign.HALF_RIGHT, new GuiPadding(0, 0, 0, 16), 0);
         rectTask.setParent(cvInner.getTransform());
 
         refreshTaskPanel();
@@ -394,7 +394,7 @@ public class GuiQuest extends GuiScreenCanvas implements IPEventListener, INeeds
         int yOffset = 0;
         List<DBEntry<ITask>> entries = quest.getTasks().getEntries();
         if (entries.size() > 1) {
-            PanelTextBox logicTitle = new PanelTextBox(new GuiTransform(new Vector4f(), 0, yOffset, rectTask.getWidth(), 12, 0),
+            PanelTextBox logicTitle = new PanelTextBox(new GuiTransform(new Vector4f(), 8, yOffset, rectTask.getWidth(), 12, 0),
                                                        I18n.format("betterquesting.btn.task_logic", quest.getProperty(NativeProps.LOGIC_TASK)));
             logicTitle.setColor(PresetColor.TEXT_HEADER.getColor());
             csTask.addPanel(logicTitle);
@@ -417,7 +417,7 @@ public class GuiQuest extends GuiScreenCanvas implements IPEventListener, INeeds
             yOffset += 10;
 
             IGuiPanel taskGui = tsk.getTaskGui(new GuiTransform(GuiAlign.FULL_BOX,
-                                                                0,
+                                                                8,
                                                                 i == 0 && entries.size() == 1 && tsk.displaysCenteredAlone() ? rectTask.getHeight() / 3 : 0,
                                                                 rectTask.getWidth(),
                                                                 rectTask.getHeight(),
