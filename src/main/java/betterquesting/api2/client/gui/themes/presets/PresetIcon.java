@@ -101,7 +101,8 @@ public enum PresetIcon {
     ICON_MENU("icon_menu"),
 
     ICON_PATREON("icon_patreon"),
-    ICON_TWITCH("icon_twitch");
+    ICON_TWITCH("icon_twitch"),
+    ICON_CHECK("icon_check");
 
     public static final ResourceLocation TX_ICONS = new ResourceLocation(ModReference.MODID, "textures/gui/editor_icons.png");
 
@@ -196,6 +197,7 @@ public enum PresetIcon {
 
         reg.setDefaultTexture(ICON_PATREON.key, new SimpleTexture(TX_ICONS, new GuiRectangle(144, 80, 16, 16)).maintainAspect(true));
         reg.setDefaultTexture(ICON_TWITCH.key, new SimpleTexture(TX_ICONS, new GuiRectangle(160, 80, 16, 16)).maintainAspect(true));
+        reg.setDefaultTexture(ICON_CHECK.key, new SimpleTexture(TX_ICONS, new GuiRectangle(0, 48, 16, 16)).maintainAspect(true));
     }
 
 }
