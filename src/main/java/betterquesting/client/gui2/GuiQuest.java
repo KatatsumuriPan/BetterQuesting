@@ -31,11 +31,14 @@ import betterquesting.api2.client.gui.panels.CanvasEmpty;
 import betterquesting.api2.client.gui.panels.CanvasTextured;
 import betterquesting.api2.client.gui.panels.IGuiPanel;
 import betterquesting.api2.client.gui.panels.bars.PanelVScrollBar;
+import betterquesting.api2.client.gui.panels.content.PanelGeneric;
 import betterquesting.api2.client.gui.panels.content.PanelLine;
 import betterquesting.api2.client.gui.panels.content.PanelTextBox;
 import betterquesting.api2.client.gui.panels.lists.CanvasScrolling;
 import betterquesting.api2.client.gui.popups.PopContextMenu;
+import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
 import betterquesting.api2.client.gui.themes.presets.PresetColor;
+import betterquesting.api2.client.gui.themes.presets.PresetIcon;
 import betterquesting.api2.client.gui.themes.presets.PresetLine;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import betterquesting.api2.storage.DBEntry;
@@ -48,7 +51,6 @@ import betterquesting.questing.QuestDatabase;
 import betterquesting.questing.tasks.TaskRetrieval;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.resources.I18n;
 
 public class GuiQuest extends GuiScreenCanvas implements IPEventListener, INeedsRefresh {
 
@@ -66,6 +68,7 @@ public class GuiQuest extends GuiScreenCanvas implements IPEventListener, INeeds
     private PanelButton btnClaim;
 
     private CanvasEmpty cvInner;
+    private PanelTextBox logicTitle;
 
     private IGuiRect rectReward;
     private IGuiRect rectTask;
@@ -154,6 +157,13 @@ public class GuiQuest extends GuiScreenCanvas implements IPEventListener, INeeds
         panTxt.setColor(PresetColor.TEXT_HEADER.getColor());
         cvBackground.addPanel(panTxt);
 
+        if (quest.getTasks().getEntries().size() > 1) {
+            // The text will be set in refreshGui()
+            logicTitle = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 16, -32), 0), "").setAlignment(2);
+            logicTitle.setColor(PresetColor.TEXT_HEADER.getColor());
+            cvBackground.addPanel(logicTitle);
+        }
+
         if (QuestingAPI.getAPI(ApiReference.SETTINGS).canUserEdit(mc.player)) {
             cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 100, 16, 0), 0, QuestTranslation.translate("gui.back")));
             cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, 0, -16, 100, 16, 0),
@@ -226,6 +236,9 @@ public class GuiQuest extends GuiScreenCanvas implements IPEventListener, INeeds
 
     @Override
     public void refreshGui() {
+        if (logicTitle != null)
+            logicTitle.setText(QuestTranslation.translate("betterquesting.btn.logic") + ": " + quest.getProperty(NativeProps.LOGIC_TASK));
+
         this.refreshTaskPanel();
         this.refreshRewardPanel();
         this.updateButtons();
@@ -393,13 +406,6 @@ public class GuiQuest extends GuiScreenCanvas implements IPEventListener, INeeds
 
         int yOffset = 0;
         List<DBEntry<ITask>> entries = quest.getTasks().getEntries();
-        if (entries.size() > 1) {
-            PanelTextBox logicTitle = new PanelTextBox(new GuiTransform(new Vector4f(), 8, yOffset, rectTask.getWidth(), 12, 0),
-                                                       I18n.format("betterquesting.btn.task_logic", quest.getProperty(NativeProps.LOGIC_TASK)));
-            logicTitle.setColor(PresetColor.TEXT_HEADER.getColor());
-            csTask.addPanel(logicTitle);
-            yOffset += 12;
-        }
         for (int i = 0; i < entries.size(); i++) {
             ITask tsk = entries.get(i).getValue();
 
@@ -409,16 +415,28 @@ public class GuiQuest extends GuiScreenCanvas implements IPEventListener, INeeds
                 if (entryLogic != EnumLogic.AND)
                     taskName += " (" + entryLogic + ")";
             }
-            PanelTextBox titleReward = new PanelTextBox(new GuiTransform(new Vector4f(), 0, yOffset, rectTask.getWidth(), 12, 0), taskName);
+            PanelTextBox titleReward = new PanelTextBox(new GuiTransform(new Vector4f(), 0, yOffset, csTask.getTransform().getWidth(), 12, 0), taskName);
             titleReward.setColor(PresetColor.TEXT_HEADER.getColor()).setAlignment(1);
             titleReward.setEnabled(true);
             csTask.addPanel(titleReward);
+
+            // Display checkmark if completed
+            if (tsk.isComplete(QuestingAPI.getQuestingUUID(Minecraft.getMinecraft().player))) {
+                int size = 18;
+                int x = csTask.getTransform().getWidth() / 2;
+                int y = yOffset - 4;
+                PanelGeneric panel = new PanelGeneric(new GuiTransform(new Vector4f(), x, y, size, size, 0),
+                                                      PresetIcon.ICON_CHECK.getTexture(),
+                                                      new GuiColorStatic(0, 255, 0, 255));
+                csTask.addPanel(panel);
+            }
 
             yOffset += 10;
 
             IGuiPanel taskGui = tsk.getTaskGui(new GuiTransform(GuiAlign.FULL_BOX,
                                                                 8,
-                                                                i == 0 && entries.size() == 1 && tsk.displaysCenteredAlone() ? rectTask.getHeight() / 3 : 0,
+                                                                i == 0 && entries.size() == 1 && tsk.displaysCenteredAlone() ? csTask.getTransform()
+                                                                        .getHeight() / 3 : 0,
                                                                 csTask.getTransform().getWidth(),
                                                                 csTask.getTransform().getHeight(),
                                                                 0), new DBEntry<>(questID, quest));
