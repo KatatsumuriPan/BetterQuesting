@@ -39,6 +39,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RenderUtils {
 
     public static final String REGEX_NUMBER = "[^\\.0123456789-]"; // I keep screwing this up so now it's reusable
+    // Saves me having to run the math function every frame
+    private static final double RAD = Math.toRadians(360F);
 
     public static void RenderItemStack(Minecraft mc, ItemStack stack, int x, int y, String text) {
         RenderItemStack(mc, stack, x, y, text, Color.WHITE.getRGB());
@@ -935,6 +937,17 @@ public class RenderUtils {
         }
 
         return Math.max(maxWidth, curLineWidth);
+    }
+
+    public static float sineWave(double periodSeconds, double phase) {
+        // Period in milliseconds
+        double pms = 1000 * periodSeconds;
+        // Current period time
+        double time = System.currentTimeMillis() % pms;
+        // Shift current time by phase, wrap value and scale between 0.0 - 1.0
+        time = (time + (pms * phase)) % pms / pms;
+        // Convert time to sine wave between 0.0 and 1.0
+        return (float) (Math.cos(time * RAD) / 2D + 0.5D);
     }
 
 }
