@@ -419,8 +419,8 @@ public class GuiQuest extends GuiScreenCanvas implements IPEventListener, INeeds
             IGuiPanel taskGui = tsk.getTaskGui(new GuiTransform(GuiAlign.FULL_BOX,
                                                                 8,
                                                                 i == 0 && entries.size() == 1 && tsk.displaysCenteredAlone() ? rectTask.getHeight() / 3 : 0,
-                                                                rectTask.getWidth(),
-                                                                rectTask.getHeight(),
+                                                                csTask.getTransform().getWidth(),
+                                                                csTask.getTransform().getHeight(),
                                                                 0), new DBEntry<>(questID, quest));
             if (taskGui != null) {
                 taskGui.initPanel();
@@ -429,7 +429,7 @@ public class GuiQuest extends GuiScreenCanvas implements IPEventListener, INeeds
                 CanvasEmpty tempCanvas = new CanvasEmpty(new GuiTransform(GuiAlign.TOP_LEFT,
                                                                           0,
                                                                           yOffset,
-                                                                          rectTask.getWidth(),
+                                                                          csTask.getTransform().getWidth(),
                                                                           taskGui.getTransform().getHeight() - taskGui.getTransform().getY(),
                                                                           1));
                 csTask.addPanel(tempCanvas);
