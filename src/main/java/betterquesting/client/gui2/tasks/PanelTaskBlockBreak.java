@@ -8,6 +8,7 @@ import betterquesting.api2.client.gui.misc.GuiRectangle;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.CanvasMinimum;
 import betterquesting.api2.client.gui.panels.content.PanelItemSlot;
+import betterquesting.api2.client.gui.panels.content.PanelTaskOverlay;
 import betterquesting.api2.client.gui.panels.content.PanelTextBox;
 import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.utils.QuestTranslation;
@@ -42,9 +43,14 @@ public class PanelTaskBlockBreak extends CanvasMinimum {
             if (stack == null) {
                 continue;
             }
+            boolean completed = isComplete || progress[i] >= stack.stackSize;
 
             PanelItemSlot slot = new PanelItemSlot(new GuiRectangle(0, i * 36, 36, 36, 0), -1, stack, true, true);
-            this.addPanel(slot);
+            PanelTaskOverlay overlay = new PanelTaskOverlay(slot);
+            overlay.setCompleted(completed);
+            if (!completed)
+                overlay.setText(progress[i] + "/" + stack.stackSize);
+            this.addPanel(overlay);
 
             StringBuilder sb = new StringBuilder();
 
@@ -55,7 +61,7 @@ public class PanelTaskBlockBreak extends CanvasMinimum {
 
             sb.append("\n").append(progress[i]).append("/").append(stack.stackSize).append("\n");
 
-            if (progress[i] >= stack.stackSize || isComplete) {
+            if (completed) {
                 sb.append(TextFormatting.GREEN).append(QuestTranslation.translate("betterquesting.tooltip.complete"));
             } else {
                 sb.append(TextFormatting.RED).append(QuestTranslation.translate("betterquesting.tooltip.incomplete"));

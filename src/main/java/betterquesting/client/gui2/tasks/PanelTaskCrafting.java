@@ -9,6 +9,7 @@ import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.CanvasMinimum;
 import betterquesting.api2.client.gui.panels.content.PanelGeneric;
 import betterquesting.api2.client.gui.panels.content.PanelItemSlot;
+import betterquesting.api2.client.gui.panels.content.PanelTaskOverlay;
 import betterquesting.api2.client.gui.panels.content.PanelTextBox;
 import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
 import betterquesting.api2.client.gui.resources.textures.GuiTextureColored;
@@ -57,9 +58,14 @@ public class PanelTaskCrafting extends CanvasMinimum {
 
         for (int i = 0; i < task.requiredItems.size(); i++) {
             BigItemStack stack = task.requiredItems.get(i);
+            boolean completed = isComplete || progress[i] >= stack.stackSize;
 
             PanelItemSlot slot = new PanelItemSlot(new GuiRectangle(0, i * 28 + 24, 28, 28, 0), -1, stack, false, true);
-            this.addPanel(slot);
+            PanelTaskOverlay overlay = new PanelTaskOverlay(slot);
+            overlay.setCompleted(completed);
+            if (!completed)
+                overlay.setText(progress[i] + "/" + stack.stackSize);
+            this.addPanel(overlay);
 
             StringBuilder sb = new StringBuilder();
 
@@ -70,7 +76,7 @@ public class PanelTaskCrafting extends CanvasMinimum {
 
             sb.append("\n").append(progress[i]).append("/").append(stack.stackSize).append("\n");
 
-            if (isComplete || progress[i] >= stack.stackSize) {
+            if (completed) {
                 sb.append(TextFormatting.GREEN).append(QuestTranslation.translate("betterquesting.tooltip.complete"));
             } else {
                 sb.append(TextFormatting.RED).append(QuestTranslation.translate("betterquesting.tooltip.incomplete"));

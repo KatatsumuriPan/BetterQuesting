@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 
 import org.apache.logging.log4j.Level;
 
+import betterquesting.api.client.gui.misc.INeedsRefresh;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.IFluidTask;
 import betterquesting.api.questing.tasks.IItemTask;
@@ -25,6 +26,7 @@ import betterquesting.api2.utils.ParticipantInfo;
 import betterquesting.client.gui2.tasks.PanelTaskFluid;
 import betterquesting.core.BetterQuesting;
 import betterquesting.questing.tasks.factory.FactoryTaskFluid;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -55,6 +57,17 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
     public boolean consume = true;
     public boolean groupDetect = false;
     public boolean autoConsume = false;
+    private boolean fold = true; // This remains through the game.
+
+    public boolean isFold() { return fold; }
+
+    public void setFold(boolean fold) {
+        this.fold = fold;
+        GuiScreen screen = Minecraft.getMinecraft().currentScreen;
+        if (screen instanceof INeedsRefresh needsRefresh) {
+            needsRefresh.refreshGui();
+        }
+    }
 
     @Override
     public ResourceLocation getFactoryID() { return FactoryTaskFluid.INSTANCE.getRegistryName(); }
