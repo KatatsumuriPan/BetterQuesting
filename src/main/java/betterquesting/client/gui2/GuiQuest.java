@@ -236,7 +236,8 @@ public class GuiQuest extends GuiScreenCanvas implements IPEventListener, INeeds
 
     @Override
     public void refreshGui() {
-        logicTitle.setText(QuestTranslation.translate("betterquesting.btn.logic") + ": " + quest.getProperty(NativeProps.LOGIC_TASK));
+        if (logicTitle != null)
+            logicTitle.setText(QuestTranslation.translate("betterquesting.btn.logic") + ": " + quest.getProperty(NativeProps.LOGIC_TASK));
 
         this.refreshTaskPanel();
         this.refreshRewardPanel();
