@@ -10,6 +10,7 @@ import betterquesting.api2.client.gui.panels.CanvasMinimum;
 import betterquesting.api2.client.gui.panels.content.PanelGeneric;
 import betterquesting.api2.client.gui.panels.content.PanelItemSlot;
 import betterquesting.api2.client.gui.panels.content.PanelTaskOverlay;
+import betterquesting.api2.client.gui.panels.content.PanelTaskOverlay.State;
 import betterquesting.api2.client.gui.panels.content.PanelTextBox;
 import betterquesting.api2.client.gui.resources.colors.GuiColorStatic;
 import betterquesting.api2.client.gui.resources.textures.GuiTextureColored;
@@ -62,7 +63,12 @@ public class PanelTaskCrafting extends CanvasMinimum {
 
             PanelItemSlot slot = new PanelItemSlot(new GuiRectangle(0, i * 28 + 24, 28, 28, 0), -1, stack, false, true);
             PanelTaskOverlay overlay = new PanelTaskOverlay(slot);
-            overlay.setCompleted(completed);
+            if (completed)
+                overlay.setState(State.COMPLETE);
+            else if (progress[i] > 0)
+                overlay.setState(State.IN_PROGRESS);
+            else
+                overlay.setState(State.INCOMPLETE);
             if (!completed)
                 overlay.setText(progress[i] + "/" + stack.stackSize);
             this.addPanel(overlay);

@@ -1,5 +1,14 @@
 package betterquesting.client.gui2.editors;
 
+import java.util.ArrayDeque;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import org.lwjgl.util.vector.Vector4f;
+
 import betterquesting.api.client.gui.misc.INeedsRefresh;
 import betterquesting.api.client.gui.misc.IVolatileScreen;
 import betterquesting.api.questing.IQuest;
@@ -39,16 +48,10 @@ import betterquesting.questing.QuestDatabase;
 import betterquesting.questing.tasks.TaskRegistry;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
-import java.util.ArrayDeque;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import javax.annotation.Nullable;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.TextFormatting;
-import org.lwjgl.util.vector.Vector4f;
 
 public class GuiTaskEditor extends GuiScreenCanvas implements IPEventListener, IVolatileScreen, INeedsRefresh {
 
@@ -91,22 +94,22 @@ public class GuiTaskEditor extends GuiScreenCanvas implements IPEventListener, I
 
         // Background panel
         CanvasTextured cvBackground = new CanvasTextured(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(0, 0, 0, 0), 0),
-                PresetTexture.PANEL_MAIN.getTexture());
+                                                         PresetTexture.PANEL_MAIN.getTexture());
         this.addPanel(cvBackground);
 
         PanelTextBox panTxt = new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(0, 16, 0, -32), 0),
-                QuestTranslation.translate("betterquesting.title.edit_tasks")).setAlignment(1);
+                                               QuestTranslation.translate("betterquesting.title.edit_tasks")).setAlignment(1);
         panTxt.setColor(PresetColor.TEXT_HEADER.getColor());
         cvBackground.addPanel(panTxt);
 
         cvBackground.addPanel(new PanelButton(new GuiTransform(GuiAlign.BOTTOM_CENTER, -100, -16, 200, 16, 0), 0, QuestTranslation.translate("gui.back")));
 
         CanvasSearch<IFactoryData<ITask, NBTTagCompound>, IFactoryData<ITask, NBTTagCompound>> cvRegSearch = new CanvasSearch<IFactoryData<ITask, NBTTagCompound>, IFactoryData<ITask, NBTTagCompound>>((new GuiTransform(GuiAlign.HALF_RIGHT,
-                new GuiPadding(8,
-                        48,
-                        24,
-                        32),
-                0))) {
+                                                                                                                                                                                                                          new GuiPadding(8,
+                                                                                                                                                                                                                                         48,
+                                                                                                                                                                                                                                         24,
+                                                                                                                                                                                                                                         32),
+                                                                                                                                                                                                                          0))) {
 
             @Override
             protected Iterator<IFactoryData<ITask, NBTTagCompound>> getIterator() {
@@ -135,8 +138,8 @@ public class GuiTaskEditor extends GuiScreenCanvas implements IPEventListener, I
         cvRegSearch.setScrollDriverY(scReg);
 
         PanelTextField<String> tfSearch = new PanelTextField<>(new GuiTransform(new Vector4f(0.5F, 0F, 1F, 0F), new GuiPadding(8, 32, 16, -48), 0),
-                "",
-                FieldFilterString.INSTANCE);
+                                                               "",
+                                                               FieldFilterString.INSTANCE);
         tfSearch.setCallback(cvRegSearch::setSearchFilter);
         tfSearch.setWatermark("Search...");
         cvBackground.addPanel(tfSearch);
@@ -223,9 +226,9 @@ public class GuiTaskEditor extends GuiScreenCanvas implements IPEventListener, I
             ITask task = dbTsk.get(i).getValue();
             int index = taskIndexBeforeReorder == null ? i : taskIndexBeforeReorder.get(i);
             qtList.addPanel(new PanelButtonStorage<>(new GuiRectangle(0, i * 16, w - 48, 16, 0),
-                    3,
-                    (index + 1) + ". " + QuestTranslation.translate(task.getUnlocalisedName()),
-                    task));
+                                                     3,
+                                                     (index + 1) + ". " + QuestTranslation.translate(task.getUnlocalisedName()),
+                                                     task));
 
             PanelButton btnUp = new PanelButtonStorage<>(new GuiRectangle(w - 48, i * 16, 16, 16, 0), 4, "", task).setIcon(PresetIcon.ICON_UP.getTexture());
             btnUp.setActive(i > 0);
@@ -235,9 +238,9 @@ public class GuiTaskEditor extends GuiScreenCanvas implements IPEventListener, I
             qtList.addPanel(btnDown);
 
             qtList.addPanel(new PanelButtonStorage<>(new GuiRectangle(w - 16, i * 16, 16, 16, 0),
-                    2,
-                    "" + TextFormatting.RED + TextFormatting.BOLD + "x",
-                    task));
+                                                     2,
+                                                     "" + TextFormatting.RED + TextFormatting.BOLD + "x",
+                                                     task));
         }
     }
 

@@ -24,14 +24,14 @@ public class PanelTaskOverlay implements IGuiPanel {
     public static final float FRAME_WIDTH = 2;
 
     private final IGuiPanel delegate;
-    private boolean completed;
+    private State state;
     private boolean consume;
     private String text; // Long text will be scaled.
 
     public PanelTaskOverlay(IGuiPanel delegate) { this.delegate = delegate; }
 
-    public PanelTaskOverlay setCompleted(boolean completed) {
-        this.completed = completed;
+    public PanelTaskOverlay setState(State state) {
+        this.state = state;
         return this;
     }
 
@@ -48,15 +48,20 @@ public class PanelTaskOverlay implements IGuiPanel {
     @Override
     public void drawPanel(int mx, int my, float partialTick) {
         delegate.drawPanel(mx, my, partialTick);
-        if (completed) {
-            renderComplete(mx, my);
-        } else {
-            renderIncomplete();
-            if (consume)
-                renderConsumeIcon(mx, my);
-            //TODO:overlayはtextのみを持つように
-            //fluidで1000mbのようにしたいから
-            //TaskタイトルにCheckマーク
+        switch (state) {
+            case INCOMPLETE -> {
+                renderIncomplete();
+                if (consume)
+                    renderConsumeIcon(mx, my);
+            }
+            case COMPLETE -> {
+                renderComplete(mx, my);
+            }
+            case IN_PROGRESS -> {
+                renderInProgress();
+                if (consume)
+                    renderConsumeIcon(mx, my);
+            }
         }
         renderText(mx, my);
     }
@@ -116,6 +121,12 @@ public class PanelTaskOverlay implements IGuiPanel {
         int y = rect.getY() - 2;
         int a = getTransform().contains(mx, my) ? 100 : 255;
         PresetIcon.ICON_CHECK.getTexture().drawTexture(x, y, size, size, 0, 0, new GuiColorStatic(0, 255, 0, a));
+    }
+
+    private void renderInProgress() {
+        float r = 0.3f * RenderUtils.sineWave(2, 0) + 0.3f;
+        float g = r;
+        renderFrame(r, g, 0, 1);
     }
 
     private void renderFrame(float red, float green, float blue, float alpha) {
@@ -188,6 +199,12 @@ public class PanelTaskOverlay implements IGuiPanel {
         int y = rect.getY() + 1;
         int a = getTransform().contains(mx, my) ? 100 : 255;
         fontRenderer.drawStringWithShadow("C", x, y, 0xFFFF00 | (a << 24));
+    }
+
+    public enum State {
+        INCOMPLETE,
+        COMPLETE,
+        IN_PROGRESS,
     }
 
 }

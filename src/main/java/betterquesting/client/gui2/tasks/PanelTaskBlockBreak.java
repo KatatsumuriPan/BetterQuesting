@@ -9,6 +9,7 @@ import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.CanvasMinimum;
 import betterquesting.api2.client.gui.panels.content.PanelItemSlot;
 import betterquesting.api2.client.gui.panels.content.PanelTaskOverlay;
+import betterquesting.api2.client.gui.panels.content.PanelTaskOverlay.State;
 import betterquesting.api2.client.gui.panels.content.PanelTextBox;
 import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.utils.QuestTranslation;
@@ -47,7 +48,12 @@ public class PanelTaskBlockBreak extends CanvasMinimum {
 
             PanelItemSlot slot = new PanelItemSlot(new GuiRectangle(0, i * 36, 36, 36, 0), -1, stack, true, true);
             PanelTaskOverlay overlay = new PanelTaskOverlay(slot);
-            overlay.setCompleted(completed);
+            if (completed)
+                overlay.setState(State.COMPLETE);
+            else if (progress[i] > 0)
+                overlay.setState(State.IN_PROGRESS);
+            else
+                overlay.setState(State.INCOMPLETE);
             if (!completed)
                 overlay.setText(progress[i] + "/" + stack.stackSize);
             this.addPanel(overlay);

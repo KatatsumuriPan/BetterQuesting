@@ -11,6 +11,7 @@ import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.CanvasEmpty;
 import betterquesting.api2.client.gui.panels.content.PanelGeneric;
 import betterquesting.api2.client.gui.panels.content.PanelTaskOverlay;
+import betterquesting.api2.client.gui.panels.content.PanelTaskOverlay.State;
 import betterquesting.api2.client.gui.panels.content.PanelTextBox;
 import betterquesting.api2.client.gui.resources.textures.ItemTexture;
 import betterquesting.api2.client.gui.themes.presets.PresetColor;
@@ -52,7 +53,10 @@ public class PanelTaskAdvancement extends CanvasEmpty {
 
         this.addPanel(new PanelGeneric(new GuiRectangle(0, 0, 24, 24, 0), PresetTexture.ITEM_FRAME.getTexture()));
         PanelTaskOverlay overlay = new PanelTaskOverlay(new PanelGeneric(new GuiRectangle(0, 0, 24, 24, -1), new ItemTexture(icon)));
-        overlay.setCompleted(isComplete);
+        if (isComplete)
+            overlay.setState(State.COMPLETE);
+        else
+            overlay.setState(State.INCOMPLETE);
         this.addPanel(overlay);
 
         this.addPanel(new PanelTextBox(new GuiTransform(GuiAlign.TOP_EDGE, new GuiPadding(28, 2, 0, -12), 0), title).setColor(PresetColor.TEXT_MAIN

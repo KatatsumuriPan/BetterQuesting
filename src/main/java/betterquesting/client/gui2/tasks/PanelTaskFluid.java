@@ -10,6 +10,7 @@ import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.CanvasMinimum;
 import betterquesting.api2.client.gui.panels.content.PanelFluidSlot;
 import betterquesting.api2.client.gui.panels.content.PanelTaskOverlay;
+import betterquesting.api2.client.gui.panels.content.PanelTaskOverlay.State;
 import betterquesting.api2.client.gui.panels.content.PanelTextBox;
 import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.client.gui.themes.presets.PresetIcon;
@@ -78,7 +79,12 @@ public class PanelTaskFluid extends CanvasMinimum {
                 if (BetterQuesting.hasJEI)
                     slot.setCallback(this::lookupRecipe);
                 PanelTaskOverlay overlay = new PanelTaskOverlay(slot);
-                overlay.setCompleted(completed);
+                if (completed)
+                    overlay.setState(State.COMPLETE);
+                else if (progress[i] > 0)
+                    overlay.setState(State.IN_PROGRESS);
+                else
+                    overlay.setState(State.INCOMPLETE);
                 if (!completed)
                     overlay.setText(progress[i] + "/" + stack.amount);
                 if (task.consume)
@@ -106,7 +112,12 @@ public class PanelTaskFluid extends CanvasMinimum {
                 if (BetterQuesting.hasJEI)
                     slot.setCallback(this::lookupRecipe);
                 PanelTaskOverlay overlay = new PanelTaskOverlay(slot);
-                overlay.setCompleted(completed);
+                if (completed)
+                    overlay.setState(State.COMPLETE);
+                else if (progress[i] > 0)
+                    overlay.setState(State.IN_PROGRESS);
+                else
+                    overlay.setState(State.INCOMPLETE);
                 if (!completed)
                     overlay.setText(progress[i] + "/" + stack.amount);
                 if (task.consume)

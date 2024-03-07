@@ -11,6 +11,7 @@ import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.CanvasMinimum;
 import betterquesting.api2.client.gui.panels.content.PanelItemSlot;
 import betterquesting.api2.client.gui.panels.content.PanelTaskOverlay;
+import betterquesting.api2.client.gui.panels.content.PanelTaskOverlay.State;
 import betterquesting.api2.client.gui.panels.content.PanelTextBox;
 import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.client.gui.themes.presets.PresetIcon;
@@ -72,7 +73,12 @@ public class PanelTaskRetrieval extends CanvasMinimum {
 
                 PanelItemSlot slot = createPanelItemSlot(new GuiRectangle(x, y, slotSize, slotSize, 0), stack);
                 PanelTaskOverlay overlay = new PanelTaskOverlay(slot);
-                overlay.setCompleted(completed);
+                if (completed)
+                    overlay.setState(State.COMPLETE);
+                else if (progress[i] > 0)
+                    overlay.setState(State.IN_PROGRESS);
+                else
+                    overlay.setState(State.INCOMPLETE);
                 if (!completed)
                     overlay.setText(progress[i] + "/" + stack.stackSize);
                 if (task.consume)
@@ -95,7 +101,12 @@ public class PanelTaskRetrieval extends CanvasMinimum {
                 PanelItemSlot slot = createPanelItemSlot(new GuiRectangle(firstIconOffset, i * (MAX_SLOT_SIZE + SLOT_PADDING), MAX_SLOT_SIZE, MAX_SLOT_SIZE, 0),
                                                          stack);
                 PanelTaskOverlay overlay = new PanelTaskOverlay(slot);
-                overlay.setCompleted(completed);
+                if (completed)
+                    overlay.setState(State.COMPLETE);
+                else if (progress[i] > 0)
+                    overlay.setState(State.IN_PROGRESS);
+                else
+                    overlay.setState(State.INCOMPLETE);
                 if (!completed)
                     overlay.setText(progress[i] + "/" + stack.stackSize);
                 if (task.consume)
