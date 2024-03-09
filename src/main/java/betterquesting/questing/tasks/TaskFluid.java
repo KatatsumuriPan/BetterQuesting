@@ -1,23 +1,10 @@
 package betterquesting.questing.tasks;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.UUID;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import org.apache.logging.log4j.Level;
-
 import betterquesting.api.client.gui.misc.INeedsRefresh;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.IFluidTask;
 import betterquesting.api.questing.tasks.IItemTask;
+import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.IGuiPanel;
@@ -26,6 +13,16 @@ import betterquesting.api2.utils.ParticipantInfo;
 import betterquesting.client.gui2.tasks.PanelTaskFluid;
 import betterquesting.core.BetterQuesting;
 import betterquesting.questing.tasks.factory.FactoryTaskFluid;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.UUID;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -46,6 +43,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.logging.log4j.Level;
 
 public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
 
@@ -57,7 +55,7 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
     public boolean consume = true;
     public boolean groupDetect = false;
     public boolean autoConsume = false;
-    private boolean fold = true; // This remains through the game.
+    private boolean fold = BQ_Settings.taskFoldedInitially; // This remains through the game.
 
     public boolean isFold() { return fold; }
 
@@ -298,8 +296,9 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
                     NBTTagCompound pJson = new NBTTagCompound();
                     pJson.setString("uuid", uuid.toString());
                     NBTTagList pArray = new NBTTagList(); // TODO: Why the heck isn't this just an int array?!
-                    for (int i : data)
+                    for (int i : data) {
                         pArray.appendTag(new NBTTagInt(i));
+                    }
                     pJson.setTag("data", pArray);
                     progArray.appendTag(pJson);
                 }
@@ -311,8 +310,9 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
                 NBTTagCompound pJson = new NBTTagCompound();
                 pJson.setString("uuid", uuid.toString());
                 NBTTagList pArray = new NBTTagList(); // TODO: Why the heck isn't this just an int array?!
-                for (int i : data)
+                for (int i : data) {
                     pArray.appendTag(new NBTTagInt(i));
+                }
                 pJson.setTag("data", pArray);
                 progArray.appendTag(pJson);
             });
@@ -335,12 +335,14 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
         }
     }
 
-    @Override @SideOnly(Side.CLIENT)
+    @Override
+    @SideOnly(Side.CLIENT)
     public IGuiPanel getTaskGui(IGuiRect rect, DBEntry<IQuest> quest) {
         return new PanelTaskFluid(rect, this);
     }
 
-    @Override @SideOnly(Side.CLIENT)
+    @Override
+    @SideOnly(Side.CLIENT)
     public GuiScreen getTaskEditor(GuiScreen screen, DBEntry<IQuest> quest) {
         return null;
     }
