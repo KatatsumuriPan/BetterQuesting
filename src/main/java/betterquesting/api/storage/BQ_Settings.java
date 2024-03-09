@@ -38,5 +38,6 @@ public class BQ_Settings {
     public static String defaultVisibility = "NORMAL";
 
     public static boolean spawnWithQuestBook = true;
+    public static boolean taskFoldedInitially = false;
 
 }

@@ -18,6 +18,7 @@ import betterquesting.api.client.gui.misc.INeedsRefresh;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.IFluidTask;
 import betterquesting.api.questing.tasks.IItemTask;
+import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api.utils.JsonHelper;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.IGuiPanel;
@@ -57,7 +58,7 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
     public boolean consume = true;
     public boolean groupDetect = false;
     public boolean autoConsume = false;
-    private boolean fold = true; // This remains through the game.
+    private boolean fold = BQ_Settings.taskFoldedInitially; // This remains through the game.
 
     public boolean isFold() { return fold; }
 
@@ -298,8 +299,9 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
                     NBTTagCompound pJson = new NBTTagCompound();
                     pJson.setString("uuid", uuid.toString());
                     NBTTagList pArray = new NBTTagList(); // TODO: Why the heck isn't this just an int array?!
-                    for (int i : data)
+                    for (int i : data) {
                         pArray.appendTag(new NBTTagInt(i));
+                    }
                     pJson.setTag("data", pArray);
                     progArray.appendTag(pJson);
                 }
@@ -311,8 +313,9 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
                 NBTTagCompound pJson = new NBTTagCompound();
                 pJson.setString("uuid", uuid.toString());
                 NBTTagList pArray = new NBTTagList(); // TODO: Why the heck isn't this just an int array?!
-                for (int i : data)
+                for (int i : data) {
                     pArray.appendTag(new NBTTagInt(i));
+                }
                 pJson.setTag("data", pArray);
                 progArray.appendTag(pJson);
             });

@@ -19,6 +19,7 @@ import betterquesting.api.client.gui.misc.INeedsRefresh;
 import betterquesting.api.enums.EnumLogic;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.IItemTask;
+import betterquesting.api.storage.BQ_Settings;
 import betterquesting.api.utils.BigItemStack;
 import betterquesting.api.utils.ItemComparison;
 import betterquesting.api.utils.JsonHelper;
@@ -58,7 +59,7 @@ public class TaskRetrieval implements ITaskInventory, IItemTask {
     public boolean groupDetect = false;
     public boolean autoConsume = false;
     public EnumLogic entryLogic = EnumLogic.AND;
-    private boolean fold = true; // This remains through the game.
+    private boolean fold = BQ_Settings.taskFoldedInitially; // This remains through the game.
 
     public boolean isFold() { return fold; }
 

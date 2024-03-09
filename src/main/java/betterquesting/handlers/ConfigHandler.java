@@ -85,6 +85,10 @@ public class ConfigHandler {
                                                            Configuration.CATEGORY_GENERAL,
                                                            true,
                                                            "If true, then the player will spawn with a Quest Book when they first join the world");
+        BQ_Settings.taskFoldedInitially = config.getBoolean("Task Folded Initially",
+                                                            Configuration.CATEGORY_GENERAL,
+                                                            BQ_Settings.taskFoldedInitially,
+                                                            "If true, then quest tasks will be initially folded.");
         config.save();
     }
 
