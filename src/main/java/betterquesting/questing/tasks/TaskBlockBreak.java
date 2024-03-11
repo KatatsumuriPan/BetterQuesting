@@ -120,10 +120,10 @@ public class TaskBlockBreak implements ITask {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         NBTTagList bAry = new NBTTagList();
         for (NbtBlockType block : blockTypes) {
-            bAry.appendTag(block.writeToNBT(new NBTTagCompound()));
+            bAry.appendTag(block.writeToNBT(new NBTTagCompound(), reduce));
         }
         nbt.setTag("blocks", bAry);
 

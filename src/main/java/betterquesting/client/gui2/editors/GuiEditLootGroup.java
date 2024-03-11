@@ -232,7 +232,7 @@ public class GuiEditLootGroup extends GuiScreenCanvas implements IVolatileScreen
     }
 
     private void SendChanges() {
-        NetLootImport.importLoot(LootRegistry.INSTANCE.writeToNBT(new NBTTagCompound(), null));
+        NetLootImport.importLoot(LootRegistry.INSTANCE.writeToNBT(new NBTTagCompound(), null, true));
     }
 
 }

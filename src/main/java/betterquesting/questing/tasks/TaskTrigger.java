@@ -187,7 +187,7 @@ public class TaskTrigger implements ITask {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         nbt.setString("description", desc);
         nbt.setString("trigger", triggerID);
         nbt.setString("conditions", critJson);

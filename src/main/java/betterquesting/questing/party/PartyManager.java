@@ -64,11 +64,10 @@ public class PartyManager extends SimpleDatabase<IParty> implements IPartyDataba
     }
 
     @Override
-    public synchronized NBTTagList writeToNBT(NBTTagList json, List<Integer> subset) {
+    public synchronized NBTTagList writeToNBT(NBTTagList json, List<Integer> subset, boolean reduce) {
         for (DBEntry<IParty> entry : getEntries()) {
-            if (subset != null && !subset.contains(entry.getID()))
-                continue;
-            NBTTagCompound jp = entry.getValue().writeToNBT(new NBTTagCompound());
+            if (subset != null && !subset.contains(entry.getID())) continue;
+            NBTTagCompound jp = entry.getValue().writeToNBT(new NBTTagCompound(), reduce);
             jp.setInteger("partyID", entry.getID());
             json.appendTag(jp);
         }

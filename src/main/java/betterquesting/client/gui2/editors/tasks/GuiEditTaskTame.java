@@ -112,7 +112,7 @@ public class GuiEditTaskTame extends GuiScreenCanvas implements IVolatileScreen 
             @Override
             public void onButtonClick() {
                 mc.displayGuiScreen(QuestingAPI.getAPI(ApiReference.THEME_REG)
-                        .getGui(PresetGUIs.EDIT_NBT, new GArgsNBT<>(screenRef, task.writeToNBT(new NBTTagCompound()), task::readFromNBT, null)));
+                        .getGui(PresetGUIs.EDIT_NBT, new GArgsNBT<>(screenRef, task.writeToNBT(new NBTTagCompound(), false), task::readFromNBT, null)));
             }
 
         });
@@ -135,7 +135,7 @@ public class GuiEditTaskTame extends GuiScreenCanvas implements IVolatileScreen 
         NBTTagList dataList = new NBTTagList();
         NBTTagCompound entry = new NBTTagCompound();
         entry.setInteger("questID", quest.getID());
-        entry.setTag("config", quest.getValue().writeToNBT(new NBTTagCompound()));
+        entry.setTag("config", quest.getValue().writeToNBT(new NBTTagCompound(), true));
         dataList.appendTag(entry);
         payload.setTag("data", dataList);
         payload.setInteger("action", 0); // Action: Update data

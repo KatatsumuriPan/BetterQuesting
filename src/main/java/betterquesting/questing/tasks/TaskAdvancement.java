@@ -122,7 +122,7 @@ public class TaskAdvancement implements ITask {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         nbt.setString("advancement_id", advID == null ? "" : advID.toString());
         return nbt;
     }

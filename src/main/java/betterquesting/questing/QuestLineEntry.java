@@ -67,7 +67,7 @@ public class QuestLineEntry implements IQuestLineEntry {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound json) {
+    public NBTTagCompound writeToNBT(NBTTagCompound json, boolean reduce) {
         json.setInteger("sizeX", sizeX);
         json.setInteger("sizeY", sizeY);
         json.setInteger("x", posX);

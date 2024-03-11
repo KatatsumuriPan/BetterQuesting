@@ -304,9 +304,9 @@ public class SaveLoadHandler {
     private Future<Void> saveConfig() {
         NBTTagCompound json = new NBTTagCompound();
 
-        json.setTag("questSettings", QuestSettings.INSTANCE.writeToNBT(new NBTTagCompound()));
-        json.setTag("questDatabase", QuestDatabase.INSTANCE.writeToNBT(new NBTTagList(), null));
-        json.setTag("questLines", QuestLineDatabase.INSTANCE.writeToNBT(new NBTTagList(), null));
+        json.setTag("questSettings", QuestSettings.INSTANCE.writeToNBT(new NBTTagCompound(), true));
+        json.setTag("questDatabase", QuestDatabase.INSTANCE.writeToNBT(new NBTTagList(), null, true));
+        json.setTag("questLines", QuestLineDatabase.INSTANCE.writeToNBT(new NBTTagList(), null, true));
 
         json.setString("format", BetterQuesting.FORMAT);
         json.setString("build", ModReference.VERSION);
@@ -323,7 +323,7 @@ public class SaveLoadHandler {
     private Future<Void> saveParties() {
         NBTTagCompound json = new NBTTagCompound();
 
-        json.setTag("parties", PartyManager.INSTANCE.writeToNBT(new NBTTagList(), null));
+        json.setTag("parties", PartyManager.INSTANCE.writeToNBT(new NBTTagList(), null, true));
 
         return JsonHelper.WriteToFile(fileParties, NBTConverter.NBTtoJSON_Compound(json, new JsonObject(), true));
     }
@@ -331,7 +331,7 @@ public class SaveLoadHandler {
     private Future<Void> saveNames() {
         NBTTagCompound json = new NBTTagCompound();
 
-        json.setTag("nameCache", NameCache.INSTANCE.writeToNBT(new NBTTagList(), null));
+        json.setTag("nameCache", NameCache.INSTANCE.writeToNBT(new NBTTagList(), null, true));
 
         return JsonHelper.WriteToFile(fileNames, NBTConverter.NBTtoJSON_Compound(json, new JsonObject(), true));
     }
@@ -339,7 +339,7 @@ public class SaveLoadHandler {
     private Future<Void> saveLives() {
         NBTTagCompound json = new NBTTagCompound();
 
-        json.setTag("lifeDatabase", LifeDatabase.INSTANCE.writeToNBT(new NBTTagCompound(), null));
+        json.setTag("lifeDatabase", LifeDatabase.INSTANCE.writeToNBT(new NBTTagCompound(), null, true));
 
         return JsonHelper.WriteToFile(fileLives, NBTConverter.NBTtoJSON_Compound(json, new JsonObject(), true));
     }

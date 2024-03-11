@@ -70,7 +70,7 @@ public final class NameCache implements INameCache {
     }
 
     @Override
-    public synchronized NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<UUID> users) {
+    public synchronized NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<UUID> users, boolean reduce) {
         for (Entry<UUID, NBTTagCompound> entry : cache.entrySet()) {
             if (users != null && !users.contains(entry.getKey()))
                 continue;

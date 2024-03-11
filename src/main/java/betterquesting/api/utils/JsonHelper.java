@@ -1,5 +1,6 @@
 package betterquesting.api.utils;
 
+import betterquesting.NBTUtil;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -168,33 +169,37 @@ public class JsonHelper {
                 }
 
                 tmp.createNewFile();
-            } catch (Exception e) {
-                QuestingAPI.getLogger().error("An error occured while saving JSON to file (Directory setup):", e);
-                return null;
-            }
+			} catch(Exception e)
+			{
+				QuestingAPI.getLogger().error("An error occured while saving JSON to file (Directory setup):", e);
+				return null;
+			}
 
-            // NOTE: These are now split due to an edge case in the previous implementation where resource leaking can occur should the outer constructor fail
-            try (FileOutputStream fos = new FileOutputStream(tmp); OutputStreamWriter fw = new OutputStreamWriter(fos,
-                                                                                                                  StandardCharsets.UTF_8); Writer buffer = new BufferedWriter(fw); JsonWriter json = new JsonWriter(buffer)) {
-                json.setIndent("  "); //two space indents
-                GSON.toJson(jObj, json);
-            } catch (Exception e) {
-                QuestingAPI.getLogger().error("An error occurred while saving JSON to file (File write):", e);
-                return null;
-            }
+			// NOTE: These are now split due to an edge case in the previous implementation where resource leaking can occur should the outer constructor fail
+			try (FileOutputStream fos = new FileOutputStream(tmp);
+				 OutputStreamWriter fw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+				 Writer buffer = new BufferedWriter(fw);
+				 JsonWriter json = new JsonWriter(buffer)) {
+				json.setIndent("  "); //two space indents
+				GSON.toJson(jObj, json);
+			} catch (Exception e) {
+				QuestingAPI.getLogger().error("An error occurred while saving JSON to file (File write):", e);
+				return null;
+			}
 
-            // NOTE: These are now split due to an edge case in the previous implementation where resource leaking can occur should the outer constructor fail
-            try (FileInputStream fis = new FileInputStream(tmp); InputStreamReader fr = new InputStreamReader(fis, StandardCharsets.UTF_8)) {
-                // Readback what we wrote to validate it
+			// NOTE: These are now split due to an edge case in the previous implementation where resource leaking can occur should the outer constructor fail
+			try(FileInputStream fis = new FileInputStream(tmp); InputStreamReader fr = new InputStreamReader(fis, StandardCharsets.UTF_8))
+            {
+				// Readback what we wrote to validate it
                 GSON.fromJson(fr, JsonObject.class);
             } catch (Exception e) {
                 QuestingAPI.getLogger().error("An error occured while saving JSON to file (Validation check):", e);
                 return null;
             }
 
-            try {
-                if (file.exists())
-                    file.delete();
+			try
+            {
+                if(file.exists()) file.delete();
                 tmp.renameTo(file);
             } catch (Exception e) {
                 QuestingAPI.getLogger().error("An error occured while saving JSON to file (Temp copy):", e);
@@ -295,7 +300,7 @@ public class JsonHelper {
             return new BigItemStack(nbt);
         return PlaceholderConverter.convertItem(preCheck,
                                                 nbt.getString("id"),
-                                                nbt.getInteger("Count"),
+                                                NBTUtil.getInteger(nbt, "Count", 1),
                                                 nbt.getShort("Damage"),
                                                 nbt.getString("OreDict"),
                                                 !nbt.hasKey("tag", 10) ? null : nbt.getCompoundTag("tag"));
@@ -305,8 +310,12 @@ public class JsonHelper {
      * Use this for quests instead of converter NBT because this doesn't use ID numbers
      */
     public static NBTTagCompound ItemStackToJson(BigItemStack stack, NBTTagCompound nbt) {
+        return ItemStackToJson(stack, nbt, false);
+    }
+
+    public static NBTTagCompound ItemStackToJson(BigItemStack stack, NBTTagCompound nbt, boolean reduce) {
         if (stack != null)
-            stack.writeToNBT(nbt);
+            stack.writeToNBT(nbt, reduce);
         return nbt;
     }
 

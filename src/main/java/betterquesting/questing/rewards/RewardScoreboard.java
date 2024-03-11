@@ -1,7 +1,6 @@
 package betterquesting.questing.rewards;
 
-import org.apache.logging.log4j.Level;
-
+import betterquesting.NBTUtil;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.rewards.IReward;
 import betterquesting.api2.client.gui.misc.IGuiRect;
@@ -22,11 +21,15 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import org.apache.logging.log4j.Level;
+
 public class RewardScoreboard implements IReward {
 
+    private static final String DEFAULT_TYPE = "dummy";
+    private static final boolean DEFAULT_RELATIVE = true;
     public String score = "Reputation";
-    public String type = "dummy";
-    public boolean relative = true;
+    public String type = DEFAULT_TYPE;
+    public boolean relative = DEFAULT_RELATIVE;
     public int value = 1;
 
     @Override
@@ -71,20 +74,22 @@ public class RewardScoreboard implements IReward {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound json) {
-        score = json.getString("score");
-        type = json.getString("type");
-        value = json.getInteger("value");
-        relative = json.getBoolean("relative");
+    public void readFromNBT(NBTTagCompound nbt) {
+        score = nbt.getString("score");
+        type = NBTUtil.getString(nbt, "type", DEFAULT_TYPE);
+        value = nbt.getInteger("value");
+        relative = NBTUtil.getBoolean(nbt, "relative", DEFAULT_RELATIVE);
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound json) {
-        json.setString("score", score);
-        json.setString("type", "dummy");
-        json.setInteger("value", value);
-        json.setBoolean("relative", relative);
-        return json;
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
+        nbt.setString("score", score);
+        if (!reduce || !type.equals(DEFAULT_TYPE))
+            nbt.setString("type", "dummy");
+        nbt.setInteger("value", value);
+        if (!reduce || relative != DEFAULT_RELATIVE)
+            nbt.setBoolean("relative", relative);
+        return nbt;
     }
 
     @Override @SideOnly(Side.CLIENT)

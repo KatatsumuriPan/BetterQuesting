@@ -39,7 +39,7 @@ public class NetLootSync {
 
     public static void sendSync(@Nullable EntityPlayerMP player) {
         NBTTagCompound payload = new NBTTagCompound();
-        payload.setTag("data", LootRegistry.INSTANCE.writeToNBT(new NBTTagCompound(), null));
+        payload.setTag("data", LootRegistry.INSTANCE.writeToNBT(new NBTTagCompound(), null, true));
 
         if (player == null) {
             QuestingAPI.getAPI(ApiReference.PACKET_SENDER).sendToAll(new QuestingPacket(ID_NAME, payload));

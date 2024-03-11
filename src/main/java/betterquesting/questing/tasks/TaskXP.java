@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 
 import org.apache.logging.log4j.Level;
 
+import betterquesting.NBTUtil;
 import betterquesting.XPHelper;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.client.gui.misc.IGuiRect;
@@ -29,11 +30,14 @@ import net.minecraft.util.ResourceLocation;
 
 public class TaskXP implements ITaskTickable {
 
+    private static final boolean DEFAULT_LEVELS = true;
+    private static final int DEFAULT_AMOUNT = 30;
+    private static final boolean DEFAULT_CONSUME = true;
     private final Set<UUID> completeUsers = new TreeSet<>();
     private final HashMap<UUID, Long> userProgress = new HashMap<>();
-    public boolean levels = true;
-    public int amount = 30;
-    public boolean consume = true;
+    public boolean levels = DEFAULT_LEVELS;
+    public int amount = DEFAULT_AMOUNT;
+    public boolean consume = DEFAULT_CONSUME;
 
     @Override
     public ResourceLocation getFactoryID() { return FactoryTaskXP.INSTANCE.getRegistryName(); }
@@ -108,18 +112,21 @@ public class TaskXP implements ITaskTickable {
     public String getUnlocalisedName() { return "bq_standard.task.xp"; }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound json) {
-        json.setInteger("amount", amount);
-        json.setBoolean("isLevels", levels);
-        json.setBoolean("consume", consume);
-        return json;
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
+        if (!reduce || amount != DEFAULT_AMOUNT)
+            nbt.setInteger("amount", amount);
+        if (!reduce || levels != DEFAULT_LEVELS)
+            nbt.setBoolean("isLevels", levels);
+        if (!reduce || consume != DEFAULT_CONSUME)
+            nbt.setBoolean("consume", consume);
+        return nbt;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound json) {
-        amount = json.hasKey("amount", 99) ? json.getInteger("amount") : 30;
-        levels = json.getBoolean("isLevels");
-        consume = json.getBoolean("consume");
+    public void readFromNBT(NBTTagCompound nbt) {
+        amount = NBTUtil.getInteger(nbt, "amount", DEFAULT_AMOUNT);
+        levels = NBTUtil.getBoolean(nbt, "isLevels", DEFAULT_LEVELS);
+        consume = NBTUtil.getBoolean(nbt, "consume", DEFAULT_CONSUME);
     }
 
     @Override

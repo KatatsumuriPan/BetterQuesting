@@ -71,7 +71,7 @@ public class NetPartySync {
         for (DBEntry<IParty> party : partySubset) {
             NBTTagCompound entry = new NBTTagCompound();
             entry.setInteger("partyID", party.getID());
-            entry.setTag("config", party.getValue().writeToNBT(new NBTTagCompound()));
+            entry.setTag("config", party.getValue().writeToNBT(new NBTTagCompound(), true));
             dataList.appendTag(entry);
         }
 

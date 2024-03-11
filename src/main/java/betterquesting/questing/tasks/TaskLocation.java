@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 
 import org.apache.logging.log4j.Level;
 
+import betterquesting.NBTUtil;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api2.client.gui.misc.IGuiRect;
 import betterquesting.api2.client.gui.panels.IGuiPanel;
@@ -33,19 +34,30 @@ import net.minecraft.util.math.Vec3d;
 
 public class TaskLocation implements ITaskTickable {
 
+    private static final String DEFAULT_STRUCTURE = "";
+    private static final String DEFAULT_BIOME = "";
+    private static final int DEFAULT_X = 0;
+    private static final int DEFAULT_Y = 0;
+    private static final int DEFAULT_Z = 0;
+    private static final int DEFAULT_DIM = 0;
+    private static final int DEFAULT_RANGE = -1;
+    private static final boolean DEFAULT_VISIBLE = false;
+    private static final boolean DEFAULT_HIDE_INFO = false;
+    private static final boolean DEFAULT_INVERT = false;
+    private static final boolean DEFAULT_TAXI_CAB = false;
     private final Set<UUID> completeUsers = new TreeSet<>();
     public String name = "New Location";
-    public String structure = "";
-    public String biome = "";
-    public int x = 0;
-    public int y = 0;
-    public int z = 0;
-    public int dim = 0;
-    public int range = -1;
-    public boolean visible = false;
-    public boolean hideInfo = false;
-    public boolean invert = false;
-    public boolean taxiCab = false;
+    public String structure = DEFAULT_STRUCTURE;
+    public String biome = DEFAULT_BIOME;
+    public int x = DEFAULT_X;
+    public int y = DEFAULT_Y;
+    public int z = DEFAULT_Z;
+    public int dim = DEFAULT_DIM;
+    public int range = DEFAULT_RANGE;
+    public boolean visible = DEFAULT_VISIBLE;
+    public boolean hideInfo = DEFAULT_HIDE_INFO;
+    public boolean invert = DEFAULT_INVERT;
+    public boolean taxiCab = DEFAULT_TAXI_CAB;
 
     @Override
     public ResourceLocation getFactoryID() { return FactoryTaskLocation.INSTANCE.getRegistryName(); }
@@ -135,19 +147,30 @@ public class TaskLocation implements ITaskTickable {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         nbt.setString("name", name);
-        nbt.setInteger("posX", x);
-        nbt.setInteger("posY", y);
-        nbt.setInteger("posZ", z);
-        nbt.setInteger("dimension", dim);
-        nbt.setString("biome", biome);
-        nbt.setString("structure", structure);
-        nbt.setInteger("range", range);
-        nbt.setBoolean("visible", visible);
-        nbt.setBoolean("hideInfo", hideInfo);
-        nbt.setBoolean("invert", invert);
-        nbt.setBoolean("taxiCabDist", taxiCab);
+        if (!reduce || x != DEFAULT_X)
+            nbt.setInteger("posX", x);
+        if (!reduce || y != DEFAULT_Y)
+            nbt.setInteger("posY", y);
+        if (!reduce || z != DEFAULT_Z)
+            nbt.setInteger("posZ", z);
+        if (!reduce || dim != DEFAULT_DIM)
+            nbt.setInteger("dimension", dim);
+        if (!reduce || !biome.equals(DEFAULT_BIOME))
+            nbt.setString("biome", biome);
+        if (!reduce || !structure.equals(DEFAULT_STRUCTURE))
+            nbt.setString("structure", structure);
+        if (!reduce || range != DEFAULT_RANGE)
+            nbt.setInteger("range", range);
+        if (!reduce || visible != DEFAULT_VISIBLE)
+            nbt.setBoolean("visible", visible);
+        if (!reduce || hideInfo != DEFAULT_HIDE_INFO)
+            nbt.setBoolean("hideInfo", hideInfo);
+        if (!reduce || invert != DEFAULT_INVERT)
+            nbt.setBoolean("invert", invert);
+        if (!reduce || taxiCab != DEFAULT_TAXI_CAB)
+            nbt.setBoolean("taxiCabDist", taxiCab);
 
         return nbt;
     }
@@ -155,17 +178,17 @@ public class TaskLocation implements ITaskTickable {
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         name = nbt.getString("name");
-        x = nbt.getInteger("posX");
-        y = nbt.getInteger("posY");
-        z = nbt.getInteger("posZ");
-        dim = nbt.getInteger("dimension");
-        biome = nbt.getString("biome");
-        structure = nbt.getString("structure");
-        range = nbt.getInteger("range");
-        visible = nbt.getBoolean("visible");
-        hideInfo = nbt.getBoolean("hideInfo");
-        invert = nbt.getBoolean("invert") || nbt.getBoolean("invertDistance");
-        taxiCab = nbt.getBoolean("taxiCabDist");
+        x = NBTUtil.getInteger(nbt, "posX", DEFAULT_X);
+        y = NBTUtil.getInteger(nbt, "posY", DEFAULT_Y);
+        z = NBTUtil.getInteger(nbt, "posZ", DEFAULT_Z);
+        dim = NBTUtil.getInteger(nbt, "dimension", DEFAULT_DIM);
+        biome = NBTUtil.getString(nbt, "biome", DEFAULT_BIOME);
+        structure = NBTUtil.getString(nbt, "structure", DEFAULT_STRUCTURE);
+        range = NBTUtil.getInteger(nbt, "range", DEFAULT_RANGE);
+        visible = NBTUtil.getBoolean(nbt, "visible", DEFAULT_VISIBLE);
+        hideInfo = NBTUtil.getBoolean(nbt, "hideInfo", DEFAULT_HIDE_INFO);
+        invert = NBTUtil.getBoolean(nbt, "invert", DEFAULT_INVERT) || nbt.getBoolean("invertDistance");
+        taxiCab = NBTUtil.getBoolean(nbt, "taxiCabDist", DEFAULT_TAXI_CAB);
     }
 
     @Override

@@ -48,8 +48,8 @@ public class NetImport {
 
     public static void sendImport(@Nonnull IQuestDatabase questDB, @Nonnull IQuestLineDatabase chapterDB) {
         NBTTagCompound payload = new NBTTagCompound();
-        payload.setTag("quests", questDB.writeToNBT(new NBTTagList(), null));
-        payload.setTag("chapters", chapterDB.writeToNBT(new NBTTagList(), null));
+        payload.setTag("quests", questDB.writeToNBT(new NBTTagList(), null, true));
+        payload.setTag("chapters", chapterDB.writeToNBT(new NBTTagList(), null, true));
         PacketSender.INSTANCE.sendToServer(new QuestingPacket(ID_NAME, payload));
     }
 

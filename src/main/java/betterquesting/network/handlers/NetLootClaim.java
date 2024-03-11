@@ -33,7 +33,7 @@ public class NetLootClaim {
         NBTTagCompound payload = new NBTTagCompound();
         NBTTagList list = new NBTTagList();
         for (BigItemStack stack : items) {
-            list.appendTag(stack.writeToNBT(new NBTTagCompound()));
+            list.appendTag(stack.writeToNBT(new NBTTagCompound(), true));
         }
         payload.setTag("rewards", list);
         payload.setString("title", title);

@@ -157,7 +157,7 @@ public class ToolboxToolScale implements IToolboxTool {
             NBTTagList cdList = new NBTTagList();
             NBTTagCompound tagEntry = new NBTTagCompound();
             tagEntry.setInteger("chapterID", lID);
-            tagEntry.setTag("config", qLine.writeToNBT(new NBTTagCompound(), null));
+            tagEntry.setTag("config", qLine.writeToNBT(new NBTTagCompound(), null, true));
             cdList.appendTag(tagEntry);
             chPayload.setTag("data", cdList);
             chPayload.setInteger("action", 0);

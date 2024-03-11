@@ -198,7 +198,7 @@ public class GuiTaskEditor extends GuiScreenCanvas implements IPEventListener, I
             if (editor != null) {
                 mc.displayGuiScreen(editor);
             } else {
-                mc.displayGuiScreen(new GuiNbtEditor(this, task.writeToNBT(new NBTTagCompound()), value -> {
+                mc.displayGuiScreen(new GuiNbtEditor(this, task.writeToNBT(new NBTTagCompound(), false), value -> {
                     task.readFromNBT(value);
                     SendChanges();
                 }));
@@ -249,7 +249,7 @@ public class GuiTaskEditor extends GuiScreenCanvas implements IPEventListener, I
         NBTTagList dataList = new NBTTagList();
         NBTTagCompound entry = new NBTTagCompound();
         entry.setInteger("questID", qID);
-        entry.setTag("config", quest.writeToNBT(new NBTTagCompound()));
+        entry.setTag("config", quest.writeToNBT(new NBTTagCompound(), true));
         dataList.appendTag(entry);
         payload.setTag("data", dataList);
         payload.setInteger("action", 0);

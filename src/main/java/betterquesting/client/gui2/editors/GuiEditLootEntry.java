@@ -140,16 +140,15 @@ public class GuiEditLootEntry extends GuiScreenCanvas {
             @Override
             public void onButtonClick() {
                 if (selEntry != null) {
-                    final NBTTagCompound eTag = selEntry.writeToNBT(new NBTTagCompound());
-                    mc.displayGuiScreen(QuestingAPI.getAPI(ApiReference.THEME_REG)
-                            .getGui(PresetGUIs.EDIT_NBT, new GArgsNBT<>(screenRef, eTag.getTagList("items", 10), value -> {
-                                LootGroup lg = LootRegistry.INSTANCE.getValue(groupID);
-                                LootGroup.LootEntry le = lg == null ? null : lg.getValue(selectedID);
-                                if (le != null) {
-                                    le.readFromNBT(eTag);
-                                    sendChanges();
-                                }
-                            }, null)));
+                    final NBTTagCompound eTag = selEntry.writeToNBT(new NBTTagCompound(), false);
+                    mc.displayGuiScreen(QuestingAPI.getAPI(ApiReference.THEME_REG).getGui(PresetGUIs.EDIT_NBT, new GArgsNBT<>(screenRef, eTag.getTagList("items", 10), value -> {
+                        LootGroup lg = LootRegistry.INSTANCE.getValue(groupID);
+                        LootGroup.LootEntry le = lg == null ? null : lg.getValue(selectedID);
+                        if (le != null) {
+                            le.readFromNBT(eTag);
+                            sendChanges();
+                        }
+                    }, null)));
                 }
             }
 
@@ -242,7 +241,7 @@ public class GuiEditLootEntry extends GuiScreenCanvas {
     }
 
     private void sendChanges() {
-        NetLootImport.importLoot(LootRegistry.INSTANCE.writeToNBT(new NBTTagCompound(), null));
+        NetLootImport.importLoot(LootRegistry.INSTANCE.writeToNBT(new NBTTagCompound(), null, true));
     }
 
 }

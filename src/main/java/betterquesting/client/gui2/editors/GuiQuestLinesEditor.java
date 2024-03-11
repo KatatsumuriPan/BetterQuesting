@@ -369,7 +369,7 @@ public class GuiQuestLinesEditor extends GuiScreenCanvas implements IPEventListe
         NBTTagList dataList = new NBTTagList();
         NBTTagCompound entry = new NBTTagCompound();
         entry.setInteger("chapterID", chapter.getID());
-        entry.setTag("config", chapter.getValue().writeToNBT(new NBTTagCompound(), null));
+        entry.setTag("config", chapter.getValue().writeToNBT(new NBTTagCompound(), null, true));
         dataList.appendTag(entry);
         payload.setTag("data", dataList);
         payload.setInteger("action", 0);

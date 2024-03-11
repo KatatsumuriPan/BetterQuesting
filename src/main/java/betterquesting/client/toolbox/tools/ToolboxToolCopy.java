@@ -146,7 +146,7 @@ public class ToolboxToolCopy implements IToolboxTool {
             if (qLine.getValue(qID) == null)
                 qLine.add(qID, new QuestLineEntry(grab.btn.rect.x, grab.btn.rect.y, grab.btn.rect.w, grab.btn.rect.h));
 
-            NBTTagCompound questTags = quest.writeToNBT(new NBTTagCompound());
+            NBTTagCompound questTags = quest.writeToNBT(new NBTTagCompound(), true);
 
             int[] oldIDs = Arrays.copyOf(quest.getRequirements(), quest.getRequirements().length);
 
@@ -178,7 +178,7 @@ public class ToolboxToolCopy implements IToolboxTool {
         NBTTagList cdList = new NBTTagList();
         NBTTagCompound tagEntry = new NBTTagCompound();
         tagEntry.setInteger("chapterID", lID);
-        tagEntry.setTag("config", qLine.writeToNBT(new NBTTagCompound(), null));
+        tagEntry.setTag("config", qLine.writeToNBT(new NBTTagCompound(), null, true));
         cdList.appendTag(tagEntry);
         chPayload.setTag("data", cdList);
         chPayload.setInteger("action", 0);

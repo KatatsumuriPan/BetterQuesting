@@ -36,13 +36,13 @@ public class NetSettingSync {
     @SideOnly(Side.CLIENT)
     public static void requestEdit() {
         NBTTagCompound payload = new NBTTagCompound();
-        payload.setTag("data", QuestSettings.INSTANCE.writeToNBT(new NBTTagCompound()));
+        payload.setTag("data", QuestSettings.INSTANCE.writeToNBT(new NBTTagCompound(), true));
         PacketSender.INSTANCE.sendToServer(new QuestingPacket(ID_NAME, payload));
     }
 
     public static void sendSync(@Nullable EntityPlayerMP player) {
         NBTTagCompound payload = new NBTTagCompound();
-        payload.setTag("data", QuestSettings.INSTANCE.writeToNBT(new NBTTagCompound()));
+        payload.setTag("data", QuestSettings.INSTANCE.writeToNBT(new NBTTagCompound(), true));
         if (player != null) {
             PacketSender.INSTANCE.sendToPlayers(new QuestingPacket(ID_NAME, payload), player);
         } else {

@@ -421,11 +421,16 @@ public class QuestInstance implements IQuest {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound jObj) {
-        jObj.setTag("properties", qInfo.writeToNBT(new NBTTagCompound()));
-        jObj.setTag("tasks", tasks.writeToNBT(new NBTTagList(), null));
-        jObj.setTag("rewards", rewards.writeToNBT(new NBTTagList(), null));
-        jObj.setTag("preRequisites", new NBTTagIntArray(getRequirements()));
+    public NBTTagCompound writeToNBT(NBTTagCompound jObj, boolean reduce) {
+        NBTTagCompound nbtProperties = qInfo.writeToNBT(new NBTTagCompound(), reduce);
+        if (!reduce || !nbtProperties.isEmpty())
+            jObj.setTag("properties", nbtProperties);
+        jObj.setTag("tasks", tasks.writeToNBT(new NBTTagList(), null, reduce));
+        NBTTagList nbtRewards = rewards.writeToNBT(new NBTTagList(), null, reduce);
+        if (!reduce || !nbtRewards.isEmpty())
+            jObj.setTag("rewards", nbtRewards);
+        if (!reduce || getRequirements().length > 0)
+            jObj.setTag("preRequisites", new NBTTagIntArray(getRequirements()));
         if (!prereqTypes.isEmpty()) {
             byte[] types = new byte[preRequisites.length];
             int[] req = this.preRequisites;

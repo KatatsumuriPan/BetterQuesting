@@ -32,7 +32,7 @@ public class TaskPlaceholder implements ITask {
     public NBTTagCompound getTaskProgressData() { return nbtData.getCompoundTag("orig_prog"); }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         nbt.setTag("orig_data", nbtData.getCompoundTag("orig_data"));
         return nbt;
     }

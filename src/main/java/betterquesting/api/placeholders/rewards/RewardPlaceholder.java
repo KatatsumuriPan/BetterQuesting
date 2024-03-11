@@ -19,7 +19,7 @@ public class RewardPlaceholder implements IReward {
     public NBTTagCompound getRewardConfigData() { return nbtSaved; }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         nbt.setTag("orig_data", nbtSaved);
 
         return nbt;

@@ -1,5 +1,6 @@
 package betterquesting.api.utils;
 
+import betterquesting.NBTUtil;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -140,17 +141,23 @@ public class BigItemStack {
         if (tags.hasKey("id", 99)) {
             itemNBT.setString("id", "" + tags.getShort("id"));
         }
-        this.stackSize = tags.getInteger("Count");
+        this.stackSize = NBTUtil.getInteger(tags, "Count", 1);
         this.setOreDict(tags.getString("OreDict"));
         this.baseStack = new ItemStack(itemNBT); // Minecraft does the ID conversions for me
         if (tags.getShort("Damage") < 0)
             this.baseStack.setItemDamage(OreDictionary.WILDCARD_VALUE);
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound tags) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tags, boolean reduce) {
         baseStack.writeToNBT(tags);
-        tags.setInteger("Count", stackSize);
-        tags.setString("OreDict", oreDict);
+        if (reduce && stackSize == 1)
+            tags.removeTag("Count");
+        else
+            tags.setInteger("Count", stackSize);
+        if (!reduce || !oreDict.isEmpty())
+            tags.setString("OreDict", oreDict);
+        if (reduce && tags.getShort("Damage") == 0)
+            tags.removeTag("Damage");
         return tags;
     }
 
