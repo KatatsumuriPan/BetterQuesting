@@ -94,7 +94,7 @@ public class GuiBuilderMain extends GuiScreenCanvas implements IVolatileScreen {
             } else if (selectedID >= 0 && !(toolMode == 0 || toolMode == 2)) {
                 ComponentPanel com = COM_DB.getValue(selectedID);
                 // TODO: Add a callback here so the component can read in changes
-                if (com != null) openTrayNBT(com.writeToNBT(new NBTTagCompound()));
+                if (com != null) openTrayNBT(com.writeToNBT(new NBTTagCompound(), false));
             } else if (toolMode == 3) {
                 openTrayPalette();
             }

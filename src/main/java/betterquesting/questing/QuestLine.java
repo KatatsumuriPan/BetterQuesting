@@ -87,14 +87,14 @@ public class QuestLine extends SimpleDatabase<IQuestLineEntry> implements IQuest
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound json, @Nullable List<Integer> subset) {
-        json.setTag("properties", info.writeToNBT(new NBTTagCompound()));
+    public NBTTagCompound writeToNBT(NBTTagCompound json, @Nullable List<Integer> subset, boolean reduce) {
+        json.setTag("properties", info.writeToNBT(new NBTTagCompound(), reduce));
 
         NBTTagList jArr = new NBTTagList();
 
         for (DBEntry<IQuestLineEntry> entry : getEntries()) {
             if (subset != null && !subset.contains(entry.getID())) continue;
-            NBTTagCompound qle = entry.getValue().writeToNBT(new NBTTagCompound());
+            NBTTagCompound qle = entry.getValue().writeToNBT(new NBTTagCompound(), reduce);
             qle.setInteger("id", entry.getID());
             jArr.appendTag(qle);
         }

@@ -59,7 +59,7 @@ public class RewardRecipe implements IReward {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         nbt.setString("recipes", recipeNames);
         return nbt;
     }

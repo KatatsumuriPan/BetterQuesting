@@ -37,11 +37,11 @@ public class ImportedQuests extends SimpleDatabase<IQuest> implements IQuestData
     }
 
     @Override
-    public NBTTagList writeToNBT(NBTTagList nbt, List<Integer> subset) {
+    public NBTTagList writeToNBT(NBTTagList nbt, List<Integer> subset, boolean reduce) {
         for (DBEntry<IQuest> entry : this.getEntries()) {
             if (subset != null && !subset.contains(entry.getID())) continue;
             NBTTagCompound jq = new NBTTagCompound();
-            entry.getValue().writeToNBT(jq);
+            entry.getValue().writeToNBT(jq, reduce);
             jq.setInteger("questID", entry.getID());
             nbt.appendTag(jq);
         }

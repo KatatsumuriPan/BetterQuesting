@@ -113,10 +113,10 @@ public class RewardChoice implements IReward {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         NBTTagList rJson = new NBTTagList();
         for (BigItemStack stack : choices) {
-            rJson.appendTag(JsonHelper.ItemStackToJson(stack, new NBTTagCompound()));
+            rJson.appendTag(JsonHelper.ItemStackToJson(stack, new NBTTagCompound(), reduce));
         }
         nbt.setTag("choices", rJson);
         return nbt;

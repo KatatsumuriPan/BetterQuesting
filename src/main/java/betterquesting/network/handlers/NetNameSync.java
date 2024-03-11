@@ -68,7 +68,7 @@ public class NetNameSync {
         if (party == null) return;
 
         NBTTagCompound payload = new NBTTagCompound();
-        payload.setTag("data", NameCache.INSTANCE.writeToNBT(new NBTTagList(), party.getMembers()));
+        payload.setTag("data", NameCache.INSTANCE.writeToNBT(new NBTTagList(), party.getMembers(), true));
         payload.setBoolean("merge", true);
 
         if (player != null) {
@@ -96,7 +96,7 @@ public class NetNameSync {
         }
 
         NBTTagCompound payload = new NBTTagCompound();
-        payload.setTag("data", NameCache.INSTANCE.writeToNBT(new NBTTagList(), idList));
+        payload.setTag("data", NameCache.INSTANCE.writeToNBT(new NBTTagList(), idList, true));
         payload.setBoolean("merge", idList != null);
 
         if (players == null) {

@@ -1,6 +1,7 @@
 package betterquesting.questing.rewards;
 
 import betterquesting.AdminExecute;
+import betterquesting.NBTUtil;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.rewards.IReward;
@@ -28,12 +29,18 @@ import java.util.Arrays;
 import java.util.UUID;
 
 public class RewardCommand implements IReward {
+
+    private static final String DEFAULT_TITLE = "bq_standard.reward.command";
+    private static final String DEFAULT_DESC = "Run a command script";
+    private static final boolean DEFAULT_VIA_PLAYER = false;
+    private static final boolean DEFAULT_HIDE_ICON = true;
+    private static final boolean DEFAULT_AS_SCRIPT = true;
     public String command = "#Script Comment\nsay Running reward script...\nsay @s Claimed a reward";
-    public String title = "bq_standard.reward.command";
-    public String desc = "Run a command script";
-    public boolean viaPlayer = false;
-    public boolean hideIcon = true;
-    public boolean asScript = true;
+    public String title = DEFAULT_TITLE;
+    public String desc = DEFAULT_DESC;
+    public boolean viaPlayer = DEFAULT_VIA_PLAYER;
+    public boolean hideIcon = DEFAULT_HIDE_ICON;
+    public boolean asScript = DEFAULT_AS_SCRIPT;
 
     @Override
     public ResourceLocation getFactoryID() {
@@ -81,21 +88,26 @@ public class RewardCommand implements IReward {
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         command = nbt.getString("command");
-        title = nbt.hasKey("title", 8) ? nbt.getString("title") : "bq_standard.reward.command";
-        desc = nbt.hasKey("description", 8) ? nbt.getString("description") : "Run a command script";
-        viaPlayer = nbt.getBoolean("viaPlayer");
-        hideIcon = !nbt.hasKey("hideBlockIcon", 1) || nbt.getBoolean("hideBlockIcon");
-        asScript = !nbt.hasKey("asScript", 1) || nbt.getBoolean("asScript");
+        title = NBTUtil.getString(nbt, "title", DEFAULT_TITLE);
+        desc = NBTUtil.getString(nbt, "description", DEFAULT_DESC);
+        viaPlayer = NBTUtil.getBoolean(nbt, "viaPlayer", DEFAULT_VIA_PLAYER);
+        hideIcon = NBTUtil.getBoolean(nbt, "hideBlockIcon", DEFAULT_HIDE_ICON);
+        asScript = NBTUtil.getBoolean(nbt, "asScript", DEFAULT_AS_SCRIPT);
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         nbt.setString("command", command);
-        nbt.setString("title", title);
-        nbt.setString("description", desc);
-        nbt.setBoolean("viaPlayer", viaPlayer);
-        nbt.setBoolean("hideBlockIcon", hideIcon);
-        nbt.setBoolean("asScript", asScript);
+        if (!reduce || !title.equals(DEFAULT_TITLE))
+            nbt.setString("title", title);
+        if (!reduce || !desc.equals(DEFAULT_TITLE))
+            nbt.setString("description", desc);
+        if (!reduce || viaPlayer != DEFAULT_VIA_PLAYER)
+            nbt.setBoolean("viaPlayer", viaPlayer);
+        if (!reduce || hideIcon != DEFAULT_HIDE_ICON)
+            nbt.setBoolean("hideBlockIcon", hideIcon);
+        if (!reduce || asScript != DEFAULT_AS_SCRIPT)
+            nbt.setBoolean("asScript", asScript);
         return nbt;
     }
 

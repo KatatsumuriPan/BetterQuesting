@@ -1,5 +1,6 @@
 package betterquesting.questing.tasks;
 
+import betterquesting.NBTUtil;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.utils.ItemComparison;
 import betterquesting.api2.client.gui.misc.IGuiRect;
@@ -26,13 +27,18 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 public class TaskMeeting implements ITaskTickable {
+
+    private static final int DEFAULT_RANGE = 4;
+    private static final int DEFAULT_AMOUNT = 1;
+    private static final boolean DEFAULT_IGNORE_NBT = true;
+    private static final boolean DEFAULT_SUBTYPES = true;
     private final Set<UUID> completeUsers = new TreeSet<>();
 
     public String idName = "minecraft:villager";
-    public int range = 4;
-    public int amount = 1;
-    public boolean ignoreNBT = true;
-    public boolean subtypes = true;
+    public int range = DEFAULT_RANGE;
+    public int amount = DEFAULT_AMOUNT;
+    public boolean ignoreNBT = DEFAULT_IGNORE_NBT;
+    public boolean subtypes = DEFAULT_SUBTYPES;
 
     /**
      * NBT representation of the intended target. Used only for NBT comparison checks
@@ -114,25 +120,30 @@ public class TaskMeeting implements ITaskTickable {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound json) {
-        json.setString("target", idName);
-        json.setInteger("range", range);
-        json.setInteger("amount", amount);
-        json.setBoolean("subtypes", subtypes);
-        json.setBoolean("ignoreNBT", ignoreNBT);
-        json.setTag("targetNBT", targetTags);
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
+        nbt.setString("target", idName);
+        if (!reduce || range != DEFAULT_RANGE)
+            nbt.setInteger("range", range);
+        if (!reduce || amount != DEFAULT_AMOUNT)
+            nbt.setInteger("amount", amount);
+        if (!reduce || subtypes != DEFAULT_SUBTYPES)
+            nbt.setBoolean("subtypes", subtypes);
+        if (!reduce || ignoreNBT != DEFAULT_IGNORE_NBT)
+            nbt.setBoolean("ignoreNBT", ignoreNBT);
+        if (!reduce || !targetTags.isEmpty())
+            nbt.setTag("targetNBT", targetTags);
 
-        return json;
+        return nbt;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound json) {
-        idName = json.hasKey("target", 8) ? json.getString("target") : "minecraft:villager";
-        range = json.getInteger("range");
-        amount = json.getInteger("amount");
-        subtypes = json.getBoolean("subtypes");
-        ignoreNBT = json.getBoolean("ignoreNBT");
-        targetTags = json.getCompoundTag("targetNBT");
+    public void readFromNBT(NBTTagCompound nbt) {
+        idName = nbt.hasKey("target", 8) ? nbt.getString("target") : "minecraft:villager";
+        range = NBTUtil.getInteger(nbt, "range", DEFAULT_RANGE);
+        amount = NBTUtil.getInteger(nbt, "amount", DEFAULT_AMOUNT);
+        subtypes = NBTUtil.getBoolean(nbt, "subtypes", DEFAULT_SUBTYPES);
+        ignoreNBT = NBTUtil.getBoolean(nbt, "ignoreNBT", DEFAULT_IGNORE_NBT);
+        targetTags = nbt.getCompoundTag("targetNBT");
     }
 
     @Override

@@ -22,7 +22,7 @@ public class RewardPlaceholder implements IReward {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         nbt.setTag("orig_data", nbtSaved);
 
         return nbt;

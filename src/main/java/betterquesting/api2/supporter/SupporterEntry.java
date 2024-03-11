@@ -15,7 +15,7 @@ public class SupporterEntry implements INBTSaveLoad<NBTTagCompound> {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         return nbt;
     }
 

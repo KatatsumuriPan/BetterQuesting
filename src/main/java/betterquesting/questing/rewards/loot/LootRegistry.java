@@ -63,11 +63,11 @@ public class LootRegistry extends SimpleDatabase<LootGroup> implements INBTParti
     }
 
     @Override
-    public synchronized NBTTagCompound writeToNBT(NBTTagCompound tag, @Nullable List<Integer> subset) {
+    public synchronized NBTTagCompound writeToNBT(NBTTagCompound tag, @Nullable List<Integer> subset, boolean reduce) {
         NBTTagList jRew = new NBTTagList();
         for (DBEntry<LootGroup> entry : getEntries()) {
             if (subset != null && !subset.contains(entry.getID())) continue;
-            NBTTagCompound jGrp = entry.getValue().writeToNBT(new NBTTagCompound());
+            NBTTagCompound jGrp = entry.getValue().writeToNBT(new NBTTagCompound(), reduce);
             jGrp.setInteger("ID", entry.getID());
             jRew.appendTag(jGrp);
         }

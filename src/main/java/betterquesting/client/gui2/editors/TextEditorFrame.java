@@ -145,7 +145,7 @@ public class TextEditorFrame extends JFrame {
         NBTTagList dataList = new NBTTagList();
         NBTTagCompound entry = new NBTTagCompound();
         entry.setInteger("questID", questID);
-        entry.setTag("config", quest.writeToNBT(new NBTTagCompound()));
+        entry.setTag("config", quest.writeToNBT(new NBTTagCompound(), true));
         dataList.appendTag(entry);
         payload.setTag("data", dataList);
         payload.setInteger("action", 0);

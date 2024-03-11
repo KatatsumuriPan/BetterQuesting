@@ -45,7 +45,7 @@ public class NetChapterSync {
                 NBTTagCompound entry = new NBTTagCompound();
                 entry.setInteger("chapterID", chapter.getID());
                 //entry.setInteger("order", QuestLineDatabase.INSTANCE.getOrderIndex(chapter.getID()));
-                entry.setTag("config", chapter.getValue().writeToNBT(new NBTTagCompound(), null));
+                entry.setTag("config", chapter.getValue().writeToNBT(new NBTTagCompound(), null, true));
                 data.appendTag(entry);
             }
 

@@ -1,5 +1,6 @@
 package betterquesting.questing.tasks;
 
+import betterquesting.NBTUtil;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api.utils.BigItemStack;
@@ -30,14 +31,20 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 public class TaskCrafting implements ITask {
+
+    private static final boolean DEFAULT_PARTIAL_MATCH = true;
+    private static final boolean DEFAULT_IGNORE_NBT = false;
+    private static final boolean DEFAULT_ALLOW_ANVIL = false;
+    private static final boolean DEFAULT_ALLOW_SMELT = true;
+    private static final boolean DEFAULT_ALLOW_CRAFT = true;
     private final Set<UUID> completeUsers = new TreeSet<>();
     public final NonNullList<BigItemStack> requiredItems = NonNullList.create();
     public final TreeMap<UUID, int[]> userProgress = new TreeMap<>();
-    public boolean partialMatch = true;
-    public boolean ignoreNBT = false;
-    public boolean allowAnvil = false;
-    public boolean allowSmelt = true;
-    public boolean allowCraft = true;
+    public boolean partialMatch = DEFAULT_PARTIAL_MATCH;
+    public boolean ignoreNBT = DEFAULT_IGNORE_NBT;
+    public boolean allowAnvil = DEFAULT_ALLOW_ANVIL;
+    public boolean allowSmelt = DEFAULT_ALLOW_SMELT;
+    public boolean allowCraft = DEFAULT_ALLOW_CRAFT;
 
     @Override
     public ResourceLocation getFactoryID() {
@@ -116,16 +123,21 @@ public class TaskCrafting implements ITask {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-        nbt.setBoolean("partialMatch", partialMatch);
-        nbt.setBoolean("ignoreNBT", ignoreNBT);
-        nbt.setBoolean("allowCraft", allowCraft);
-        nbt.setBoolean("allowSmelt", allowSmelt);
-        nbt.setBoolean("allowAnvil", allowAnvil);
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
+        if (!reduce || partialMatch != DEFAULT_PARTIAL_MATCH)
+            nbt.setBoolean("partialMatch", partialMatch);
+        if (!reduce || ignoreNBT != DEFAULT_IGNORE_NBT)
+            nbt.setBoolean("ignoreNBT", ignoreNBT);
+        if (!reduce || allowCraft != DEFAULT_ALLOW_CRAFT)
+            nbt.setBoolean("allowCraft", allowCraft);
+        if (!reduce || allowSmelt != DEFAULT_ALLOW_SMELT)
+            nbt.setBoolean("allowSmelt", allowSmelt);
+        if (!reduce || allowAnvil != DEFAULT_ALLOW_ANVIL)
+            nbt.setBoolean("allowAnvil", allowAnvil);
 
         NBTTagList itemArray = new NBTTagList();
         for (BigItemStack stack : this.requiredItems) {
-            itemArray.appendTag(JsonHelper.ItemStackToJson(stack, new NBTTagCompound()));
+            itemArray.appendTag(JsonHelper.ItemStackToJson(stack, new NBTTagCompound(), reduce));
         }
         nbt.setTag("requiredItems", itemArray);
 
@@ -134,11 +146,11 @@ public class TaskCrafting implements ITask {
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
-        partialMatch = nbt.getBoolean("partialMatch");
-        ignoreNBT = nbt.getBoolean("ignoreNBT");
-        if (nbt.hasKey("allowCraft")) allowCraft = nbt.getBoolean("allowCraft");
-        if (nbt.hasKey("allowSmelt")) allowSmelt = nbt.getBoolean("allowSmelt");
-        if (nbt.hasKey("allowAnvil")) allowAnvil = nbt.getBoolean("allowAnvil");
+        partialMatch = NBTUtil.getBoolean(nbt, "partialMatch", DEFAULT_PARTIAL_MATCH);
+        ignoreNBT = NBTUtil.getBoolean(nbt, "ignoreNBT", DEFAULT_IGNORE_NBT);
+        allowCraft = NBTUtil.getBoolean(nbt, "allowCraft", DEFAULT_ALLOW_CRAFT);
+        allowSmelt = NBTUtil.getBoolean(nbt, "allowSmelt", DEFAULT_ALLOW_SMELT);
+        allowAnvil = NBTUtil.getBoolean(nbt, "allowAnvil", DEFAULT_ALLOW_ANVIL);
 
         requiredItems.clear();
         NBTTagList iList = nbt.getTagList("requiredItems", 10);

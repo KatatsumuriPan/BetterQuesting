@@ -1,5 +1,6 @@
 package betterquesting.questing.tasks;
 
+import betterquesting.NBTUtil;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api.utils.ItemComparison;
@@ -30,13 +31,18 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 public class TaskHunt implements ITask {
+
+    private static final String DEFAULT_DAMAGE_TYPE = "";
+    private static final int DEFAULT_REQUIRED = 1;
+    private static final boolean DEFAULT_IGNORE_NBT = true;
+    private static final boolean DEFAULT_SUBTYPES = true;
     private final Set<UUID> completeUsers = new TreeSet<>();
     private final TreeMap<UUID, Integer> userProgress = new TreeMap<>();
     public String idName = "minecraft:zombie";
-    public String damageType = "";
-    public int required = 1;
-    public boolean ignoreNBT = true;
-    public boolean subtypes = true;
+    public String damageType = DEFAULT_DAMAGE_TYPE;
+    public int required = DEFAULT_REQUIRED;
+    public boolean ignoreNBT = DEFAULT_IGNORE_NBT;
+    public boolean subtypes = DEFAULT_SUBTYPES;
 
     /**
      * NBT representation of the intended target. Used only for NBT comparison checks
@@ -107,13 +113,18 @@ public class TaskHunt implements ITask {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         nbt.setString("target", idName);
-        nbt.setInteger("required", required);
-        nbt.setBoolean("subtypes", subtypes);
-        nbt.setBoolean("ignoreNBT", ignoreNBT);
-        nbt.setTag("targetNBT", targetTags);
-        nbt.setString("damageType", damageType);
+        if (!reduce || required != DEFAULT_REQUIRED)
+            nbt.setInteger("required", required);
+        if (!reduce || subtypes != DEFAULT_SUBTYPES)
+            nbt.setBoolean("subtypes", subtypes);
+        if (!reduce || ignoreNBT != DEFAULT_IGNORE_NBT)
+            nbt.setBoolean("ignoreNBT", ignoreNBT);
+        if (!reduce || !targetTags.isEmpty())
+            nbt.setTag("targetNBT", targetTags);
+        if (!reduce || !damageType.equals(DEFAULT_DAMAGE_TYPE))
+            nbt.setString("damageType", damageType);
 
         return nbt;
     }
@@ -121,11 +132,11 @@ public class TaskHunt implements ITask {
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         idName = nbt.getString("target");
-        required = nbt.getInteger("required");
-        subtypes = nbt.getBoolean("subtypes");
-        ignoreNBT = nbt.getBoolean("ignoreNBT");
+        required = NBTUtil.getInteger(nbt, "required", DEFAULT_REQUIRED);
+        subtypes = NBTUtil.getBoolean(nbt, "subtypes", DEFAULT_SUBTYPES);
+        ignoreNBT = NBTUtil.getBoolean(nbt, "ignoreNBT", DEFAULT_IGNORE_NBT);
         targetTags = nbt.getCompoundTag("targetNBT");
-        damageType = nbt.getString("damageType");
+        damageType = NBTUtil.getString(nbt, "damageType", DEFAULT_DAMAGE_TYPE);
     }
 
     @Override

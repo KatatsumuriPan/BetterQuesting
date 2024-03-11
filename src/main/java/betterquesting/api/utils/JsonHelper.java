@@ -1,5 +1,6 @@
 package betterquesting.api.utils;
 
+import betterquesting.NBTUtil;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.placeholders.ItemPlaceholder;
 import betterquesting.api.placeholders.PlaceholderConverter;
@@ -156,7 +157,7 @@ public class JsonHelper {
 				QuestingAPI.getLogger().error("An error occured while saving JSON to file (Directory setup):", e);
 				return null;
 			}
-			
+
 			// NOTE: These are now split due to an edge case in the previous implementation where resource leaking can occur should the outer constructor fail
 			try (FileOutputStream fos = new FileOutputStream(tmp);
 				 OutputStreamWriter fw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
@@ -168,7 +169,7 @@ public class JsonHelper {
 				QuestingAPI.getLogger().error("An error occurred while saving JSON to file (File write):", e);
 				return null;
 			}
-			
+
 			// NOTE: These are now split due to an edge case in the previous implementation where resource leaking can occur should the outer constructor fail
 			try(FileInputStream fis = new FileInputStream(tmp); InputStreamReader fr = new InputStreamReader(fis, StandardCharsets.UTF_8))
             {
@@ -179,7 +180,7 @@ public class JsonHelper {
 				QuestingAPI.getLogger().error("An error occured while saving JSON to file (Validation check):", e);
 				return null;
             }
-			
+
 			try
             {
                 if(file.exists()) file.delete();
@@ -278,15 +279,26 @@ public class JsonHelper {
      */
     public static BigItemStack JsonToItemStack(NBTTagCompound nbt) {
         Item preCheck = Item.getByNameOrId(nbt.hasKey("id", 99) ? "" + nbt.getShort("id") : nbt.getString("id"));
-        if (preCheck != null && preCheck != ItemPlaceholder.placeholder) return new BigItemStack(nbt);
-        return PlaceholderConverter.convertItem(preCheck, nbt.getString("id"), nbt.getInteger("Count"), nbt.getShort("Damage"), nbt.getString("OreDict"), !nbt.hasKey("tag", 10) ? null : nbt.getCompoundTag("tag"));
+        if (preCheck != null && preCheck != ItemPlaceholder.placeholder)
+            return new BigItemStack(nbt);
+        return PlaceholderConverter.convertItem(preCheck,
+                                                nbt.getString("id"),
+                                                NBTUtil.getInteger(nbt, "Count", 1),
+                                                nbt.getShort("Damage"),
+                                                nbt.getString("OreDict"),
+                                                !nbt.hasKey("tag", 10) ? null : nbt.getCompoundTag("tag"));
     }
 
     /**
      * Use this for quests instead of converter NBT because this doesn't use ID numbers
      */
     public static NBTTagCompound ItemStackToJson(BigItemStack stack, NBTTagCompound nbt) {
-        if (stack != null) stack.writeToNBT(nbt);
+        return ItemStackToJson(stack, nbt, false);
+    }
+
+    public static NBTTagCompound ItemStackToJson(BigItemStack stack, NBTTagCompound nbt, boolean reduce) {
+        if (stack != null)
+            stack.writeToNBT(nbt, reduce);
         return nbt;
     }
 

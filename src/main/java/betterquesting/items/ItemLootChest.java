@@ -202,7 +202,7 @@ public class ItemLootChest extends Item {
         tag = new NBTTagCompound();
         tag.setBoolean("hideLootInfo", true);
         NBTTagList tagList = new NBTTagList();
-        tagList.appendTag(new BigItemStack(Blocks.STONE).writeToNBT(new NBTTagCompound()));
+        tagList.appendTag(new BigItemStack(Blocks.STONE).writeToNBT(new NBTTagCompound(), false));
         ItemStack fixedLootStack = new ItemStack(this, 1, 104);
         tag.setTag("fixedLootList", tagList);
         tag.setString("fixedLootName", "Item Set");

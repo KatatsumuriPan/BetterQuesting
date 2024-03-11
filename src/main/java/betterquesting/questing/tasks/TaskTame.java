@@ -1,5 +1,6 @@
 package betterquesting.questing.tasks;
 
+import betterquesting.NBTUtil;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.ITask;
 import betterquesting.api.utils.ItemComparison;
@@ -29,12 +30,16 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 public class TaskTame implements ITask {
+
+    private static final int DEFAULT_REQUIRED = 1;
+    private static final boolean DEFAULT_IGNORE_NBT = true;
+    private static final boolean DEFAULT_SUBTYPES = true;
     private final Set<UUID> completeUsers = new TreeSet<>();
     public final HashMap<UUID, Integer> userProgress = new HashMap<>();
     public String idName = "minecraft:wolf";
-    public int required = 1;
-    public boolean ignoreNBT = true;
-    public boolean subtypes = true;
+    public int required = DEFAULT_REQUIRED;
+    public boolean ignoreNBT = DEFAULT_IGNORE_NBT;
+    public boolean subtypes = DEFAULT_SUBTYPES;
 
     /**
      * NBT representation of the intended target. Used only for NBT comparison checks
@@ -129,23 +134,27 @@ public class TaskTame implements ITask {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound json) {
-        json.setString("target", idName);
-        json.setInteger("required", required);
-        json.setBoolean("subtypes", subtypes);
-        json.setBoolean("ignoreNBT", ignoreNBT);
-        json.setTag("targetNBT", targetTags);
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
+        nbt.setString("target", idName);
+        if (!reduce || required != DEFAULT_REQUIRED)
+            nbt.setInteger("required", required);
+        if (!reduce || subtypes != DEFAULT_SUBTYPES)
+            nbt.setBoolean("subtypes", subtypes);
+        if (!reduce || ignoreNBT != DEFAULT_IGNORE_NBT)
+            nbt.setBoolean("ignoreNBT", ignoreNBT);
+        if (!reduce || !targetTags.isEmpty())
+            nbt.setTag("targetNBT", targetTags);
 
-        return json;
+        return nbt;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound json) {
-        idName = json.getString("target");
-        required = json.getInteger("required");
-        subtypes = json.getBoolean("subtypes");
-        ignoreNBT = json.getBoolean("ignoreNBT");
-        targetTags = json.getCompoundTag("targetNBT");
+    public void readFromNBT(NBTTagCompound nbt) {
+        idName = nbt.getString("target");
+        required = NBTUtil.getInteger(nbt, "required", DEFAULT_REQUIRED);
+        subtypes = NBTUtil.getBoolean(nbt, "subtypes", DEFAULT_SUBTYPES);
+        ignoreNBT = NBTUtil.getBoolean(nbt, "ignoreNBT", DEFAULT_IGNORE_NBT);
+        targetTags = nbt.getCompoundTag("targetNBT");
     }
 
     @Override

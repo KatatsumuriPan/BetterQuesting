@@ -53,7 +53,7 @@ public class ToolboxToolRemove implements IToolboxTool {
             NBTTagList cdList = new NBTTagList();
             NBTTagCompound cTag = new NBTTagCompound();
             cTag.setInteger("chapterID", QuestLineDatabase.INSTANCE.getID(line));
-            cTag.setTag("config", line.writeToNBT(new NBTTagCompound(), null));
+            cTag.setTag("config", line.writeToNBT(new NBTTagCompound(), null, true));
             cdList.appendTag(cTag);
             chPayload.setTag("data", cdList);
             chPayload.setInteger("action", 0);
@@ -98,7 +98,7 @@ public class ToolboxToolRemove implements IToolboxTool {
             NBTTagList cdList = new NBTTagList();
             NBTTagCompound cTag = new NBTTagCompound();
             cTag.setInteger("chapterID", QuestLineDatabase.INSTANCE.getID(line));
-            cTag.setTag("config", line.writeToNBT(new NBTTagCompound(), null));
+            cTag.setTag("config", line.writeToNBT(new NBTTagCompound(), null, true));
             cdList.appendTag(cTag);
             chPayload.setTag("data", cdList);
             chPayload.setInteger("action", 0);

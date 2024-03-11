@@ -32,21 +32,25 @@ public class NbtBlockType // TODO: Make a version of this for the base mod and g
         this.tags = new NBTTagCompound();
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound json) {
-        json.setString("blockID", b.getRegistryName().toString());
-        json.setInteger("meta", m);
-        json.setTag("nbt", tags);
-        json.setInteger("amount", n);
-        json.setString("oreDict", oreDict);
-        return json;
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
+        nbt.setString("blockID", b.getRegistryName().toString());
+        if (!reduce || m != -1)
+            nbt.setInteger("meta", m);
+        if (!reduce || !tags.isEmpty())
+            nbt.setTag("nbt", tags);
+        if (!reduce || n != 1)
+            nbt.setInteger("amount", n);
+        if (!reduce || !oreDict.isEmpty())
+            nbt.setString("oreDict", oreDict);
+        return nbt;
     }
 
-    public void readFromNBT(NBTTagCompound json) {
-        b = Block.REGISTRY.getObject(new ResourceLocation(json.getString("blockID")));
-        m = json.getInteger("meta");
-        tags = json.getCompoundTag("nbt");
-        n = json.getInteger("amount");
-        oreDict = json.getString("oreDict");
+    public void readFromNBT(NBTTagCompound nbt) {
+        b = Block.REGISTRY.getObject(new ResourceLocation(nbt.getString("blockID")));
+        m = NBTUtil.getInteger(nbt, "meta", -1);
+        tags = nbt.getCompoundTag("nbt");
+        n = NBTUtil.getInteger(nbt, "amount", 1);
+        oreDict = NBTUtil.getString(nbt, "oreDict", "");
     }
 
     public BigItemStack getItemStack() {

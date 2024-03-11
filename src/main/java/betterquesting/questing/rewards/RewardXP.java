@@ -1,5 +1,6 @@
 package betterquesting.questing.rewards;
 
+import betterquesting.NBTUtil;
 import betterquesting.XPHelper;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.rewards.IReward;
@@ -16,8 +17,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class RewardXP implements IReward {
-    public int amount = 1;
-    public boolean levels = true;
+    private static final int DEFAULT_AMOUNT = 1;
+    private static final boolean DEFAULT_LEVELS = true;
+    public int amount = DEFAULT_AMOUNT;
+    public boolean levels = DEFAULT_LEVELS;
 
     @Override
     public ResourceLocation getFactoryID() {
@@ -41,14 +44,16 @@ public class RewardXP implements IReward {
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
-        amount = nbt.getInteger("amount");
-        levels = nbt.getBoolean("isLevels");
+        amount = NBTUtil.getInteger(nbt, "amount", DEFAULT_AMOUNT);
+        levels = NBTUtil.getBoolean(nbt, "isLevels", DEFAULT_LEVELS);
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-        nbt.setInteger("amount", amount);
-        nbt.setBoolean("isLevels", levels);
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
+        if (!reduce || amount != DEFAULT_AMOUNT)
+            nbt.setInteger("amount", amount);
+        if (!reduce || levels != DEFAULT_LEVELS)
+            nbt.setBoolean("isLevels", levels);
         return nbt;
     }
 

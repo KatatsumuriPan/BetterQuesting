@@ -56,7 +56,7 @@ public class ToolboxToolIcon implements IToolboxTool {
 
                 NBTTagCompound entry = new NBTTagCompound();
                 entry.setInteger("questID", b.getStoredValue().getID());
-                entry.setTag("config", b.getStoredValue().getValue().writeToNBT(new NBTTagCompound()));
+                entry.setTag("config", b.getStoredValue().getValue().writeToNBT(new NBTTagCompound(), true));
                 dataList.appendTag(entry);
             }
 

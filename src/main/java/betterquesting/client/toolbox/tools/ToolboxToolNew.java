@@ -102,7 +102,7 @@ public class ToolboxToolNew implements IToolboxTool {
         NBTTagList cdList = new NBTTagList();
         NBTTagCompound cTag = new NBTTagCompound();
         cTag.setInteger("chapterID", lID);
-        cTag.setTag("config", qLine.writeToNBT(new NBTTagCompound(), null));
+        cTag.setTag("config", qLine.writeToNBT(new NBTTagCompound(), null, true));
         cdList.appendTag(cTag);
         chPayload.setTag("data", cdList);
         chPayload.setInteger("action", 0);

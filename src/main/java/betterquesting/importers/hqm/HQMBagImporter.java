@@ -117,7 +117,7 @@ public class HQMBagImporter implements IImporter {
 
         for (LootGroup group : hqmLoot) {
             NBTTagCompound jGrp = new NBTTagCompound();
-            group.writeToNBT(jGrp);
+            group.writeToNBT(jGrp, true);
             jAry.appendTag(jGrp);
         }
 

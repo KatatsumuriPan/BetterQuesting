@@ -17,11 +17,11 @@ import java.util.UUID;
 
 public class TaskStorage extends SimpleDatabase<ITask> implements IDatabaseNBT<ITask, NBTTagList, NBTTagList> {
     @Override
-    public NBTTagList writeToNBT(NBTTagList json, @Nullable List<Integer> subset) {
+    public NBTTagList writeToNBT(NBTTagList json, @Nullable List<Integer> subset, boolean reduce) {
         for (DBEntry<ITask> entry : getEntries()) {
             if (subset != null && !subset.contains(entry.getID())) continue;
             ResourceLocation taskID = entry.getValue().getFactoryID();
-            NBTTagCompound qJson = entry.getValue().writeToNBT(new NBTTagCompound());
+            NBTTagCompound qJson = entry.getValue().writeToNBT(new NBTTagCompound(), reduce);
             qJson.setString("taskID", taskID.toString());
             qJson.setInteger("index", entry.getID());
             json.appendTag(qJson);

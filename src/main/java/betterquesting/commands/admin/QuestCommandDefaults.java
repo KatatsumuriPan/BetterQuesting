@@ -73,10 +73,10 @@ public class QuestCommandDefaults extends QuestCommandBase {
             NBTTagCompound base = new NBTTagCompound();
 
             QuestSettings.INSTANCE.setProperty(NativeProps.EDIT_MODE, false);
-            base.setTag("questSettings", QuestSettings.INSTANCE.writeToNBT(new NBTTagCompound()));
+            base.setTag("questSettings", QuestSettings.INSTANCE.writeToNBT(new NBTTagCompound(), true));
             QuestSettings.INSTANCE.setProperty(NativeProps.EDIT_MODE, editMode);
-            base.setTag("questDatabase", QuestDatabase.INSTANCE.writeToNBT(new NBTTagList(), null));
-            base.setTag("questLines", QuestLineDatabase.INSTANCE.writeToNBT(new NBTTagList(), null));
+            base.setTag("questDatabase", QuestDatabase.INSTANCE.writeToNBT(new NBTTagList(), null, true));
+            base.setTag("questLines", QuestLineDatabase.INSTANCE.writeToNBT(new NBTTagList(), null, true));
             base.setString("format", BetterQuesting.FORMAT);
             base.setString("build", ModReference.VERSION);
             JsonHelper.WriteToFile(qFile, NBTConverter.NBTtoJSON_Compound(base, new JsonObject(), true));

@@ -69,7 +69,7 @@ public class ToolboxToolFrame implements IToolboxTool {
 
             NBTTagCompound entry = new NBTTagCompound();
             entry.setInteger("questID", btn.getStoredValue().getID());
-            entry.setTag("config", btn.getStoredValue().getValue().writeToNBT(new NBTTagCompound()));
+            entry.setTag("config", btn.getStoredValue().getValue().writeToNBT(new NBTTagCompound(), true));
             dataList.appendTag(entry);
         }
 

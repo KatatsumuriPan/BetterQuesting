@@ -47,10 +47,10 @@ public class ImportedQuestLines extends SimpleDatabase<IQuestLine> implements IQ
     }
 
     @Override
-    public NBTTagList writeToNBT(NBTTagList json, List<Integer> subset) {
+    public NBTTagList writeToNBT(NBTTagList json, List<Integer> subset, boolean reduce) {
         for (DBEntry<IQuestLine> entry : getEntries()) {
             if (subset != null && !subset.contains(entry.getID())) continue;
-            NBTTagCompound jObj = entry.getValue().writeToNBT(new NBTTagCompound(), null);
+            NBTTagCompound jObj = entry.getValue().writeToNBT(new NBTTagCompound(), null, reduce);
             jObj.setInteger("lineID", entry.getID());
             jObj.setInteger("order", getOrderIndex(entry.getID()));
             json.appendTag(jObj);

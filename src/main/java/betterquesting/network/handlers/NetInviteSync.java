@@ -36,7 +36,7 @@ public class NetInviteSync {
         NBTTagCompound payload = new NBTTagCompound();
         UUID playerID = QuestingAPI.getQuestingUUID(player);
         payload.setInteger("action", 0);
-        payload.setTag("data", PartyInvitations.INSTANCE.writeToNBT(new NBTTagList(), Collections.singletonList(playerID)));
+        payload.setTag("data", PartyInvitations.INSTANCE.writeToNBT(new NBTTagList(), Collections.singletonList(playerID), true));
         PacketSender.INSTANCE.sendToPlayers(new QuestingPacket(ID_NAME, payload), player);
     }
 

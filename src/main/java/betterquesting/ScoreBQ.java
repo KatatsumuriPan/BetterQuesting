@@ -28,7 +28,7 @@ public class ScoreBQ implements INBTPartial<NBTTagList, UUID> {
     }
 
     @Override
-    public synchronized NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<UUID> subset) {
+    public synchronized NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<UUID> subset, boolean reduce) {
         for (Entry<UUID, Integer> entry : playerScores.entrySet()) {
             if (subset != null && !subset.contains(entry.getKey())) continue;
             NBTTagCompound jObj = new NBTTagCompound();

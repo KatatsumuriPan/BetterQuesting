@@ -79,7 +79,7 @@ public class ComponentPanel implements INBTSaveLoad<NBTTagCompound> {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         nbt.setString("ref_name", refName);
         nbt.setString("panel_type", panelType);
 

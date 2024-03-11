@@ -45,8 +45,8 @@ public class SupporterDB implements INBTSaveLoad<NBTTagCompound> {
 
     @Nonnull
     @Override
-    public synchronized NBTTagCompound writeToNBT(@Nonnull NBTTagCompound nbt) {
-        mapDB.forEach((key, value) -> nbt.setTag(key.toString(), value.writeToNBT(new NBTTagCompound())));
+    public synchronized NBTTagCompound writeToNBT(@Nonnull NBTTagCompound nbt, boolean reduce) {
+        mapDB.forEach((key, value) -> nbt.setTag(key.toString(), value.writeToNBT(new NBTTagCompound(), reduce)));
         return nbt;
     }
 

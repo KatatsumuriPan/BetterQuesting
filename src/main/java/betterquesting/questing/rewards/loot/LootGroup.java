@@ -73,7 +73,7 @@ public class LootGroup extends SimpleDatabase<LootGroup.LootEntry> implements IN
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag, boolean reduce) {
         tag.setString("name", name);
         tag.setInteger("weight", weight);
 
@@ -81,7 +81,7 @@ public class LootGroup extends SimpleDatabase<LootGroup.LootEntry> implements IN
         for (DBEntry<LootEntry> entry : getEntries()) {
             if (entry == null) continue;
 
-            NBTTagCompound jLoot = entry.getValue().writeToNBT(new NBTTagCompound());
+            NBTTagCompound jLoot = entry.getValue().writeToNBT(new NBTTagCompound(), reduce);
             jLoot.setInteger("ID", entry.getID());
             jRew.appendTag(jLoot);
         }
@@ -107,12 +107,12 @@ public class LootGroup extends SimpleDatabase<LootGroup.LootEntry> implements IN
         }
 
         @Override
-        public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+        public NBTTagCompound writeToNBT(NBTTagCompound tag, boolean reduce) {
             tag.setInteger("weight", weight);
 
             NBTTagList jItm = new NBTTagList();
             for (BigItemStack stack : items) {
-                jItm.appendTag(JsonHelper.ItemStackToJson(stack, new NBTTagCompound()));
+                jItm.appendTag(JsonHelper.ItemStackToJson(stack, new NBTTagCompound(), reduce));
             }
             tag.setTag("items", jItm);
 
