@@ -1,6 +1,6 @@
 package betterquesting.questing.rewards;
 
-import betterquesting.NBTReplaceUtil;
+import betterquesting.NBTUtil;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.rewards.IReward;
@@ -48,8 +48,8 @@ public class RewardItem implements IReward {
 
             for (ItemStack s : stack.getCombinedStacks()) {
                 if (s.getTagCompound() != null) {
-                    s.setTagCompound(NBTReplaceUtil.replaceStrings(s.getTagCompound(), "VAR_NAME", player.getName()));
-                    s.setTagCompound(NBTReplaceUtil.replaceStrings(s.getTagCompound(), "VAR_UUID", QuestingAPI.getQuestingUUID(player).toString()));
+                    s.setTagCompound(NBTUtil.replaceStrings(s.getTagCompound(), "VAR_NAME", player.getName()));
+                    s.setTagCompound(NBTUtil.replaceStrings(s.getTagCompound(), "VAR_UUID", QuestingAPI.getQuestingUUID(player).toString()));
                 }
 
                 if (!player.inventory.addItemStackToInventory(s)) {
@@ -66,7 +66,8 @@ public class RewardItem implements IReward {
         for (int i = 0; i < rList.tagCount(); i++) {
             try {
                 BigItemStack item = JsonHelper.JsonToItemStack(rList.getCompoundTagAt(i));
-                if (item != null) items.add(item);
+                if (item != null)
+                    items.add(item);
             } catch (Exception e) {
                 BetterQuesting.logger.log(Level.ERROR, "Unable to load reward item data", e);
             }

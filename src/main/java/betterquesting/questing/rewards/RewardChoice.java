@@ -1,6 +1,6 @@
 package betterquesting.questing.rewards;
 
-import betterquesting.NBTReplaceUtil;
+import betterquesting.NBTUtil;
 import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.rewards.IReward;
@@ -59,7 +59,8 @@ public class RewardChoice implements IReward {
 
     @Override
     public boolean canClaim(EntityPlayer player, DBEntry<IQuest> quest) {
-        if (!selected.containsKey(QuestingAPI.getQuestingUUID(player))) return false;
+        if (!selected.containsKey(QuestingAPI.getQuestingUUID(player)))
+            return false;
 
         int tmp = selected.get(QuestingAPI.getQuestingUUID(player));
         return choices.size() <= 0 || (tmp >= 0 && tmp < choices.size());
@@ -92,8 +93,8 @@ public class RewardChoice implements IReward {
 
         for (ItemStack s : stack.getCombinedStacks()) {
             if (s.getTagCompound() != null) {
-                s.setTagCompound(NBTReplaceUtil.replaceStrings(s.getTagCompound(), "VAR_NAME", player.getName()));
-                s.setTagCompound(NBTReplaceUtil.replaceStrings(s.getTagCompound(), "VAR_UUID", QuestingAPI.getQuestingUUID(player).toString()));
+                s.setTagCompound(NBTUtil.replaceStrings(s.getTagCompound(), "VAR_NAME", player.getName()));
+                s.setTagCompound(NBTUtil.replaceStrings(s.getTagCompound(), "VAR_UUID", QuestingAPI.getQuestingUUID(player).toString()));
             }
 
             if (!player.inventory.addItemStackToInventory(s)) {
