@@ -1,5 +1,7 @@
 package betterquesting.storage;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import com.google.common.collect.BiMap;
@@ -78,7 +80,9 @@ public class PropertyContainer implements IPropertyContainer, INBTSaveLoad<NBTTa
 
     @Override
     public synchronized void removeAllProps() {
-        nbtInfo.getKeySet().clear();
+        List<String> keys = new ArrayList<>(nbtInfo.getKeySet());
+        for (String key : keys)
+            nbtInfo.removeTag(key);
     }
 
     @Deprecated @Override
@@ -114,7 +118,7 @@ public class PropertyContainer implements IPropertyContainer, INBTSaveLoad<NBTTa
 
     @Override
     public synchronized void readFromNBT(NBTTagCompound nbt) {
-        nbtInfo.getKeySet().clear();
+        removeAllProps();
         nbtInfo.merge(nbt);
 
         // TODO: FIX CASING <- ???
