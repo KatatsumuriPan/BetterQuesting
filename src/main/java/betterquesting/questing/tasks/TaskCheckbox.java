@@ -55,6 +55,12 @@ public class TaskCheckbox implements ITask {
         }
     }
 
+    @Deprecated
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        return writeToNBT(nbt, false);
+    }
+
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         return nbt;

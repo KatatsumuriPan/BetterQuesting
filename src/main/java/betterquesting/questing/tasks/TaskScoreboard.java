@@ -114,6 +114,12 @@ public class TaskScoreboard implements ITaskTickable {
         }
     }
 
+    @Deprecated
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        return writeToNBT(nbt, false);
+    }
+
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         nbt.setString("scoreName", scoreName);

@@ -264,6 +264,12 @@ public class PanelButton implements IPanelButton, IGuiPanel, INBTSaveLoad<NBTTag
     public void onRightButtonClick() {
     }
 
+    @Deprecated
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        return writeToNBT(nbt, false);
+    }
+
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         // TODO: Fix me

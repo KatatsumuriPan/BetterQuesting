@@ -18,6 +18,12 @@ public class RewardPlaceholder implements IReward {
 
     public NBTTagCompound getRewardConfigData() { return nbtSaved; }
 
+    @Deprecated
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        return writeToNBT(nbt, false);
+    }
+
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         nbt.setTag("orig_data", nbtSaved);

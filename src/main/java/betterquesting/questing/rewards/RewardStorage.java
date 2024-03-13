@@ -16,9 +16,14 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 
 public class RewardStorage extends SimpleDatabase<IReward> implements IDatabaseNBT<IReward, NBTTagList, NBTTagList> {
+    @Deprecated
+    @Override
+    public NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<Integer> subset) {
+        return writeToNBT(nbt, subset, false);
+    }
 
     @Override
-    public NBTTagList writeToNBT(NBTTagList json, @Nullable List<Integer> subset, boolean reduce) {
+    public NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<Integer> subset, boolean reduce) {
         for (DBEntry<IReward> rew : getEntries()) {
             if (subset != null && !subset.contains(rew.getID()))
                 continue;
@@ -26,10 +31,10 @@ public class RewardStorage extends SimpleDatabase<IReward> implements IDatabaseN
             NBTTagCompound rJson = rew.getValue().writeToNBT(new NBTTagCompound(), reduce);
             rJson.setString("rewardID", rewardID.toString());
             rJson.setInteger("index", rew.getID());
-            json.appendTag(rJson);
+            nbt.appendTag(rJson);
         }
 
-        return json;
+        return nbt;
     }
 
     @Override

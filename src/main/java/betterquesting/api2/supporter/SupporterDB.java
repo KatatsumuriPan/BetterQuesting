@@ -45,6 +45,13 @@ public class SupporterDB implements INBTSaveLoad<NBTTagCompound> {
         return null;
     }*/
 
+    @Deprecated
+    @Nonnull
+    @Override
+    public synchronized NBTTagCompound writeToNBT(@Nonnull NBTTagCompound nbt) {
+        return writeToNBT(nbt, false);
+    }
+
     @Nonnull
     @Override
     public synchronized NBTTagCompound writeToNBT(@Nonnull NBTTagCompound nbt, boolean reduce) {

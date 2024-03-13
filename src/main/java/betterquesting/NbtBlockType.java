@@ -33,6 +33,11 @@ public class NbtBlockType // TODO: Make a version of this for the base mod and g
         this.tags = new NBTTagCompound();
     }
 
+    @Deprecated
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        return writeToNBT(nbt, false);
+    }
+
     public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         nbt.setString("blockID", b.getRegistryName().toString());
         if (!reduce || m != -1)

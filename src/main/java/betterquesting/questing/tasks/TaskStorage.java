@@ -17,9 +17,14 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 
 public class TaskStorage extends SimpleDatabase<ITask> implements IDatabaseNBT<ITask, NBTTagList, NBTTagList> {
+    @Deprecated
+    @Override
+    public NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<Integer> subset) {
+        return writeToNBT(nbt, subset, false);
+    }
 
     @Override
-    public NBTTagList writeToNBT(NBTTagList json, @Nullable List<Integer> subset, boolean reduce) {
+    public NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<Integer> subset, boolean reduce) {
         for (DBEntry<ITask> entry : getEntries()) {
             if (subset != null && !subset.contains(entry.getID()))
                 continue;
@@ -27,9 +32,9 @@ public class TaskStorage extends SimpleDatabase<ITask> implements IDatabaseNBT<I
             NBTTagCompound qJson = entry.getValue().writeToNBT(new NBTTagCompound(), reduce);
             qJson.setString("taskID", taskID.toString());
             qJson.setInteger("index", entry.getID());
-            json.appendTag(qJson);
+            nbt.appendTag(qJson);
         }
-        return json;
+        return nbt;
     }
 
     @Override

@@ -63,17 +63,23 @@ public final class QuestLineDatabase extends SimpleDatabase<IQuestLine> implemen
         }
     }
 
+    @Deprecated
     @Override
-    public synchronized NBTTagList writeToNBT(NBTTagList json, @Nullable List<Integer> subset, boolean reduce) {
+    public synchronized NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<Integer> subset) {
+        return writeToNBT(nbt, subset, false);
+    }
+
+    @Override
+    public synchronized NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<Integer> subset, boolean reduce) {
         for (DBEntry<IQuestLine> entry : getEntries()) {
             if (subset != null && !subset.contains(entry.getID())) continue;
             NBTTagCompound jObj = entry.getValue().writeToNBT(new NBTTagCompound(), null, reduce);
             jObj.setInteger("lineID", entry.getID());
             jObj.setInteger("order", getOrderIndex(entry.getID()));
-            json.appendTag(jObj);
+            nbt.appendTag(jObj);
         }
 
-        return json;
+        return nbt;
     }
 
     @Override

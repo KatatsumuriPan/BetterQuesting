@@ -72,6 +72,12 @@ public class RewardItem implements IReward {
         }
     }
 
+    @Deprecated
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        return writeToNBT(nbt, false);
+    }
+
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         NBTTagList rJson = new NBTTagList();

@@ -221,6 +221,12 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
         }
     }
 
+    @Deprecated
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        return writeToNBT(nbt, false);
+    }
+
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         //json.setBoolean("partialMatch", partialMatch);

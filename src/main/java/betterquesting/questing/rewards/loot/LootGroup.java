@@ -73,10 +73,16 @@ public class LootGroup extends SimpleDatabase<LootGroup.LootEntry> implements IN
         }
     }
 
+    @Deprecated
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag, boolean reduce) {
-        tag.setString("name", name);
-        tag.setInteger("weight", weight);
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        return writeToNBT(nbt, false);
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
+        nbt.setString("name", name);
+        nbt.setInteger("weight", weight);
 
         NBTTagList jRew = new NBTTagList();
         for (DBEntry<LootEntry> entry : getEntries()) {
@@ -87,9 +93,9 @@ public class LootGroup extends SimpleDatabase<LootGroup.LootEntry> implements IN
             jLoot.setInteger("ID", entry.getID());
             jRew.appendTag(jLoot);
         }
-        tag.setTag("rewards", jRew);
+        nbt.setTag("rewards", jRew);
 
-        return tag;
+        return nbt;
     }
 
     public static class LootEntry implements INBTSaveLoad<NBTTagCompound> {
@@ -107,6 +113,12 @@ public class LootGroup extends SimpleDatabase<LootGroup.LootEntry> implements IN
             for (int i = 0; i < jItm.tagCount(); i++) {
                 items.add(JsonHelper.JsonToItemStack(jItm.getCompoundTagAt(i)));
             }
+        }
+
+        @Deprecated
+        @Override
+        public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+            return writeToNBT(nbt, false);
         }
 
         @Override

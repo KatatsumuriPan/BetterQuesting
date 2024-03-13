@@ -65,17 +65,23 @@ public final class QuestDatabase extends SimpleDatabase<IQuest> implements IQues
             quest.setRequirements(rem);
     }
 
+    @Deprecated
     @Override
-    public synchronized NBTTagList writeToNBT(NBTTagList json, @Nullable List<Integer> subset, boolean reduce) {
+    public synchronized NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<Integer> subset) {
+        return writeToNBT(nbt, subset, false);
+    }
+
+    @Override
+    public synchronized NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<Integer> subset, boolean reduce) {
         for (DBEntry<IQuest> entry : this.getEntries()) {
             if (subset != null && !subset.contains(entry.getID())) continue;
             NBTTagCompound jq = entry.getValue().writeToNBT(new NBTTagCompound(), reduce);
             if (subset != null && jq.isEmpty()) continue;
             jq.setInteger("questID", entry.getID());
-            json.appendTag(jq);
+            nbt.appendTag(jq);
         }
 
-        return json;
+        return nbt;
     }
 
     @Override

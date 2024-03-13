@@ -119,6 +119,12 @@ public class TaskBlockBreak implements ITask {
         }
     }
 
+    @Deprecated
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        return writeToNBT(nbt, false);
+    }
+
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         NBTTagList bAry = new NBTTagList();

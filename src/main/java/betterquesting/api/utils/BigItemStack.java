@@ -148,6 +148,11 @@ public class BigItemStack {
             this.baseStack.setItemDamage(OreDictionary.WILDCARD_VALUE);
     }
 
+    @Deprecated
+    public NBTTagCompound writeToNBT(NBTTagCompound tags) {
+        return writeToNBT(tags, false);
+    }
+
     public NBTTagCompound writeToNBT(NBTTagCompound tags, boolean reduce) {
         baseStack.writeToNBT(tags);
         if (reduce && stackSize == 1)

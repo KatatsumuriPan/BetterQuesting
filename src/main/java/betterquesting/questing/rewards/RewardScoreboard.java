@@ -81,6 +81,12 @@ public class RewardScoreboard implements IReward {
         relative = NBTUtil.getBoolean(nbt, "relative", DEFAULT_RELATIVE);
     }
 
+    @Deprecated
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        return writeToNBT(nbt, false);
+    }
+
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         nbt.setString("score", score);
