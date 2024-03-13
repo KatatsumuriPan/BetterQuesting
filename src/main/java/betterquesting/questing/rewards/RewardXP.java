@@ -48,6 +48,12 @@ public class RewardXP implements IReward {
         levels = NBTUtil.getBoolean(nbt, "isLevels", DEFAULT_LEVELS);
     }
 
+    @Deprecated
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        return writeToNBT(nbt, false);
+    }
+
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         if (!reduce || amount != DEFAULT_AMOUNT)

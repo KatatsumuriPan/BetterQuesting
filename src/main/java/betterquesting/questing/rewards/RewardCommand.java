@@ -95,6 +95,12 @@ public class RewardCommand implements IReward {
         asScript = NBTUtil.getBoolean(nbt, "asScript", DEFAULT_AS_SCRIPT);
     }
 
+    @Deprecated
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        return writeToNBT(nbt, false);
+    }
+
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         nbt.setString("command", command);

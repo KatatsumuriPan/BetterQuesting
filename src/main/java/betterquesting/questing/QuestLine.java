@@ -86,9 +86,15 @@ public class QuestLine extends SimpleDatabase<IQuestLineEntry> implements IQuest
         return null;
     }
 
+    @Deprecated
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound json, @Nullable List<Integer> subset, boolean reduce) {
-        json.setTag("properties", info.writeToNBT(new NBTTagCompound(), reduce));
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, @Nullable List<Integer> subset) {
+        return writeToNBT(nbt, subset, false);
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, @Nullable List<Integer> subset, boolean reduce) {
+        nbt.setTag("properties", info.writeToNBT(new NBTTagCompound(), reduce));
 
         NBTTagList jArr = new NBTTagList();
 
@@ -99,8 +105,8 @@ public class QuestLine extends SimpleDatabase<IQuestLineEntry> implements IQuest
             jArr.appendTag(qle);
         }
 
-        json.setTag("quests", jArr);
-        return json;
+        nbt.setTag("quests", jArr);
+        return nbt;
     }
 
     @Override

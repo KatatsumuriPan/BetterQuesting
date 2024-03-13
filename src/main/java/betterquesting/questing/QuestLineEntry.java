@@ -77,13 +77,19 @@ public class QuestLineEntry implements IQuestLineEntry {
         this.sizeY = sizeY;
     }
 
+    @Deprecated
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound json, boolean reduce) {
-        json.setInteger("sizeX", sizeX);
-        json.setInteger("sizeY", sizeY);
-        json.setInteger("x", posX);
-        json.setInteger("y", posY);
-        return json;
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        return writeToNBT(nbt, false);
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
+        nbt.setInteger("sizeX", sizeX);
+        nbt.setInteger("sizeY", sizeY);
+        nbt.setInteger("x", posX);
+        nbt.setInteger("y", posY);
+        return nbt;
     }
 
     @Override

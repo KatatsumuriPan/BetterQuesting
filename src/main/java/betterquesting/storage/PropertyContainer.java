@@ -77,6 +77,12 @@ public class PropertyContainer implements IPropertyContainer, INBTSaveLoad<NBTTa
         nbtInfo.getKeySet().clear();
     }
 
+    @Deprecated
+    @Override
+    public synchronized NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        return writeToNBT(nbt, false);
+    }
+
     @Override
     public synchronized NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         if (reduce) {

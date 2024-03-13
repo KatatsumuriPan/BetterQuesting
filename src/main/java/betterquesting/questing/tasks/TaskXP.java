@@ -105,6 +105,12 @@ public class TaskXP implements ITaskTickable {
         return "bq_standard.task.xp";
     }
 
+    @Deprecated
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        return writeToNBT(nbt, false);
+    }
+
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         if (!reduce || amount != DEFAULT_AMOUNT)

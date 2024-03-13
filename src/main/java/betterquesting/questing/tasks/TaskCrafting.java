@@ -122,6 +122,12 @@ public class TaskCrafting implements ITask {
         }
     }
 
+    @Deprecated
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        return writeToNBT(nbt, false);
+    }
+
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         if (!reduce || partialMatch != DEFAULT_PARTIAL_MATCH)

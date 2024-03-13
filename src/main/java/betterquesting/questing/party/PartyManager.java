@@ -60,16 +60,22 @@ public class PartyManager extends SimpleDatabase<IParty> implements IPartyDataba
         return null;
     }
 
+    @Deprecated
     @Override
-    public synchronized NBTTagList writeToNBT(NBTTagList json, List<Integer> subset, boolean reduce) {
+    public synchronized NBTTagList writeToNBT(NBTTagList nbt, List<Integer> subset) {
+        return writeToNBT(nbt, subset, false);
+    }
+
+    @Override
+    public synchronized NBTTagList writeToNBT(NBTTagList nbt, List<Integer> subset, boolean reduce) {
         for (DBEntry<IParty> entry : getEntries()) {
             if (subset != null && !subset.contains(entry.getID())) continue;
             NBTTagCompound jp = entry.getValue().writeToNBT(new NBTTagCompound(), reduce);
             jp.setInteger("partyID", entry.getID());
-            json.appendTag(jp);
+            nbt.appendTag(jp);
         }
 
-        return json;
+        return nbt;
     }
 
     @Override

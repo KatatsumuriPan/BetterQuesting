@@ -102,6 +102,12 @@ public class PartyInvitations implements INBTPartial<NBTTagList, UUID> {
         invites.clear();
     }
 
+    @Deprecated
+    @Override
+    public synchronized NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<UUID> subset) {
+        return writeToNBT(nbt, subset, false);
+    }
+
     @Override
     public synchronized NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<UUID> subset, boolean reduce) // Don't bother saving this to disk. We do need to send packets though
     {

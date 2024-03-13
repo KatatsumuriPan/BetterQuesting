@@ -217,6 +217,12 @@ public class TaskInteractEntity implements ITask {
         return nbt;
     }
 
+    @Deprecated
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        return writeToNBT(nbt, false);
+    }
+
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         nbt.setTag("item", targetItem.writeToNBT(new NBTTagCompound(), reduce));

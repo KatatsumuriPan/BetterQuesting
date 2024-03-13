@@ -403,26 +403,32 @@ public class QuestInstance implements IQuest {
             prereqTypes.put(req, kind);
     }
 
+    @Deprecated
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound jObj, boolean reduce) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        return writeToNBT(nbt, false);
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         NBTTagCompound nbtProperties = qInfo.writeToNBT(new NBTTagCompound(), reduce);
         if (!reduce || !nbtProperties.isEmpty())
-            jObj.setTag("properties", nbtProperties);
-        jObj.setTag("tasks", tasks.writeToNBT(new NBTTagList(), null, reduce));
+            nbt.setTag("properties", nbtProperties);
+        nbt.setTag("tasks", tasks.writeToNBT(new NBTTagList(), null, reduce));
         NBTTagList nbtRewards = rewards.writeToNBT(new NBTTagList(), null, reduce);
         if (!reduce || !nbtRewards.isEmpty())
-            jObj.setTag("rewards", nbtRewards);
+            nbt.setTag("rewards", nbtRewards);
         if (!reduce || getRequirements().length > 0)
-            jObj.setTag("preRequisites", new NBTTagIntArray(getRequirements()));
+            nbt.setTag("preRequisites", new NBTTagIntArray(getRequirements()));
         if (!prereqTypes.isEmpty()) {
             byte[] types = new byte[preRequisites.length];
             int[] req = this.preRequisites;
             for (int i = 0, requirementsLength = req.length; i < requirementsLength; i++)
                 types[i] = getRequirementType(req[i]).id();
-            jObj.setTag("preRequisiteTypes", new NBTTagByteArray(types));
+            nbt.setTag("preRequisiteTypes", new NBTTagByteArray(types));
         }
 
-        return jObj;
+        return nbt;
     }
 
     @Override

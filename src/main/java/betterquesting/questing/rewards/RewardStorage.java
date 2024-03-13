@@ -15,18 +15,24 @@ import java.util.List;
 import java.util.UUID;
 
 public class RewardStorage extends SimpleDatabase<IReward> implements IDatabaseNBT<IReward, NBTTagList, NBTTagList> {
+    @Deprecated
     @Override
-    public NBTTagList writeToNBT(NBTTagList json, @Nullable List<Integer> subset, boolean reduce) {
+    public NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<Integer> subset) {
+        return writeToNBT(nbt, subset, false);
+    }
+
+    @Override
+    public NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<Integer> subset, boolean reduce) {
         for (DBEntry<IReward> rew : getEntries()) {
             if (subset != null && !subset.contains(rew.getID())) continue;
             ResourceLocation rewardID = rew.getValue().getFactoryID();
             NBTTagCompound rJson = rew.getValue().writeToNBT(new NBTTagCompound(), reduce);
             rJson.setString("rewardID", rewardID.toString());
             rJson.setInteger("index", rew.getID());
-            json.appendTag(rJson);
+            nbt.appendTag(rJson);
         }
 
-        return json;
+        return nbt;
     }
 
     @Override

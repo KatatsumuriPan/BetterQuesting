@@ -112,6 +112,12 @@ public class TaskHunt implements ITask {
         pInfo.markDirtyParty(Collections.singletonList(quest.getID()));
     }
 
+    @Deprecated
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        return writeToNBT(nbt, false);
+    }
+
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt, boolean reduce) {
         nbt.setString("target", idName);

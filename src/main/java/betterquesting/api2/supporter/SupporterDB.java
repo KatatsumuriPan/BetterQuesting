@@ -31,7 +31,7 @@ public class SupporterDB implements INBTSaveLoad<NBTTagCompound> {
     public synchronized SupporterEntry getValue(@Nonnull UUID playerID) {
         return mapDB.get(playerID);
     }
-    
+
     /*@Nullable
     public UUID getKey(@Nonnull SupporterEntry entry)
     {
@@ -39,9 +39,16 @@ public class SupporterDB implements INBTSaveLoad<NBTTagCompound> {
         {
             if(pair.getValue() == entry) return pair.getKey();
         }
-        
+
         return null;
     }*/
+
+    @Deprecated
+    @Nonnull
+    @Override
+    public synchronized NBTTagCompound writeToNBT(@Nonnull NBTTagCompound nbt) {
+        return writeToNBT(nbt, false);
+    }
 
     @Nonnull
     @Override
