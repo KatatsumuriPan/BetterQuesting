@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.UUID;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -157,6 +158,7 @@ public class HQMQuestImporter implements IImporter {
             if (jRep.has("id"))
                 repId = JsonHelper.GetString(jRep, "id", repId);
 
+
             HQMRep repObj = new HQMRep(repName);
 
             JsonArray mrkAry = null;
@@ -193,7 +195,15 @@ public class HQMQuestImporter implements IImporter {
         if (idMap.containsKey(oldID)) {
             return idMap.get(oldID);
         } else {
-            IQuest quest = qdb.createNew(qdb.nextID());
+            int newID;
+            try {
+                newID = (int) (UUID.fromString(oldID).getMostSignificantBits() & 0x7fff_ffff);
+                if (qdb.getValue(newID) != null)
+                    newID = qdb.nextID();
+            } catch (Exception e) {
+                newID = qdb.nextID();
+            }
+            IQuest quest = qdb.createNew(newID);
             idMap.put(oldID, quest);
             return quest;
         }
@@ -310,8 +320,9 @@ public class HQMQuestImporter implements IImporter {
 
                 if (tsks != null && tsks.length > 0) {
                     IDatabaseNBT<ITask, NBTTagList, NBTTagList> taskReg = quest.getTasks();
-                    for (ITask t : tsks)
+                    for (ITask t : tsks) {
                         taskReg.add(taskReg.nextID(), t);
+                    }
                 }
             }
 
@@ -346,9 +357,10 @@ public class HQMQuestImporter implements IImporter {
     }
 
     private boolean containsReq(IQuest quest, int id) {
-        for (int reqID : quest.getRequirements())
+        for (int reqID : quest.getRequirements()) {
             if (id == reqID)
                 return true;
+        }
         return false;
     }
 
