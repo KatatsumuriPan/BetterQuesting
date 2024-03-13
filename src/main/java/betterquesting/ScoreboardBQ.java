@@ -39,8 +39,7 @@ public class ScoreboardBQ implements INBTPartial<NBTTagList, UUID> {
         }
     }
 
-    @Deprecated
-    @Override
+    @Deprecated @Override
     public synchronized NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<UUID> users) {
         return writeToNBT(nbt, users, false);
     }

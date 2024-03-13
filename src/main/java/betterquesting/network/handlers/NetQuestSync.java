@@ -83,7 +83,8 @@ public class NetQuestSync {
             for (DBEntry<IQuest> entry : questSubset) {
                 NBTTagCompound tag = new NBTTagCompound();
 
-                if (config) tag.setTag("config", entry.getValue().writeToNBT(new NBTTagCompound(), true));
+                if (config)
+                    tag.setTag("config", entry.getValue().writeToNBT(new NBTTagCompound(), true));
                 if (progress)
                     tag.setTag("progress", entry.getValue().writeProgressToNBT(new NBTTagCompound(), pidList));
                 if (resetIDs != null)

@@ -40,8 +40,7 @@ public class ImportedQuests extends SimpleDatabase<IQuest> implements IQuestData
         return values;
     }
 
-    @Deprecated
-    @Override
+    @Deprecated @Override
     public NBTTagList writeToNBT(NBTTagList nbt, List<Integer> subset) {
         return writeToNBT(nbt, subset, false);
     }

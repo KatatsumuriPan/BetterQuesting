@@ -141,14 +141,15 @@ public class GuiEditLootEntry extends GuiScreenCanvas {
             public void onButtonClick() {
                 if (selEntry != null) {
                     final NBTTagCompound eTag = selEntry.writeToNBT(new NBTTagCompound(), false);
-                    mc.displayGuiScreen(QuestingAPI.getAPI(ApiReference.THEME_REG).getGui(PresetGUIs.EDIT_NBT, new GArgsNBT<>(screenRef, eTag.getTagList("items", 10), value -> {
-                        LootGroup lg = LootRegistry.INSTANCE.getValue(groupID);
-                        LootGroup.LootEntry le = lg == null ? null : lg.getValue(selectedID);
-                        if (le != null) {
-                            le.readFromNBT(eTag);
-                            sendChanges();
-                        }
-                    }, null)));
+                    mc.displayGuiScreen(QuestingAPI.getAPI(ApiReference.THEME_REG)
+                            .getGui(PresetGUIs.EDIT_NBT, new GArgsNBT<>(screenRef, eTag.getTagList("items", 10), value -> {
+                                LootGroup lg = LootRegistry.INSTANCE.getValue(groupID);
+                                LootGroup.LootEntry le = lg == null ? null : lg.getValue(selectedID);
+                                if (le != null) {
+                                    le.readFromNBT(eTag);
+                                    sendChanges();
+                                }
+                            }, null)));
                 }
             }
 

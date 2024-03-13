@@ -66,8 +66,7 @@ public class QuestLineEntry implements IQuestLineEntry {
         this.sizeY = sizeY;
     }
 
-    @Deprecated
-    @Override
+    @Deprecated @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         return writeToNBT(nbt, false);
     }

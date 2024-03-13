@@ -1,7 +1,9 @@
 package betterquesting.storage;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 import betterquesting.api.properties.IPropertyContainer;
 import betterquesting.api.properties.IPropertyReducible;
@@ -10,13 +12,6 @@ import betterquesting.api2.storage.INBTSaveLoad;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 
 public class PropertyContainer implements IPropertyContainer, INBTSaveLoad<NBTTagCompound> {
 
@@ -86,8 +81,7 @@ public class PropertyContainer implements IPropertyContainer, INBTSaveLoad<NBTTa
         nbtInfo.getKeySet().clear();
     }
 
-    @Deprecated
-    @Override
+    @Deprecated @Override
     public synchronized NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         return writeToNBT(nbt, false);
     }
@@ -127,7 +121,7 @@ public class PropertyContainer implements IPropertyContainer, INBTSaveLoad<NBTTa
         /*List<String> keys = new ArrayList<>(nbtInfo.getKeySet());
         for(nbt)
         {
-
+        
         }*/
     }
 

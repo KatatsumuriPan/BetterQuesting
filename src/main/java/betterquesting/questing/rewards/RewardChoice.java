@@ -110,8 +110,7 @@ public class RewardChoice implements IReward {
         }
     }
 
-    @Deprecated
-    @Override
+    @Deprecated @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         return writeToNBT(nbt, false);
     }

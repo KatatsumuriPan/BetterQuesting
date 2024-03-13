@@ -194,8 +194,7 @@ public class GuiHome extends GuiScreenCanvas {
             mc.displayGuiScreen(new GuiThemes(this));
         } else if (btn.getButtonID() == 4) // Editor
         {
-            mc.displayGuiScreen(new GuiNbtEditor(this, QuestSettings.INSTANCE.writeToNBT(new NBTTagCompound(), false), (value) ->
-            {
+            mc.displayGuiScreen(new GuiNbtEditor(this, QuestSettings.INSTANCE.writeToNBT(new NBTTagCompound(), false), (value) -> {
                 QuestSettings.INSTANCE.readFromNBT(value);
                 NetSettingSync.requestEdit();
             }));

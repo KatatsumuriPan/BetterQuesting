@@ -17,6 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class RewardXP implements IReward {
+
     private static final int DEFAULT_AMOUNT = 1;
     private static final boolean DEFAULT_LEVELS = true;
     public int amount = DEFAULT_AMOUNT;
@@ -44,8 +45,7 @@ public class RewardXP implements IReward {
         levels = NBTUtil.getBoolean(nbt, "isLevels", DEFAULT_LEVELS);
     }
 
-    @Deprecated
-    @Override
+    @Deprecated @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         return writeToNBT(nbt, false);
     }

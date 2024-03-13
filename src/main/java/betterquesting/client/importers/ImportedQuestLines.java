@@ -47,8 +47,7 @@ public class ImportedQuestLines extends SimpleDatabase<IQuestLine> implements IQ
         return ary;
     }
 
-    @Deprecated
-    @Override
+    @Deprecated @Override
     public NBTTagList writeToNBT(NBTTagList nbt, List<Integer> subset) {
         return writeToNBT(nbt, subset, false);
     }
@@ -56,7 +55,8 @@ public class ImportedQuestLines extends SimpleDatabase<IQuestLine> implements IQ
     @Override
     public NBTTagList writeToNBT(NBTTagList nbt, List<Integer> subset, boolean reduce) {
         for (DBEntry<IQuestLine> entry : getEntries()) {
-            if (subset != null && !subset.contains(entry.getID())) continue;
+            if (subset != null && !subset.contains(entry.getID()))
+                continue;
             NBTTagCompound jObj = entry.getValue().writeToNBT(new NBTTagCompound(), null, reduce);
             jObj.setInteger("lineID", entry.getID());
             jObj.setInteger("order", getOrderIndex(entry.getID()));

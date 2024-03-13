@@ -1,6 +1,5 @@
 package betterquesting.questing.tasks;
 
-import betterquesting.NBTUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,6 +14,7 @@ import javax.annotation.Nullable;
 
 import org.apache.logging.log4j.Level;
 
+import betterquesting.NBTUtil;
 import betterquesting.api.client.gui.misc.INeedsRefresh;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.IFluidTask;
@@ -221,8 +221,7 @@ public class TaskFluid implements ITaskInventory, IFluidTask, IItemTask {
         }
     }
 
-    @Deprecated
-    @Override
+    @Deprecated @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         return writeToNBT(nbt, false);
     }

@@ -146,8 +146,7 @@ public class TaskLocation implements ITaskTickable {
         }
     }
 
-    @Deprecated
-    @Override
+    @Deprecated @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         return writeToNBT(nbt, false);
     }

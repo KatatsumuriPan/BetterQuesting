@@ -1,5 +1,7 @@
 package betterquesting.questing.rewards;
 
+import org.apache.logging.log4j.Level;
+
 import betterquesting.NBTUtil;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.rewards.IReward;
@@ -20,8 +22,6 @@ import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.apache.logging.log4j.Level;
 
 public class RewardScoreboard implements IReward {
 
@@ -81,8 +81,7 @@ public class RewardScoreboard implements IReward {
         relative = NBTUtil.getBoolean(nbt, "relative", DEFAULT_RELATIVE);
     }
 
-    @Deprecated
-    @Override
+    @Deprecated @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         return writeToNBT(nbt, false);
     }

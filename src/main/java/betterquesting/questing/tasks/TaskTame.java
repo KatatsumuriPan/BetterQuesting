@@ -138,8 +138,7 @@ public class TaskTame implements ITask {
         return new GuiEditTaskTame(parent, quest, this);
     }
 
-    @Deprecated
-    @Override
+    @Deprecated @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         return writeToNBT(nbt, false);
     }

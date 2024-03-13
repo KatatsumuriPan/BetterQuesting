@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTBase;
 
 // Used when the base data set can safely be split. Can be used in place of INBTSaveLoad
 public interface INBTPartial<T extends NBTBase, K> {
+
     @Deprecated
     T writeToNBT(T nbt, @Nullable List<K> subset);
 

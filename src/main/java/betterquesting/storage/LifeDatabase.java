@@ -30,8 +30,7 @@ public final class LifeDatabase implements ILifeDatabase {
         playerLives.put(uuid, MathHelper.clamp(value, 0, QuestSettings.INSTANCE.getProperty(NativeProps.LIVES_MAX)));
     }
 
-    @Deprecated
-    @Override
+    @Deprecated @Override
     public synchronized NBTTagCompound writeToNBT(NBTTagCompound nbt, @Nullable List<UUID> users) {
         return writeToNBT(nbt, users, false);
     }

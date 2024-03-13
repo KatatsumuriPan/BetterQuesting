@@ -1,11 +1,11 @@
 package betterquesting.api.utils;
 
-import betterquesting.NBTUtil;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import betterquesting.NBTUtil;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

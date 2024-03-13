@@ -31,8 +31,7 @@ public class TaskPlaceholder implements ITask {
 
     public NBTTagCompound getTaskProgressData() { return nbtData.getCompoundTag("orig_prog"); }
 
-    @Deprecated
-    @Override
+    @Deprecated @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         return writeToNBT(nbt, false);
     }

@@ -17,8 +17,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 
 public class TaskStorage extends SimpleDatabase<ITask> implements IDatabaseNBT<ITask, NBTTagList, NBTTagList> {
-    @Deprecated
-    @Override
+
+    @Deprecated @Override
     public NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<Integer> subset) {
         return writeToNBT(nbt, subset, false);
     }

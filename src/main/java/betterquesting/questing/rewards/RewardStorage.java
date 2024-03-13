@@ -16,8 +16,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 
 public class RewardStorage extends SimpleDatabase<IReward> implements IDatabaseNBT<IReward, NBTTagList, NBTTagList> {
-    @Deprecated
-    @Override
+
+    @Deprecated @Override
     public NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<Integer> subset) {
         return writeToNBT(nbt, subset, false);
     }

@@ -88,8 +88,7 @@ public class QuestLine extends SimpleDatabase<IQuestLineEntry> implements IQuest
         return null;
     }
 
-    @Deprecated
-    @Override
+    @Deprecated @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt, @Nullable List<Integer> subset) {
         return writeToNBT(nbt, subset, false);
     }
@@ -101,7 +100,8 @@ public class QuestLine extends SimpleDatabase<IQuestLineEntry> implements IQuest
         NBTTagList jArr = new NBTTagList();
 
         for (DBEntry<IQuestLineEntry> entry : getEntries()) {
-            if (subset != null && !subset.contains(entry.getID())) continue;
+            if (subset != null && !subset.contains(entry.getID()))
+                continue;
             NBTTagCompound qle = entry.getValue().writeToNBT(new NBTTagCompound(), reduce);
             qle.setInteger("id", entry.getID());
             jArr.appendTag(qle);

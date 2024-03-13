@@ -16,8 +16,7 @@ public class SupporterEntry implements INBTSaveLoad<NBTTagCompound> {
         return this.services.computeIfAbsent(token, (t) -> new HashMap<>());
     }
 
-    @Deprecated
-    @Override
+    @Deprecated @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         return writeToNBT(nbt, false);
     }

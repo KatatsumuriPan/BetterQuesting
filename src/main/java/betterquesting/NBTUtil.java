@@ -48,7 +48,6 @@ public class NBTUtil {
         }
     }
 
-
     public static boolean getBoolean(NBTTagCompound tag, String key, boolean defaultValue) {
         return tag.hasKey(key, 99) ? tag.getBoolean(key) : defaultValue;
     }

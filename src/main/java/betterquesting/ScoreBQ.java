@@ -29,8 +29,7 @@ public class ScoreBQ implements INBTPartial<NBTTagList, UUID> {
         return playerScores.containsKey(uuid);
     }
 
-    @Deprecated
-    @Override
+    @Deprecated @Override
     public synchronized NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<UUID> subset) {
         return writeToNBT(nbt, subset, false);
     }

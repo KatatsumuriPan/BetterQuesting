@@ -226,8 +226,7 @@ public class TaskInteractItem implements ITask {
         return nbt;
     }
 
-    @Deprecated
-    @Override
+    @Deprecated @Override
     public synchronized NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         return writeToNBT(nbt, false);
     }

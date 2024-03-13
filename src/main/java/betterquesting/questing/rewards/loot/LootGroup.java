@@ -73,8 +73,7 @@ public class LootGroup extends SimpleDatabase<LootGroup.LootEntry> implements IN
         }
     }
 
-    @Deprecated
-    @Override
+    @Deprecated @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         return writeToNBT(nbt, false);
     }
@@ -115,8 +114,7 @@ public class LootGroup extends SimpleDatabase<LootGroup.LootEntry> implements IN
             }
         }
 
-        @Deprecated
-        @Override
+        @Deprecated @Override
         public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
             return writeToNBT(nbt, false);
         }

@@ -65,8 +65,7 @@ public final class QuestDatabase extends SimpleDatabase<IQuest> implements IQues
             quest.setRequirements(rem);
     }
 
-    @Deprecated
-    @Override
+    @Deprecated @Override
     public synchronized NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<Integer> subset) {
         return writeToNBT(nbt, subset, false);
     }
@@ -74,9 +73,11 @@ public final class QuestDatabase extends SimpleDatabase<IQuest> implements IQues
     @Override
     public synchronized NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<Integer> subset, boolean reduce) {
         for (DBEntry<IQuest> entry : this.getEntries()) {
-            if (subset != null && !subset.contains(entry.getID())) continue;
+            if (subset != null && !subset.contains(entry.getID()))
+                continue;
             NBTTagCompound jq = entry.getValue().writeToNBT(new NBTTagCompound(), reduce);
-            if (subset != null && jq.isEmpty()) continue;
+            if (subset != null && jq.isEmpty())
+                continue;
             jq.setInteger("questID", entry.getID());
             nbt.appendTag(jq);
         }

@@ -15,8 +15,8 @@ import javax.annotation.Nullable;
 
 import org.apache.logging.log4j.Level;
 
-import betterquesting.api.client.gui.misc.INeedsRefresh;
 import betterquesting.NBTUtil;
+import betterquesting.api.client.gui.misc.INeedsRefresh;
 import betterquesting.api.enums.EnumLogic;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.tasks.IItemTask;
@@ -217,8 +217,7 @@ public class TaskRetrieval implements ITaskInventory, IItemTask {
         }
     }
 
-    @Deprecated
-    @Override
+    @Deprecated @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         return writeToNBT(nbt, false);
     }

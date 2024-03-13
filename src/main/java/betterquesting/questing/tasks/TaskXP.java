@@ -111,8 +111,7 @@ public class TaskXP implements ITaskTickable {
     @Override
     public String getUnlocalisedName() { return "bq_standard.task.xp"; }
 
-    @Deprecated
-    @Override
+    @Deprecated @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         return writeToNBT(nbt, false);
     }

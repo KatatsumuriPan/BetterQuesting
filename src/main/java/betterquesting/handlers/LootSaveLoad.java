@@ -43,7 +43,8 @@ public class LootSaveLoad {
     }
 
     public void SaveLoot() {
-        JsonHelper.WriteToFile(new File(worldDir, "QuestLoot.json"), NBTConverter.NBTtoJSON_Compound(LootRegistry.INSTANCE.writeToNBT(new NBTTagCompound(), null, true), new JsonObject(), true));
+        JsonHelper.WriteToFile(new File(worldDir, "QuestLoot.json"),
+                               NBTConverter.NBTtoJSON_Compound(LootRegistry.INSTANCE.writeToNBT(new NBTTagCompound(), null, true), new JsonObject(), true));
     }
 
     public void UnloadLoot() {
