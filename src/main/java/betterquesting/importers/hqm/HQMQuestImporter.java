@@ -19,6 +19,7 @@ import betterquesting.importers.hqm.converters.rewards.HQMRewardReputation;
 import betterquesting.importers.hqm.converters.rewards.HQMRewardStandard;
 import betterquesting.importers.hqm.converters.tasks.*;
 import com.google.gson.*;
+import java.util.UUID;
 import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagList;
 import org.apache.logging.log4j.Level;
@@ -122,41 +123,53 @@ public class HQMQuestImporter implements IImporter {
     }
 
     private void LoadReputations(JsonArray jsonRoot) {
-        if (jsonRoot == null || jsonRoot.size() <= 0) return;
+        if (jsonRoot == null || jsonRoot.size() <= 0)
+            return;
 
         int i = -1;
 
         for (JsonElement e : jsonRoot) {
-            if (!(e instanceof JsonObject)) continue;
+            if (!(e instanceof JsonObject))
+                continue;
             JsonObject jRep = e.getAsJsonObject();
 
             String repName = "Reputation(" + i + ")";
-            if (jRep.has("Name")) repName = JsonHelper.GetString(jRep, "Name", repName);
-            if (jRep.has("name")) repName = JsonHelper.GetString(jRep, "name", repName);
+            if (jRep.has("Name"))
+                repName = JsonHelper.GetString(jRep, "Name", repName);
+            if (jRep.has("name"))
+                repName = JsonHelper.GetString(jRep, "name", repName);
 
             String repId = "" + (++i);
-            if (jRep.has("Id")) repId = JsonHelper.GetNumber(jRep, "Id", i).toString();
-            if (jRep.has("id")) repId = JsonHelper.GetString(jRep, "id", repId);
+            if (jRep.has("Id"))
+                repId = JsonHelper.GetNumber(jRep, "Id", i).toString();
+            if (jRep.has("id"))
+                repId = JsonHelper.GetString(jRep, "id", repId);
 
 
             HQMRep repObj = new HQMRep(repName);
 
             JsonArray mrkAry = null;
-            if (jRep.has("Markers")) mrkAry = JsonHelper.GetArray(jRep, "Markers");
-            if (mrkAry == null) mrkAry = JsonHelper.GetArray(jRep, "markers");
+            if (jRep.has("Markers"))
+                mrkAry = JsonHelper.GetArray(jRep, "Markers");
+            if (mrkAry == null)
+                mrkAry = JsonHelper.GetArray(jRep, "markers");
 
             for (int m = 0; m < mrkAry.size(); m++) {
                 JsonElement e2 = mrkAry.get(m);
-                if (!(e2 instanceof JsonObject)) continue;
+                if (!(e2 instanceof JsonObject))
+                    continue;
 
                 JsonObject jMark = e2.getAsJsonObject();
 
                 int mId = m;
-                if (jMark.has("Id")) mId = JsonHelper.GetNumber(jMark, "Id", mId).intValue();
+                if (jMark.has("Id"))
+                    mId = JsonHelper.GetNumber(jMark, "Id", mId).intValue();
 
                 int mVal = 0;
-                if (jMark.has("Value")) mVal = JsonHelper.GetNumber(jMark, "Value", mVal).intValue();
-                if (jMark.has("value")) mVal = JsonHelper.GetNumber(jMark, "value", mVal).intValue();
+                if (jMark.has("Value"))
+                    mVal = JsonHelper.GetNumber(jMark, "Value", mVal).intValue();
+                if (jMark.has("value"))
+                    mVal = JsonHelper.GetNumber(jMark, "value", mVal).intValue();
 
                 repObj.addMarker(mId, mVal);
             }
@@ -169,7 +182,15 @@ public class HQMQuestImporter implements IImporter {
         if (idMap.containsKey(oldID)) {
             return idMap.get(oldID);
         } else {
-            IQuest quest = qdb.createNew(qdb.nextID());
+            int newID;
+            try {
+                newID = (int) (UUID.fromString(oldID).getMostSignificantBits() & 0x7fff_ffff);
+                if (qdb.getValue(newID) != null)
+                    newID = qdb.nextID();
+            } catch (Exception e) {
+                newID = qdb.nextID();
+            }
+            IQuest quest = qdb.createNew(newID);
             idMap.put(oldID, quest);
             return quest;
         }
@@ -286,7 +307,9 @@ public class HQMQuestImporter implements IImporter {
 
                 if (tsks != null && tsks.length > 0) {
                     IDatabaseNBT<ITask, NBTTagList, NBTTagList> taskReg = quest.getTasks();
-                    for (ITask t : tsks) taskReg.add(taskReg.nextID(), t);
+                    for (ITask t : tsks) {
+                        taskReg.add(taskReg.nextID(), t);
+                    }
                 }
             }
 
@@ -321,12 +344,16 @@ public class HQMQuestImporter implements IImporter {
     }
 
     private boolean containsReq(IQuest quest, int id) {
-        for (int reqID : quest.getRequirements()) if (id == reqID) return true;
+        for (int reqID : quest.getRequirements()) {
+            if (id == reqID)
+                return true;
+        }
         return false;
     }
 
     private void addReq(IQuest quest, int id) {
-        if (containsReq(quest, id)) return;
+        if (containsReq(quest, id))
+            return;
         int[] orig = quest.getRequirements();
         int[] added = Arrays.copyOf(orig, orig.length + 1);
         added[orig.length] = id;

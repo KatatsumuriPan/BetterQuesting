@@ -165,7 +165,14 @@ public class FTBQQuestImporter implements IImporter {
                 // === QUEST DATA ===
 
                 String hexID = questFile.getName().substring(0, questFile.getName().length() - (isSnbt ? ".snbt".length() : ".nbt".length()));
-                int questID = questDB.nextID();
+                int questID;
+                try {
+                    questID = Integer.parseInt(hexID, 16) & 0x7fff_ffff;
+                    if (lineDB.getValue(questID) != null)
+                        questID = questDB.nextID();
+                } catch (Exception e) {
+                    questID = questDB.nextID();
+                }
                 IQuest quest = questDB.createNew(questID);
                 IQuestLineEntry qle = questLine.createNew(questID);
                 ID_MAP.put(hexID, new FTBEntry(questID, quest, FTBEntryType.QUEST)); // Add this to the weird ass ID mapping
@@ -253,21 +260,21 @@ public class FTBQQuestImporter implements IImporter {
                     }
 
                     if (qTag.hasKey("dependency_requirement")) {
-                        switch (qTag.getString("dependency_requirement")){
-                            case "all_completed":{
+                        switch (qTag.getString("dependency_requirement")) {
+                            case "all_completed": {
                                 quest.setProperty(NativeProps.LOGIC_QUEST, EnumLogic.AND);
                                 break;
                             }
-                            case "one_completed":{
+                            case "one_completed": {
                                 quest.setProperty(NativeProps.LOGIC_QUEST, EnumLogic.OR);
                                 break;
                             }
                             // BetterQuesting has no "started" options.
-                            case "all_started":{
+                            case "all_started": {
                                 quest.setProperty(NativeProps.LOGIC_QUEST, EnumLogic.AND);
                                 break;
                             }
-                            case "one_started":{
+                            case "one_started": {
                                 quest.setProperty(NativeProps.LOGIC_QUEST, EnumLogic.OR);
                                 break;
                             }
