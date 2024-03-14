@@ -8,11 +8,11 @@ import javax.annotation.Nullable;
 import betterquesting.api.questing.IQuest;
 import betterquesting.api.questing.IQuestDatabase;
 import betterquesting.api2.storage.DBEntry;
-import betterquesting.api2.storage.SimpleDatabase;
+import betterquesting.api2.storage.RandomIndexDatabase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-public final class QuestDatabase extends SimpleDatabase<IQuest> implements IQuestDatabase {
+public final class QuestDatabase extends RandomIndexDatabase<IQuest> implements IQuestDatabase {
 
     public static final QuestDatabase INSTANCE = new QuestDatabase();
 
@@ -28,8 +28,9 @@ public final class QuestDatabase extends SimpleDatabase<IQuest> implements IQues
     public synchronized boolean removeID(int id) {
         boolean success = super.removeID(id);
         if (success)
-            for (DBEntry<IQuest> entry : getEntries())
+            for (DBEntry<IQuest> entry : getEntries()) {
                 removeReq(entry.getValue(), id);
+            }
         return success;
     }
 
@@ -40,8 +41,9 @@ public final class QuestDatabase extends SimpleDatabase<IQuest> implements IQues
             return false;
         boolean success = this.removeValue(value);
         if (success)
-            for (DBEntry<IQuest> entry : getEntries())
+            for (DBEntry<IQuest> entry : getEntries()) {
                 removeReq(entry.getValue(), id);
+            }
         return success;
     }
 
