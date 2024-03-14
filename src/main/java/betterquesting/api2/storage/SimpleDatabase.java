@@ -1,9 +1,6 @@
 package betterquesting.api2.storage;
 
 import java.util.BitSet;
-import java.util.Collections;
-import java.util.List;
-import java.util.TreeMap;
 
 public class SimpleDatabase<T> extends AbstractDatabase<T> {
 

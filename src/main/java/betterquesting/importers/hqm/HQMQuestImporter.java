@@ -158,7 +158,6 @@ public class HQMQuestImporter implements IImporter {
             if (jRep.has("id"))
                 repId = JsonHelper.GetString(jRep, "id", repId);
 
-
             HQMRep repObj = new HQMRep(repName);
 
             JsonArray mrkAry = null;

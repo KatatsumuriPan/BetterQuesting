@@ -111,9 +111,7 @@ public abstract class AbstractDatabase<T> implements IDatabase<T> {
     }
 
     @Override
-    public synchronized List<DBEntry<T>> getEntries() {
-        return mapDB.isEmpty() ? Collections.emptyList() : getLookupLogic().getRefCache();
-    }
+    public synchronized List<DBEntry<T>> getEntries() { return mapDB.isEmpty() ? Collections.emptyList() : getLookupLogic().getRefCache(); }
 
     /**
      * First try to use array cache.
@@ -124,4 +122,5 @@ public abstract class AbstractDatabase<T> implements IDatabase<T> {
     public synchronized List<DBEntry<T>> bulkLookup(int... keys) {
         return mapDB.isEmpty() || keys.length == 0 ? Collections.emptyList() : getLookupLogic().bulkLookup(keys);
     }
+
 }

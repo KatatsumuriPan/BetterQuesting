@@ -12,6 +12,7 @@ enum LookupLogicType {
     ArrayCache(db -> db.mapDB.size() < CACHE_MAX_SIZE && db.mapDB.size() > SPARSE_RATIO * (db.mapDB.lastKey() - db.mapDB.firstKey()),
                ArrayCacheLookupLogic::new),
     Naive(db -> true, NaiveLookupLogic::new);
+
     private final Predicate<AbstractDatabase<?>> shouldUse;
     private final Function<AbstractDatabase<?>, LookupLogic<?>> factory;
 
