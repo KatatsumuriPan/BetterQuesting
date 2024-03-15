@@ -19,23 +19,26 @@ public class PropertyContainer implements IPropertyContainer, INBTSaveLoad<NBTTa
     private final NBTTagCompound nbtInfo = new NBTTagCompound();
     // For reducing nbt
     // To hold nbt values if the properties are not used (ex: the addon is temporarily removed), we cache and use only used properties to reduce nbt.
-    private final BiMap<String, IPropertyType<?>> id2PropertyMap = HashBiMap.create(); //ResourceLocation -> property
+    private final BiMap<ResourceLocation, IPropertyType<?>> id2PropertyMap = HashBiMap.create(); // property.getKey() -> property
 
     @Override
     public synchronized <T> T getProperty(IPropertyType<T> prop) {
-        if (prop == null) return null;
+        if (prop == null)
+            return null;
 
         return getProperty(prop, prop.getDefault());
     }
 
     @Override
     public synchronized <T> T getProperty(IPropertyType<T> prop, T def) {
-        if (prop == null) return def;
+        if (prop == null)
+            return def;
 
-        id2PropertyMap.put(prop.getKey().toString(), prop);
+        id2PropertyMap.put(prop.getKey(), prop);
         NBTTagCompound jProp = getDomain(prop.getKey());
 
-        if (!jProp.hasKey(prop.getKey().getPath())) return def;
+        if (!jProp.hasKey(prop.getKey().getPath()))
+            return def;
 
         return prop.readValue(jProp.getTag(prop.getKey().getPath()));
     }
@@ -44,7 +47,7 @@ public class PropertyContainer implements IPropertyContainer, INBTSaveLoad<NBTTa
     public synchronized boolean hasProperty(IPropertyType<?> prop) {
         if (prop == null)
             return false;
-        id2PropertyMap.put(prop.getKey().toString(), prop);
+        id2PropertyMap.put(prop.getKey(), prop);
         return getDomain(prop.getKey()).hasKey(prop.getKey().getPath());
     }
 
@@ -52,21 +55,23 @@ public class PropertyContainer implements IPropertyContainer, INBTSaveLoad<NBTTa
     public synchronized void removeProperty(IPropertyType<?> prop) {
         if (prop == null)
             return;
-        id2PropertyMap.put(prop.getKey().toString(), prop);
+        id2PropertyMap.put(prop.getKey(), prop);
         NBTTagCompound jProp = getDomain(prop.getKey());
 
-        if (!jProp.hasKey(prop.getKey().getPath())) return;
+        if (!jProp.hasKey(prop.getKey().getPath()))
+            return;
 
         jProp.removeTag(prop.getKey().getPath());
 
-        if (jProp.isEmpty()) nbtInfo.removeTag(prop.getKey().getNamespace());
+        if (jProp.isEmpty())
+            nbtInfo.removeTag(prop.getKey().getNamespace());
     }
 
     @Override
     public synchronized <T> void setProperty(IPropertyType<T> prop, T value) {
         if (prop == null || value == null)
             return;
-        id2PropertyMap.put(prop.getKey().toString(), prop);
+        id2PropertyMap.put(prop.getKey(), prop);
         NBTTagCompound dom = getDomain(prop.getKey());
         dom.setTag(prop.getKey().getPath(), prop.writeValue(value));
         nbtInfo.setTag(prop.getKey().getNamespace(), dom);
@@ -75,8 +80,9 @@ public class PropertyContainer implements IPropertyContainer, INBTSaveLoad<NBTTa
     @Override
     public synchronized void removeAllProps() {
         List<String> keys = new ArrayList<>(nbtInfo.getKeySet());
-        for (String key : keys)
+        for (String key : keys) {
             nbtInfo.removeTag(key);
+        }
     }
 
     @Deprecated
@@ -93,7 +99,7 @@ public class PropertyContainer implements IPropertyContainer, INBTSaveLoad<NBTTa
                 NBTTagCompound dom = nbtInfo.getCompoundTag(namespace);
                 NBTTagCompound reducedDom = new NBTTagCompound();
                 for (String key : dom.getKeySet()) {
-                    IPropertyType<?> prop = id2PropertyMap.get(namespace + ":" + key);
+                    IPropertyType<?> prop = id2PropertyMap.get(new ResourceLocation(namespace, key));
                     NBTBase tag = dom.getTag(key);
                     if (prop != null && Objects.equals(prop.getDefault(), prop.readValue(tag)))
                         continue;
